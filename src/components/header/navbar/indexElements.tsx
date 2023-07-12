@@ -12,7 +12,7 @@ export const Nav = styled.nav`
     align-items: center;
     position: sticky;
     top: 0;
-    z-index: 999;
+    z-index: 1;
     @media screen and (max-width: 960px) {
         transition: 0.4s all ease-in-out;
     }

@@ -1,11 +1,11 @@
 import React from 'react';
-import { HomeContainer, HomeContent } from './indexElements'; 
+import { HomeContainer, HomeContent, TitleHeader } from './indexElements'; 
 
 const Home = () => {
     return (
          <HomeContainer>
             <HomeContent>
-                <h1>Home</h1>
+                <TitleHeader>body</TitleHeader>
             </HomeContent>
          </HomeContainer>
     );
