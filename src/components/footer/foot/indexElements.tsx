@@ -39,11 +39,11 @@ export const FooterLogo = styled.img`
     align-self: flex-end;
     height: fit-content;
     @media screen and (max-width: 768px) {
-        width: 250px;
+        width: 100px;
         height: fit-content;
     }
     @media screen and (max-width: 480px) {
-        width: 200px;
+        width: 80x;
         height: fit-content;
     }
 `
@@ -56,5 +56,12 @@ export const FooterText = styled.a`
     margin-bottom: auto;
     margin-top: auto;
     align-self: flex-start;
+
+    @media screen and (max-width: 768px) {
+        font-size: 0.8rem;
+    }
+    @media screen and (max-width: 480px) {
+        font-size: 0.41rem;
+    }
 
 `
