@@ -2,15 +2,15 @@ import styled from 'styled-components';
 import { colours } from '../../../styles/colours';
 
 export const FooterContainer = styled.footer`
-    background-color: ${colours.CFIA_White};
+    background-color: ${colours.CFIA_Background_White};
 `
 
 export const FooterWrap = styled.div`
     padding: 24px 24px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: space-between;
     max-width: 1400px;
     margin: 0 auto;
 `
@@ -23,6 +23,7 @@ export const InfoSection = styled.section`
 
 export const InfoWrap = styled.div`
     display: flex;
+    flex-direction: row;
     justfiy-content: space-between;
     align-items: center;
     max-width: 1400px;
@@ -34,9 +35,9 @@ export const InfoWrap = styled.div`
 `
 
 export const FooterLogo = styled.img`
-    width: 350px;
+    width: 150px;
+    align-self: flex-end;
     height: fit-content;
-    margin-left: auto;
     @media screen and (max-width: 768px) {
         width: 250px;
         height: fit-content;
@@ -45,4 +46,15 @@ export const FooterLogo = styled.img`
         width: 200px;
         height: fit-content;
     }
+`
+
+export const FooterText = styled.a`
+    color: ${colours.CFIA_Font_black};
+    font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
+    margin-bottom: auto;
+    margin-top: auto;
+    align-self: flex-start;
+
 `
