@@ -1,4 +1,4 @@
-import { Nav, NavbarContainer} from './navbarElements';
+import { Nav, NavbarContainer, NavLogo} from './indexElements';
 import React, { useState } from 'react';
 
 const Navbar = () => {
@@ -7,7 +7,7 @@ const Navbar = () => {
        <>
           <Nav>
                <NavbarContainer>
-                 
+                    <NavLogo src={require('../../../assets/CFIA_blackfont.png')} alt="CFIA Logo" />
                </NavbarContainer>
            </Nav>
        </>
