@@ -4,13 +4,11 @@ import React, { useState } from 'react';
 const Navbar = () => {
 
    return (
-       <>
           <Nav>
                <NavbarContainer>
-                    <NavLogo src={require('../../../assets/CFIA_blackfont.png')} alt="CFIA Logo" />
+                    <NavLogo src={require('../../../assets/CFIA_white_logo.png')} alt="CFIA Logo" />
                </NavbarContainer>
            </Nav>
-       </>
    );
 };
 

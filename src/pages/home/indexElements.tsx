@@ -6,7 +6,7 @@ export const HomeContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0 30px;
+    padding: 0 24px;
     height: 960px;
     position: relative;
     z-index: 1;
@@ -14,7 +14,7 @@ export const HomeContainer = styled.div`
 export const HomeContent = styled.div`
     background: ${colours.CFIA_Background_White};
     z-index: 3;
-    max-width: 1200px;
+    max-width: 1500px;
     position: absolute;
     padding: 50px 8px;
     display: flex;
