@@ -4,7 +4,7 @@ import { colours } from '../../../styles/colours';
 export const AppbarWrap = styled.div`
     background-color: ${colours.CFIA_Background_Blue};
     color: ${colours.CFIA_Font_white};
-    height: 50px;
+    height: 60px;
     display: flex;
     width: 100%;
     font-size: 1rem;
@@ -21,7 +21,7 @@ export const AppbarWrap = styled.div`
 export const AppbarContainer = styled.div`
     display: flex;
     justify-content: space-between;
-    height: 50px;
+    height: 60px;
     z-index: 1;
     width: 100%;
     padding: 0 24px;
@@ -37,5 +37,12 @@ export const AppbarHeader = styled.h2`
     display: flex;
     align-items: center;
     justify-self: flex-start;
+
+    @media screen and (max-width: 768px) {
+        font-size: 1.3rem;
+    }
+    @media screen and (max-width: 480px) {
+        font-size: 1rem;
+    }
 
 `
