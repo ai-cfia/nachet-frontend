@@ -4,4 +4,5 @@ export const colours = {
     CFIA_Background_White: '#f2f2f2',
     CFIA_Font_white: '#f2f2f2',
     CFIA_Font_black: '#000000',
+    CFIA_White: '#ffffff',
   };

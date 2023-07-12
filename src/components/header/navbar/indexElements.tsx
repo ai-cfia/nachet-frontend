@@ -3,9 +3,11 @@ import { colours } from '../../../styles/colours';
 
 export const Nav = styled.nav`
     background-color: ${colours.CFIA_Background_Blue};
-    height: 60px;
+    color: ${colours.CFIA_Font_white};
+    height: 80px;
     display: flex;
     width: 100%;
+    font-size: 1rem;
     justify-content: center;
     align-items: center;
     position: sticky;
@@ -16,27 +18,28 @@ export const Nav = styled.nav`
     }
 `;
 
-
 export const NavbarContainer = styled.div`
     display: flex;
     justify-content: space-between;
-    height: 60px;
+    height: 80px;
     z-index: 1;
     width: 100%;
     padding: 0 24px;
-    max-width: 1100px;
+    max-width: 1400px;
 `
 
 export const NavLogo = styled.img`
-    width: 400px;
+    width: 300px;
     height: fit-content;
     margin: auto;
+    margin-left: 0;
+    margin-right: 0;
     @media screen and (max-width: 768px) {
-        width: 155px;
+        width: 200px;
         height: fit-content;
     }
     @media screen and (max-width: 480px) {
-        width: 120px;
+        width: 150px;
         height: fit-content;
     }
 `

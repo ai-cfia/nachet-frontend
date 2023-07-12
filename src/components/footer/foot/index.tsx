@@ -7,9 +7,9 @@ const Footer = () => {
             <FooterWrap>
                 <InfoSection>
                     <InfoWrap>
-                        <FooterLogo src={require('../../../assets/Canada_logo.png')} />
                     </InfoWrap>
                 </InfoSection>
+                <FooterLogo src={require('../../../assets/CFIA_blackfont.png')} />
             </FooterWrap>
         </FooterContainer>
     )
