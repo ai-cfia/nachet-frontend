@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import { colours } from '../../../styles/colours';
 
 export const Nav = styled.nav`
-    background-color: ${colours.CFIA_Background_Blue};
-    color: ${colours.CFIA_Font_white};
+    background-color: ${colours.CFIA_Background_White};
+    color: ${colours.CFIA_Background_White};
     height: 80px;
     display: flex;
     width: 100%;
@@ -29,17 +29,18 @@ export const NavbarContainer = styled.div`
 `
 
 export const NavLogo = styled.img`
-    width: 300px;
+    width: 350px;
     height: fit-content;
     margin: auto;
     margin-left: 0;
     margin-right: 0;
     @media screen and (max-width: 768px) {
-        width: 200px;
+        width: 250px;
         height: fit-content;
     }
     @media screen and (max-width: 480px) {
-        width: 150px;
+        width: 20px;
         height: fit-content;
     }
+
 `

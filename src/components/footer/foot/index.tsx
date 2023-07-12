@@ -1,15 +1,12 @@
 import React from 'react';
-import { FooterContainer, FooterWrap, InfoSection, InfoWrap, FooterLogo } from './indexElements'
+import { FooterContainer, FooterWrap, InfoSection, InfoWrap, FooterLogo, FooterText } from './indexElements'
 
 const Footer = () => {
     return (
         <FooterContainer>
             <FooterWrap>
-                <InfoSection>
-                    <InfoWrap>
-                    </InfoWrap>
-                </InfoSection>
-                <FooterLogo src={require('../../../assets/CFIA_blackfont.png')} />
+                <FooterText>Terms and Conditions</FooterText>
+                <FooterLogo src={require('../../../assets/Canada_logo.png')} />
             </FooterWrap>
         </FooterContainer>
     )
