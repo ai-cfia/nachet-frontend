@@ -6,19 +6,22 @@ export const FooterContainer = styled.footer`
 `
 
 export const FooterWrap = styled.div`
-    padding: 24px 24px;
+    padding: 24px 24px 24px 24px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: space-between;
     max-width: 1400px;
-    margin: 0 auto;
+    margin: auto;
+    position: relative;
+    z-index: 0;
 `
 
 export const InfoSection = styled.section`
     max-width: 1400px;
     width: 100%;
     justfiy-content: space-between;
+    z-index: 0;
 `
 
 export const InfoWrap = styled.div`
@@ -28,6 +31,7 @@ export const InfoWrap = styled.div`
     align-items: center;
     max-width: 1400px;
     margin: auto;
+    z-index: 0;
 
     @media screen and (max-width: 820px) {
         flex-direction: column;
@@ -36,6 +40,7 @@ export const InfoWrap = styled.div`
 
 export const FooterLogo = styled.img`
     width: 150px;
+    z-index: 0;
     align-self: flex-end;
     height: fit-content;
     @media screen and (max-width: 768px) {
@@ -56,6 +61,7 @@ export const FooterText = styled.a`
     margin-bottom: auto;
     margin-top: auto;
     align-self: flex-start;
+    z-index: 0;
 
     @media screen and (max-width: 768px) {
         font-size: 0.8rem;
