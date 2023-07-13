@@ -6,29 +6,42 @@ export const HomeContainer = styled.div`
     color: ${colours.CFIA_Font_black};
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: start;
     height: 900px;
     max-width: 1400px;
     position: relative;
-    padding-left: 24px;
-    padding-right: 24px;
+    padding: 24px 24px 24px 24px;
     z-index: 0;
     margin: auto;
+    margin-bottom: 24px;
+    margin-top: 24px;
+    position: relative;
+
+    @media screen and (max-width: 720px) {
+        flex-direction: column;
+        justify-content: start;
+    }
 `
 export const HomeContent = styled.div`
     background: ${colours.CFIA_Background_White};
     color: ${colours.CFIA_Font_black};
     display: flex;
     flex-direction: column;
-    align-items: start;
-    justify-content: start;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
     z-index: 0;
     max-width: 1400px;
-    position: absolute;
-    padding-top: 24px;
-    padding-right: 24px;
-    padding-bottom: 24px;
+    max-height: 900px;
+    position: relative;
+    padding: 24px 24px 24px 24px;
+    border: 1px solid ${colours.CFIA_Background_Blue};
+    border-radius: 4px;
+
+    @media screen and (max-width: 720px) {
+        width: 90%;
+    }
 `
 
 export const TitleHeader = styled.h2`
