@@ -1,14 +1,21 @@
-import { HomeContainer, HomeContent, TitleHeader } from './indexElements'; 
+import { HomeContainer, CaptureContainer, VideoFeed, TitleHeader, CaptureButton, LeftContent, RightContent } from './indexElements';
+import Webcam from 'react-webcam';
 
 const Home = () => {
     return (
          <HomeContainer>
-            <HomeContent>
-                <TitleHeader>body 1</TitleHeader>
-            </HomeContent>
-            <HomeContent>
-                <TitleHeader>body 2</TitleHeader>
-            </HomeContent>
+            <LeftContent>
+                <CaptureContainer>
+                    <TitleHeader>CAPTURE</TitleHeader>
+                    <CaptureButton>Capture Image</CaptureButton>
+                </CaptureContainer>
+            </LeftContent>
+            <RightContent>
+                <VideoFeed>
+                    <TitleHeader>MICROSCOPE FEED</TitleHeader>
+                    <Webcam videoConstraints={{ width: 700, height: 700 }} screenshotFormat='image/png' />
+                </VideoFeed>
+            </RightContent>
          </HomeContainer>
     );
     }
