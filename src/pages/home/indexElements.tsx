@@ -13,7 +13,7 @@ export const HomeContainer = styled.div`
     position: relative;
     padding-left: 24px;
     padding-right: 24px;
-    z-index: 1;
+    z-index: 0;
     margin: auto;
 `
 export const HomeContent = styled.div`
@@ -23,7 +23,7 @@ export const HomeContent = styled.div`
     flex-direction: column;
     align-items: start;
     justify-content: start;
-    z-index: 3;
+    z-index: 0;
     max-width: 1400px;
     position: absolute;
     padding-top: 24px;

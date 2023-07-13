@@ -1,12 +1,11 @@
 import { AppbarWrap, AppbarContainer, AppbarHeader} from './indexElements';
-import React, { useState } from 'react';
 
 const Appbar = () => {
 
    return (
           <AppbarWrap>
                <AppbarContainer>
-                    <AppbarHeader>Tagarno Seed Classifier</AppbarHeader>
+                    <AppbarHeader>Seed Classifier</AppbarHeader>
                </AppbarContainer>
            </AppbarWrap>
    );
