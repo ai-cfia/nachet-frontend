@@ -27,7 +27,7 @@ const Navbar = () => {
           <Nav>
                <NavbarContainer>
                     {windowSize.innerWidth > 768 && <NavLogo src={require('../../../assets/CFIA_blackfont.png')} alt="CFIA Logo" />}
-                    {windowSize.innerWidth <= 768 && <SmallNavLogo src={require('../../../assets/CFIA_small_black_logo.png')} alt="CFIA Logo" />}
+                    {windowSize.innerWidth <= 768 && <SmallNavLogo src={require('../../../assets/CFIA_blackfont.png')} alt="CFIA Logo" />}
                </NavbarContainer>
            </Nav>
    );
