@@ -1,4 +1,3 @@
-import React from 'react';
 import { HomeContainer, HomeContent, TitleHeader } from './indexElements'; 
 
 const Home = () => {

@@ -12,7 +12,7 @@ export const AppbarWrap = styled.div`
     align-items: center;
     position: sticky;
     top: 0;
-    z-index: 999;
+    z-index: 3;
     @media screen and (max-width: 960px) {
         transition: 0.4s all ease-in-out;
     }
@@ -22,7 +22,7 @@ export const AppbarContainer = styled.div`
     display: flex;
     justify-content: space-between;
     height: 60px;
-    z-index: 1;
+    z-index: 3;
     width: 100%;
     padding: 0 24px;
     max-width: 1400px;
