@@ -5,7 +5,7 @@ const Appbar = () => {
    return (
           <AppbarWrap>
                <AppbarContainer>
-                    <AppbarHeader>Seed Classifier</AppbarHeader>
+                    <AppbarHeader>Project Nachet</AppbarHeader>
                </AppbarContainer>
            </AppbarWrap>
    );
