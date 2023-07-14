@@ -12,6 +12,7 @@ export const FooterWrap = styled.div`
     justify-content: space-between;
     align-items: space-between;
     max-width: 1500px;
+    height: 80px;
     margin: auto;
     position: relative;
     z-index: 0;
@@ -20,6 +21,7 @@ export const FooterWrap = styled.div`
 export const InfoSection = styled.section`
     max-width: 1500px;
     width: 100%;
+    height: 80px;
     justfiy-content: space-between;
     z-index: 0;
 `
@@ -29,6 +31,7 @@ export const InfoWrap = styled.div`
     flex-direction: row;
     justfiy-content: space-between;
     align-items: center;
+    height: 80px;
     max-width: 1500px;
     margin: auto;
     z-index: 0;
@@ -41,7 +44,7 @@ export const InfoWrap = styled.div`
 export const FooterLogo = styled.img`
     width: 150px;
     z-index: 0;
-    align-self: flex-end;
+    align-self: center;
     height: fit-content;
     @media screen and (max-width: 768px) {
         width: 100px;
