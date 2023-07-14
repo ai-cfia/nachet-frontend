@@ -13,6 +13,7 @@ export const AppbarWrap = styled.div`
     position: sticky;
     top: 0;
     z-index: 3;
+    box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
     @media screen and (max-width: 960px) {
         transition: 0.4s all ease-in-out;
     }
