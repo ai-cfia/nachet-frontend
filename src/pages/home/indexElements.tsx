@@ -101,9 +101,6 @@ export const VideoFeed = styled.div`
     position: relative;
     border: 1px solid ${colours.CFIA_Font_black};
     border-radius: 10px;
-    //border-left: 1px solid ${colours.CFIA_Font_black};;
-    //border-top-left-radius: 0px;
-    //border-bottom-left-radius: 0px;
 
     @media screen and (max-width: 720px) {
         width: 90%;
@@ -126,9 +123,7 @@ export const CaptureContainer = styled.div`
     padding: 5px 5px 5px 5px;
     border: 1px solid ${colours.CFIA_Font_black};
     border-radius: 10px;
-    //border-right: 1px solid ${colours.CFIA_Font_black};;
-    //border-top-right-radius: 0px;
-    //border-bottom-right-radius: 0px;
+
 
     @media screen and (max-width: 720px) {
         width: 90%;
@@ -168,14 +163,33 @@ export const ControlContainer = styled.div`
     padding: 5px 5px 5px 5px;
     border: 1px solid ${colours.CFIA_Font_black};
     border-radius: 10px;
-    //border-right: 1px solid ${colours.CFIA_Font_black};;
-    //border-top-right-radius: 0px;
-    //border-bottom-right-radius: 0px;
-
     @media screen and (max-width: 720px) {
         width: 90%;
     }
 `
+
+export const ResultContainer = styled.div`
+    background: ${colours.CFIA_Background_White};
+    color: ${colours.CFIA_Font_white};
+    margin-top: 24px;
+    margin-bottom: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    width: 700px;
+    height: 400px;
+    z-index: 0;
+    max-width: 700px;
+    position: relative;
+    padding: 5px 5px 5px 5px;
+    border: 1px solid ${colours.CFIA_Font_black};
+    border-radius: 10px;
+
+    @media screen and (max-width: 720px) {
+        width: 90%;
+    }
+    `
 
 export const ButtonWrap = styled.div`
     display flex;
