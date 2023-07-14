@@ -1,4 +1,4 @@
-import { HomeContainer, CaptureContainer, VideoFeed, TitleHeader, Button, LeftContent, RightContent, CaptureImage, ControlContainer, ButtonWrap, BottomContent, HomeWrap } from './indexElements';
+import { HomeContainer, CaptureContainer, VideoFeed, TitleHeader, Button, LeftContent, RightContent, CaptureImage, ControlContainer, ButtonWrap, ResultContainer } from './indexElements';
 import Webcam from 'react-webcam';
 import  { useState, useRef, useCallback } from 'react';
 import { colours } from '../../styles/colours';
@@ -20,8 +20,7 @@ const Home = () => {
     }
 
     return (
-        <HomeWrap>
-            <HomeContainer>
+        <HomeContainer>
                 <LeftContent>
                     <CaptureContainer>
                         <TitleHeader>CAPTURE</TitleHeader>
@@ -36,6 +35,9 @@ const Home = () => {
                             <Button disabled={captureEmpty} color={colours.CFIA_Background_Blue} onClick={clear}>Clear Image</Button>
                         </ButtonWrap>
                     </ControlContainer>
+                    <ResultContainer>
+                        <TitleHeader>RESULTS</TitleHeader>
+                    </ResultContainer>
                 </LeftContent>
                 <RightContent>
                     <VideoFeed>
@@ -51,11 +53,7 @@ const Home = () => {
                         </ButtonWrap>
                     </ControlContainer>
                 </RightContent>
-            </HomeContainer>
-            <BottomContent>
-                <TitleHeader>RESULTS</TitleHeader>
-            </BottomContent>
-        </HomeWrap>
+        </HomeContainer>
 
          
     );
