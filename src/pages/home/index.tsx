@@ -19,6 +19,10 @@ const Home = () => {
         setCaptureEmpty(true);
     }
 
+    const saveImage = () => {
+        console.log("save")
+    }
+
     return (
         <HomeContainer>
                 <LeftContent>
@@ -31,7 +35,7 @@ const Home = () => {
                         <ButtonWrap>
                             <Button disabled={captureEmpty} color={colours.CFIA_Background_Blue}>Run Inference</Button>
                             <Button disabled={captureEmpty} color={colours.CFIA_Background_Blue}>Annotate Image</Button>
-                            <Button disabled={captureEmpty} color={colours.CFIA_Background_Blue}>Save Image</Button>
+                            <Button disabled={captureEmpty} color={colours.CFIA_Background_Blue} onClick={saveImage}>Save Image</Button>
                             <Button disabled={captureEmpty} color={colours.CFIA_Background_Blue} onClick={clear}>Clear Image</Button>
                         </ButtonWrap>
                     </ControlContainer>
