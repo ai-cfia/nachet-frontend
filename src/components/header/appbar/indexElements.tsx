@@ -25,7 +25,7 @@ export const AppbarContainer = styled.div`
     z-index: 3;
     width: 100%;
     padding: 0 24px;
-    max-width: 1400px;
+    max-width: 1500px;
 `
 
 export const AppbarHeader = styled.h2`

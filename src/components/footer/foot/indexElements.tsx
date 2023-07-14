@@ -11,14 +11,14 @@ export const FooterWrap = styled.div`
     flex-direction: row;
     justify-content: space-between;
     align-items: space-between;
-    max-width: 1400px;
+    max-width: 1500px;
     margin: auto;
     position: relative;
     z-index: 0;
 `
 
 export const InfoSection = styled.section`
-    max-width: 1400px;
+    max-width: 1500px;
     width: 100%;
     justfiy-content: space-between;
     z-index: 0;
@@ -29,7 +29,7 @@ export const InfoWrap = styled.div`
     flex-direction: row;
     justfiy-content: space-between;
     align-items: center;
-    max-width: 1400px;
+    max-width: 1500px;
     margin: auto;
     z-index: 0;
 

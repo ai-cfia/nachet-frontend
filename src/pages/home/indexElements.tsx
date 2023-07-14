@@ -9,7 +9,7 @@ export const HomeContainer = styled.div`
     justify-content: space-evenly;
     align-items: start;
     height: 1000px;
-    max-width: 1400px;
+    max-width: 1500px;
     position: relative;
     padding: 24px 24px 24px 24px;
     z-index: 0;
@@ -41,7 +41,7 @@ export const LeftContent = styled.div`
 export const RightContent = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: start;
     justify-content: start;
     width: fit-content;
     height: 900px;
@@ -83,11 +83,11 @@ export const CaptureContainer = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: start;
-    width: 600px;
+    width: 700px;
     height: fit-content;
     z-index: 0;
-    max-width: 600px;
-    max-height: 700px;
+    max-width: 700px;
+    max-height: 900px;
     position: relative;
     padding: 5px 5px 5px 5px;
     border: 1px solid ${colours.CFIA_Font_black};
@@ -102,7 +102,7 @@ export const CaptureContainer = styled.div`
 `
 
 export const CaptureImage = styled.img`
-    width: 600px;
+    width: 700px;
     height: fit-content;
     z-index: 0;
 `
@@ -112,8 +112,8 @@ export const TitleHeader = styled.h2`
     padding: 1px;
     color: ${colours.CFIA_Font_black};
     margin-right: auto;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin-bottom: 5px;
+    margin-top: 5px;
 
 `
 
@@ -125,10 +125,10 @@ export const ControlContainer = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: start;
-    width: 600px;
+    width: 700px;
     height: fit-content;
     z-index: 0;
-    max-width: 600px;
+    max-width: 700px;
     max-height: fit-content;
     position: relative;
     padding: 5px 5px 5px 5px;
@@ -149,11 +149,12 @@ export const ButtonWrap = styled.div`
     justify-content: space-evenly;
     align-items: center;
     margin-top: 5px;
+    margin-bottom: 20px;
 `
 
 
 export const Button = styled.button`
-    background: ${props => props.color ? props.color : colours.sucess};
+    background: ${props => !props.disabled ? colours.CFIA_Background_Blue : colours.disabled};
     color: ${colours.CFIA_Font_white};
     pointer-events: ${props => props.disabled ? 'none' : 'auto'};
     font-size: 1rem;
