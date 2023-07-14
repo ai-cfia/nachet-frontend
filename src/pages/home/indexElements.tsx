@@ -1,6 +1,20 @@
 import styled from 'styled-components';
 import { colours } from '../../styles/colours';
 
+export const HomeWrap = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    height: 1500px;
+    max-width: 1500px;
+    position: relative;
+    z-index: 0;
+    margin: auto;
+    position: relative;
+
+`
+
 export const HomeContainer = styled.div`
     background: ${colours.CFIA_Background_White};
     color: ${colours.CFIA_Font_black};
@@ -8,13 +22,13 @@ export const HomeContainer = styled.div`
     flex-direction: row;
     justify-content: space-evenly;
     align-items: start;
-    height: 1000px;
-    max-width: 1500px;
+    height: fit-content;
+    max-width: fit-content;
     position: relative;
-    padding: 24px 24px 24px 24px;
+    padding: 24px 24px 5px 24px;
     z-index: 0;
     margin: auto;
-    margin-bottom: 24px;
+    margin-bottom: 5px;
     margin-top: 24px;
     position: relative;
 
@@ -30,11 +44,11 @@ export const LeftContent = styled.div`
     align-items: start;
     justify-content: start;
     width: fit-content;
-    height: 900px;
+    height: fit-content;
     padding: 5px 5px 5px 5px;
     z-index: 0;
     max-width: 100%;
-    max-height: 900px;
+    max-height: fit-content;
     position: relative;
 `
 
@@ -44,12 +58,32 @@ export const RightContent = styled.div`
     align-items: start;
     justify-content: start;
     width: fit-content;
-    height: 900px;
+    height: fit-content;
     padding: 5px 5px 5px 5px;
     z-index: 0;
     max-width: 100%;
-    max-height: 900px;
+    max-height: fit-content;
     position: relative;
+`
+
+export const BottomContent = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: center;
+    width: 1500px;
+    height: 400px;
+    margin: auto;
+    margin-top: 5px;
+    margin-bottom: 0px;
+    padding: 5px 5px 5px 5px;
+    z-index: 0;
+    max-width: 1425px;
+    max-height: 100%;
+    position: relative;
+    border: 1px solid ${colours.CFIA_Font_black};
+    border-radius: 10px;
+
 `
 
 export const VideoFeed = styled.div`
@@ -103,7 +137,7 @@ export const CaptureContainer = styled.div`
 
 export const CaptureImage = styled.img`
     width: 700px;
-    height: fit-content;
+    height: 700px;
     z-index: 0;
 `
 
