@@ -1,35 +1,20 @@
 import styled from 'styled-components';
 import { colours } from '../../styles/colours';
 
-export const HomeWrap = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: start;
-    height: 1500px;
-    max-width: 1500px;
-    position: relative;
-    z-index: 0;
-    margin: auto;
-    position: relative;
-
-`
-
 export const HomeContainer = styled.div`
     background: ${colours.CFIA_Background_White};
     color: ${colours.CFIA_Font_black};
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
     align-items: start;
     height: fit-content;
     max-width: fit-content;
     position: relative;
-    padding: 24px 24px 5px 24px;
+    padding: 24px 24px 24px 24px;
     z-index: 0;
     margin: auto;
-    margin-bottom: 5px;
     margin-top: 24px;
+    margin-bottom: 24px;
     position: relative;
 
     @media screen and (max-width: 720px) {
@@ -45,7 +30,7 @@ export const LeftContent = styled.div`
     justify-content: start;
     width: fit-content;
     height: fit-content;
-    padding: 5px 5px 5px 5px;
+    padding: 0px 5px 0px 0px;
     z-index: 0;
     max-width: 100%;
     max-height: fit-content;
@@ -59,31 +44,11 @@ export const RightContent = styled.div`
     justify-content: start;
     width: fit-content;
     height: fit-content;
-    padding: 5px 5px 5px 5px;
+    padding: 0px 0px 0px 5px;
     z-index: 0;
     max-width: 100%;
     max-height: fit-content;
     position: relative;
-`
-
-export const BottomContent = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: start;
-    justify-content: center;
-    width: 1500px;
-    height: 400px;
-    margin: auto;
-    margin-top: 5px;
-    margin-bottom: 0px;
-    padding: 5px 5px 5px 5px;
-    z-index: 0;
-    max-width: 1425px;
-    max-height: 100%;
-    position: relative;
-    border: 1px solid ${colours.CFIA_Font_black};
-    border-radius: 10px;
-
 `
 
 export const VideoFeed = styled.div`
@@ -105,6 +70,16 @@ export const VideoFeed = styled.div`
     @media screen and (max-width: 720px) {
         width: 90%;
     }
+`
+
+export const CanvasFeed = styled.canvas`
+    width: 700px;
+    height: 700px;
+    margin: 0;
+    padding: 0;
+    //////////
+    width: 0%;
+    height: 0%;
 `
 
 export const CaptureContainer = styled.div`
@@ -149,7 +124,7 @@ export const TitleHeader = styled.h2`
 export const ControlContainer = styled.div`
     background: ${colours.CFIA_Background_White};
     color: ${colours.CFIA_Font_white};
-    margin-top: 24px;
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -171,9 +146,8 @@ export const ControlContainer = styled.div`
 export const ResultContainer = styled.div`
     background: ${colours.CFIA_Background_White};
     color: ${colours.CFIA_Font_white};
-    margin-top: 24px;
-    margin-bottom: 200px;
     display: flex;
+    margin-top: 10px;
     flex-direction: column;
     align-items: center;
     justify-content: start;
