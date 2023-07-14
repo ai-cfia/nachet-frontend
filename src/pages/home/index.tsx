@@ -28,25 +28,28 @@ const Home = () => {
                     <CaptureImage src={imageSrc} alt="placeholder" />
                 </CaptureContainer>
                 <ControlContainer>
-                    <TitleHeader>CAPTURE CONTROL</TitleHeader>
-                    <ButtonWrap>
-                        <Button disabled={false} color={colours.sucess} onClick={capture}>Capture Image</Button>
-                        <Button disabled={captureEmpty} color={colours.error} onClick={clear}>Clear Capture</Button>
-                    </ButtonWrap>
-                </ControlContainer>
-                <ControlContainer>
                     <TitleHeader>TOOLS</TitleHeader>   
                     <ButtonWrap>
-                        <Button disabled={captureEmpty} color={colours.CFIA_Background_Blue}>Annotate Image</Button>
                         <Button disabled={captureEmpty} color={colours.CFIA_Background_Blue}>Run Inference</Button>
+                        <Button disabled={captureEmpty} color={colours.CFIA_Background_Blue}>Annotate Image</Button>
+                        <Button disabled={captureEmpty} color={colours.CFIA_Background_Blue}>Save Image</Button>
+                        <Button disabled={captureEmpty} color={colours.CFIA_Background_Blue} onClick={clear}>Clear Image</Button>
                     </ButtonWrap>
                 </ControlContainer>
             </LeftContent>
             <RightContent>
                 <VideoFeed>
                     <TitleHeader>MICROSCOPE FEED</TitleHeader>
-                    <Webcam ref={webcamRef} videoConstraints={{ width: 700, height: 700, facingMode: 'environment' }} screenshotFormat='image/png' />
+                    <Webcam ref={webcamRef} mirrored={false} videoConstraints={{ width: 700, height: 700, facingMode: 'environment' }} screenshotFormat='image/png' />
                 </VideoFeed>
+                <ControlContainer>
+                    <TitleHeader>CAPTURE CONTROL</TitleHeader>
+                    <ButtonWrap>
+                        <Button disabled={false} color={colours.CFIA_Background_Blue} onClick={capture}>Capture Image</Button>
+                        <Button disabled={false} color={colours.CFIA_Background_Blue}>Live Inference</Button>
+                        <Button disabled={false} color={colours.CFIA_Background_Blue}>Switch Feed</Button>
+                    </ButtonWrap>
+                </ControlContainer>
             </RightContent>
          </HomeContainer>
     );

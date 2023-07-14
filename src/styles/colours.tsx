@@ -10,4 +10,5 @@ export const colours = {
     warning: '#ffc107',
     info: '#17a2b8',
     primary: '#007bff',
+    disabled: '#AAAFB4',
   };
