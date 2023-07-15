@@ -3,6 +3,8 @@ import { colours } from '../../../styles/colours';
 
 export const FooterContainer = styled.footer`
     background-color: ${colours.CFIA_Background_White};
+    width: 100%;
+    height: 80px;
 `
 
 export const FooterWrap = styled.div`
