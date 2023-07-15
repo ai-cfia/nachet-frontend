@@ -18,8 +18,8 @@ const FeedCapture: React.FC<params> = (props) => {
             <TitleHeader>FEED CAPTURE</TitleHeader>
             <CaptureImage src={props.imageSrc} alt="placeholder" />
             <Select value={props.imageFormat} onChange={handleFormat}>
-                <Option value="image/png">Format: PNG</Option>
-                <Option value="image/jpeg">Format: JPEG</Option>
+                <Option value="image/png">Image Format: PNG</Option>
+                <Option value="image/jpeg">Image Format: JPEG</Option>
             </Select>
         </CaptureContainer>
     );
