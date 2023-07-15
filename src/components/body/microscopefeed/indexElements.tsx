@@ -11,8 +11,8 @@ export const VideoFeed = styled.div`
     width: fit-content;
     padding: 5px 5px 5px 5px;
     z-index: 0;
-    max-width: 100%;
-    max-height: 900px;
+    width: 700px;
+    max-height: 750px;
     position: relative;
     border: 1px solid ${colours.CFIA_Font_black};
     border-radius: 10px;
