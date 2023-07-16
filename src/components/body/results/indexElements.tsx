@@ -10,7 +10,7 @@ export const ResultContainer = styled.div`
     align-items: center;
     justify-content: start;
     width: 700px;
-    height: 400px;
+    height: 208px;
     z-index: 0;
     max-width: 700px;
     position: relative;
