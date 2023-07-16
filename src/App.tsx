@@ -3,7 +3,7 @@ import './App.css';
 import {Fragment} from 'react';
 import Navbar from './components/header/navbar';
 import Home from './pages/home';
-import Footer from './components/footer/foot';
+import Footer from './components/footer';
 import Appbar from './components/header/appbar';
 
 function App() {
