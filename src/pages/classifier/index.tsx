@@ -36,7 +36,7 @@ const Classifier: React.FC<params> = (props) => {
     }
 
     const saveImage = () => {
-        saveAs(props.imageSrc, `${props.imageLabel} - ${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDay()}.${props.imageFormat.split('/')[1]}`);
+        saveAs(props.imageSrc, `${props.imageLabel} - ${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}.${props.imageFormat.split('/')[1]}`);
     }
 
     
