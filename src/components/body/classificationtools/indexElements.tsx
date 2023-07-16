@@ -46,7 +46,7 @@ export const Button = styled.button`
     background: ${props => !props.disabled ? colours.CFIA_Background_Blue : colours.disabled};
     color: ${colours.CFIA_Font_white};
     pointer-events: ${props => props.disabled ? 'none' : 'auto'};
-    font-size: 1rem;
+    font-size: 0.9rem;
     margin-left: 15px;
     margin-right: 15px;
     border-radius: 10px;

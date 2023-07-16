@@ -18,11 +18,12 @@ type params = {
     setImageFormat: React.Dispatch<React.SetStateAction<string>>;
     imageLabel: string;
     setImageLabel: React.Dispatch<React.SetStateAction<string>>;
+    setAnnotationEmpty: React.Dispatch<React.SetStateAction<boolean>>;
+    annotationEmpty: boolean;
 }
 
 const Classifier: React.FC<params> = (props) => {
 
-        
     const capture = useCallback(() => {
         const src = props.webcamRef.current!.getScreenshot();
         props.setImageSrc(src!);
@@ -36,10 +37,9 @@ const Classifier: React.FC<params> = (props) => {
     }
 
     const saveImage = () => {
-        saveAs(props.imageSrc, `${props.imageLabel} - ${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}.${props.imageFormat.split('/')[1]}`);
+        saveAs(props.imageSrc, `${props.imageLabel}-${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}.${props.imageFormat.split('/')[1]}`);
     }
 
-    
 
     return (
         <HomeContainer>
@@ -50,7 +50,7 @@ const Classifier: React.FC<params> = (props) => {
                 <RightContent>
                     <MicroscopeFeed webcamRef={props.webcamRef} imageFormat={props.imageFormat}/>
                     <FeedControl captureEmpty={props.captureEmpty} setCaptureEmpty={props.setCaptureEmpty} imageSrc={props.imageSrc} setImageSrc={props.setImageSrc} webcamRef={props.webcamRef} capture={capture} clear={clear} />
-                    <ClassificationTools captureEmpty={props.captureEmpty} saveImage={saveImage}/>
+                    <ClassificationTools captureEmpty={props.captureEmpty} saveImage={saveImage} annotationEmpty={props.annotationEmpty}/>
                 </RightContent>
         </HomeContainer>
 

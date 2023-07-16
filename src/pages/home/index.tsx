@@ -9,11 +9,14 @@ const Home = () => {
     const [imageSrc, setImageSrc] = useState("https://roadmap-tech.com/wp-content/uploads/2019/04/placeholder-image.jpg");
     const [imageFormat, setImageFormat] = useState("image/png");
     const [imageLabel, setImageLabel] = useState<string>("");
+    const [annotationEmpty, setAnnotationEmpty] = useState(true);
     const webcamRef = useRef<Webcam>(null);
 
     return (
         <HomeContainer>
-            <Classifier captureEmpty={captureEmpty} setCaptureEmpty={setCaptureEmpty} imageSrc={imageSrc} setImageSrc={setImageSrc} webcamRef={webcamRef} imageFormat={imageFormat} setImageFormat={setImageFormat} imageLabel={imageLabel} setImageLabel={setImageLabel}/>
+            <Classifier captureEmpty={captureEmpty} setCaptureEmpty={setCaptureEmpty} imageSrc={imageSrc} setImageSrc={setImageSrc} 
+            webcamRef={webcamRef} imageFormat={imageFormat} setImageFormat={setImageFormat} 
+            imageLabel={imageLabel} setImageLabel={setImageLabel} annotationEmpty={annotationEmpty} setAnnotationEmpty={setAnnotationEmpty} />
         </HomeContainer>
     );
 }
