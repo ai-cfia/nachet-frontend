@@ -8,11 +8,9 @@ export const VideoFeed = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: fit-content;
     padding: 5px 5px 5px 5px;
     z-index: 0;
     width: 700px;
-    max-height: 750px;
     position: relative;
     border: 1px solid ${colours.CFIA_Font_black};
     border-radius: 10px;
@@ -32,15 +30,16 @@ export const TitleHeader = styled.h2`
 `
 
 export const Select = styled.select`
-    font-size: 1rem;
-    margin-right: auto;
+    font-size: 0.9rem;
     margin-top: 5px;
+    margin-right: auto;
     color: ${colours.CFIA_Font_black};
     border-radius: 5px;
+    height: 25px;
 
 `
 
 export const Option = styled.option`
     color: ${colours.CFIA_Font_black};
-    font-size: 1rem;
+    font-size: 0.9rem;
 `
