@@ -17,7 +17,7 @@ const FeedControl: React.FC<params> = (props) => {
 
     return (
         <ControlContainer>
-            <TitleHeader>FEED CONTROL</TitleHeader>
+            <TitleHeader>CAPTURE TOOL</TitleHeader>
             <ButtonWrap>
                 <Button disabled={false} color={colours.CFIA_Background_Blue} onClick={props.capture}>Capture Feed</Button>
                 <Button disabled={props.captureEmpty} color={colours.CFIA_Background_Blue} onClick={props.clear}>Clear Capture</Button>

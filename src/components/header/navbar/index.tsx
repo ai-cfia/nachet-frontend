@@ -1,4 +1,4 @@
-import { Nav, NavbarContainer, NavLogo, SmallNavLogo } from './indexElements';
+import { Nav, NavbarContainer, NavLogo } from './indexElements';
 import React, { useState, useEffect } from 'react';
 
 const Navbar = () => {
@@ -26,8 +26,7 @@ const Navbar = () => {
      return (
           <Nav>
                <NavbarContainer>
-                    {windowSize.innerWidth > 768 && <NavLogo src={require('../../../assets/CFIA_blackfont.png')} alt="CFIA Logo" />}
-                    {windowSize.innerWidth <= 768 && <SmallNavLogo src={require('../../../assets/CFIA_blackfont.png')} alt="CFIA Logo" />}
+                    <NavLogo src={require('../../../assets/CFIA_blackfont.png')} alt="CFIA Logo" />
                </NavbarContainer>
            </Nav>
    );

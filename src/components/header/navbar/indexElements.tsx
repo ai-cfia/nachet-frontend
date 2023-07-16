@@ -39,26 +39,7 @@ export const NavLogo = styled.img`
         height: fit-content;
     }
     @media screen and (max-width: 480px) {
-        width: 20px;
-        height: fit-content;
-    }
-
-`
-
-export const SmallNavLogo = styled.img`
-    width: 200px;
-    height: fit-content;
-    margin-left: 0;
-    margin-right: 0;
-    padding-top: 0;
-    margin-top: 0;
-    margin-bottom: 0;
-    @media screen and (max-width: 768px) {
-        width: 100px;
-        height: 90px;
-    }
-    @media screen and (max-width: 480px) {
-        width: 50px;
+        width: 200px;
         height: fit-content;
     }
 
