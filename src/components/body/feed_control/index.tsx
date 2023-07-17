@@ -13,11 +13,18 @@ type params = {
   capture: () => void;
   clear: () => void;
   setSaveOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  clearImageCache: () => void;
+  uploadOpen: boolean;
+  setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const FeedControl: React.FC<params> = (props) => {
-  const handleOpen = () => {
+  const handleSaveOpen = () => {
     props.setSaveOpen!(true);
+  };
+
+  const handleUploadOpen = () => {
+    props.setUploadOpen!(true);
   };
   return (
     <ControlContainer>
@@ -33,13 +40,13 @@ const FeedControl: React.FC<params> = (props) => {
         <Button
           disabled={false}
           color={colours.CFIA_Background_Blue}
-          onClick={props.capture}
+          onClick={handleUploadOpen}
         >
           Upload Image
         </Button>
         <Button
           disabled={props.captureEmpty}
-          onClick={handleOpen}
+          onClick={handleSaveOpen}
           color={colours.CFIA_Background_Blue}
         >
           Save Capture
@@ -54,7 +61,7 @@ const FeedControl: React.FC<params> = (props) => {
         <Button
           disabled={props.captureEmpty}
           color={colours.CFIA_Background_Blue}
-          onClick={props.clear}
+          onClick={props.clearImageCache}
         >
           Clear Cache
         </Button>

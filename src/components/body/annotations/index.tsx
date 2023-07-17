@@ -7,20 +7,23 @@ import {
 } from "./indexElements";
 
 type params = {
-  savedImages: any;
+  savedImages: Array<any>;
+  loadImage: (event: any) => void;
 };
 
 const Annotations: React.FC<params> = (props) => {
-  // update this to display the saved images
-  useEffect(() => {
-    console.log("saved images: ", props.savedImages);
-  }, [props.savedImages]);
   return (
     <ResultContainer>
       <TitleHeader>ANNOTATED IMAGES</TitleHeader>
       <InfoContainer>
-        {Object.keys(props.savedImages).map((key) => (
-          <ImageLabel>{key}</ImageLabel>
+        {props.savedImages.map((item: any) => (
+          <ImageLabel
+            key={item.src}
+            data-value={item.src}
+            onClick={props.loadImage}
+          >
+            {item.label}
+          </ImageLabel>
         ))}
       </InfoContainer>
     </ResultContainer>

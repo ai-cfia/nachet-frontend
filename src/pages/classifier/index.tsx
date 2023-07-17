@@ -34,7 +34,11 @@ type params = {
   capture: () => void;
   annotationOpen: boolean;
   setAnnotationOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  savedImages: any;
+  savedImages: Array<any>;
+  clearImageCache: () => void;
+  loadImage: (event: any) => void;
+  uploadOpen: boolean;
+  setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Classifier: React.FC<params> = (props) => {
@@ -46,6 +50,9 @@ const Classifier: React.FC<params> = (props) => {
           capture={props.capture}
           setSaveOpen={props.setSaveOpen}
           clear={props.clear}
+          clearImageCache={props.clearImageCache}
+          setUploadOpen={props.setUploadOpen}
+          uploadOpen={props.uploadOpen}
         />
         <ClassificationTools
           captureEmpty={props.captureEmpty}
@@ -73,7 +80,10 @@ const Classifier: React.FC<params> = (props) => {
       </RightContent>
       <InfoContent>
         <Results />
-        <Annotations savedImages={props.savedImages} />
+        <Annotations
+          savedImages={props.savedImages}
+          loadImage={props.loadImage}
+        />
       </InfoContent>
     </HomeContainer>
   );

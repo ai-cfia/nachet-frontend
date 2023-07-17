@@ -3,35 +3,71 @@ import Classifier from "../classifier";
 import { useState, useRef, useCallback } from "react";
 import Webcam from "react-webcam";
 import SavePopup from "../../components/body/save_popup";
+import UploadPopup from "../../components/body/upload_image";
 import { saveAs } from "file-saver";
 import ImageAnnotation from "../../components/body/image_annotation";
 
+type savedImageItem = {
+  label: string;
+  src: string | null;
+};
+
 const Home = () => {
-  const [captureEmpty, setCaptureEmpty] = useState(true);
-  const [imageSrc, setImageSrc] = useState(
+  const [captureEmpty, setCaptureEmpty] = useState<boolean>(true);
+  const [imageSrc, setImageSrc] = useState<string>(
     "https://roadmap-tech.com/wp-content/uploads/2019/04/placeholder-image.jpg"
   );
-  const [imageFormat, setImageFormat] = useState("image/png");
+  const [imageFormat, setImageFormat] = useState<string>("image/png");
   const [imageLabel, setImageLabel] = useState<string>("");
-  const [annotationEmpty, setAnnotationEmpty] = useState(true);
+  const [annotationEmpty, setAnnotationEmpty] = useState<boolean>(true);
   const [saveOpen, setSaveOpen] = useState(false);
-  const [annotationOpen, setAnnotationOpen] = useState(false);
-  // create use state to store all saved images with their labels
-  const [savedImages, setSavedImages] = useState({});
-  const [generatedLabels, setGeneratedLabels] = useState(0);
-
+  const [uploadOpen, setUploadOpen] = useState(false);
+  const [annotationOpen, setAnnotationOpen] = useState<boolean>(false);
+  //const [imageCount, setImageCount] = useState<number>(0);
+  const [savedImages, setSavedImages] = useState<savedImageItem[]>([]);
   const webcamRef = useRef<Webcam>(null);
+
+  let imageCount = 0;
 
   const capture = useCallback(() => {
     const src = webcamRef.current!.getScreenshot();
     setImageSrc(src!);
     setCaptureEmpty(false);
-    setSavedImages((prevDictionary) => ({
-      ...prevDictionary,
-      [`Capture: ${generatedLabels}`]: src,
-    }));
-    setGeneratedLabels(generatedLabels + 1);
+    imageCount++;
+    setSavedImages((prevImages) => [
+      ...prevImages,
+      {
+        label: `Capture: ${imageCount}`,
+        src: src,
+      },
+    ]);
   }, [webcamRef]);
+
+  const uploadImage = (event: any) => {
+    event.preventDefault();
+    const src = URL.createObjectURL(event.target.files[0]);
+    setImageSrc(src);
+  };
+
+  const submitImage = () => {
+    setCaptureEmpty(false);
+    imageCount++;
+    setSavedImages((prevImages) => [
+      ...prevImages,
+      {
+        label: `Capture: ${imageCount}`,
+        src: imageSrc,
+      },
+    ]);
+    setUploadOpen(false);
+  };
+
+  const loadImage = (event: any) => {
+    event.preventDefault();
+    const src = event.target.getAttribute("data-value");
+    setImageSrc(src);
+    setCaptureEmpty(false);
+  };
 
   const clear = () => {
     setImageSrc(
@@ -39,6 +75,11 @@ const Home = () => {
     );
     setCaptureEmpty(true);
     setImageLabel("");
+  };
+
+  const clearImageCache = () => {
+    setSavedImages([]);
+    imageCount = 1;
   };
 
   const saveImage = () => {
@@ -74,6 +115,16 @@ const Home = () => {
           handleLabel={handleLabel}
         />
       )}
+      {uploadOpen === true && (
+        <UploadPopup
+          setImageSrc={setImageSrc}
+          capture={capture}
+          uploadOpen={uploadOpen}
+          setUploadOpen={setUploadOpen}
+          uploadImage={uploadImage}
+          submitImage={submitImage}
+        />
+      )}
       {annotationOpen === true && (
         <ImageAnnotation
           imageSrc={imageSrc}
@@ -83,6 +134,8 @@ const Home = () => {
       )}
       <Classifier
         captureEmpty={captureEmpty}
+        uploadOpen={uploadOpen}
+        setUploadOpen={setUploadOpen}
         setCaptureEmpty={setCaptureEmpty}
         imageSrc={imageSrc}
         setImageSrc={setImageSrc}
@@ -101,6 +154,8 @@ const Home = () => {
         annotationOpen={annotationOpen}
         setAnnotationOpen={setAnnotationOpen}
         savedImages={savedImages}
+        clearImageCache={clearImageCache}
+        loadImage={loadImage}
       />
     </HomeContainer>
   );
