@@ -23,6 +23,18 @@ export const HomeContainer = styled.div`
   }
 `;
 
+export const InfoContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  width: fit-content;
+  height: fit-content;
+  padding: 0px 0px 0px 10px;
+  z-index: 0;
+  position: relative;
+`;
+
 export const ControlContent = styled.div`
   display: flex;
   flex-direction: column;

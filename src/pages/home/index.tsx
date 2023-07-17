@@ -16,12 +16,16 @@ const Home = () => {
   const [annotationEmpty, setAnnotationEmpty] = useState(true);
   const [saveOpen, setSaveOpen] = useState(false);
   const [annotationOpen, setAnnotationOpen] = useState(false);
+  // create use state to store all saved images with their labels
+  const [savedImages, setSavedImages] = useState({});
+
   const webcamRef = useRef<Webcam>(null);
 
   const capture = useCallback(() => {
     const src = webcamRef.current!.getScreenshot();
     setImageSrc(src!);
     setCaptureEmpty(false);
+    setSavedImages({ ...savedImages, [imageLabel]: src });
   }, [webcamRef]);
 
   const clear = () => {

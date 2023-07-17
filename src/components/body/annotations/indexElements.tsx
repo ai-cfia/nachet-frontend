@@ -5,14 +5,13 @@ export const ResultContainer = styled.div`
   background: ${colours.CFIA_Background_White};
   color: ${colours.CFIA_Font_white};
   display: flex;
-  margin-top: 10px;
   flex-direction: column;
   align-items: center;
   justify-content: start;
-  width: 290px;
-  height: 208px;
+  width: 190px;
+  height: 305px;
   z-index: 0;
-  max-width: 700px;
+  margin-top: 10px;
   position: relative;
   padding: 5px 5px 5px 5px;
   border: 1px solid ${colours.CFIA_Font_black};
@@ -20,10 +19,10 @@ export const ResultContainer = styled.div`
 `;
 
 export const TitleHeader = styled.h2`
-  font-size: 1rem;
+  font-size: 0.95rem;
   padding: 1px;
   color: ${colours.CFIA_Font_black};
-  margin-right: auto;
+  margin: auto;
   margin-bottom: 5px;
   margin-top: 5px;
 `;

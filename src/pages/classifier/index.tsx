@@ -4,6 +4,7 @@ import {
   RightContent,
   BottomContent,
   ControlContent,
+  InfoContent,
 } from "./indexElements";
 import Webcam from "react-webcam";
 import React from "react";
@@ -11,7 +12,7 @@ import FeedCapture from "../../components/body/feed_capture";
 import MicroscopeFeed from "../../components/body/microscope_feed";
 import FeedControl from "../../components/body/feed_control";
 import ClassificationTools from "../../components/body/classification_tools";
-import Results from "../../components/body/results";
+import Results from "../../components/body/prediction";
 import Annotations from "../../components/body/annotations";
 
 type params = {
@@ -67,11 +68,12 @@ const Classifier: React.FC<params> = (props) => {
           setImageLabel={props.setImageLabel}
           captureEmpty={props.captureEmpty}
         />
-        <BottomContent>
-          <Results />
-          <Annotations />
-        </BottomContent>
+        <BottomContent></BottomContent>
       </RightContent>
+      <InfoContent>
+        <Results />
+        <Annotations />
+      </InfoContent>
     </HomeContainer>
   );
 };

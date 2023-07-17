@@ -11,7 +11,6 @@ export const ControlContainer = styled.div`
   width: 190px;
   height: fit-content;
   z-index: 0;
-  max-height: 700px;
   margin-top: 10px;
   position: relative;
   padding: 5px 5px 5px 5px;
