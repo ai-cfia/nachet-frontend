@@ -10,17 +10,11 @@ import SavePopup from "../save_popup";
 type params = {
   captureEmpty: boolean;
   annotationEmpty: boolean;
-  saveOpen: boolean;
-  setSaveOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setAnnotationOpen: React.Dispatch<React.SetStateAction<boolean>>;
   annotationOpen: boolean;
 };
 
 const ClassificationTools: React.FC<params> = (props) => {
-  const handleOpen = () => {
-    props.setSaveOpen!(true);
-  };
-
   const handleAnnotationOpen = () => {
     props.setAnnotationOpen!(true);
   };
@@ -33,7 +27,7 @@ const ClassificationTools: React.FC<params> = (props) => {
           disabled={props.captureEmpty}
           color={colours.CFIA_Background_Blue}
         >
-          Run Classification
+          Classify Capture
         </Button>
         <Button
           disabled={props.captureEmpty}
@@ -47,13 +41,6 @@ const ClassificationTools: React.FC<params> = (props) => {
           color={colours.CFIA_Background_Blue}
         >
           Save Annotations
-        </Button>
-        <Button
-          disabled={props.captureEmpty}
-          onClick={handleOpen}
-          color={colours.CFIA_Background_Blue}
-        >
-          Save Capture
         </Button>
       </ButtonWrap>
     </ControlContainer>

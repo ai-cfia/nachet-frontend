@@ -3,6 +3,7 @@ import {
   LeftContent,
   RightContent,
   BottomContent,
+  ControlContent,
 } from "./indexElements";
 import Webcam from "react-webcam";
 import React from "react";
@@ -37,7 +38,27 @@ type params = {
 const Classifier: React.FC<params> = (props) => {
   return (
     <HomeContainer>
+      <ControlContent>
+        <FeedControl
+          captureEmpty={props.captureEmpty}
+          capture={props.capture}
+          setSaveOpen={props.setSaveOpen}
+          clear={props.clear}
+        />
+        <ClassificationTools
+          captureEmpty={props.captureEmpty}
+          annotationEmpty={props.annotationEmpty}
+          setAnnotationOpen={props.setAnnotationOpen}
+          annotationOpen={props.annotationOpen}
+        />
+      </ControlContent>
       <LeftContent>
+        <MicroscopeFeed
+          webcamRef={props.webcamRef}
+          imageFormat={props.imageFormat}
+        />
+      </LeftContent>
+      <RightContent>
         <FeedCapture
           imageSrc={props.imageSrc}
           imageFormat={props.imageFormat}
@@ -50,25 +71,6 @@ const Classifier: React.FC<params> = (props) => {
           <Results />
           <Annotations />
         </BottomContent>
-      </LeftContent>
-      <RightContent>
-        <MicroscopeFeed
-          webcamRef={props.webcamRef}
-          imageFormat={props.imageFormat}
-        />
-        <FeedControl
-          captureEmpty={props.captureEmpty}
-          capture={props.capture}
-          clear={props.clear}
-        />
-        <ClassificationTools
-          captureEmpty={props.captureEmpty}
-          annotationEmpty={props.annotationEmpty}
-          saveOpen={props.saveOpen}
-          setSaveOpen={props.setSaveOpen}
-          setAnnotationOpen={props.setAnnotationOpen}
-          annotationOpen={props.annotationOpen}
-        />
       </RightContent>
     </HomeContainer>
   );

@@ -12,12 +12,16 @@ type params = {
   captureEmpty: boolean;
   capture: () => void;
   clear: () => void;
+  setSaveOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const FeedControl: React.FC<params> = (props) => {
+  const handleOpen = () => {
+    props.setSaveOpen!(true);
+  };
   return (
     <ControlContainer>
-      <TitleHeader>CAPTURE TOOL</TitleHeader>
+      <TitleHeader>CAPTURE TOOLS</TitleHeader>
       <ButtonWrap>
         <Button
           disabled={false}
@@ -25,6 +29,13 @@ const FeedControl: React.FC<params> = (props) => {
           onClick={props.capture}
         >
           Capture Feed
+        </Button>
+        <Button
+          disabled={props.captureEmpty}
+          onClick={handleOpen}
+          color={colours.CFIA_Background_Blue}
+        >
+          Save Capture
         </Button>
         <Button
           disabled={props.captureEmpty}

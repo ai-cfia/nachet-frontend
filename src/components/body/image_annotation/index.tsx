@@ -10,7 +10,6 @@ import {
   ModalRow,
   ButtonWrap,
   Button,
-  InfoContainer,
 } from "./indexElements";
 
 type params = {
@@ -19,7 +18,7 @@ type params = {
   setAnnotationOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const ImageAnnotation: React.FC<params> = (props) => {
+const ImageAnnotataor: React.FC<params> = (props) => {
   const onSelect = (selectedId: any) => console.log(selectedId);
   const onChange = (data: any) => console.log(data);
 
@@ -57,4 +56,4 @@ const ImageAnnotation: React.FC<params> = (props) => {
   );
 };
 
-export default ImageAnnotation;
+export default ImageAnnotataor;

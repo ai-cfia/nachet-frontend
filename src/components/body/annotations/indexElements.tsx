@@ -9,7 +9,7 @@ export const ResultContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: start;
-  width: 340px;
+  width: 290px;
   height: 208px;
   z-index: 0;
   max-width: 700px;
@@ -17,10 +17,6 @@ export const ResultContainer = styled.div`
   padding: 5px 5px 5px 5px;
   border: 1px solid ${colours.CFIA_Font_black};
   border-radius: 10px;
-
-  @media screen and (max-width: 720px) {
-    width: 90%;
-  }
 `;
 
 export const TitleHeader = styled.h2`

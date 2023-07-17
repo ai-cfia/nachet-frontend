@@ -9,7 +9,7 @@ export const ResultContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: start;
-  width: 340px;
+  width: 290px;
   height: 208px;
   z-index: 0;
   max-width: 700px;

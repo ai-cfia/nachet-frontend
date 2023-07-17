@@ -8,11 +8,9 @@ export const CaptureContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: start;
-  width: 700px;
+  width: 600px;
   height: fit-content;
   z-index: 0;
-  max-width: 700px;
-  max-height: 900px;
   position: relative;
   padding: 5px 5px 5px 5px;
   border: 1px solid ${colours.CFIA_Font_black};
@@ -24,8 +22,8 @@ export const CaptureContainer = styled.div`
 `;
 
 export const CaptureImage = styled.img`
-  width: 700px;
-  height: 700px;
+  width: 600px;
+  height: 600px;
   z-index: 0;
 `;
 

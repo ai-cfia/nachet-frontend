@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { colours } from "../../../styles/colours";
 import { FaTimes } from "react-icons/fa";
+import { ReactPictureAnnotation } from "react-picture-annotation";
 
 export const Overlay = styled.div<{ isOpen: any }>`
   position: fixed;
@@ -10,9 +11,6 @@ export const Overlay = styled.div<{ isOpen: any }>`
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 20;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   transition: visibility 0.5s, opacity 0.5s;
 `;
 

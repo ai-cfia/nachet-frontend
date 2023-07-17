@@ -23,6 +23,18 @@ export const HomeContainer = styled.div`
   }
 `;
 
+export const ControlContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  width: fit-content;
+  height: fit-content;
+  padding: 0px 10px 0px 0px;
+  z-index: 0;
+  position: relative;
+`;
+
 export const LeftContent = styled.div`
   display: flex;
   flex-direction: column;
@@ -32,8 +44,6 @@ export const LeftContent = styled.div`
   height: fit-content;
   padding: 0px 5px 0px 0px;
   z-index: 0;
-  max-width: 100%;
-  max-height: fit-content;
   position: relative;
 `;
 
@@ -46,8 +56,6 @@ export const RightContent = styled.div`
   height: fit-content;
   padding: 0px 0px 0px 5px;
   z-index: 0;
-  max-width: 100%;
-  max-height: fit-content;
   position: relative;
 `;
 
