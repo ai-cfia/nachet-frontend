@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   ResultContainer,
   TitleHeader,
@@ -11,12 +11,16 @@ type params = {
 };
 
 const Annotations: React.FC<params> = (props) => {
+  // update this to display the saved images
+  useEffect(() => {
+    console.log("saved images: ", props.savedImages);
+  }, [props.savedImages]);
   return (
     <ResultContainer>
       <TitleHeader>ANNOTATED IMAGES</TitleHeader>
       <InfoContainer>
         {Object.keys(props.savedImages).map((key) => (
-          <a key={key}>{key}</a>
+          <ImageLabel>{key}</ImageLabel>
         ))}
       </InfoContainer>
     </ResultContainer>

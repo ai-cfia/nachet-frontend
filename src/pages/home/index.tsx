@@ -26,7 +26,10 @@ const Home = () => {
     const src = webcamRef.current!.getScreenshot();
     setImageSrc(src!);
     setCaptureEmpty(false);
-    setSavedImages({ ...savedImages, [`Capture: ${generatedLabels}`]: src });
+    setSavedImages((prevDictionary) => ({
+      ...prevDictionary,
+      [`Capture: ${generatedLabels}`]: src,
+    }));
     setGeneratedLabels(generatedLabels + 1);
   }, [webcamRef]);
 

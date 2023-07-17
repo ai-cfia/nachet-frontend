@@ -38,7 +38,8 @@ export const TitleHeader = styled.h2`
 `;
 
 export const ImageLabel = styled.a`
-  font-size: 0.8rem;
+  font-size: 0.95rem;
+  cursor: pointer;
   padding: 1px;
   color: ${colours.CFIA_Font_black};
   margin: auto;
