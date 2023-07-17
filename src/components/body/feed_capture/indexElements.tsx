@@ -1,27 +1,32 @@
 import styled from "styled-components";
 import { colours } from "../../../styles/colours";
 
-export const ResultContainer = styled.div`
+export const CaptureContainer = styled.div`
   background: ${colours.CFIA_Background_White};
   color: ${colours.CFIA_Font_white};
   display: flex;
-  margin-top: 10px;
   flex-direction: column;
   align-items: center;
   justify-content: start;
-  width: 340px;
-  height: 208px;
+  width: 700px;
+  height: fit-content;
   z-index: 0;
   max-width: 700px;
+  max-height: 900px;
   position: relative;
   padding: 5px 5px 5px 5px;
-  margin-right: 10px;
   border: 1px solid ${colours.CFIA_Font_black};
   border-radius: 10px;
 
   @media screen and (max-width: 720px) {
     width: 90%;
   }
+`;
+
+export const CaptureImage = styled.img`
+  width: 700px;
+  height: 700px;
+  z-index: 0;
 `;
 
 export const TitleHeader = styled.h2`

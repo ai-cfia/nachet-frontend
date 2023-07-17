@@ -15,7 +15,6 @@ export const ResultContainer = styled.div`
   max-width: 700px;
   position: relative;
   padding: 5px 5px 5px 5px;
-  margin-right: 10px;
   border: 1px solid ${colours.CFIA_Font_black};
   border-radius: 10px;
 
