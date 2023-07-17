@@ -31,6 +31,13 @@ const FeedControl: React.FC<params> = (props) => {
           Capture Feed
         </Button>
         <Button
+          disabled={false}
+          color={colours.CFIA_Background_Blue}
+          onClick={props.capture}
+        >
+          Upload Image
+        </Button>
+        <Button
           disabled={props.captureEmpty}
           onClick={handleOpen}
           color={colours.CFIA_Background_Blue}
@@ -43,6 +50,13 @@ const FeedControl: React.FC<params> = (props) => {
           onClick={props.clear}
         >
           Clear Capture
+        </Button>
+        <Button
+          disabled={props.captureEmpty}
+          color={colours.CFIA_Background_Blue}
+          onClick={props.clear}
+        >
+          Clear Cache
         </Button>
       </ButtonWrap>
     </ControlContainer>

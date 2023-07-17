@@ -18,6 +18,7 @@ const Home = () => {
   const [annotationOpen, setAnnotationOpen] = useState(false);
   // create use state to store all saved images with their labels
   const [savedImages, setSavedImages] = useState({});
+  const [generatedLabels, setGeneratedLabels] = useState(0);
 
   const webcamRef = useRef<Webcam>(null);
 
@@ -25,7 +26,8 @@ const Home = () => {
     const src = webcamRef.current!.getScreenshot();
     setImageSrc(src!);
     setCaptureEmpty(false);
-    setSavedImages({ ...savedImages, [imageLabel]: src });
+    setSavedImages({ ...savedImages, [`Capture: ${generatedLabels}`]: src });
+    setGeneratedLabels(generatedLabels + 1);
   }, [webcamRef]);
 
   const clear = () => {
@@ -95,6 +97,7 @@ const Home = () => {
         saveImage={saveImage}
         annotationOpen={annotationOpen}
         setAnnotationOpen={setAnnotationOpen}
+        savedImages={savedImages}
       />
     </HomeContainer>
   );

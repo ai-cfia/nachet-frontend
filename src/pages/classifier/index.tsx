@@ -34,6 +34,7 @@ type params = {
   capture: () => void;
   annotationOpen: boolean;
   setAnnotationOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  savedImages: any;
 };
 
 const Classifier: React.FC<params> = (props) => {
@@ -72,7 +73,7 @@ const Classifier: React.FC<params> = (props) => {
       </RightContent>
       <InfoContent>
         <Results />
-        <Annotations />
+        <Annotations savedImages={props.savedImages} />
       </InfoContent>
     </HomeContainer>
   );

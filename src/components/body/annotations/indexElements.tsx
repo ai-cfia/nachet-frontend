@@ -18,6 +18,16 @@ export const ResultContainer = styled.div`
   border-radius: 10px;
 `;
 
+export const InfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  width: 100%;
+  max-height: 100%;
+  overflow-y: scroll;
+`;
+
 export const TitleHeader = styled.h2`
   font-size: 0.95rem;
   padding: 1px;
@@ -25,4 +35,14 @@ export const TitleHeader = styled.h2`
   margin: auto;
   margin-bottom: 5px;
   margin-top: 5px;
+`;
+
+export const ImageLabel = styled.a`
+  font-size: 0.8rem;
+  padding: 1px;
+  color: ${colours.CFIA_Font_black};
+  margin: auto;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  text-decoration: none;
 `;

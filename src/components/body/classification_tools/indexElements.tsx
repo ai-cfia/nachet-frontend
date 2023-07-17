@@ -40,6 +40,7 @@ export const Button = styled.button`
   color: ${colours.CFIA_Font_white};
   pointer-events: ${(props) => (props.disabled ? "none" : "auto")};
   font-size: 0.9rem;
+  font-weight: 600;
   margin-top: 20px;
   margin-bottom: 20px;
   margin-left: 20px;
