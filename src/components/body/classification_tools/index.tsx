@@ -12,6 +12,7 @@ type params = {
   annotationEmpty: boolean;
   setAnnotationOpen: React.Dispatch<React.SetStateAction<boolean>>;
   annotationOpen: boolean;
+  handleInference: () => void;
 };
 
 const ClassificationTools: React.FC<params> = (props) => {
@@ -26,6 +27,7 @@ const ClassificationTools: React.FC<params> = (props) => {
         <Button
           disabled={props.captureEmpty}
           color={colours.CFIA_Background_Blue}
+          onClick={props.handleInference}
         >
           Classify Capture
         </Button>

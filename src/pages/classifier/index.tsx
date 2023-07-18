@@ -39,6 +39,8 @@ type params = {
   loadImage: (event: any) => void;
   uploadOpen: boolean;
   setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  canvasRef: React.RefObject<HTMLCanvasElement>;
+  handleInference: () => void;
 };
 
 const Classifier: React.FC<params> = (props) => {
@@ -59,6 +61,7 @@ const Classifier: React.FC<params> = (props) => {
           annotationEmpty={props.annotationEmpty}
           setAnnotationOpen={props.setAnnotationOpen}
           annotationOpen={props.annotationOpen}
+          handleInference={props.handleInference}
         />
       </ControlContent>
       <LeftContent>
@@ -69,6 +72,7 @@ const Classifier: React.FC<params> = (props) => {
       </LeftContent>
       <RightContent>
         <FeedCapture
+          canvasRef={props.canvasRef}
           imageSrc={props.imageSrc}
           imageFormat={props.imageFormat}
           setImageFormat={props.setImageFormat}

@@ -6,7 +6,6 @@ import {
 } from "./indexElements";
 import { colours } from "../../../styles/colours";
 import React from "react";
-import Webcam from "react-webcam";
 
 type params = {
   captureEmpty: boolean;
@@ -26,6 +25,7 @@ const FeedControl: React.FC<params> = (props) => {
   const handleUploadOpen = () => {
     props.setUploadOpen!(true);
   };
+
   return (
     <ControlContainer>
       <TitleHeader>CAPTURE TOOLS</TitleHeader>
@@ -57,6 +57,13 @@ const FeedControl: React.FC<params> = (props) => {
           onClick={props.clear}
         >
           Clear Capture
+        </Button>
+        <Button
+          disabled={props.captureEmpty}
+          color={colours.CFIA_Background_Blue}
+          onClick={handleSaveOpen}
+        >
+          Save Cache
         </Button>
         <Button
           disabled={props.captureEmpty}

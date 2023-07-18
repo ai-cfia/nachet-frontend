@@ -35,3 +35,9 @@ export const TitleHeader = styled.h2`
   margin-bottom: 5px;
   margin-top: 5px;
 `;
+
+export const Canvas = styled.canvas`
+  width: 600px;
+  height: 600px;
+  z-index: 0;
+`;

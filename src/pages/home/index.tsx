@@ -1,6 +1,6 @@
 import { HomeContainer } from "./indexElements";
 import Classifier from "../classifier";
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import Webcam from "react-webcam";
 import SavePopup from "../../components/body/save_popup";
 import UploadPopup from "../../components/body/upload_image";
@@ -25,7 +25,9 @@ const Home = () => {
   const [annotationOpen, setAnnotationOpen] = useState<boolean>(false);
   //const [imageCount, setImageCount] = useState<number>(0);
   const [savedImages, setSavedImages] = useState<savedImageItem[]>([]);
+  const [inferenceResponse, setInferenceResponse] = useState(null);
   const webcamRef = useRef<Webcam>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   let imageCount = 0;
 
@@ -100,6 +102,65 @@ const Home = () => {
     setImageLabel(event.target.value);
   };
 
+  const drawBoundingBox = (
+    confidence: number,
+    prediction: string,
+    region: Array<number>
+  ) => {
+    const canvas = canvasRef.current;
+    const ctx = canvas!.getContext("2d");
+    const image = new Image();
+    image.src = imageSrc;
+    canvas!.width = image.width;
+    canvas!.height = image.height;
+    image.onload = () => {
+      ctx!.drawImage(image, 0, 0);
+      ctx!.beginPath();
+      ctx!.lineWidth = 5;
+      ctx!.strokeStyle = "red";
+      ctx!.rect(300, 300, 100, 100);
+      ctx!.stroke();
+    };
+  };
+
+  const handleInference = () => {
+    // fetch sim.json file
+    fetch("../sim.json", {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    })
+      .then(function (response) {
+        console.log(response);
+        return response.json();
+      })
+      .then(function (myJson) {
+        console.log(myJson);
+        setInferenceResponse(myJson);
+      });
+
+    drawBoundingBox(0.9, "Canola", [20, 20, 50, 50]);
+  };
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const context = canvas!.getContext("2d");
+
+    const loadImageToCanvas = () => {
+      const image = new Image();
+      image.src = imageSrc;
+
+      image.onload = () => {
+        canvas!.width = image.width;
+        canvas!.height = image.height;
+        context!.drawImage(image, 0, 0);
+      };
+    };
+
+    loadImageToCanvas();
+  }, [imageSrc]);
+
   return (
     <HomeContainer>
       {saveOpen === true && (
@@ -134,6 +195,7 @@ const Home = () => {
       )}
       <Classifier
         captureEmpty={captureEmpty}
+        handleInference={handleInference}
         uploadOpen={uploadOpen}
         setUploadOpen={setUploadOpen}
         setCaptureEmpty={setCaptureEmpty}
@@ -156,6 +218,7 @@ const Home = () => {
         savedImages={savedImages}
         clearImageCache={clearImageCache}
         loadImage={loadImage}
+        canvasRef={canvasRef}
       />
     </HomeContainer>
   );
