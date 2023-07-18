@@ -8,7 +8,7 @@ export const ResultContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: start;
-  width: 190px;
+  width: 200px;
   max-width: 190px;
   height: 305px;
   z-index: 0;
@@ -27,7 +27,7 @@ export const InfoContainer = styled.div`
   width: 100%;
   height: 100%;
   max-height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 `;
 
 export const TitleHeader = styled.h2`

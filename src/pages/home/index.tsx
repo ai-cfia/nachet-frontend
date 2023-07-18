@@ -12,6 +12,13 @@ type savedImageItem = {
   src: string | null;
 };
 
+// connect clear image to saved images
+// connect classification to saved images
+// connect annotation to saved images
+// fix image count
+// set up backend fetch
+// show backend information in results section
+
 const Home = () => {
   const [captureEmpty, setCaptureEmpty] = useState<boolean>(true);
   const [imageSrc, setImageSrc] = useState<string>(
@@ -117,7 +124,7 @@ const Home = () => {
   };
 
   const handleInference = () => {
-    // fetch sim.json file
+   
     fetch("../sim.json", {
       headers: {
         "Content-Type": "application/json",
