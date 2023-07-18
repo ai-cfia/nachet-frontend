@@ -46,7 +46,7 @@ export const Button = styled.button`
   margin-left: 20px;
   margin-right: 20px;
   border-radius: 10px;
-  padding: 1rem;
+  padding: 0.8rem;
   width: 150px;
   align-text: center;
 

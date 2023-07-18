@@ -129,4 +129,5 @@ export const Input = styled.input`
   background: ${colours.CFIA_Background_White};
   border: 1px solid ${colours.CFIA_Font_black};
   border-radius: 10px;
+  cursor: pointer;
 `;

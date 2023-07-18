@@ -109,18 +109,11 @@ const Home = () => {
   ) => {
     const canvas = canvasRef.current;
     const ctx = canvas!.getContext("2d");
-    const image = new Image();
-    image.src = imageSrc;
-    canvas!.width = image.width;
-    canvas!.height = image.height;
-    image.onload = () => {
-      ctx!.drawImage(image, 0, 0);
-      ctx!.beginPath();
-      ctx!.lineWidth = 5;
-      ctx!.strokeStyle = "red";
-      ctx!.rect(300, 300, 100, 100);
-      ctx!.stroke();
-    };
+    ctx!.beginPath();
+    ctx!.lineWidth = 5;
+    ctx!.strokeStyle = "red";
+    ctx!.rect(300, 300, 200, 200);
+    ctx!.stroke();
   };
 
   const handleInference = () => {
