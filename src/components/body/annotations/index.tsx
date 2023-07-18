@@ -14,7 +14,7 @@ type params = {
 const Annotations: React.FC<params> = (props) => {
   return (
     <ResultContainer>
-      <TitleHeader>ANNOTATED IMAGES</TitleHeader>
+      <TitleHeader>CAPTURE CACHE</TitleHeader>
       <InfoContainer>
         {props.savedImages.map((item: any) => (
           <ImageLabel
