@@ -42,7 +42,7 @@ export const TitleHeader = styled.h2`
 
 export const ImageLabel = styled.a`
   font-size: 0.95rem;
-  padding-right: 80px;
+  padding-right: 70px;
   padding-left: 5px;
   padding-top: 10px;
   padding-bottom: 10px;

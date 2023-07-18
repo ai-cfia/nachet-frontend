@@ -25,3 +25,20 @@ export const TitleHeader = styled.h2`
   margin-bottom: 5px;
   margin-top: 5px;
 `;
+
+export const InfoWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  width: 100%;
+`;
+
+export const Info = styled.p`
+  font-size: 0.9rem;
+  padding: 5px;
+  color: ${colours.CFIA_Font_black};
+  margin-right: auto;
+  margin-bottom: 5px;
+  margin-top: 5px;
+`;

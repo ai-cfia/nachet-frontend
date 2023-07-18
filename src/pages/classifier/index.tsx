@@ -12,7 +12,7 @@ import FeedCapture from "../../components/body/feed_capture";
 import MicroscopeFeed from "../../components/body/microscope_feed";
 import FeedControl from "../../components/body/feed_control";
 import ClassificationTools from "../../components/body/classification_tools";
-import Results from "../../components/body/prediction";
+import Results from "../../components/body/results";
 import Annotations from "../../components/body/annotations";
 
 type params = {
@@ -84,7 +84,7 @@ const Classifier: React.FC<params> = (props) => {
         <BottomContent></BottomContent>
       </RightContent>
       <InfoContent>
-        <Results />
+        <Results savedImages={props.savedImages} imageSrc={props.imageSrc} />
         <Annotations
           removeImage={props.removeImage}
           savedImages={props.savedImages}

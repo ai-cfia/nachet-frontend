@@ -32,7 +32,7 @@ const Home = () => {
   const [saveOpen, setSaveOpen] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
   const [annotationOpen, setAnnotationOpen] = useState<boolean>(false);
-  const [imageCount, setImageCount] = useState<number>(0);
+  const [imageCount, setImageCount] = useState<number>(1);
   const [imageCache, setImageCache] = useState<ImageCache[]>([]);
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -45,7 +45,6 @@ const Home = () => {
     region: Array<number>,
     annotated: boolean
   ) => {
-    // does not increment image count, fix it
     setImageCount((imageCount) => imageCount + 1);
     setImageCache((prevCache) => [
       ...prevCache,
@@ -60,12 +59,12 @@ const Home = () => {
     ]);
   };
 
-  const capture = useCallback(() => {
+  const capture = () => {
     const src = webcamRef.current!.getScreenshot();
     setImageSrc(src!);
     setCaptureEmpty(false);
     cache_image(`Capture: ${imageCount}`, src!, 0, "", [], false);
-  }, [webcamRef]);
+  };
 
   const upload_image = (event: any) => {
     event.preventDefault();
@@ -111,9 +110,8 @@ const Home = () => {
   };
 
   const clear_cache = () => {
-    // this does not clear the cache, fix it
     setImageCache([]);
-    setImageCount(0);
+    setImageCount(1);
     check_cache_empty();
   };
 
@@ -153,14 +151,13 @@ const Home = () => {
   const load_to_canvas = () => {
     const image = new Image();
     image.src = imageSrc;
+    const canvas = canvasRef.current;
+    const ctx = canvas!.getContext("2d");
     image.onload = () => {
-      const canvas = canvasRef.current;
-      const ctx = canvas!.getContext("2d");
       canvas!.width = image.width;
       canvas!.height = image.height;
       ctx!.drawImage(image, 0, 0);
       imageCache.forEach((item) => {
-        ctx!.beginPath();
         if (item.src === imageSrc && item.annotated === true) {
           ctx!.font = "20px Arial";
           ctx!.fillStyle = "red";
@@ -178,11 +175,12 @@ const Home = () => {
             item.region[2],
             item.region[3]
           );
-          ctx!.stroke();
         }
-        ctx!.font = "20px Arial";
-        ctx!.fillStyle = "white";
-        ctx!.fillText(item.label, 10, canvas!.height - 15);
+        if (item.src === imageSrc) {
+          ctx!.font = "25px Arial";
+          ctx!.fillStyle = "white";
+          ctx!.fillText(item.label, 10, canvas!.height - 15);
+        }
         ctx!.stroke();
       });
     };
