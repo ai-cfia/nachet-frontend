@@ -25,6 +25,7 @@ export const InfoContainer = styled.div`
   align-items: center;
   justify-content: start;
   width: 100%;
+  height: 100%;
   max-height: 100%;
   overflow-y: scroll;
 `;

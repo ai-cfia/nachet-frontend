@@ -66,7 +66,6 @@ const FeedControl: React.FC<params> = (props) => {
           Save Cache
         </Button>
         <Button
-          disabled={props.captureEmpty}
           color={colours.CFIA_Background_Blue}
           onClick={props.clearImageCache}
         >
