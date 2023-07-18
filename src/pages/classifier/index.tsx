@@ -41,6 +41,7 @@ type params = {
   setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
   canvasRef: React.RefObject<HTMLCanvasElement>;
   handleInference: () => void;
+  removeImage: (event: any) => void;
 };
 
 const Classifier: React.FC<params> = (props) => {
@@ -85,6 +86,7 @@ const Classifier: React.FC<params> = (props) => {
       <InfoContent>
         <Results />
         <Annotations
+          removeImage={props.removeImage}
           savedImages={props.savedImages}
           loadImage={props.loadImage}
         />

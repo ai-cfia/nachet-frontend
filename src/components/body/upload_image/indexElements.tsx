@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { colours } from "../../../styles/colours";
 import { FaTimes } from "react-icons/fa";
 
-export const Overlay = styled.div<{ isOpen: any }>`
+export const Overlay = styled.div<{ uploadOpen: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -16,7 +16,7 @@ export const Overlay = styled.div<{ isOpen: any }>`
   transition: visibility 0.5s, opacity 0.5s;
 `;
 
-export const ModalWrapper = styled.div<{ isOpen: any }>`
+export const ModalWrapper = styled.div<{ uploadOpen: boolean }>`
   background-color: ${colours.CFIA_Background_White};
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
   border-radius: 10px;
@@ -107,7 +107,7 @@ export const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: start;
+  align-items: center;
   width: fit-content;
   height: fit-content;
   margin: auto;

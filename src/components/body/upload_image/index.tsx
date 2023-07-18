@@ -19,7 +19,6 @@ type params = {
   setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setImageSrc: React.Dispatch<React.SetStateAction<string>>;
   uploadImage: (event: any) => void;
-  submitImage: () => void;
 };
 
 const UploadPopup: React.FC<params> = (props) => {
@@ -32,8 +31,8 @@ const UploadPopup: React.FC<params> = (props) => {
   };
 
   return (
-    <Overlay isOpen={props.uploadOpen}>
-      <ModalWrapper isOpen={props.uploadOpen}>
+    <Overlay uploadOpen={props.uploadOpen}>
+      <ModalWrapper uploadOpen={props.uploadOpen}>
         <ModalBody>
           <ModalRow>
             <ModalTitle>Upload Image</ModalTitle>
@@ -44,9 +43,6 @@ const UploadPopup: React.FC<params> = (props) => {
           <InfoContainer>
             <Input type="file" onChange={props.uploadImage} />
           </InfoContainer>
-          <ButtonWrap>
-            <Button onClick={props.submitImage}>Upload Image</Button>
-          </ButtonWrap>
         </ModalBody>
       </ModalWrapper>
     </Overlay>

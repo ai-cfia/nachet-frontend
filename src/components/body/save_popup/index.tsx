@@ -16,7 +16,7 @@ import {
 } from "./indexElements";
 
 type params = {
-  saveOpen?: boolean;
+  saveOpen: boolean;
   setSaveOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   imageSrc?: string;
   saveImage?: () => void;
@@ -30,17 +30,13 @@ type params = {
 };
 
 const SavePopup: React.FC<params> = (props) => {
-  if (props.saveOpen === false) {
-    return null;
-  }
-
   const handleClose = () => {
     props.setSaveOpen!(false);
   };
 
   return (
-    <Overlay isOpen={props.saveOpen}>
-      <ModalWrapper isOpen={props.saveOpen}>
+    <Overlay saveOpen={props.saveOpen!}>
+      <ModalWrapper saveOpen={props.saveOpen!}>
         <ModalBody>
           <ModalRow>
             <ModalTitle>Save Capture</ModalTitle>

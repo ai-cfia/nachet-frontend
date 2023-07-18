@@ -21,7 +21,7 @@ export const TitleHeader = styled.h2`
   font-size: 0.95rem;
   padding: 1px;
   color: ${colours.CFIA_Font_black};
-  margin: auto;
+  margin-right: auto;
   margin-bottom: 5px;
   margin-top: 5px;
 `;

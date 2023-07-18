@@ -7,12 +7,14 @@ import UploadPopup from "../../components/body/upload_image";
 import { saveAs } from "file-saver";
 import ImageAnnotation from "../../components/body/image_annotation";
 
-type savedImageItem = {
+interface ImageCache {
   label: string;
-  src: string | null;
-};
-
-// connect clear image to saved images
+  src: string;
+  confidence: number;
+  prediction: string;
+  region: Array<number>;
+  annotated: boolean;
+}
 // connect classification to saved images
 // connect annotation to saved images
 // fix image count
@@ -30,55 +32,77 @@ const Home = () => {
   const [saveOpen, setSaveOpen] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
   const [annotationOpen, setAnnotationOpen] = useState<boolean>(false);
-  //const [imageCount, setImageCount] = useState<number>(0);
-  const [savedImages, setSavedImages] = useState<savedImageItem[]>([]);
-  const [inferenceResponse, setInferenceResponse] = useState(null);
+  const [imageCount, setImageCount] = useState<number>(0);
+  const [imageCache, setImageCache] = useState<ImageCache[]>([]);
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  let imageCount = 0;
+  const cache_image = (
+    label: string,
+    src: string,
+    confidence: number,
+    prediction: string,
+    region: Array<number>,
+    annotated: boolean
+  ) => {
+    // does not increment image count, fix it
+    setImageCount((imageCount) => imageCount + 1);
+    setImageCache((prevCache) => [
+      ...prevCache,
+      {
+        label: label,
+        src: src,
+        confidence: confidence,
+        prediction: prediction,
+        region: region,
+        annotated: annotated,
+      },
+    ]);
+  };
 
   const capture = useCallback(() => {
     const src = webcamRef.current!.getScreenshot();
     setImageSrc(src!);
     setCaptureEmpty(false);
-    imageCount++;
-    setSavedImages((prevImages) => [
-      ...prevImages,
-      {
-        label: `Capture: ${imageCount}`,
-        src: src,
-      },
-    ]);
+    cache_image(`Capture: ${imageCount}`, src!, 0, "", [], false);
   }, [webcamRef]);
 
-  const uploadImage = (event: any) => {
+  const upload_image = (event: any) => {
     event.preventDefault();
     const src = URL.createObjectURL(event.target.files[0]);
     setImageSrc(src);
-  };
-
-  const submitImage = () => {
-    setCaptureEmpty(false);
-    imageCount++;
-    setSavedImages((prevImages) => [
-      ...prevImages,
-      {
-        label: `Capture: ${imageCount}`,
-        src: imageSrc,
-      },
-    ]);
+    cache_image(`Capture: ${imageCount}`, src!, 0, "", [], false);
     setUploadOpen(false);
+    setCaptureEmpty(false);
   };
 
-  const loadImage = (event: any) => {
+  const load_from_cache = (event: any) => {
     event.preventDefault();
     const src = event.target.getAttribute("data-value");
     setImageSrc(src);
     setCaptureEmpty(false);
   };
 
-  const clear = () => {
+  const check_cache_empty = () => {
+    if (imageCache.length === 1) {
+      clear_capture();
+    }
+  };
+
+  const remove_image = (event: any) => {
+    event.preventDefault();
+    const src = event.target.getAttribute("data-value");
+    const newCache = imageCache.filter((item) => item.src !== src);
+    setImageCache(newCache);
+    // does not decrement image count, fix it
+    setImageCount((imageCount) => imageCount - 1);
+    if (newCache.length > 0) {
+      setImageSrc(newCache[newCache.length - 1].src);
+    }
+    check_cache_empty();
+  };
+
+  const clear_capture = () => {
     setImageSrc(
       "https://roadmap-tech.com/wp-content/uploads/2019/04/placeholder-image.jpg"
     );
@@ -86,12 +110,14 @@ const Home = () => {
     setImageLabel("");
   };
 
-  const clearImageCache = () => {
-    setSavedImages([]);
-    imageCount = 1;
+  const clear_cache = () => {
+    // this does not clear the cache, fix it
+    setImageCache([]);
+    setImageCount(0);
+    check_cache_empty();
   };
 
-  const saveImage = () => {
+  const save_image = () => {
     saveAs(
       imageSrc,
       `${imageLabel}-${new Date().getFullYear()}-${
@@ -109,56 +135,61 @@ const Home = () => {
     setImageLabel(event.target.value);
   };
 
-  const drawBoundingBox = (
-    confidence: number,
-    prediction: string,
-    region: Array<number>
-  ) => {
-    const canvas = canvasRef.current;
-    const ctx = canvas!.getContext("2d");
-    ctx!.beginPath();
-    ctx!.lineWidth = 5;
-    ctx!.strokeStyle = "red";
-    ctx!.rect(300, 300, 200, 200);
-    ctx!.stroke();
+  const handle_inference_request = () => {
+    let region = [100, 100, 100, 100];
+    let prediction = "Canola";
+    let confidence = 0.9;
+    imageCache.forEach((item) => {
+      if (item.src === imageSrc) {
+        item.confidence = confidence;
+        item.prediction = prediction;
+        item.region = region;
+        item.annotated = true;
+      }
+    });
+    load_to_canvas();
   };
 
-  const handleInference = () => {
-   
-    fetch("../sim.json", {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    })
-      .then(function (response) {
-        console.log(response);
-        return response.json();
-      })
-      .then(function (myJson) {
-        console.log(myJson);
-        setInferenceResponse(myJson);
+  const load_to_canvas = () => {
+    const image = new Image();
+    image.src = imageSrc;
+    image.onload = () => {
+      const canvas = canvasRef.current;
+      const ctx = canvas!.getContext("2d");
+      canvas!.width = image.width;
+      canvas!.height = image.height;
+      ctx!.drawImage(image, 0, 0);
+      imageCache.forEach((item) => {
+        ctx!.beginPath();
+        if (item.src === imageSrc && item.annotated === true) {
+          ctx!.font = "20px Arial";
+          ctx!.fillStyle = "red";
+          ctx!.fillText(
+            item.prediction,
+            item.region[0] - 2,
+            item.region[1] - 5
+          );
+          ctx!.lineWidth = 3;
+          ctx!.setLineDash([5, 5]);
+          ctx!.strokeStyle = "red";
+          ctx!.rect(
+            item.region[0],
+            item.region[1],
+            item.region[2],
+            item.region[3]
+          );
+          ctx!.stroke();
+        }
+        ctx!.font = "20px Arial";
+        ctx!.fillStyle = "white";
+        ctx!.fillText(item.label, 10, canvas!.height - 15);
+        ctx!.stroke();
       });
-
-    drawBoundingBox(0.9, "Canola", [20, 20, 50, 50]);
+    };
   };
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const context = canvas!.getContext("2d");
-
-    const loadImageToCanvas = () => {
-      const image = new Image();
-      image.src = imageSrc;
-
-      image.onload = () => {
-        canvas!.width = image.width;
-        canvas!.height = image.height;
-        context!.drawImage(image, 0, 0);
-      };
-    };
-
-    loadImageToCanvas();
+    load_to_canvas();
   }, [imageSrc]);
 
   return (
@@ -167,7 +198,7 @@ const Home = () => {
         <SavePopup
           saveOpen={saveOpen}
           setSaveOpen={setSaveOpen}
-          saveImage={saveImage}
+          saveImage={save_image}
           imageFormat={imageFormat}
           imageLabel={imageLabel}
           setImageFormat={setImageFormat}
@@ -182,8 +213,7 @@ const Home = () => {
           capture={capture}
           uploadOpen={uploadOpen}
           setUploadOpen={setUploadOpen}
-          uploadImage={uploadImage}
-          submitImage={submitImage}
+          uploadImage={upload_image}
         />
       )}
       {annotationOpen === true && (
@@ -195,7 +225,7 @@ const Home = () => {
       )}
       <Classifier
         captureEmpty={captureEmpty}
-        handleInference={handleInference}
+        handleInference={handle_inference_request}
         uploadOpen={uploadOpen}
         setUploadOpen={setUploadOpen}
         setCaptureEmpty={setCaptureEmpty}
@@ -210,15 +240,16 @@ const Home = () => {
         setAnnotationEmpty={setAnnotationEmpty}
         saveOpen={saveOpen}
         setSaveOpen={setSaveOpen}
-        clear={clear}
+        clear={clear_capture}
         capture={capture}
-        saveImage={saveImage}
+        saveImage={save_image}
         annotationOpen={annotationOpen}
         setAnnotationOpen={setAnnotationOpen}
-        savedImages={savedImages}
-        clearImageCache={clearImageCache}
-        loadImage={loadImage}
+        savedImages={imageCache}
+        clearImageCache={clear_cache}
+        loadImage={load_from_cache}
         canvasRef={canvasRef}
+        removeImage={remove_image}
       />
     </HomeContainer>
   );
