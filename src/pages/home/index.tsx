@@ -15,11 +15,11 @@ interface ImageCache {
   region: Array<number>;
   annotated: boolean;
 }
-// connect classification to saved images
-// connect annotation to saved images
-// fix image count
-// set up backend fetch
-// show backend information in results section
+
+// set up eslint
+// parse json file
+// set up authentification, talk to leron
+// look into azure storage api
 
 const Home = () => {
   const [captureEmpty, setCaptureEmpty] = useState<boolean>(true);
@@ -197,6 +197,7 @@ const Home = () => {
           ctx!.lineWidth = 3;
           ctx!.setLineDash([5, 5]);
           ctx!.strokeStyle = "red";
+          // iterate through region array and draw rectanlges on canvas
           ctx!.rect(
             item.region[0],
             item.region[1],

@@ -1,11 +1,6 @@
 [{
     "filename": "/tmp/tmpf40hzadn/tmp6fmlakdl", 
-    "boxes": [{"box": 
-    {"topX": 0.2493540350536468, "topY": 0.36080305962411313, "bottomX": 0.4789233467144993, "bottomY": 0.7655271807178631}, 
-    "label": "8 Lolium temulentum", 
-    "score": 0.9849483370780945}, 
-    {"box": {"topX": 0.613407900812031, "topY": 0.34474903036636584, "bottomX": 0.8242820754060155, "bottomY": 0.7217124467700073}, 
-    "label": "8 Lolium temulentum", 
-    "score": 0.9729371666908264}]
+    "boxes": [{"box": {"topX": 0.2493540350536468, "topY": 0.36080305962411313, "bottomX": 0.4789233467144993, "bottomY": 0.7655271807178631}, "label": "8 Lolium temulentum", "score": 0.9849483370780945}, 
+            {"box": {"topX": 0.613407900812031, "topY": 0.34474903036636584, "bottomX": 0.8242820754060155, "bottomY": 0.7217124467700073}, "label": "8 Lolium temulentum", "score": 0.9729371666908264}]
 
 }]
