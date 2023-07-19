@@ -34,6 +34,8 @@ const Home = () => {
   const [annotationOpen, setAnnotationOpen] = useState<boolean>(false);
   const [imageCount, setImageCount] = useState<number>(1);
   const [imageCache, setImageCache] = useState<ImageCache[]>([]);
+  const [inferenceData, setInferenceData] = useState<any>([]);
+
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -134,6 +136,19 @@ const Home = () => {
   };
 
   const handle_inference_request = () => {
+    fetch("./sim.json")
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setInferenceData((prevData: any) => [...prevData, data]);
+      })
+      .catch((e: Error) => {
+        console.log(e.message);
+      });
+
+    console.log(inferenceData);
+
     let region = [100, 100, 100, 100];
     let prediction = "Canola";
     let confidence = 0.9;
