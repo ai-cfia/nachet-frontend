@@ -15,6 +15,7 @@ export const ResultContainer = styled.div`
   padding: 5px 5px 0px 5px;
   border: 1px solid ${colours.CFIA_Font_black};
   border-radius: 10px;
+  overflow: hidden;
 `;
 
 export const TitleHeader = styled.h2`

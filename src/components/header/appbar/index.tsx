@@ -4,7 +4,7 @@ const Appbar = () => {
   return (
     <AppbarWrap>
       <AppbarContainer>
-        <AppbarHeader>Seed Classifier Interface</AppbarHeader>
+        <AppbarHeader>Seed Classification Interface</AppbarHeader>
       </AppbarContainer>
     </AppbarWrap>
   );

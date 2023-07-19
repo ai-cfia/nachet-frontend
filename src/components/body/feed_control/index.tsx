@@ -56,7 +56,7 @@ const FeedControl: React.FC<params> = (props) => {
           color={colours.CFIA_Background_Blue}
           onClick={props.clear}
         >
-          Clear Capture
+          Remove Capture
         </Button>
         <Button
           disabled={props.captureEmpty}

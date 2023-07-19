@@ -36,13 +36,13 @@ const ClassificationTools: React.FC<params> = (props) => {
           color={colours.CFIA_Background_Blue}
           onClick={handleAnnotationOpen}
         >
-          Annotate Capture
+          Annotate
         </Button>
         <Button
-          disabled={props.annotationEmpty}
+          disabled={props.captureEmpty}
           color={colours.CFIA_Background_Blue}
         >
-          Save Annotations
+          Change Model
         </Button>
       </ButtonWrap>
     </ControlContainer>

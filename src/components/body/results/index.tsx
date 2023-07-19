@@ -12,7 +12,20 @@ const Results: React.FC<params> = (props) => {
   return (
     <ResultContainer>
       <TitleHeader>PREDICTION RESULTS</TitleHeader>
-      <InfoWrap></InfoWrap>
+      {props.savedImages.map((image, index) => {
+        if (image.src === props.imageSrc && image.annotated === true) {
+          return (
+            <InfoWrap key={index}>
+              <Info>Prediction: {image.prediction}</Info>
+              <Info>Confidence: {image.confidence}</Info>
+              <Info>
+                X:{image.region[0]} Y: {image.region[0]} W: {image.region[0]} H:{" "}
+                {image.region[0]}
+              </Info>
+            </InfoWrap>
+          );
+        }
+      })}
     </ResultContainer>
   );
 };

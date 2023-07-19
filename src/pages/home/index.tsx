@@ -86,7 +86,14 @@ const Home = () => {
 
   const check_cache_empty = () => {
     if (imageCache.length === 1) {
-      clear_capture();
+      setImageSrc(
+        "https://roadmap-tech.com/wp-content/uploads/2019/04/placeholder-image.jpg"
+      );
+      setCaptureEmpty(true);
+      setImageLabel("");
+      return true;
+    } else {
+      return false;
     }
   };
 
@@ -103,14 +110,21 @@ const Home = () => {
   };
 
   const clear_capture = () => {
+    const newCache = imageCache.filter((item) => item.src !== imageSrc);
+    setImageCache(newCache);
+    setImageCount((imageCount) => imageCount - 1);
+    if (newCache.length > 0) {
+      setImageSrc(newCache[newCache.length - 1].src);
+    }
+    check_cache_empty();
+  };
+
+  const clear_cache = () => {
     setImageSrc(
       "https://roadmap-tech.com/wp-content/uploads/2019/04/placeholder-image.jpg"
     );
     setCaptureEmpty(true);
     setImageLabel("");
-  };
-
-  const clear_cache = () => {
     setImageCache([]);
     setImageCount(1);
     check_cache_empty();
