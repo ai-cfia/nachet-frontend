@@ -95,7 +95,6 @@ const Home = () => {
     const src = event.target.getAttribute("data-value");
     const newCache = imageCache.filter((item) => item.src !== src);
     setImageCache(newCache);
-    // does not decrement image count, fix it
     setImageCount((imageCount) => imageCount - 1);
     if (newCache.length > 0) {
       setImageSrc(newCache[newCache.length - 1].src);
