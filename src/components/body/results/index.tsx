@@ -5,8 +5,6 @@ interface params {
   savedImages: any[];
   imageSrc: string;
 }
-
-// you have to use useState instead of .push to re-render the results on demand
 const Results: React.FC<params> = (props) => {
   return (
     <ResultContainer>
@@ -15,8 +13,8 @@ const Results: React.FC<params> = (props) => {
         if (image.src === props.imageSrc && image.annotated === true) {
           return (
             <InfoWrap key={index}>
-              <Info>Prediction: {image.predictions}</Info>
-              <Info>Confidence: {image.scores}</Info>
+              <Info>Prediction: {image.predictions} </Info>
+              <Info>Confidence: {image.scores} </Info>
             </InfoWrap>
           );
         } else {

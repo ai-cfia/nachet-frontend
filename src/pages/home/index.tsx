@@ -15,9 +15,6 @@ interface ImageCache {
   annotated: boolean;
 }
 
-// parse json file
-// look into azure storage api
-
 const Home = (): JSX.Element => {
   const [captureEmpty, setCaptureEmpty] = useState<boolean>(true);
   const [imageSrc, setImageSrc] = useState<string>("./placeholder-image.jpg");
@@ -143,36 +140,25 @@ const Home = (): JSX.Element => {
   const loadResultsToCache = (data: any): void => {
     data.forEach((object: any) => {
       object.boxes.forEach((params: any) => {
-        imageCache.forEach((item) => {
-          if (item.src === imageSrc) {
-            item.scores.push(params.score);
-            item.predictions.push(params.label);
-            item.regions.push(params.box);
-            item.annotated = true;
-          }
-        });
+        setImageCache((prevCache) =>
+          prevCache.map((item) => {
+            if (
+              item.src === imageSrc &&
+              object.boxes.length !== item.scores.length
+            ) {
+              return {
+                ...item,
+                scores: [...item.scores, params.score.toFixed(2)],
+                predictions: [...item.predictions, params.label],
+                regions: [...item.regions, params.box],
+                annotated: true,
+              };
+            }
+            return item;
+          }),
+        );
       });
     });
-    // data.forEach((object: any) => {
-    //   object.boxes.forEach((params: any) => {
-    //     imageCache.forEach((item) => {
-    //       if (item.src === imageSrc) {
-    //         setImageCache((prevCache) => [
-    //           ...prevCache,
-    //           {
-    //             label: item.label,
-    //             src: item.src,
-    //             scores: [params.score],
-    //             predictions: [params.label],
-    //             regions: [params.box],
-    //             annotated: true,
-    //           },
-    //         ]);
-    //       }
-    //     });
-    //   });
-    // });
-    loadToCanvas();
   };
 
   const handleInferenceRequest = (): void => {
@@ -190,6 +176,7 @@ const Home = (): JSX.Element => {
   };
 
   const loadToCanvas = (): void => {
+    console.log("load to canvas");
     const image = new Image();
     image.src = imageSrc;
     const canvas: HTMLCanvasElement | null = canvasRef.current;
@@ -207,12 +194,12 @@ const Home = (): JSX.Element => {
       imageCache.forEach((object) => {
         if (object.src === imageSrc && object.annotated) {
           object.predictions.forEach((prediction, index) => {
-            ctx.font = "15px Arial";
+            ctx.font = "16px Arial";
             ctx.fillStyle = "red";
             ctx.fillText(
-              `${prediction.split(" ").slice(1).join(" ")} - ${(object.scores[
-                index
-              ] * 100).toFixed(1)}`,
+              `${prediction.split(" ").slice(1).join(" ")} - ${(
+                object.scores[index] * 100
+              ).toFixed(1)}%`,
               object.regions[index].topX - 2,
               object.regions[index].topY - 5,
             );
@@ -239,7 +226,7 @@ const Home = (): JSX.Element => {
 
   useEffect(() => {
     loadToCanvas();
-  }, [imageSrc]);
+  }, [imageSrc, imageCache]);
 
   return (
     <HomeContainer>
