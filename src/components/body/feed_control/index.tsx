@@ -10,7 +10,6 @@ import React from "react";
 interface params {
   captureEmpty: boolean;
   capture: () => void;
-  clear: () => void;
   setSaveOpen: React.Dispatch<React.SetStateAction<boolean>>;
   clearImageCache: () => void;
   uploadOpen: boolean;
@@ -50,13 +49,6 @@ const FeedControl: React.FC<params> = (props) => {
           color={colours.CFIA_Background_Blue}
         >
           Save Capture
-        </Button>
-        <Button
-          disabled={props.captureEmpty}
-          color={colours.CFIA_Background_Blue}
-          onClick={props.clear}
-        >
-          Remove Capture
         </Button>
         <Button
           disabled={props.captureEmpty}

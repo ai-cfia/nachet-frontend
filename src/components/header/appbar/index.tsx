@@ -1,6 +1,6 @@
 import { AppbarWrap, AppbarContainer, AppbarHeader } from "./indexElements";
 
-const Appbar = () => {
+const Appbar = (): JSX.Element => {
   return (
     <AppbarWrap>
       <AppbarContainer>

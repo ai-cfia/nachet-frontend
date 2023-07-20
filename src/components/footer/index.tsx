@@ -1,4 +1,3 @@
-import React from "react";
 import {
   FooterContainer,
   FooterWrap,
@@ -6,7 +5,7 @@ import {
   FooterText,
 } from "./indexElements";
 
-const Footer = () => {
+const Footer = (): JSX.Element => {
   return (
     <FooterContainer>
       <FooterWrap>

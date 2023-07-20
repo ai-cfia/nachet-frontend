@@ -23,25 +23,22 @@ const Home = (): JSX.Element => {
   const [annotationEmpty, setAnnotationEmpty] = useState<boolean>(true);
   const [saveOpen, setSaveOpen] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
-  const [imageCount, setImageCount] = useState<number>(1);
   const [imageCache, setImageCache] = useState<ImageCache[]>([]);
 
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  const cacheImage = (
-    label: string,
+  const loadCaptureToCache = (
     src: string,
     scores: number[],
     predictions: string[],
     regions: any[],
     annotated: boolean,
   ): void => {
-    setImageCount((imageCount) => imageCount + 1);
     setImageCache((prevCache) => [
       ...prevCache,
       {
-        label,
+        label: `Capture ${prevCache.length + 1}`,
         src,
         scores,
         predictions,
@@ -56,17 +53,17 @@ const Home = (): JSX.Element => {
     if (src === null || src === undefined) {
       return;
     }
+    loadCaptureToCache(src, [], [], [], false);
     setImageSrc(src);
     setCaptureEmpty(false);
-    cacheImage(`Capture: ${imageCount}`, src, [], [], [], false);
   };
 
   const uploadImage = (event: any): void => {
     event.preventDefault();
     const src = URL.createObjectURL(event.target.files[0]);
-    setImageSrc(src);
-    cacheImage(`Capture: ${imageCount}`, src, [], [], [], false);
+    loadCaptureToCache(src, [], [], [], false);
     setUploadOpen(false);
+    setImageSrc(src);
     setCaptureEmpty(false);
   };
 
@@ -74,49 +71,24 @@ const Home = (): JSX.Element => {
     event.preventDefault();
     const src = event.target.getAttribute("data-value");
     setImageSrc(src);
-    setCaptureEmpty(false);
   };
 
-  const checkCacheEmpty = (): boolean => {
-    if (imageCache.length === 1) {
-      setImageSrc("./placeholder-image.jpg");
-      setCaptureEmpty(true);
-      setImageLabel("");
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  const removeImage = (event: any): void => {
+  const removeFromCache = (event: any): void => {
     event.preventDefault();
     const src = event.target.getAttribute("data-value");
     const newCache = imageCache.filter((item) => item.src !== src);
     setImageCache(newCache);
-    setImageCount((imageCount) => imageCount - 1);
-    if (newCache.length > 0) {
+    if (imageCache.length > 1) {
       setImageSrc(newCache[newCache.length - 1].src);
+    } else {
+      setImageSrc("./placeholder-image.jpg");
+      setCaptureEmpty(true);
     }
-    checkCacheEmpty();
-  };
-
-  const clearCapture = (): void => {
-    const newCache = imageCache.filter((item) => item.src !== imageSrc);
-    setImageCache(newCache);
-    setImageCount((imageCount) => imageCount - 1);
-    if (newCache.length > 0) {
-      setImageSrc(newCache[newCache.length - 1].src);
-    }
-    checkCacheEmpty();
   };
 
   const clearCache = (): void => {
-    setImageSrc("./placeholder-image.jpg");
-    setCaptureEmpty(true);
-    setImageLabel("");
     setImageCache([]);
-    setImageCount(1);
-    checkCacheEmpty();
+    setCaptureEmpty(true);
   };
 
   const saveImage = (): void => {
@@ -176,7 +148,6 @@ const Home = (): JSX.Element => {
   };
 
   const loadToCanvas = (): void => {
-    console.log("load to canvas");
     const image = new Image();
     image.src = imageSrc;
     const canvas: HTMLCanvasElement | null = canvasRef.current;
@@ -269,14 +240,13 @@ const Home = (): JSX.Element => {
         setAnnotationEmpty={setAnnotationEmpty}
         saveOpen={saveOpen}
         setSaveOpen={setSaveOpen}
-        clear={clearCapture}
         capture={capture}
         saveImage={saveImage}
         savedImages={imageCache}
         clearImageCache={clearCache}
         loadImage={loadFromCache}
         canvasRef={canvasRef}
-        removeImage={removeImage}
+        removeImage={removeFromCache}
       />
     </HomeContainer>
   );

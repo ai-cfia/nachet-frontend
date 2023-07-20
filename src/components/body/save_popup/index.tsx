@@ -15,7 +15,7 @@ import {
   InfoContainer,
 } from "./indexElements";
 
-type params = {
+interface params {
   saveOpen: boolean;
   setSaveOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   imageSrc?: string;
@@ -27,16 +27,19 @@ type params = {
   handleFormat?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   handleLabel?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   captureEmpty?: boolean;
-};
+}
 
-const SavePopup: React.FC<params> = (props) => {
-  const handleClose = () => {
-    props.setSaveOpen!(false);
+const SavePopup: React.FC<params> = (props): JSX.Element => {
+  const handleClose = (): void => {
+    if (props.setSaveOpen === undefined) {
+      return;
+    }
+    props.setSaveOpen(false);
   };
 
   return (
-    <Overlay saveOpen={props.saveOpen!}>
-      <ModalWrapper saveOpen={props.saveOpen!}>
+    <Overlay>
+      <ModalWrapper>
         <ModalBody>
           <ModalRow>
             <ModalTitle>Save Capture</ModalTitle>

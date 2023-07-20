@@ -29,7 +29,6 @@ interface params {
   annotationEmpty: boolean;
   saveOpen: boolean;
   setSaveOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  clear: () => void;
   saveImage: () => void;
   capture: () => void;
   savedImages: any[];
@@ -50,7 +49,6 @@ const Classifier: React.FC<params> = (props) => {
           captureEmpty={props.captureEmpty}
           capture={props.capture}
           setSaveOpen={props.setSaveOpen}
-          clear={props.clear}
           clearImageCache={props.clearImageCache}
           setUploadOpen={props.setUploadOpen}
           uploadOpen={props.uploadOpen}

@@ -1,37 +1,36 @@
-import { VideoFeed, TitleHeader, Select, Option } from "./indexElements";
+import { VideoFeed, TitleHeader } from "./indexElements";
 import Webcam from "react-webcam";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-type params = {
+interface params {
   webcamRef: React.RefObject<Webcam>;
   imageFormat: any;
-};
+}
 
 const MicroscopeFeed: React.FC<params> = (props) => {
-  const [videoDevices, setVideoDevices] = useState<
-    { deviceId: string; label: string }[]
-  >([]);
-  const [selectedDevice, setSelectedDevice] = useState("environment");
+  // const [videoDevices, setVideoDevices] = useState<
+  //   { deviceId: string; label: string }[]
+  // >([]);
 
-  useEffect(() => {
-    const getVideoDevices = async () => {
-      try {
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        const videoInputDevices = devices.filter(
-          (device) => device.kind === "videoinput",
-        );
-        setVideoDevices(videoInputDevices);
-      } catch (error) {
-        console.error("Error enumerating video devices:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const getVideoDevices = async () => {
+  //     try {
+  //       const devices = await navigator.mediaDevices.enumerateDevices();
+  //       const videoInputDevices = devices.filter(
+  //         (device) => device.kind === "videoinput",
+  //       );
+  //       setVideoDevices(videoInputDevices);
+  //     } catch (error) {
+  //       console.error("Error enumerating video devices:", error);
+  //     }
+  //   };
 
-    getVideoDevices();
-  }, []);
+  //   getVideoDevices();
+  // }, []);
 
-  const handleDevices = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedDevice(event.target.value);
-  };
+  // const handleDevices = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   setSelectedDevice(event.target.value);
+  // };
 
   return (
     <VideoFeed>
@@ -42,7 +41,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
         videoConstraints={{
           width: 600,
           height: 600,
-          facingMode: { ideal: `${selectedDevice}` },
+          facingMode: { ideal: "environment" },
         }}
         screenshotFormat={props.imageFormat}
       />

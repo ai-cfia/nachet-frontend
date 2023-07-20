@@ -84,3 +84,17 @@ export const Icon = styled(FaTrash)`
   color: ${colours.CFIA_Font_black};
   font-size: 0.85rem;
 `;
+
+export const Table = styled.table``;
+
+export const Tbody = styled.tbody``;
+
+export const Tr = styled.tr`
+  padding: 10px;
+`;
+
+export const Td = styled.td`
+  color: ${colours.CFIA_Font_black};
+  padding: 10px;
+  cursor: pointer;
+`;

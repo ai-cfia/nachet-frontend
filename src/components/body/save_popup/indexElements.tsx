@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { colours } from "../../../styles/colours";
 import { FaTimes } from "react-icons/fa";
 
-export const Overlay = styled.div<{ saveOpen: boolean }>`
+export const Overlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -18,7 +18,7 @@ export const Overlay = styled.div<{ saveOpen: boolean }>`
     opacity 0.5s;
 `;
 
-export const ModalWrapper = styled.div<{ saveOpen: boolean }>`
+export const ModalWrapper = styled.div`
   background-color: ${colours.CFIA_Background_White};
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
   border-radius: 10px;
@@ -79,10 +79,8 @@ export const Icon = styled.div`
 `;
 
 export const Button = styled.button`
-  background: ${(props) =>
-    !props.disabled ? colours.CFIA_Background_Blue : colours.disabled};
+  background: ${colours.CFIA_Background_Blue};
   color: ${colours.CFIA_Font_white};
-  pointer-events: ${(props) => (props.disabled ? "none" : "auto")};
   font-size: 1rem;
   margin-left: 15px;
   margin-right: 15px;

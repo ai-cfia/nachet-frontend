@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Overlay,
   ModalWrapper,
@@ -7,32 +7,26 @@ import {
   CloseIcon,
   ModalTitle,
   ModalRow,
-  ButtonWrap,
-  Button,
   InfoContainer,
   Input,
 } from "./indexElements";
 
-type params = {
+interface params {
   capture: () => void;
   uploadOpen: boolean;
   setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setImageSrc: React.Dispatch<React.SetStateAction<string>>;
   uploadImage: (event: any) => void;
-};
+}
 
-const UploadPopup: React.FC<params> = (props) => {
-  if (props.uploadOpen === false) {
-    return null;
-  }
-
-  const handleClose = () => {
-    props.setUploadOpen!(false);
+const UploadPopup: React.FC<params> = (props): JSX.Element => {
+  const handleClose = (): void => {
+    props.setUploadOpen(false);
   };
 
   return (
-    <Overlay uploadOpen={props.uploadOpen}>
-      <ModalWrapper uploadOpen={props.uploadOpen}>
+    <Overlay>
+      <ModalWrapper>
         <ModalBody>
           <ModalRow>
             <ModalTitle>Upload Image</ModalTitle>
