@@ -6,7 +6,7 @@ import {
   ControlContent,
   InfoContent,
 } from "./indexElements";
-import Webcam from "react-webcam";
+import type Webcam from "react-webcam";
 import React from "react";
 import FeedCapture from "../../components/body/feed_capture";
 import MicroscopeFeed from "../../components/body/microscope_feed";
@@ -15,7 +15,7 @@ import ClassificationTools from "../../components/body/classification_tools";
 import Results from "../../components/body/results";
 import Annotations from "../../components/body/annotations";
 
-type params = {
+interface params {
   captureEmpty: boolean;
   setCaptureEmpty: React.Dispatch<React.SetStateAction<boolean>>;
   imageSrc: string;
@@ -32,9 +32,7 @@ type params = {
   clear: () => void;
   saveImage: () => void;
   capture: () => void;
-  annotationOpen: boolean;
-  setAnnotationOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  savedImages: Array<any>;
+  savedImages: any[];
   clearImageCache: () => void;
   loadImage: (event: any) => void;
   uploadOpen: boolean;
@@ -42,7 +40,7 @@ type params = {
   canvasRef: React.RefObject<HTMLCanvasElement>;
   handleInference: () => void;
   removeImage: (event: any) => void;
-};
+}
 
 const Classifier: React.FC<params> = (props) => {
   return (
@@ -60,8 +58,6 @@ const Classifier: React.FC<params> = (props) => {
         <ClassificationTools
           captureEmpty={props.captureEmpty}
           annotationEmpty={props.annotationEmpty}
-          setAnnotationOpen={props.setAnnotationOpen}
-          annotationOpen={props.annotationOpen}
           handleInference={props.handleInference}
         />
       </ControlContent>

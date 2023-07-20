@@ -36,9 +36,9 @@ export const ButtonWrap = styled.div`
 
 export const Button = styled.button`
   background: ${(props) =>
-    !props.disabled ? colours.CFIA_Background_Blue : colours.disabled};
+    props.disabled ?? true ? colours.disabled : colours.CFIA_Background_Blue};
   color: ${colours.CFIA_Font_white};
-  pointer-events: ${(props) => (props.disabled ? "none" : "auto")};
+  pointer-events: ${(props) => (props.disabled ?? true ? "none" : "auto")};
   font-size: 0.9rem;
   font-weight: 600;
   margin-top: 20px;

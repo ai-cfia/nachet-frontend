@@ -1,94 +1,88 @@
+import { useState, useRef, useEffect } from "react";
+import type Webcam from "react-webcam";
+import { saveAs } from "file-saver";
 import { HomeContainer } from "./indexElements";
 import Classifier from "../classifier";
-import { useState, useRef, useCallback, useEffect } from "react";
-import Webcam from "react-webcam";
 import SavePopup from "../../components/body/save_popup";
 import UploadPopup from "../../components/body/upload_image";
-import { saveAs } from "file-saver";
-import ImageAnnotation from "../../components/body/image_annotation";
 
 interface ImageCache {
   label: string;
   src: string;
-  confidence: number;
-  prediction: string;
-  region: Array<number>;
+  scores: number[];
+  predictions: string[];
+  regions: any[];
   annotated: boolean;
 }
 
-// set up eslint
 // parse json file
-// set up authentification, talk to leron
 // look into azure storage api
 
-const Home = () => {
+const Home = (): JSX.Element => {
   const [captureEmpty, setCaptureEmpty] = useState<boolean>(true);
-  const [imageSrc, setImageSrc] = useState<string>(
-    "https://roadmap-tech.com/wp-content/uploads/2019/04/placeholder-image.jpg"
-  );
+  const [imageSrc, setImageSrc] = useState<string>("./placeholder-image.jpg");
   const [imageFormat, setImageFormat] = useState<string>("image/png");
   const [imageLabel, setImageLabel] = useState<string>("");
   const [annotationEmpty, setAnnotationEmpty] = useState<boolean>(true);
   const [saveOpen, setSaveOpen] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
-  const [annotationOpen, setAnnotationOpen] = useState<boolean>(false);
   const [imageCount, setImageCount] = useState<number>(1);
   const [imageCache, setImageCache] = useState<ImageCache[]>([]);
-  const [inferenceData, setInferenceData] = useState<any>([]);
 
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  const cache_image = (
+  const cacheImage = (
     label: string,
     src: string,
-    confidence: number,
-    prediction: string,
-    region: Array<number>,
-    annotated: boolean
-  ) => {
+    scores: number[],
+    predictions: string[],
+    regions: any[],
+    annotated: boolean,
+  ): void => {
     setImageCount((imageCount) => imageCount + 1);
     setImageCache((prevCache) => [
       ...prevCache,
       {
-        label: label,
-        src: src,
-        confidence: confidence,
-        prediction: prediction,
-        region: region,
-        annotated: annotated,
+        label,
+        src,
+        scores,
+        predictions,
+        regions,
+        annotated,
       },
     ]);
   };
 
-  const capture = () => {
-    const src = webcamRef.current!.getScreenshot();
-    setImageSrc(src!);
+  const capture = (): void => {
+    const src: string | null | undefined = webcamRef.current?.getScreenshot();
+    if (src === null || src === undefined) {
+      return;
+    }
+    setImageSrc(src);
     setCaptureEmpty(false);
-    cache_image(`Capture: ${imageCount}`, src!, 0, "", [], false);
+    cacheImage(`Capture: ${imageCount}`, src, [], [], [], false);
   };
 
-  const upload_image = (event: any) => {
+  const uploadImage = (event: any): void => {
     event.preventDefault();
     const src = URL.createObjectURL(event.target.files[0]);
     setImageSrc(src);
-    cache_image(`Capture: ${imageCount}`, src!, 0, "", [], false);
+    cacheImage(`Capture: ${imageCount}`, src, [], [], [], false);
     setUploadOpen(false);
     setCaptureEmpty(false);
   };
 
-  const load_from_cache = (event: any) => {
+  const loadFromCache = (event: any): void => {
     event.preventDefault();
     const src = event.target.getAttribute("data-value");
     setImageSrc(src);
     setCaptureEmpty(false);
   };
 
-  const check_cache_empty = () => {
+  const checkCacheEmpty = (): boolean => {
     if (imageCache.length === 1) {
-      setImageSrc(
-        "https://roadmap-tech.com/wp-content/uploads/2019/04/placeholder-image.jpg"
-      );
+      setImageSrc("./placeholder-image.jpg");
       setCaptureEmpty(true);
       setImageLabel("");
       return true;
@@ -97,7 +91,7 @@ const Home = () => {
     }
   };
 
-  const remove_image = (event: any) => {
+  const removeImage = (event: any): void => {
     event.preventDefault();
     const src = event.target.getAttribute("data-value");
     const newCache = imageCache.filter((item) => item.src !== src);
@@ -106,126 +100,154 @@ const Home = () => {
     if (newCache.length > 0) {
       setImageSrc(newCache[newCache.length - 1].src);
     }
-    check_cache_empty();
+    checkCacheEmpty();
   };
 
-  const clear_capture = () => {
+  const clearCapture = (): void => {
     const newCache = imageCache.filter((item) => item.src !== imageSrc);
     setImageCache(newCache);
     setImageCount((imageCount) => imageCount - 1);
     if (newCache.length > 0) {
       setImageSrc(newCache[newCache.length - 1].src);
     }
-    check_cache_empty();
+    checkCacheEmpty();
   };
 
-  const clear_cache = () => {
-    setImageSrc(
-      "https://roadmap-tech.com/wp-content/uploads/2019/04/placeholder-image.jpg"
-    );
+  const clearCache = (): void => {
+    setImageSrc("./placeholder-image.jpg");
     setCaptureEmpty(true);
     setImageLabel("");
     setImageCache([]);
     setImageCount(1);
-    check_cache_empty();
+    checkCacheEmpty();
   };
 
-  const save_image = () => {
+  const saveImage = (): void => {
     saveAs(
       imageSrc,
       `${imageLabel}-${new Date().getFullYear()}-${
         new Date().getMonth() + 1
-      }-${new Date().getDate()}.${imageFormat.split("/")[1]}`
+      }-${new Date().getDate()}.${imageFormat.split("/")[1]}`,
     );
-    setSaveOpen!(false);
+    setSaveOpen(false);
   };
 
-  const handleFormat = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleFormat = (event: React.ChangeEvent<HTMLSelectElement>): void => {
     setImageFormat(event.target.value);
   };
 
-  const handleLabel = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLabel = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setImageLabel(event.target.value);
   };
 
-  const handle_inference_request = () => {
-    fetch("./sim.json")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setInferenceData((prevData: any) => [...prevData, data]);
-      })
-      .catch((e: Error) => {
-        console.log(e.message);
+  const loadResultsToCache = (data: any): void => {
+    data.forEach((object: any) => {
+      object.boxes.forEach((params: any) => {
+        imageCache.forEach((item) => {
+          if (item.src === imageSrc) {
+            item.scores.push(params.score);
+            item.predictions.push(params.label);
+            item.regions.push(params.box);
+            item.annotated = true;
+          }
+        });
       });
-
-    console.log(inferenceData);
-
-    let region = [100, 100, 100, 100];
-    let prediction = "Canola";
-    let confidence = 0.9;
-    imageCache.forEach((item) => {
-      if (item.src === imageSrc) {
-        item.confidence = confidence;
-        item.prediction = prediction;
-        item.region = region;
-        item.annotated = true;
-      }
     });
-    load_to_canvas();
+    // data.forEach((object: any) => {
+    //   object.boxes.forEach((params: any) => {
+    //     imageCache.forEach((item) => {
+    //       if (item.src === imageSrc) {
+    //         setImageCache((prevCache) => [
+    //           ...prevCache,
+    //           {
+    //             label: item.label,
+    //             src: item.src,
+    //             scores: [params.score],
+    //             predictions: [params.label],
+    //             regions: [params.box],
+    //             annotated: true,
+    //           },
+    //         ]);
+    //       }
+    //     });
+    //   });
+    // });
+    loadToCanvas();
   };
 
-  const load_to_canvas = () => {
+  const handleInferenceRequest = (): void => {
+    (async () => {
+      try {
+        const response = await fetch("./sim.json");
+        const data = await response.json().then((data) => data);
+        loadResultsToCache(data);
+      } catch (error) {
+        console.error("error fetching inference data", error);
+      }
+    })().catch((error) => {
+      console.error(error);
+    });
+  };
+
+  const loadToCanvas = (): void => {
     const image = new Image();
     image.src = imageSrc;
-    const canvas = canvasRef.current;
-    const ctx = canvas!.getContext("2d");
+    const canvas: HTMLCanvasElement | null = canvasRef.current;
+    if (canvas === null) {
+      return;
+    }
+    const ctx: CanvasRenderingContext2D | null = canvas.getContext("2d");
+    if (ctx === null) {
+      return;
+    }
     image.onload = () => {
-      canvas!.width = image.width;
-      canvas!.height = image.height;
-      ctx!.drawImage(image, 0, 0);
-      imageCache.forEach((item) => {
-        if (item.src === imageSrc && item.annotated === true) {
-          ctx!.font = "20px Arial";
-          ctx!.fillStyle = "red";
-          ctx!.fillText(
-            item.prediction,
-            item.region[0] - 2,
-            item.region[1] - 5
-          );
-          ctx!.lineWidth = 3;
-          ctx!.setLineDash([5, 5]);
-          ctx!.strokeStyle = "red";
-          // iterate through region array and draw rectanlges on canvas
-          ctx!.rect(
-            item.region[0],
-            item.region[1],
-            item.region[2],
-            item.region[3]
-          );
+      canvas.width = image.width;
+      canvas.height = image.height;
+      ctx.drawImage(image, 0, 0);
+      imageCache.forEach((object) => {
+        if (object.src === imageSrc && object.annotated) {
+          object.predictions.forEach((prediction, index) => {
+            ctx.font = "15px Arial";
+            ctx.fillStyle = "red";
+            ctx.fillText(
+              `${prediction.split(" ").slice(1).join(" ")} - ${object.scores[
+                index
+              ].toFixed(2)}`,
+              object.regions[index].topX - 2,
+              object.regions[index].topY - 5,
+            );
+            ctx.lineWidth = 3;
+            ctx.setLineDash([5, 5]);
+            ctx.strokeStyle = "red";
+            ctx.rect(
+              object.regions[index].topX,
+              object.regions[index].topY,
+              object.regions[index].bottomX - object.regions[index].topX,
+              object.regions[index].bottomY - object.regions[index].topY,
+            );
+          });
         }
-        if (item.src === imageSrc) {
-          ctx!.font = "25px Arial";
-          ctx!.fillStyle = "white";
-          ctx!.fillText(item.label, 10, canvas!.height - 15);
+        if (object.src === imageSrc) {
+          ctx.font = "25px Arial";
+          ctx.fillStyle = "white";
+          ctx.fillText(object.label, 10, canvas.height - 15);
         }
-        ctx!.stroke();
+        ctx.stroke();
       });
     };
   };
 
   useEffect(() => {
-    load_to_canvas();
+    loadToCanvas();
   }, [imageSrc]);
 
   return (
     <HomeContainer>
-      {saveOpen === true && (
+      {saveOpen && (
         <SavePopup
           saveOpen={saveOpen}
           setSaveOpen={setSaveOpen}
-          saveImage={save_image}
+          saveImage={saveImage}
           imageFormat={imageFormat}
           imageLabel={imageLabel}
           setImageFormat={setImageFormat}
@@ -234,25 +256,18 @@ const Home = () => {
           handleLabel={handleLabel}
         />
       )}
-      {uploadOpen === true && (
+      {uploadOpen && (
         <UploadPopup
           setImageSrc={setImageSrc}
           capture={capture}
           uploadOpen={uploadOpen}
           setUploadOpen={setUploadOpen}
-          uploadImage={upload_image}
-        />
-      )}
-      {annotationOpen === true && (
-        <ImageAnnotation
-          imageSrc={imageSrc}
-          annotationOpen={annotationOpen}
-          setAnnotationOpen={setAnnotationOpen}
+          uploadImage={uploadImage}
         />
       )}
       <Classifier
         captureEmpty={captureEmpty}
-        handleInference={handle_inference_request}
+        handleInference={handleInferenceRequest}
         uploadOpen={uploadOpen}
         setUploadOpen={setUploadOpen}
         setCaptureEmpty={setCaptureEmpty}
@@ -267,16 +282,14 @@ const Home = () => {
         setAnnotationEmpty={setAnnotationEmpty}
         saveOpen={saveOpen}
         setSaveOpen={setSaveOpen}
-        clear={clear_capture}
+        clear={clearCapture}
         capture={capture}
-        saveImage={save_image}
-        annotationOpen={annotationOpen}
-        setAnnotationOpen={setAnnotationOpen}
+        saveImage={saveImage}
         savedImages={imageCache}
-        clearImageCache={clear_cache}
-        loadImage={load_from_cache}
+        clearImageCache={clearCache}
+        loadImage={loadFromCache}
         canvasRef={canvasRef}
-        removeImage={remove_image}
+        removeImage={removeImage}
       />
     </HomeContainer>
   );

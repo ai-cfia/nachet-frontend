@@ -1,11 +1,6 @@
-import {
-  CaptureContainer,
-  TitleHeader,
-  CaptureImage,
-  Canvas,
-} from "./indexElements";
+import { CaptureContainer, TitleHeader, Canvas } from "./indexElements";
 
-type params = {
+interface params {
   imageSrc: string;
   imageFormat: string;
   setImageFormat: React.Dispatch<React.SetStateAction<string>>;
@@ -13,14 +8,13 @@ type params = {
   setImageLabel: React.Dispatch<React.SetStateAction<string>>;
   captureEmpty: boolean;
   canvasRef: React.RefObject<HTMLCanvasElement>;
-};
+}
 
 const FeedCapture: React.FC<params> = (props) => {
   return (
     <CaptureContainer>
       <TitleHeader>FEED CAPTURE</TitleHeader>
-      {/* <CaptureImage src={props.imageSrc} alt="placeholder" /> */}
-      <Canvas ref={props.canvasRef} />
+      <Canvas ref={props.canvasRef} width={600} height={600} />
     </CaptureContainer>
   );
 };

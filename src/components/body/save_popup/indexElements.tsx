@@ -13,7 +13,9 @@ export const Overlay = styled.div<{ saveOpen: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: visibility 0.5s, opacity 0.5s;
+  transition:
+    visibility 0.5s,
+    opacity 0.5s;
 `;
 
 export const ModalWrapper = styled.div<{ saveOpen: boolean }>`

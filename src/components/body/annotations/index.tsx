@@ -6,14 +6,13 @@ import {
   ImageLabel,
   RemoveImage,
   LabelWrapper,
-  Icon,
 } from "./indexElements";
 
-type params = {
-  savedImages: Array<any>;
+interface params {
+  savedImages: any[];
   loadImage: (event: any) => void;
   removeImage: (event: any) => void;
-};
+}
 
 const Annotations: React.FC<params> = (props) => {
   return (
@@ -21,7 +20,7 @@ const Annotations: React.FC<params> = (props) => {
       <TitleHeader>CAPTURE CACHE</TitleHeader>
       <InfoContainer>
         {props.savedImages.map((item: any, index) => (
-          <LabelWrapper>
+          <LabelWrapper key={index}>
             <ImageLabel
               key={index}
               data-value={item.src}

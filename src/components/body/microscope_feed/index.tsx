@@ -18,7 +18,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
       try {
         const devices = await navigator.mediaDevices.enumerateDevices();
         const videoInputDevices = devices.filter(
-          (device) => device.kind === "videoinput"
+          (device) => device.kind === "videoinput",
         );
         setVideoDevices(videoInputDevices);
       } catch (error) {

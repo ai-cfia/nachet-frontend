@@ -5,21 +5,14 @@ import {
   TitleHeader,
 } from "./indexElements";
 import { colours } from "../../../styles/colours";
-import SavePopup from "../save_popup";
 
-type params = {
+interface params {
   captureEmpty: boolean;
   annotationEmpty: boolean;
-  setAnnotationOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  annotationOpen: boolean;
   handleInference: () => void;
-};
+}
 
 const ClassificationTools: React.FC<params> = (props) => {
-  const handleAnnotationOpen = () => {
-    props.setAnnotationOpen!(true);
-  };
-
   return (
     <ControlContainer>
       <TitleHeader>CLASSIFICATION TOOLS</TitleHeader>
@@ -30,13 +23,6 @@ const ClassificationTools: React.FC<params> = (props) => {
           onClick={props.handleInference}
         >
           Classify Capture
-        </Button>
-        <Button
-          disabled={props.captureEmpty}
-          color={colours.CFIA_Background_Blue}
-          onClick={handleAnnotationOpen}
-        >
-          Annotate
         </Button>
         <Button
           disabled={props.captureEmpty}

@@ -7,7 +7,7 @@ import {
 import { colours } from "../../../styles/colours";
 import React from "react";
 
-type params = {
+interface params {
   captureEmpty: boolean;
   capture: () => void;
   clear: () => void;
@@ -15,15 +15,15 @@ type params = {
   clearImageCache: () => void;
   uploadOpen: boolean;
   setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
-};
+}
 
 const FeedControl: React.FC<params> = (props) => {
-  const handleSaveOpen = () => {
-    props.setSaveOpen!(true);
+  const handleSaveOpen = (): void => {
+    props.setSaveOpen(true);
   };
 
-  const handleUploadOpen = () => {
-    props.setUploadOpen!(true);
+  const handleUploadOpen = (): void => {
+    props.setUploadOpen(true);
   };
 
   return (

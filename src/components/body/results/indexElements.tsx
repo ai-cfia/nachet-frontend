@@ -8,7 +8,7 @@ export const ResultContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: start;
-  width: 190px;
+  width: 220px;
   height: 305px;
   z-index: 0;
   position: relative;

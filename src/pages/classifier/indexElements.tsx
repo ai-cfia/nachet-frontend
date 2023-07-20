@@ -6,16 +6,15 @@ export const HomeContainer = styled.div`
   color: ${colours.CFIA_Font_black};
   display: flex;
   flex-direction: row;
+  justify-content: center;
   align-items: start;
+  width: 100%;
   height: fit-content;
-  max-width: fit-content;
   position: relative;
   padding: 24px 24px 24px 24px;
   z-index: 0;
-  margin: auto;
   margin-top: 24px;
   margin-bottom: 24px;
-  position: relative;
 
   @media screen and (max-width: 720px) {
     flex-direction: column;
