@@ -210,9 +210,9 @@ const Home = (): JSX.Element => {
             ctx.font = "15px Arial";
             ctx.fillStyle = "red";
             ctx.fillText(
-              `${prediction.split(" ").slice(1).join(" ")} - ${object.scores[
+              `${prediction.split(" ").slice(1).join(" ")} - ${(object.scores[
                 index
-              ].toFixed(2)}`,
+              ] * 100).toFixed(1)}`,
               object.regions[index].topX - 2,
               object.regions[index].topY - 5,
             );
