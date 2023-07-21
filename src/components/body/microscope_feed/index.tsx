@@ -24,7 +24,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
         titleTypographyProps={{
           variant: "h6",
           align: "left",
-          fontWeight: 800,
+          fontWeight: 600,
           color: colours.CFIA_Font_Black,
         }}
       />
