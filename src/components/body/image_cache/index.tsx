@@ -11,7 +11,8 @@ import {
   CardHeader,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import CropFreeIcon from '@mui/icons-material/CropFree';
+import CropFreeIcon from "@mui/icons-material/CropFree";
+import { colours } from "../../../styles/colours";
 
 interface params {
   savedImages: any[];
@@ -36,14 +37,27 @@ const ImageCache: React.FC<params> = (props) => {
       }}
     >
       <CardHeader
-        title="Capture Cache"
-        titleTypographyProps={{ variant: "h6" }}
+        title="CACHE"
+        titleTypographyProps={{
+          variant: "h6",
+          align: "left",
+          fontWeight: 800,
+          color: colours.CFIA_Font_black,
+        }}
       />
       <TableContainer sx={{ overflow: "auto", height: 260 }} component={Paper}>
         <Table>
           <TableBody>
             {props.savedImages.map((item: any, index) => (
-              <TableRow key={index}>
+              <TableRow
+                key={index}
+                sx={{
+                  "&:hover": {
+                    backgroundColor: "#D3D3D3",
+                    transition: "0.1s ease-in-out all",
+                  },
+                }}
+              >
                 <TableCell
                   sx={{
                     cursor: "pointer",
@@ -58,10 +72,14 @@ const ImageCache: React.FC<params> = (props) => {
                 </TableCell>
                 <TableCell align="center">
                   {item.annotated === true ? (
-                    <CropFreeIcon color="success" />
-                  )
-                   : (<> </>)
-                  }
+                    <CropFreeIcon
+                      color="success"
+                      fontSize="medium"
+                      sx={{ padding: 0, margin: 0 }}
+                    />
+                  ) : (
+                    <> </>
+                  )}
                 </TableCell>
                 <TableCell align="right">
                   <IconButton

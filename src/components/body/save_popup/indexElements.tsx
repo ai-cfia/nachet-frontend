@@ -21,7 +21,7 @@ export const Overlay = styled.div`
 export const ModalWrapper = styled.div`
   background-color: ${colours.CFIA_Background_White};
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 10px;
   width: 500px;
   height: 350px;
@@ -84,7 +84,7 @@ export const Button = styled.button`
   font-size: 1rem;
   margin-left: 15px;
   margin-right: 15px;
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 0.5rem 1rem;
   align-self: center;
   align-text: center;
@@ -111,6 +111,7 @@ export const InfoContainer = styled.div`
   width: fit-content;
   height: fit-content;
   margin: auto;
+  margin-top: 3rem;
 `;
 
 export const InfoRow = styled.div`

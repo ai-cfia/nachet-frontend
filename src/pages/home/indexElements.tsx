@@ -6,10 +6,12 @@ export const HomeContainer = styled.div`
   color: ${colours.CFIA_Font_black};
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: center;
   justify-content: center;
   height: fit-content;
   z-index: 0;
   position: relative;
+  margin-top: 100px;
+  margin-bottom: 100px;
   padding: 24px 24px 24px 24px;
 `;

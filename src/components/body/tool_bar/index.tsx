@@ -8,6 +8,7 @@ import ClearAllIcon from "@mui/icons-material/ClearAll";
 import SwitchLeftIcon from "@mui/icons-material/SwitchLeft";
 import CameraswitchIcon from "@mui/icons-material/Cameraswitch";
 import type Webcam from "react-webcam";
+import { colours } from "../../../styles/colours";
 
 interface params {
   imageSrc: string;
@@ -36,8 +37,13 @@ const ToolBar: React.FC<params> = (props) => {
       }}
     >
       <CardHeader
-        title="Tools"
-        titleTypographyProps={{ variant: "h6" }}
+        title="TOOLS"
+        titleTypographyProps={{
+          variant: "h6",
+          align: "left",
+          fontWeight: 800,
+          color: colours.CFIA_Font_black,
+        }}
         sx={{
           paddingBottom: 0,
         }}
@@ -57,15 +63,19 @@ const ToolBar: React.FC<params> = (props) => {
           sx={{
             alignContent: "center",
             alignItems: "center",
-            padding: 3,
+            padding: 1,
             marginTop: 2,
-            marginBottom: 2,
+            display: "flex",
+            flexDirection: "column",
+            fontSize: "0.9rem",
+            width: 0.07,
           }}
           onClick={() => {
             console.log("switch");
           }}
         >
-          <CameraswitchIcon fontSize="medium" />
+          <CameraswitchIcon fontSize="large" sx={{ paddingBottom: 0.5 }} />
+          SWITCH
         </Button>
         <Button
           variant="outlined"
@@ -73,13 +83,17 @@ const ToolBar: React.FC<params> = (props) => {
           sx={{
             alignContent: "center",
             alignItems: "center",
-            padding: 3,
+            padding: 1,
             marginTop: 2,
-            marginBottom: 2,
+            display: "flex",
+            flexDirection: "column",
+            fontSize: "0.9rem",
+            width: 0.07,
           }}
           onClick={props.capture}
         >
-          <AddAPhotoIcon fontSize="medium" />
+          <AddAPhotoIcon fontSize="large" sx={{ paddingBottom: 0.5 }} />
+          CAPTURE
         </Button>
         <Button
           variant="outlined"
@@ -87,15 +101,19 @@ const ToolBar: React.FC<params> = (props) => {
           sx={{
             alignContent: "center",
             alignItems: "center",
-            padding: 3,
+            padding: 1,
             marginTop: 2,
-            marginBottom: 2,
+            display: "flex",
+            flexDirection: "column",
+            fontSize: "0.9rem",
+            width: 0.07,
           }}
           onClick={() => {
             props.setUploadOpen(true);
           }}
         >
-          <UploadFileIcon fontSize="medium" />
+          <UploadFileIcon fontSize="large" sx={{ paddingBottom: 0.5 }} />
+          LOAD
         </Button>
         <Button
           variant="outlined"
@@ -103,29 +121,19 @@ const ToolBar: React.FC<params> = (props) => {
           sx={{
             alignContent: "center",
             alignItems: "center",
-            padding: 3,
+            padding: 1,
             marginTop: 2,
-            marginBottom: 2,
-          }}
-          onClick={props.clearImageCache}
-        >
-          <ClearAllIcon fontSize="medium" />
-        </Button>
-        <Button
-          variant="outlined"
-          size="large"
-          sx={{
-            alignContent: "center",
-            alignItems: "center",
-            padding: 3,
-            marginTop: 2,
-            marginBottom: 2,
+            display: "flex",
+            flexDirection: "column",
+            fontSize: "0.9rem",
+            width: 0.07,
           }}
           onClick={() => {
             props.setSaveOpen(true);
           }}
         >
-          <DownloadIcon fontSize="medium" />
+          <DownloadIcon fontSize="large" sx={{ paddingBottom: 0.5 }} />
+          SAVE
         </Button>
         <Button
           variant="outlined"
@@ -133,15 +141,37 @@ const ToolBar: React.FC<params> = (props) => {
           sx={{
             alignContent: "center",
             alignItems: "center",
-            padding: 3,
+            padding: 1,
             marginTop: 2,
-            marginBottom: 2,
+            display: "flex",
+            flexDirection: "column",
+            fontSize: "0.9rem",
+            width: 0.07,
+          }}
+          onClick={props.clearImageCache}
+        >
+          <ClearAllIcon fontSize="large" sx={{ paddingBottom: 0.5 }} />
+          CLEAR
+        </Button>
+        <Button
+          variant="outlined"
+          size="large"
+          sx={{
+            alignContent: "center",
+            alignItems: "center",
+            padding: 1,
+            marginTop: 2,
+            display: "flex",
+            flexDirection: "column",
+            fontSize: "0.9rem",
+            width: 0.07,
           }}
           onClick={() => {
             console.log("upload to azure");
           }}
         >
-          <CloudUploadIcon fontSize="medium" />
+          <CloudUploadIcon fontSize="large" sx={{ paddingBottom: 0.5 }} />
+          AZURE
         </Button>
         <Button
           variant="outlined"
@@ -149,13 +179,17 @@ const ToolBar: React.FC<params> = (props) => {
           sx={{
             alignContent: "center",
             alignItems: "center",
-            padding: 3,
+            padding: 1,
             marginTop: 2,
-            marginBottom: 2,
+            display: "flex",
+            flexDirection: "column",
+            fontSize: "0.9rem",
+            width: 0.07,
           }}
           onClick={props.handleInference}
         >
-          <CropFreeIcon fontSize="medium" />
+          <CropFreeIcon fontSize="large" sx={{ paddingBottom: 0.5 }} />
+          CLASSIFY
         </Button>
         <Button
           variant="outlined"
@@ -163,15 +197,19 @@ const ToolBar: React.FC<params> = (props) => {
           sx={{
             alignContent: "center",
             alignItems: "center",
-            padding: 3,
+            padding: 1,
             marginTop: 2,
-            marginBottom: 2,
+            display: "flex",
+            flexDirection: "column",
+            fontSize: "0.9rem",
+            width: 0.07,
           }}
           onClick={() => {
             console.log("switch model");
           }}
         >
-          <SwitchLeftIcon fontSize="medium" />
+          <SwitchLeftIcon fontSize="large" sx={{ paddingBottom: 0.5 }} />
+          MODEL
         </Button>
       </div>
     </Box>

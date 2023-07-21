@@ -1,6 +1,7 @@
 import Webcam from "react-webcam";
 import React from "react";
 import { Box, CardHeader } from "@mui/material";
+import { colours } from "../../../styles/colours";
 
 interface params {
   webcamRef: React.RefObject<Webcam>;
@@ -43,8 +44,13 @@ const MicroscopeFeed: React.FC<params> = (props) => {
       }}
     >
       <CardHeader
-        title="Microscope Feed"
-        titleTypographyProps={{ variant: "h6" }}
+        title="FEED"
+        titleTypographyProps={{
+          variant: "h6",
+          align: "left",
+          fontWeight: 800,
+          color: colours.CFIA_Font_black,
+        }}
       />
       <Webcam
         ref={props.webcamRef}

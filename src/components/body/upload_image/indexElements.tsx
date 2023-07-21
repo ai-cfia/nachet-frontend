@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { colours } from "../../../styles/colours";
-import { FaTimes } from "react-icons/fa";
 
 export const Overlay = styled.div`
   position: fixed;
@@ -50,34 +49,6 @@ export const ModalBody = styled.div`
   width: 100%;
 `;
 
-export const ModalTitle = styled.h1`
-  font-size: 1.5rem;
-  color: ${colours.CFIA_Font_black};
-  margin: 0;
-  padding: 10px;
-`;
-
-export const ModalRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: start;
-  width: 100%;
-`;
-
-export const CloseIcon = styled(FaTimes)`
-  color: ${colours.CFIA_Font_black};
-  font-size: 1.7rem;
-`;
-
-export const Icon = styled.div`
-  background: transparent;
-  cursor: pointer;
-  outline: none;
-  padding-top: 10px;
-  padding-right: 10px;
-`;
-
 export const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -86,6 +57,7 @@ export const InfoContainer = styled.div`
   width: fit-content;
   height: fit-content;
   margin: auto;
+  margin-top: 6rem;
 `;
 
 export const InfoRow = styled.div`

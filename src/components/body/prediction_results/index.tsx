@@ -9,6 +9,7 @@ import {
   Box,
   CardHeader,
 } from "@mui/material";
+import { colours } from "../../../styles/colours";
 
 interface params {
   savedImages: any[];
@@ -26,8 +27,13 @@ const Results: React.FC<params> = (props) => {
       }}
     >
       <CardHeader
-        title="Prediction Results"
-        titleTypographyProps={{ variant: "h6" }}
+        title="CLASSIFICATION RESULTS"
+        titleTypographyProps={{
+          variant: "h6",
+          align: "left",
+          fontWeight: 800,
+          color: colours.CFIA_Font_black,
+        }}
       />
       <TableContainer sx={{ overflow: "auto", height: 255 }} component={Paper}>
         <Table>

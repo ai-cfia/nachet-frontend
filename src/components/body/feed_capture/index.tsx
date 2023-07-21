@@ -1,5 +1,6 @@
 import { Box, CardHeader } from "@mui/material";
 import { Canvas } from "./indexElements";
+import { colours } from "../../../styles/colours";
 
 interface params {
   imageSrc: string;
@@ -23,8 +24,13 @@ const FeedCapture: React.FC<params> = (props) => {
       }}
     >
       <CardHeader
-        title="Feed Capture"
-        titleTypographyProps={{ variant: "h6" }}
+        title="CAPTURE"
+        titleTypographyProps={{
+          variant: "h6",
+          align: "left",
+          fontWeight: 800,
+          color: colours.CFIA_Font_black,
+        }}
       />
       <Canvas ref={props.canvasRef} width={600} height={600} />
     </Box>

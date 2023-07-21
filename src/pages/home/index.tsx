@@ -38,7 +38,7 @@ const Home = (): JSX.Element => {
     setImageCache((prevCache) => [
       ...prevCache,
       {
-        label: `Capture ${prevCache.length + 1}`,
+        label: `CAPTURE ${prevCache.length + 1}`,
         src,
         scores,
         predictions,
@@ -168,7 +168,7 @@ const Home = (): JSX.Element => {
             ctx.fillText(
               `${prediction.split(" ").slice(1).join(" ")} - ${(
                 object.scores[index] * 100
-              ).toFixed(1)}%`,
+              ).toFixed(0)}%`,
               object.regions[index].topX - 2,
               object.regions[index].topY - 5,
             );
@@ -188,7 +188,7 @@ const Home = (): JSX.Element => {
         if (object.src === imageSrc) {
           ctx.beginPath();
           ctx.font = "25px Arial";
-          ctx.fillStyle = "white";
+          ctx.fillStyle = "black";
           ctx.fillText(object.label, 10, canvas.height - 15);
           ctx.stroke();
           ctx.closePath();

@@ -12,7 +12,6 @@ export const RowContainer = styled.div`
   height: fit-content;
   position: relative;
   z-index: 0;
-  margin-bottom: 24px;
 
   @media screen and (max-width: 720px) {
     flex-direction: column;
