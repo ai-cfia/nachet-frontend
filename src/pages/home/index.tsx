@@ -171,7 +171,7 @@ const Home = (): JSX.Element => {
               object.regions[index].topX - 2,
               object.regions[index].topY - 5,
             );
-            ctx.lineWidth = 3;
+            ctx.lineWidth = 1;
             ctx.setLineDash([5, 5]);
             ctx.strokeStyle = "red";
             ctx.rect(
