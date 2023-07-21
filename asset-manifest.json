@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/seed-classification-interface/static/css/main.138c1426.css",
+    "main.js": "/seed-classification-interface/static/js/main.f0c792cd.js",
+    "static/js/787.bb6ae436.chunk.js": "/seed-classification-interface/static/js/787.bb6ae436.chunk.js",
+    "static/media/CFIA_blackfont.png": "/seed-classification-interface/static/media/CFIA_blackfont.65f37a4daa7549277afa.png",
+    "index.html": "/seed-classification-interface/index.html",
+    "main.138c1426.css.map": "/seed-classification-interface/static/css/main.138c1426.css.map",
+    "main.f0c792cd.js.map": "/seed-classification-interface/static/js/main.f0c792cd.js.map",
+    "787.bb6ae436.chunk.js.map": "/seed-classification-interface/static/js/787.bb6ae436.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.138c1426.css",
+    "static/js/main.f0c792cd.js"
+  ]
+}
