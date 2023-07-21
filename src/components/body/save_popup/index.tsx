@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Overlay,
-  ModalBody,
   ButtonWrap,
   Select,
   Option,
@@ -52,7 +51,7 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
             variant: "h6",
             align: "left",
             fontWeight: 800,
-            color: colours.CFIA_Font_black,
+            color: colours.CFIA_Font_Black,
             zIndex: 30,
           }}
           action={
@@ -64,38 +63,34 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
             paddingBottom: 0,
           }}
         />
-        <ModalBody>
-          <InfoContainer>
-            <LabelInput
-              placeholder="Capture label"
-              onChange={props.handleLabel}
-              disabled={props.captureEmpty}
-              value={props.imageLabel}
-            />
-            <Select value={props.imageFormat} onChange={props.handleFormat}>
-              <Option value="image/png">Capture Format: PNG</Option>
-              <Option value="image/jpeg">Capture Format: JPEG</Option>
-            </Select>
-          </InfoContainer>
-          <ButtonWrap>
-            <Button
-              variant="outlined"
-              size="large"
-              sx={{
-                alignContent: "center",
-                alignItems: "center",
-                padding: 2,
-                marginTop: 2,
-                display: "flex",
-                flexDirection: "column",
-                fontSize: "0.9rem",
-              }}
-              onClick={props.saveImage}
-            >
-              SAVE
-            </Button>
-          </ButtonWrap>
-        </ModalBody>
+        <InfoContainer>
+          <LabelInput
+            placeholder="Capture label"
+            onChange={props.handleLabel}
+            disabled={props.captureEmpty}
+            value={props.imageLabel}
+          />
+          <Select value={props.imageFormat} onChange={props.handleFormat}>
+            <Option value="image/png">Capture Format: PNG</Option>
+            <Option value="image/jpeg">Capture Format: JPEG</Option>
+          </Select>
+        </InfoContainer>
+        <ButtonWrap>
+          <Button
+            variant="outlined"
+            size="large"
+            sx={{
+              alignContent: "center",
+              alignItems: "center",
+              paddingLeft: 4,
+              paddingRight: 4,
+              fontSize: "0.9rem",
+            }}
+            onClick={props.saveImage}
+          >
+            SAVE
+          </Button>
+        </ButtonWrap>
       </Box>
     </Overlay>
   );

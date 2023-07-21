@@ -10,7 +10,7 @@ import type Webcam from "react-webcam";
 import React from "react";
 import FeedCapture from "../../components/body/feed_capture";
 import MicroscopeFeed from "../../components/body/microscope_feed";
-import Results from "../../components/body/prediction_results";
+import Results from "../../components/body/classification_results";
 import ImageCache from "../../components/body/image_cache";
 import ToolBar from "../../components/body/tool_bar";
 

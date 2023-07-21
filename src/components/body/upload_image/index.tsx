@@ -1,6 +1,6 @@
 import React from "react";
-import { Overlay, ModalBody, InfoContainer } from "./indexElements";
-import { Box, CardHeader, IconButton, Button, Input } from "@mui/material";
+import { Overlay, InfoContainer } from "./indexElements";
+import { Box, CardHeader, IconButton, Input } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { colours } from "../../../styles/colours";
 
@@ -22,7 +22,7 @@ const UploadPopup: React.FC<params> = (props): JSX.Element => {
       <Box
         sx={{
           width: 400,
-          height: 300,
+          height: 250,
           zIndex: 30,
           border: 1,
           borderRadius: 1,
@@ -35,7 +35,7 @@ const UploadPopup: React.FC<params> = (props): JSX.Element => {
             variant: "h6",
             align: "left",
             fontWeight: 800,
-            color: colours.CFIA_Font_black,
+            color: colours.CFIA_Font_Black,
             zIndex: 30,
           }}
           action={
@@ -47,26 +47,15 @@ const UploadPopup: React.FC<params> = (props): JSX.Element => {
             paddingBottom: 0,
           }}
         />
-        <ModalBody>
-          <InfoContainer>
-            <Button
-              variant="contained"
-              size="large"
-              sx={{
-                alignContent: "center",
-                alignItems: "center",
-                padding: 2,
-                display: "flex",
-                flexDirection: "column",
-                fontSize: "0.9rem",
-                backgroundColor: colours.CFIA_Background_White,
-                cursor: "pointer",
-              }}
-            >
-              <Input type="file" onChange={props.uploadImage} />
-            </Button>
-          </InfoContainer>
-        </ModalBody>
+        <InfoContainer>
+          <Input
+            type="file"
+            onChange={props.uploadImage}
+            sx={{
+              fontSize: 17,
+            }}
+          />
+        </InfoContainer>
       </Box>
     </Overlay>
   );

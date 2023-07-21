@@ -10,30 +10,6 @@ interface params {
 }
 
 const MicroscopeFeed: React.FC<params> = (props) => {
-  // const [videoDevices, setVideoDevices] = useState<
-  //   { deviceId: string; label: string }[]
-  // >([]);
-
-  // useEffect(() => {
-  //   const getVideoDevices = async () => {
-  //     try {
-  //       const devices = await navigator.mediaDevices.enumerateDevices();
-  //       const videoInputDevices = devices.filter(
-  //         (device) => device.kind === "videoinput",
-  //       );
-  //       setVideoDevices(videoInputDevices);
-  //     } catch (error) {
-  //       console.error("Error enumerating video devices:", error);
-  //     }
-  //   };
-
-  //   getVideoDevices();
-  // }, []);
-
-  // const handleDevices = (event: React.ChangeEvent<HTMLSelectElement>) => {
-  //   setSelectedDevice(event.target.value);
-  // };
-
   return (
     <Box
       sx={{
@@ -49,7 +25,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
           variant: "h6",
           align: "left",
           fontWeight: 800,
-          color: colours.CFIA_Font_black,
+          color: colours.CFIA_Font_Black,
         }}
       />
       <Webcam
@@ -64,14 +40,6 @@ const MicroscopeFeed: React.FC<params> = (props) => {
         }}
         screenshotFormat={props.imageFormat}
       />
-      {/* <Select value={selectedDevice} onChange={handleDevices}>
-            <Option value="">Select feed input</Option>
-            { videoDevices.map((device) => (
-               <Option key={device.deviceId} value={device.deviceId}>
-                  {device.label}
-               </Option>
-            ))}
-         </Select> */}
     </Box>
   );
 };

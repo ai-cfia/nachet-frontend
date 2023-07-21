@@ -30,10 +30,11 @@ const ImageCache: React.FC<params> = (props) => {
     <Box
       sx={{
         width: 400,
-        height: 320,
-        paddingBottom: 0.6,
+        height: "51%",
+        maxHeight: "51%",
         border: 1,
         borderRadius: 1,
+        marginTop: 1.5,
       }}
     >
       <CardHeader
@@ -42,10 +43,14 @@ const ImageCache: React.FC<params> = (props) => {
           variant: "h6",
           align: "left",
           fontWeight: 800,
-          color: colours.CFIA_Font_black,
+          color: colours.CFIA_Font_Black,
         }}
       />
-      <TableContainer sx={{ overflow: "auto", height: 260 }} component={Paper}>
+      <TableContainer
+        sx={{ overflow: "auto", height: 255 }}
+        id={"container_with_scrolls"}
+        component={Paper}
+      >
         <Table>
           <TableBody>
             {props.savedImages.map((item: any, index) => (

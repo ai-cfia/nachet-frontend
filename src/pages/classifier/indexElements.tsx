@@ -3,7 +3,7 @@ import { colours } from "../../styles/colours";
 
 export const RowContainer = styled.div`
   background: ${colours.CFIA_Background_White};
-  color: ${colours.CFIA_Font_black};
+  color: ${colours.CFIA_Font_Black};
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -21,7 +21,7 @@ export const RowContainer = styled.div`
 
 export const ColumnContainer = styled.div`
   background: ${colours.CFIA_Background_White};
-  color: ${colours.CFIA_Font_black};
+  color: ${colours.CFIA_Font_Black};
   display: flex;
   flex-direction: column;
   justify-content: center;

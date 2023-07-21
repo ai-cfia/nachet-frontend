@@ -15,15 +15,14 @@ interface params {
   savedImages: any[];
   imageSrc: string;
 }
-const Results: React.FC<params> = (props) => {
+const ClassificationResults: React.FC<params> = (props) => {
   return (
     <Box
       sx={{
         width: 400,
-        height: 320,
+        height: 330,
         border: 1,
         borderRadius: 1,
-        marginBottom: 1.5,
       }}
     >
       <CardHeader
@@ -32,10 +31,10 @@ const Results: React.FC<params> = (props) => {
           variant: "h6",
           align: "left",
           fontWeight: 800,
-          color: colours.CFIA_Font_black,
+          color: colours.CFIA_Font_Black,
         }}
       />
-      <TableContainer sx={{ overflow: "auto", height: 255 }} component={Paper}>
+      <TableContainer sx={{ overflow: "auto", height: 266 }} component={Paper}>
         <Table>
           <TableBody>
             {props.savedImages.map((object: any, index) => {
@@ -63,4 +62,4 @@ const Results: React.FC<params> = (props) => {
   );
 };
 
-export default Results;
+export default ClassificationResults;

@@ -60,7 +60,7 @@ export const FooterLogo = styled.img`
 `;
 
 export const FooterText = styled.a`
-  color: ${colours.CFIA_Font_black};
+  color: ${colours.CFIA_Font_Black};
   font-size: 0.8rem;
   text-decoration: none;
   cursor: pointer;

@@ -3,7 +3,7 @@ import { colours } from "../../../styles/colours";
 
 export const AppbarWrap = styled.div`
   background-color: ${colours.CFIA_Background_Blue};
-  color: ${colours.CFIA_Font_white};
+  color: ${colours.CFIA_Font_White};
   height: 50px;
   display: flex;
   width: 100%;
@@ -30,7 +30,7 @@ export const AppbarContainer = styled.div`
 `;
 
 export const AppbarHeader = styled.h2`
-  color: ${colours.CFIA_Font_white};
+  color: ${colours.CFIA_Font_White};
   font-size: 1.3rem;
   font-weight: bold;
   text-decoration: none;

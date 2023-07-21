@@ -3,7 +3,7 @@ import { colours } from "../../styles/colours";
 
 export const HomeContainer = styled.div`
   background: ${colours.CFIA_Background_White};
-  color: ${colours.CFIA_Font_black};
+  color: ${colours.CFIA_Font_Black};
   display: flex;
   flex-direction: column;
   align-items: center;
