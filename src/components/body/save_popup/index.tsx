@@ -51,7 +51,7 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
           titleTypographyProps={{
             variant: "h6",
             align: "left",
-            fontWeight: 800,
+            fontWeight: 600,
             color: colours.CFIA_Font_black,
             zIndex: 30,
           }}
