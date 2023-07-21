@@ -1,5 +1,6 @@
 {
   "name": "nachet-frontend",
+  "homepage": "https://ai-cfia.github.io/seed-classification-interface",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -67,6 +68,7 @@
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.32.2",
+    "gh-pages": "^5.0.0",
     "prettier": "^3.0.0",
     "typescript": "^5.1.6"
   }
