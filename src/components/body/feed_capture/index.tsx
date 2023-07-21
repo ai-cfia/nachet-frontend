@@ -1,4 +1,5 @@
-import { CaptureContainer, TitleHeader, Canvas } from "./indexElements";
+import { Box, CardHeader, Button } from "@mui/material";
+import { Canvas } from "./indexElements";
 
 interface params {
   imageSrc: string;
@@ -8,14 +9,31 @@ interface params {
   setImageLabel: React.Dispatch<React.SetStateAction<string>>;
   captureEmpty: boolean;
   canvasRef: React.RefObject<HTMLCanvasElement>;
+  handleInference: () => void;
 }
 
 const FeedCapture: React.FC<params> = (props) => {
   return (
-    <CaptureContainer>
-      <TitleHeader>FEED CAPTURE</TitleHeader>
+    <Box
+      sx={{
+        width: 600,
+        height: 664,
+        border: 1,
+        borderRadius: 1,
+      }}
+    >
+      <CardHeader
+        title="Feed Capture"
+        titleTypographyProps={{ variant: "h6" }}
+        action={
+          <>
+            <Button onClick={props.handleInference}>Classify</Button>
+            <Button>Switch Model</Button>
+          </>
+        }
+      />
       <Canvas ref={props.canvasRef} width={600} height={600} />
-    </CaptureContainer>
+    </Box>
   );
 };
 

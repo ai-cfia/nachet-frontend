@@ -67,15 +67,11 @@ const Home = (): JSX.Element => {
     setCaptureEmpty(false);
   };
 
-  const loadFromCache = (event: any): void => {
-    event.preventDefault();
-    const src = event.target.getAttribute("data-value");
+  const loadFromCache = (src: string): void => {
     setImageSrc(src);
   };
 
-  const removeFromCache = (event: any): void => {
-    event.preventDefault();
-    const src = event.target.getAttribute("data-value");
+  const removeFromCache = (src: string): void => {
     const newCache = imageCache.filter((item) => item.src !== src);
     setImageCache(newCache);
     if (imageCache.length > 1) {
@@ -89,6 +85,7 @@ const Home = (): JSX.Element => {
   const clearCache = (): void => {
     setImageCache([]);
     setCaptureEmpty(true);
+    setImageSrc("./placeholder-image.jpg");
   };
 
   const saveImage = (): void => {

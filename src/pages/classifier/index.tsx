@@ -3,17 +3,14 @@ import {
   LeftContent,
   RightContent,
   BottomContent,
-  ControlContent,
   InfoContent,
 } from "./indexElements";
 import type Webcam from "react-webcam";
 import React from "react";
 import FeedCapture from "../../components/body/feed_capture";
 import MicroscopeFeed from "../../components/body/microscope_feed";
-import FeedControl from "../../components/body/feed_control";
-import ClassificationTools from "../../components/body/classification_tools";
-import Results from "../../components/body/results";
-import Annotations from "../../components/body/annotations";
+import Results from "../../components/body/prediction_results";
+import ImageCache from "../../components/body/image_cache";
 
 interface params {
   captureEmpty: boolean;
@@ -33,40 +30,27 @@ interface params {
   capture: () => void;
   savedImages: any[];
   clearImageCache: () => void;
-  loadImage: (event: any) => void;
+  loadImage: (src: string) => void;
   uploadOpen: boolean;
   setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
   canvasRef: React.RefObject<HTMLCanvasElement>;
   handleInference: () => void;
-  removeImage: (event: any) => void;
+  removeImage: (string: any) => void;
 }
 
 const Classifier: React.FC<params> = (props) => {
   return (
     <HomeContainer>
-      <ControlContent>
-        <FeedControl
-          captureEmpty={props.captureEmpty}
-          capture={props.capture}
-          setSaveOpen={props.setSaveOpen}
-          clearImageCache={props.clearImageCache}
-          setUploadOpen={props.setUploadOpen}
-          uploadOpen={props.uploadOpen}
-        />
-        <ClassificationTools
-          captureEmpty={props.captureEmpty}
-          annotationEmpty={props.annotationEmpty}
-          handleInference={props.handleInference}
-        />
-      </ControlContent>
       <LeftContent>
         <MicroscopeFeed
+          capture={props.capture}
           webcamRef={props.webcamRef}
           imageFormat={props.imageFormat}
         />
       </LeftContent>
       <RightContent>
         <FeedCapture
+          handleInference={props.handleInference}
           canvasRef={props.canvasRef}
           imageSrc={props.imageSrc}
           imageFormat={props.imageFormat}
@@ -75,15 +59,21 @@ const Classifier: React.FC<params> = (props) => {
           setImageLabel={props.setImageLabel}
           captureEmpty={props.captureEmpty}
         />
-        <BottomContent></BottomContent>
+        <BottomContent>
+          <ImageCache
+            saveOpen={props.saveOpen}
+            removeImage={props.removeImage}
+            savedImages={props.savedImages}
+            loadImage={props.loadImage}
+            setSaveOpen={props.setSaveOpen}
+            clearImageCache={props.clearImageCache}
+            setUploadOpen={props.setUploadOpen}
+            uploadOpen={props.uploadOpen}
+          />
+        </BottomContent>
       </RightContent>
       <InfoContent>
         <Results savedImages={props.savedImages} imageSrc={props.imageSrc} />
-        <Annotations
-          removeImage={props.removeImage}
-          savedImages={props.savedImages}
-          loadImage={props.loadImage}
-        />
       </InfoContent>
     </HomeContainer>
   );

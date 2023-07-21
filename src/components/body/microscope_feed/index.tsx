@@ -1,10 +1,11 @@
-import { VideoFeed, TitleHeader } from "./indexElements";
 import Webcam from "react-webcam";
 import React from "react";
+import { Box, CardHeader, Button } from "@mui/material";
 
 interface params {
   webcamRef: React.RefObject<Webcam>;
   imageFormat: any;
+  capture: () => void;
 }
 
 const MicroscopeFeed: React.FC<params> = (props) => {
@@ -33,11 +34,30 @@ const MicroscopeFeed: React.FC<params> = (props) => {
   // };
 
   return (
-    <VideoFeed>
-      <TitleHeader>MICROSCOPE FEED</TitleHeader>
+    <Box
+      sx={{
+        width: 600,
+        height: 664,
+        border: 1,
+        borderRadius: 1,
+      }}
+    >
+      <CardHeader
+        title="Microscope Feed"
+        titleTypographyProps={{ variant: "h6" }}
+        action={
+          <>
+            <Button onClick={props.capture}>Capture Feed</Button>
+            <Button>Switch Device</Button>
+          </>
+        }
+      />
+
       <Webcam
         ref={props.webcamRef}
         mirrored={false}
+        width={600}
+        height={600}
         videoConstraints={{
           width: 600,
           height: 600,
@@ -53,7 +73,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
                </Option>
             ))}
          </Select> */}
-    </VideoFeed>
+    </Box>
   );
 };
 

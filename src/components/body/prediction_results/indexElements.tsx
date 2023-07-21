@@ -8,11 +8,12 @@ export const ResultContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: start;
-  width: 220px;
-  height: 305px;
+  width: 300px;
+  margin-right: 10px;
+  height: 310px;
   z-index: 0;
   position: relative;
-  padding: 5px 5px 0px 5px;
+  padding: 5px 5px 5px 5px;
   border: 1px solid ${colours.CFIA_Font_black};
   border-radius: 10px;
   overflow: hidden;

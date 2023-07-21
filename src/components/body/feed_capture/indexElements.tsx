@@ -39,5 +39,4 @@ export const TitleHeader = styled.h2`
 export const Canvas = styled.canvas`
   width: 600px;
   height: 600px;
-  z-index: 0;
 `;

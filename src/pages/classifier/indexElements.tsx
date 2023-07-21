@@ -29,7 +29,7 @@ export const InfoContent = styled.div`
   justify-content: start;
   width: fit-content;
   height: fit-content;
-  padding: 0px 0px 0px 10px;
+  padding: 0px 0px 0px 5px;
   z-index: 0;
   position: relative;
 `;
@@ -74,7 +74,8 @@ export const BottomContent = styled.div`
   display: flex;
   flex-direction: row;
   align-items: start;
-  justify-content: start;
-  width: fit-content;
+  justify-content: center;
+  margin-top: 10px;
+  width: 610px;
   height: fit-content;
 `;
