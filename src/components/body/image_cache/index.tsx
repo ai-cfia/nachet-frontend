@@ -11,6 +11,7 @@ import {
   CardHeader,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CropFreeIcon from '@mui/icons-material/CropFree';
 
 interface params {
   savedImages: any[];
@@ -46,6 +47,7 @@ const ImageCache: React.FC<params> = (props) => {
                 <TableCell
                   sx={{
                     cursor: "pointer",
+                    paddingRight: 0,
                   }}
                   align="left"
                   onClick={() => {
@@ -53,6 +55,13 @@ const ImageCache: React.FC<params> = (props) => {
                   }}
                 >
                   {item.label}
+                </TableCell>
+                <TableCell align="center">
+                  {item.annotated === true ? (
+                    <CropFreeIcon color="success" />
+                  )
+                   : (<> </>)
+                  }
                 </TableCell>
                 <TableCell align="right">
                   <IconButton

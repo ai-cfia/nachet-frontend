@@ -1,9 +1,9 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, CardHeader } from "@mui/material";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import DownloadIcon from "@mui/icons-material/Download";
-import CropSquareIcon from "@mui/icons-material/CropSquare";
+import CropFreeIcon from "@mui/icons-material/CropFree";
 import ClearAllIcon from "@mui/icons-material/ClearAll";
 import SwitchLeftIcon from "@mui/icons-material/SwitchLeft";
 import CameraswitchIcon from "@mui/icons-material/Cameraswitch";
@@ -30,11 +30,18 @@ const ToolBar: React.FC<params> = (props) => {
     <Box
       sx={{
         width: 1625,
-        height: 100,
+        height: 170,
         border: 1,
         borderRadius: 1,
       }}
     >
+      <CardHeader
+        title="Tools"
+        titleTypographyProps={{ variant: "h6" }}
+        sx={{
+          paddingBottom: 0,
+        }}
+      />
       <div
         style={{
           display: "flex",
@@ -148,7 +155,7 @@ const ToolBar: React.FC<params> = (props) => {
           }}
           onClick={props.handleInference}
         >
-          <CropSquareIcon fontSize="medium" />
+          <CropFreeIcon fontSize="medium" />
         </Button>
         <Button
           variant="outlined"

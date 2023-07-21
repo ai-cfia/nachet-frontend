@@ -1,4 +1,4 @@
-import { Box, CardHeader, Button } from "@mui/material";
+import { Box, CardHeader } from "@mui/material";
 import { Canvas } from "./indexElements";
 
 interface params {
@@ -25,12 +25,6 @@ const FeedCapture: React.FC<params> = (props) => {
       <CardHeader
         title="Feed Capture"
         titleTypographyProps={{ variant: "h6" }}
-        action={
-          <>
-            <Button onClick={props.handleInference}>Classify</Button>
-            <Button>Switch Model</Button>
-          </>
-        }
       />
       <Canvas ref={props.canvasRef} width={600} height={600} />
     </Box>

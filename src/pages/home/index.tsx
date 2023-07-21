@@ -162,6 +162,7 @@ const Home = (): JSX.Element => {
       imageCache.forEach((object) => {
         if (object.src === imageSrc && object.annotated) {
           object.predictions.forEach((prediction, index) => {
+            ctx.beginPath();
             ctx.font = "16px Arial";
             ctx.fillStyle = "red";
             ctx.fillText(
@@ -180,14 +181,18 @@ const Home = (): JSX.Element => {
               object.regions[index].bottomX - object.regions[index].topX,
               object.regions[index].bottomY - object.regions[index].topY,
             );
+            ctx.stroke();
+            ctx.closePath();
           });
         }
         if (object.src === imageSrc) {
+          ctx.beginPath();
           ctx.font = "25px Arial";
           ctx.fillStyle = "white";
           ctx.fillText(object.label, 10, canvas.height - 15);
+          ctx.stroke();
+          ctx.closePath();
         }
-        ctx.stroke();
       });
     };
   };

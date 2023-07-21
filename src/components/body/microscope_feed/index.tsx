@@ -1,6 +1,6 @@
 import Webcam from "react-webcam";
 import React from "react";
-import { Box, CardHeader, Button } from "@mui/material";
+import { Box, CardHeader } from "@mui/material";
 
 interface params {
   webcamRef: React.RefObject<Webcam>;
@@ -45,14 +45,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
       <CardHeader
         title="Microscope Feed"
         titleTypographyProps={{ variant: "h6" }}
-        action={
-          <>
-            <Button onClick={props.capture}>Capture Feed</Button>
-            <Button>Switch Device</Button>
-          </>
-        }
       />
-
       <Webcam
         ref={props.webcamRef}
         mirrored={false}
