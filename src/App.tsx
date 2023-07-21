@@ -2,7 +2,7 @@ import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { Fragment } from "react";
 import Navbar from "./components/header/navbar";
-import Home from "./pages/home";
+import Home from "./pages/body";
 import Footer from "./components/footer";
 import Appbar from "./components/header/appbar";
 
