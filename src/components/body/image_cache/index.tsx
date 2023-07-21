@@ -9,7 +9,6 @@ import {
   IconButton,
   Box,
   CardHeader,
-  Button,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -28,8 +27,8 @@ const ImageCache: React.FC<params> = (props) => {
   return (
     <Box
       sx={{
-        width: 600,
-        height: 301,
+        width: 400,
+        height: 320,
         paddingBottom: 0.6,
         border: 1,
         borderRadius: 1,
@@ -37,30 +36,9 @@ const ImageCache: React.FC<params> = (props) => {
     >
       <CardHeader
         title="Capture Cache"
-        subheader="Select a capture to load"
         titleTypographyProps={{ variant: "h6" }}
-        action={
-          <>
-            <Button
-              onClick={() => {
-                props.setSaveOpen(true);
-              }}
-            >
-              Download
-            </Button>
-            <Button
-              onClick={() => {
-                props.setUploadOpen(true);
-              }}
-            >
-              Load
-            </Button>
-            <Button>Azure</Button>
-            <Button onClick={props.clearImageCache}>Clear</Button>
-          </>
-        }
       />
-      <TableContainer sx={{ overflow: "auto", height: 218 }} component={Paper}>
+      <TableContainer sx={{ overflow: "auto", height: 260 }} component={Paper}>
         <Table>
           <TableBody>
             {props.savedImages.map((item: any, index) => (

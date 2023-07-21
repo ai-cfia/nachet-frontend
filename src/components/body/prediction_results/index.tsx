@@ -18,17 +18,18 @@ const Results: React.FC<params> = (props) => {
   return (
     <Box
       sx={{
-        width: 300,
-        height: 301,
+        width: 400,
+        height: 320,
         border: 1,
         borderRadius: 1,
+        marginBottom: 1.5,
       }}
     >
       <CardHeader
         title="Prediction Results"
         titleTypographyProps={{ variant: "h6" }}
       />
-      <TableContainer sx={{ overflow: "auto", height: 237 }} component={Paper}>
+      <TableContainer sx={{ overflow: "auto", height: 255 }} component={Paper}>
         <Table>
           <TableBody>
             {props.savedImages.map((object: any, index) => {
@@ -36,10 +37,12 @@ const Results: React.FC<params> = (props) => {
                 return object.predictions.map(
                   (prediction: any, index: number) => (
                     <TableRow key={index}>
-                      <TableCell>
+                      <TableCell align="left">
                         {prediction.split(" ").slice(1).join(" ")}
                       </TableCell>
-                      <TableCell>{object.scores[index] * 100}%</TableCell>
+                      <TableCell align="right">
+                        {object.scores[index] * 100}%
+                      </TableCell>
                     </TableRow>
                   ),
                 );

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { colours } from "../../styles/colours";
 
-export const HomeContainer = styled.div`
+export const RowContainer = styled.div`
   background: ${colours.CFIA_Background_White};
   color: ${colours.CFIA_Font_black};
   display: flex;
@@ -11,15 +11,25 @@ export const HomeContainer = styled.div`
   width: 100%;
   height: fit-content;
   position: relative;
-  padding: 24px 24px 24px 24px;
   z-index: 0;
-  margin-top: 24px;
   margin-bottom: 24px;
 
   @media screen and (max-width: 720px) {
     flex-direction: column;
     justify-content: start;
   }
+`;
+
+export const ColumnContainer = styled.div`
+  background: ${colours.CFIA_Background_White};
+  color: ${colours.CFIA_Font_black};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: fit-content;
+  position: relative;
 `;
 
 export const InfoContent = styled.div`
@@ -29,9 +39,18 @@ export const InfoContent = styled.div`
   justify-content: start;
   width: fit-content;
   height: fit-content;
-  padding: 0px 0px 0px 5px;
+  padding: 0px 0px 0px 10px;
   z-index: 0;
   position: relative;
+`;
+
+export const TopContent = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0px 0px 10px 0px;
 `;
 
 export const ControlContent = styled.div`

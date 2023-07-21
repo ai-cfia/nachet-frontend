@@ -11,4 +11,5 @@ export const HomeContainer = styled.div`
   height: fit-content;
   z-index: 0;
   position: relative;
+  padding: 24px 24px 24px 24px;
 `;

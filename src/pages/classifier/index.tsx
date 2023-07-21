@@ -1,9 +1,10 @@
 import {
-  HomeContainer,
+  RowContainer,
   LeftContent,
   RightContent,
-  BottomContent,
   InfoContent,
+  TopContent,
+  ColumnContainer,
 } from "./indexElements";
 import type Webcam from "react-webcam";
 import React from "react";
@@ -11,6 +12,7 @@ import FeedCapture from "../../components/body/feed_capture";
 import MicroscopeFeed from "../../components/body/microscope_feed";
 import Results from "../../components/body/prediction_results";
 import ImageCache from "../../components/body/image_cache";
+import ToolBar from "../../components/body/tool_bar";
 
 interface params {
   captureEmpty: boolean;
@@ -40,16 +42,11 @@ interface params {
 
 const Classifier: React.FC<params> = (props) => {
   return (
-    <HomeContainer>
-      <LeftContent>
-        <MicroscopeFeed
-          capture={props.capture}
-          webcamRef={props.webcamRef}
-          imageFormat={props.imageFormat}
-        />
-      </LeftContent>
-      <RightContent>
-        <FeedCapture
+    <ColumnContainer>
+      <TopContent>
+        <ToolBar
+          setSaveOpen={props.setSaveOpen}
+          clearImageCache={props.clearImageCache}
           handleInference={props.handleInference}
           canvasRef={props.canvasRef}
           imageSrc={props.imageSrc}
@@ -58,8 +55,33 @@ const Classifier: React.FC<params> = (props) => {
           imageLabel={props.imageLabel}
           setImageLabel={props.setImageLabel}
           captureEmpty={props.captureEmpty}
+          capture={props.capture}
+          webcamRef={props.webcamRef}
+          setUploadOpen={props.setUploadOpen}
         />
-        <BottomContent>
+      </TopContent>
+      <RowContainer>
+        <LeftContent>
+          <MicroscopeFeed
+            capture={props.capture}
+            webcamRef={props.webcamRef}
+            imageFormat={props.imageFormat}
+          />
+        </LeftContent>
+        <RightContent>
+          <FeedCapture
+            handleInference={props.handleInference}
+            canvasRef={props.canvasRef}
+            imageSrc={props.imageSrc}
+            imageFormat={props.imageFormat}
+            setImageFormat={props.setImageFormat}
+            imageLabel={props.imageLabel}
+            setImageLabel={props.setImageLabel}
+            captureEmpty={props.captureEmpty}
+          />
+        </RightContent>
+        <InfoContent>
+          <Results savedImages={props.savedImages} imageSrc={props.imageSrc} />
           <ImageCache
             saveOpen={props.saveOpen}
             removeImage={props.removeImage}
@@ -70,12 +92,9 @@ const Classifier: React.FC<params> = (props) => {
             setUploadOpen={props.setUploadOpen}
             uploadOpen={props.uploadOpen}
           />
-        </BottomContent>
-      </RightContent>
-      <InfoContent>
-        <Results savedImages={props.savedImages} imageSrc={props.imageSrc} />
-      </InfoContent>
-    </HomeContainer>
+        </InfoContent>
+      </RowContainer>
+    </ColumnContainer>
   );
 };
 
