@@ -12,17 +12,12 @@ import CloseIcon from "@mui/icons-material/Close";
 import { colours } from "../../../styles/colours";
 
 interface params {
-  saveOpen: boolean;
   setSaveOpen?: React.Dispatch<React.SetStateAction<boolean>>;
-  imageSrc?: string;
   saveImage?: () => void;
   imageFormat?: string;
   imageLabel?: string;
-  setImageFormat?: React.Dispatch<React.SetStateAction<string>>;
-  setImageLabel?: React.Dispatch<React.SetStateAction<string>>;
   handleFormat?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   handleLabel?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  captureEmpty?: boolean;
 }
 
 const SavePopup: React.FC<params> = (props): JSX.Element => {
@@ -67,7 +62,6 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
           <LabelInput
             placeholder="Capture label"
             onChange={props.handleLabel}
-            disabled={props.captureEmpty}
             value={props.imageLabel}
           />
           <Select value={props.imageFormat} onChange={props.handleFormat}>

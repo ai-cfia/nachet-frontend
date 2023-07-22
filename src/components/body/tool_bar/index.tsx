@@ -6,20 +6,10 @@ import DownloadIcon from "@mui/icons-material/Download";
 import CropFreeIcon from "@mui/icons-material/CropFree";
 import ClearAllIcon from "@mui/icons-material/ClearAll";
 import SwitchLeftIcon from "@mui/icons-material/SwitchLeft";
-import CameraswitchIcon from "@mui/icons-material/Cameraswitch";
-import type Webcam from "react-webcam";
 import { colours } from "../../../styles/colours";
 
 interface params {
-  imageSrc: string;
-  imageFormat: string;
-  setImageFormat: React.Dispatch<React.SetStateAction<string>>;
-  imageLabel: string;
-  setImageLabel: React.Dispatch<React.SetStateAction<string>>;
-  captureEmpty: boolean;
-  canvasRef: React.RefObject<HTMLCanvasElement>;
   handleInference: () => void;
-  webcamRef: React.RefObject<Webcam>;
   capture: () => void;
   setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
   clearImageCache: () => void;
@@ -57,26 +47,6 @@ const ToolBar: React.FC<params> = (props) => {
           width: "100%",
         }}
       >
-        <Button
-          variant="outlined"
-          size="large"
-          sx={{
-            alignContent: "center",
-            alignItems: "center",
-            padding: 1,
-            marginTop: 2,
-            display: "flex",
-            flexDirection: "column",
-            fontSize: "0.9rem",
-            width: 0.07,
-          }}
-          onClick={() => {
-            console.log("switch");
-          }}
-        >
-          <CameraswitchIcon fontSize="large" sx={{ paddingBottom: 0.5 }} />
-          SWITCH
-        </Button>
         <Button
           variant="outlined"
           size="large"

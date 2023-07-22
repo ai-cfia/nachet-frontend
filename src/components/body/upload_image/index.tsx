@@ -5,10 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { colours } from "../../../styles/colours";
 
 interface params {
-  capture: () => void;
-  uploadOpen: boolean;
   setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setImageSrc: React.Dispatch<React.SetStateAction<string>>;
   uploadImage: (event: any) => void;
 }
 

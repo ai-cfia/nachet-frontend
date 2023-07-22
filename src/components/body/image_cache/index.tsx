@@ -18,11 +18,6 @@ interface params {
   savedImages: any[];
   loadImage: (src: string) => void;
   removeImage: (src: string) => void;
-  setSaveOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  saveOpen: boolean;
-  clearImageCache: () => void;
-  uploadOpen: boolean;
-  setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ImageCache: React.FC<params> = (props) => {

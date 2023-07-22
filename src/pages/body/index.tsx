@@ -18,11 +18,10 @@ interface ImageCache {
 const Home = (): JSX.Element => {
   const [captureEmpty, setCaptureEmpty] = useState<boolean>(true);
   const [imageSrc, setImageSrc] = useState<string>(
-    "nachet-frontend/placeholder-image.jpg",
+    "https://ai-cfia.github.io/nachet-frontend/placeholder-image.jpg",
   );
   const [imageFormat, setImageFormat] = useState<string>("image/png");
   const [imageLabel, setImageLabel] = useState<string>("");
-  const [annotationEmpty, setAnnotationEmpty] = useState<boolean>(true);
   const [saveOpen, setSaveOpen] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
   const [imageCache, setImageCache] = useState<ImageCache[]>([]);
@@ -50,7 +49,7 @@ const Home = (): JSX.Element => {
     ]);
   };
 
-  const capture = (): void => {
+  const captureFeed = (): void => {
     const src: string | null | undefined = webcamRef.current?.getScreenshot();
     if (src === null || src === undefined) {
       return;
@@ -79,7 +78,9 @@ const Home = (): JSX.Element => {
     if (imageCache.length > 1) {
       setImageSrc(newCache[newCache.length - 1].src);
     } else {
-      setImageSrc("nachet-frontend/placeholder-image.jpg");
+      setImageSrc(
+        "https://ai-cfia.github.io/nachet-frontend/placeholder-image.jpg",
+      );
       setCaptureEmpty(true);
     }
   };
@@ -87,7 +88,9 @@ const Home = (): JSX.Element => {
   const clearCache = (): void => {
     setImageCache([]);
     setCaptureEmpty(true);
-    setImageSrc("nachet-frontend/placeholder-image.jpg");
+    setImageSrc(
+      "https://ai-cfia.github.io/nachet-frontend/placeholder-image.jpg",
+    );
   };
 
   const saveImage = (): void => {
@@ -135,14 +138,18 @@ const Home = (): JSX.Element => {
   const handleInferenceRequest = (): void => {
     (async () => {
       try {
-        const response = await fetch("nachet-frontend/sim.json");
+        const response = await fetch(
+          "https://ai-cfia.github.io/nachet-frontend/sim.json",
+        );
         const data = await response.json().then((data) => data);
         loadResultsToCache(data);
       } catch (error) {
         console.error("error fetching inference data", error);
+        alert("No response from server");
       }
     })().catch((error) => {
       console.error(error);
+      alert("Cannot connect to server");
     });
   };
 
@@ -218,45 +225,31 @@ const Home = (): JSX.Element => {
     <HomeContainer>
       {saveOpen && (
         <SavePopup
-          saveOpen={saveOpen}
           setSaveOpen={setSaveOpen}
           saveImage={saveImage}
           imageFormat={imageFormat}
           imageLabel={imageLabel}
-          setImageFormat={setImageFormat}
-          setImageLabel={setImageLabel}
           handleFormat={handleFormat}
           handleLabel={handleLabel}
         />
       )}
       {uploadOpen && (
-        <UploadPopup
-          setImageSrc={setImageSrc}
-          capture={capture}
-          uploadOpen={uploadOpen}
-          setUploadOpen={setUploadOpen}
-          uploadImage={uploadImage}
-        />
+        <UploadPopup setUploadOpen={setUploadOpen} uploadImage={uploadImage} />
       )}
       <Classifier
         captureEmpty={captureEmpty}
         handleInference={handleInferenceRequest}
         uploadOpen={uploadOpen}
         setUploadOpen={setUploadOpen}
-        setCaptureEmpty={setCaptureEmpty}
         imageSrc={imageSrc}
-        setImageSrc={setImageSrc}
         webcamRef={webcamRef}
         imageFormat={imageFormat}
         setImageFormat={setImageFormat}
         imageLabel={imageLabel}
         setImageLabel={setImageLabel}
-        annotationEmpty={annotationEmpty}
-        setAnnotationEmpty={setAnnotationEmpty}
         saveOpen={saveOpen}
         setSaveOpen={setSaveOpen}
-        capture={capture}
-        saveImage={saveImage}
+        capture={captureFeed}
         savedImages={imageCache}
         clearImageCache={clearCache}
         loadImage={loadFromCache}
