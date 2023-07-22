@@ -17,7 +17,9 @@ interface ImageCache {
 
 const Home = (): JSX.Element => {
   const [captureEmpty, setCaptureEmpty] = useState<boolean>(true);
-  const [imageSrc, setImageSrc] = useState<string>("");
+  const [imageSrc, setImageSrc] = useState<string>(
+    "nachet-frontend/placeholder-image.jpg",
+  );
   const [imageFormat, setImageFormat] = useState<string>("image/png");
   const [imageLabel, setImageLabel] = useState<string>("");
   const [annotationEmpty, setAnnotationEmpty] = useState<boolean>(true);
@@ -77,7 +79,7 @@ const Home = (): JSX.Element => {
     if (imageCache.length > 1) {
       setImageSrc(newCache[newCache.length - 1].src);
     } else {
-      setImageSrc("seed-classification-interface/placeholder-image.jpg");
+      setImageSrc("nachet-frontend/placeholder-image.jpg");
       setCaptureEmpty(true);
     }
   };
@@ -85,7 +87,7 @@ const Home = (): JSX.Element => {
   const clearCache = (): void => {
     setImageCache([]);
     setCaptureEmpty(true);
-    setImageSrc("seed-classification-interface/placeholder-image.jpg");
+    setImageSrc("nachet-frontend/placeholder-image.jpg");
   };
 
   const saveImage = (): void => {
@@ -133,7 +135,7 @@ const Home = (): JSX.Element => {
   const handleInferenceRequest = (): void => {
     (async () => {
       try {
-        const response = await fetch("seed-classification-interface/sim.json");
+        const response = await fetch("nachet-frontend/sim.json");
         const data = await response.json().then((data) => data);
         loadResultsToCache(data);
       } catch (error) {
