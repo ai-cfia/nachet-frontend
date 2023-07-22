@@ -24,13 +24,13 @@
       },
       {
         "box": {
-          "topX": 210,
-          "topY": 210,
-          "bottomX": 300,
-          "bottomY": 300
+          "topX": 300,
+          "topY": 300,
+          "bottomX": 500,
+          "bottomY": 500
         },
         "label": "8 Lolium temulentum",
-        "score": 0.9729371666908264
+        "score": 0.9129371666908264
       }
     ]
   }

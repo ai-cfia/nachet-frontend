@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { colours } from "../../styles/colours";
 
-export const HomeContainer = styled.div`
+export const BodyContainer = styled.div`
   background: ${colours.CFIA_Background_White};
   color: ${colours.CFIA_Font_Black};
   display: flex;

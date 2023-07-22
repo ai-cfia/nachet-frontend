@@ -9,7 +9,7 @@ const Footer = (): JSX.Element => {
   return (
     <FooterContainer>
       <FooterWrap>
-        <FooterText>Developed by Ai Lab</FooterText>
+        <FooterText>Developed by AI Lab</FooterText>
         <FooterLogo src={require("../../assets/Canada_logo.png")} />
       </FooterWrap>
     </FooterContainer>

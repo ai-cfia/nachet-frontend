@@ -29,7 +29,7 @@ const ImageCache: React.FC<params> = (props) => {
         maxHeight: "51%",
         border: 1,
         borderRadius: 1,
-        marginTop: 1.5,
+        marginTop: "10px",
       }}
     >
       <CardHeader

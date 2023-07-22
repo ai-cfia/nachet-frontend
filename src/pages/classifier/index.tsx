@@ -15,20 +15,14 @@ import ImageCache from "../../components/body/image_cache";
 import ToolBar from "../../components/body/tool_bar";
 
 interface params {
-  captureEmpty: boolean;
   imageSrc: string;
   webcamRef: React.RefObject<Webcam>;
   imageFormat: string;
-  setImageFormat: React.Dispatch<React.SetStateAction<string>>;
-  imageLabel: string;
-  setImageLabel: React.Dispatch<React.SetStateAction<string>>;
-  saveOpen: boolean;
   setSaveOpen: React.Dispatch<React.SetStateAction<boolean>>;
   capture: () => void;
   savedImages: any[];
   clearImageCache: () => void;
   loadImage: (src: string) => void;
-  uploadOpen: boolean;
   setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
   canvasRef: React.RefObject<HTMLCanvasElement>;
   handleInference: () => void;

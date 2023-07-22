@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import type Webcam from "react-webcam";
 import { saveAs } from "file-saver";
-import { HomeContainer } from "./indexElements";
+import { BodyContainer } from "./indexElements";
 import Classifier from "../classifier";
 import SavePopup from "../../components/body/save_popup";
 import UploadPopup from "../../components/body/upload_image";
@@ -16,7 +16,6 @@ interface ImageCache {
 }
 
 const Home = (): JSX.Element => {
-  const [captureEmpty, setCaptureEmpty] = useState<boolean>(true);
   const [imageSrc, setImageSrc] = useState<string>(
     "https://ai-cfia.github.io/nachet-frontend/placeholder-image.jpg",
   );
@@ -25,7 +24,6 @@ const Home = (): JSX.Element => {
   const [saveOpen, setSaveOpen] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
   const [imageCache, setImageCache] = useState<ImageCache[]>([]);
-
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -56,7 +54,6 @@ const Home = (): JSX.Element => {
     }
     loadCaptureToCache(src, [], [], [], false);
     setImageSrc(src);
-    setCaptureEmpty(false);
   };
 
   const uploadImage = (event: any): void => {
@@ -65,7 +62,6 @@ const Home = (): JSX.Element => {
     loadCaptureToCache(src, [], [], [], false);
     setUploadOpen(false);
     setImageSrc(src);
-    setCaptureEmpty(false);
   };
 
   const loadFromCache = (src: string): void => {
@@ -81,13 +77,11 @@ const Home = (): JSX.Element => {
       setImageSrc(
         "https://ai-cfia.github.io/nachet-frontend/placeholder-image.jpg",
       );
-      setCaptureEmpty(true);
     }
   };
 
   const clearCache = (): void => {
     setImageCache([]);
-    setCaptureEmpty(true);
     setImageSrc(
       "https://ai-cfia.github.io/nachet-frontend/placeholder-image.jpg",
     );
@@ -167,13 +161,16 @@ const Home = (): JSX.Element => {
     image.onload = () => {
       canvas.width = image.width;
       canvas.height = image.height;
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
+      ctx.scale(1, 1);
       ctx.drawImage(image, 0, 0);
       imageCache.forEach((object) => {
         if (object.src === imageSrc && object.annotated) {
           object.predictions.forEach((prediction, index) => {
             ctx.beginPath();
             ctx.font = "16px Arial";
-            ctx.fillStyle = "red";
+            ctx.fillStyle = "white";
             ctx.textAlign = "center";
             ctx.fillText(
               `${prediction.split(" ").slice(1).join(" ")}`,
@@ -181,17 +178,20 @@ const Home = (): JSX.Element => {
                 (object.regions[index].topX as number)) /
                 2 +
                 (object.regions[index].topX as number),
-              object.regions[index].topY - 5,
+              object.regions[index].topY - 10,
             );
-            ctx.font = "25px Arial";
-            ctx.fillStyle = "blue";
+            ctx.font = "20px Arial";
+            ctx.fillStyle = "white";
             ctx.textAlign = "center";
             ctx.fillText(
               (index + 1).toString(),
-              (object.regions[index].topX as number) + 13,
-              object.regions[index].bottomY - 5,
+              ((object.regions[index].bottomX as number) -
+                (object.regions[index].topX as number)) /
+                2 +
+                (object.regions[index].topX as number),
+              (object.regions[index].bottomY as number) + 23,
             );
-            ctx.lineWidth = 3;
+            ctx.lineWidth = 2;
             ctx.setLineDash([5, 5]);
             ctx.strokeStyle = "red";
             ctx.rect(
@@ -222,7 +222,7 @@ const Home = (): JSX.Element => {
   }, [imageSrc, imageCache]);
 
   return (
-    <HomeContainer>
+    <BodyContainer>
       {saveOpen && (
         <SavePopup
           setSaveOpen={setSaveOpen}
@@ -237,17 +237,11 @@ const Home = (): JSX.Element => {
         <UploadPopup setUploadOpen={setUploadOpen} uploadImage={uploadImage} />
       )}
       <Classifier
-        captureEmpty={captureEmpty}
         handleInference={handleInferenceRequest}
-        uploadOpen={uploadOpen}
         setUploadOpen={setUploadOpen}
         imageSrc={imageSrc}
         webcamRef={webcamRef}
         imageFormat={imageFormat}
-        setImageFormat={setImageFormat}
-        imageLabel={imageLabel}
-        setImageLabel={setImageLabel}
-        saveOpen={saveOpen}
         setSaveOpen={setSaveOpen}
         capture={captureFeed}
         savedImages={imageCache}
@@ -256,7 +250,7 @@ const Home = (): JSX.Element => {
         canvasRef={canvasRef}
         removeImage={removeFromCache}
       />
-    </HomeContainer>
+    </BodyContainer>
   );
 };
 
