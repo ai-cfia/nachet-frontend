@@ -20,7 +20,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
       }}
     >
       <CardHeader
-        title="FEED"
+        title="MICROSCOPE FEED"
         titleTypographyProps={{
           variant: "h6",
           align: "left",

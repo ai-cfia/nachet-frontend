@@ -121,7 +121,7 @@ const ToolBar: React.FC<params> = (props) => {
           onClick={props.clearImageCache}
         >
           <ClearAllIcon fontSize="large" sx={{ paddingBottom: 0.5 }} />
-          CLEAR
+          CLEAR ALL
         </Button>
         <Button
           variant="outlined"

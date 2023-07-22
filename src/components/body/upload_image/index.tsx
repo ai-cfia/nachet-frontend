@@ -27,7 +27,7 @@ const UploadPopup: React.FC<params> = (props): JSX.Element => {
         }}
       >
         <CardHeader
-          title="Tools"
+          title="Load Image"
           titleTypographyProps={{
             variant: "h6",
             align: "left",
