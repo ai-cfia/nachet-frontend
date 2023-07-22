@@ -41,7 +41,12 @@ const ClassificationResults: React.FC<params> = (props) => {
       >
         <Table>
           <TableBody>
-            {props.savedImages.map((object: any, index) => {
+            <TableRow>
+              <TableCell align="left">Type</TableCell>
+              <TableCell align="center">Index</TableCell>
+              <TableCell align="right">Score</TableCell>
+            </TableRow>
+            {props.savedImages.map((object: any) => {
               if (object.src === props.imageSrc && object.annotated === true) {
                 return object.predictions.map(
                   (prediction: any, index: number) => (
