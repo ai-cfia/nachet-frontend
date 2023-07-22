@@ -43,10 +43,10 @@ const ClassificationResults: React.FC<params> = (props) => {
           <TableBody>
             <TableRow>
               <TableCell align="left" sx={{ fontWeight: 600 }}>
-                Type
+                Index
               </TableCell>
               <TableCell align="center" sx={{ fontWeight: 600 }}>
-                Index
+                Type
               </TableCell>
               <TableCell align="right" sx={{ fontWeight: 600 }}>
                 Score
@@ -57,10 +57,10 @@ const ClassificationResults: React.FC<params> = (props) => {
                 return object.predictions.map(
                   (prediction: any, index: number) => (
                     <TableRow key={index}>
-                      <TableCell align="left">
+                      <TableCell align="left">{index + 1}</TableCell>
+                      <TableCell align="center">
                         {prediction.split(" ").slice(1).join(" ")}
                       </TableCell>
-                      <TableCell align="center">{index + 1}</TableCell>
                       <TableCell align="right">
                         {object.scores[index] * 100}%
                       </TableCell>

@@ -173,23 +173,15 @@ const Home = (): JSX.Element => {
             ctx.fillStyle = "white";
             ctx.textAlign = "center";
             ctx.fillText(
-              `${prediction.split(" ").slice(1).join(" ")}`,
+              `[${(index + 1).toString()}] ${prediction
+                .split(" ")
+                .slice(1)
+                .join(" ")}`,
               ((object.regions[index].bottomX as number) -
                 (object.regions[index].topX as number)) /
                 2 +
                 (object.regions[index].topX as number),
               object.regions[index].topY - 10,
-            );
-            ctx.font = "20px Arial";
-            ctx.fillStyle = "white";
-            ctx.textAlign = "center";
-            ctx.fillText(
-              (index + 1).toString(),
-              ((object.regions[index].bottomX as number) -
-                (object.regions[index].topX as number)) /
-                2 +
-                (object.regions[index].topX as number),
-              (object.regions[index].bottomY as number) + 23,
             );
             ctx.lineWidth = 2;
             ctx.setLineDash([5, 5]);
