@@ -20,7 +20,8 @@ const ClassificationResults: React.FC<params> = (props) => {
     <Box
       sx={{
         width: 400,
-        height: 330,
+        height: "330px",
+        maxHeight: "330px",
         border: 1,
         borderRadius: 1,
       }}

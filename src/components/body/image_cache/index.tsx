@@ -25,8 +25,8 @@ const ImageCache: React.FC<params> = (props) => {
     <Box
       sx={{
         width: 400,
-        height: "51%",
-        maxHeight: "51%",
+        height: "322px",
+        maxHeight: "322px",
         border: 1,
         borderRadius: 1,
         marginTop: "10px",
@@ -42,7 +42,7 @@ const ImageCache: React.FC<params> = (props) => {
         }}
       />
       <TableContainer
-        sx={{ overflow: "auto", height: 255 }}
+        sx={{ overflow: "auto", height: 258 }}
         id={"container_with_scrolls"}
         component={Paper}
       >

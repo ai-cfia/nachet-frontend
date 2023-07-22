@@ -1,5 +1,11 @@
-html * {
+html {
   font-family: Arial;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
 }
 
 #container_with_scrolls::-webkit-scrollbar {

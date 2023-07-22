@@ -51,7 +51,7 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
           }}
           action={
             <IconButton onClick={handleClose}>
-              <CloseIcon color="primary" />
+              <CloseIcon />
             </IconButton>
           }
           sx={{
@@ -79,6 +79,8 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
               paddingLeft: 4,
               paddingRight: 4,
               fontSize: "0.9rem",
+              color: colours.CFIA_Font_Black,
+              borderColor: colours.CFIA_Font_Black,
             }}
             onClick={props.saveImage}
           >

@@ -37,7 +37,7 @@ const UploadPopup: React.FC<params> = (props): JSX.Element => {
           }}
           action={
             <IconButton onClick={handleClose}>
-              <CloseIcon color="primary" />
+              <CloseIcon />
             </IconButton>
           }
           sx={{

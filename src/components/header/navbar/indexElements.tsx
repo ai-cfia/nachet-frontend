@@ -29,17 +29,17 @@ export const NavbarContainer = styled.div`
 `;
 
 export const NavLogo = styled.img`
-  width: 300px;
+  width: 320px;
   height: fit-content;
   margin: auto;
   margin-left: 0;
   margin-right: 0;
   @media screen and (max-width: 768px) {
-    width: 250px;
+    width: 260px;
     height: fit-content;
   }
   @media screen and (max-width: 480px) {
-    width: 200px;
+    width: 230px;
     height: fit-content;
   }
 `;

@@ -16,6 +16,19 @@ interface params {
   setSaveOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+const buttonStyling = {
+  alignContent: "center",
+  alignItems: "center",
+  padding: 1,
+  marginTop: 2,
+  display: "flex",
+  flexDirection: "column",
+  fontSize: "0.9rem",
+  width: 0.07,
+  color: colours.CFIA_Font_Black,
+  borderColor: colours.CFIA_Font_Black,
+};
+
 const ToolBar: React.FC<params> = (props) => {
   return (
     <Box
@@ -50,16 +63,7 @@ const ToolBar: React.FC<params> = (props) => {
         <Button
           variant="outlined"
           size="large"
-          sx={{
-            alignContent: "center",
-            alignItems: "center",
-            padding: 1,
-            marginTop: 2,
-            display: "flex",
-            flexDirection: "column",
-            fontSize: "0.9rem",
-            width: 0.07,
-          }}
+          sx={buttonStyling}
           onClick={props.capture}
         >
           <AddAPhotoIcon fontSize="large" sx={{ paddingBottom: 0.5 }} />
@@ -68,16 +72,7 @@ const ToolBar: React.FC<params> = (props) => {
         <Button
           variant="outlined"
           size="large"
-          sx={{
-            alignContent: "center",
-            alignItems: "center",
-            padding: 1,
-            marginTop: 2,
-            display: "flex",
-            flexDirection: "column",
-            fontSize: "0.9rem",
-            width: 0.07,
-          }}
+          sx={buttonStyling}
           onClick={() => {
             props.setUploadOpen(true);
           }}
@@ -88,16 +83,7 @@ const ToolBar: React.FC<params> = (props) => {
         <Button
           variant="outlined"
           size="large"
-          sx={{
-            alignContent: "center",
-            alignItems: "center",
-            padding: 1,
-            marginTop: 2,
-            display: "flex",
-            flexDirection: "column",
-            fontSize: "0.9rem",
-            width: 0.07,
-          }}
+          sx={buttonStyling}
           onClick={() => {
             props.setSaveOpen(true);
           }}
@@ -108,16 +94,7 @@ const ToolBar: React.FC<params> = (props) => {
         <Button
           variant="outlined"
           size="large"
-          sx={{
-            alignContent: "center",
-            alignItems: "center",
-            padding: 1,
-            marginTop: 2,
-            display: "flex",
-            flexDirection: "column",
-            fontSize: "0.9rem",
-            width: 0.07,
-          }}
+          sx={buttonStyling}
           onClick={props.clearImageCache}
         >
           <ClearAllIcon fontSize="large" sx={{ paddingBottom: 0.5 }} />
@@ -126,16 +103,7 @@ const ToolBar: React.FC<params> = (props) => {
         <Button
           variant="outlined"
           size="large"
-          sx={{
-            alignContent: "center",
-            alignItems: "center",
-            padding: 1,
-            marginTop: 2,
-            display: "flex",
-            flexDirection: "column",
-            fontSize: "0.9rem",
-            width: 0.07,
-          }}
+          sx={buttonStyling}
           onClick={() => {
             console.log("upload to azure");
           }}
@@ -146,16 +114,7 @@ const ToolBar: React.FC<params> = (props) => {
         <Button
           variant="outlined"
           size="large"
-          sx={{
-            alignContent: "center",
-            alignItems: "center",
-            padding: 1,
-            marginTop: 2,
-            display: "flex",
-            flexDirection: "column",
-            fontSize: "0.9rem",
-            width: 0.07,
-          }}
+          sx={buttonStyling}
           onClick={props.handleInference}
         >
           <CropFreeIcon fontSize="large" sx={{ paddingBottom: 0.5 }} />
@@ -164,16 +123,7 @@ const ToolBar: React.FC<params> = (props) => {
         <Button
           variant="outlined"
           size="large"
-          sx={{
-            alignContent: "center",
-            alignItems: "center",
-            padding: 1,
-            marginTop: 2,
-            display: "flex",
-            flexDirection: "column",
-            fontSize: "0.9rem",
-            width: 0.07,
-          }}
+          sx={buttonStyling}
           onClick={() => {
             console.log("switch model");
           }}
