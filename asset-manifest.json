@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/nachet-frontend/static/css/main.138c1426.css",
-    "main.js": "/nachet-frontend/static/js/main.37682bd5.js",
+    "main.js": "/nachet-frontend/static/js/main.ebe56f6f.js",
     "static/js/787.bb6ae436.chunk.js": "/nachet-frontend/static/js/787.bb6ae436.chunk.js",
     "static/media/CFIA_blackfont.png": "/nachet-frontend/static/media/CFIA_blackfont.65f37a4daa7549277afa.png",
     "index.html": "/nachet-frontend/index.html",
     "main.138c1426.css.map": "/nachet-frontend/static/css/main.138c1426.css.map",
-    "main.37682bd5.js.map": "/nachet-frontend/static/js/main.37682bd5.js.map",
+    "main.ebe56f6f.js.map": "/nachet-frontend/static/js/main.ebe56f6f.js.map",
     "787.bb6ae436.chunk.js.map": "/nachet-frontend/static/js/787.bb6ae436.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.138c1426.css",
-    "static/js/main.37682bd5.js"
+    "static/js/main.ebe56f6f.js"
   ]
 }
