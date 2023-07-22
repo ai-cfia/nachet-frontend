@@ -1,6 +1,6 @@
 {
   "name": "nachet-frontend",
-  "homepage": "https://ai-cfia.github.io/seed-classification-interface",
+  "homepage": "https://ai-cfia.github.io/nachet-frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -32,6 +32,8 @@
     "typescript": "^5.1.6"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

@@ -17,7 +17,7 @@ interface ImageCache {
 
 const Home = (): JSX.Element => {
   const [captureEmpty, setCaptureEmpty] = useState<boolean>(true);
-  const [imageSrc, setImageSrc] = useState<string>("./placeholder-image.jpg");
+  const [imageSrc, setImageSrc] = useState<string>("");
   const [imageFormat, setImageFormat] = useState<string>("image/png");
   const [imageLabel, setImageLabel] = useState<string>("");
   const [annotationEmpty, setAnnotationEmpty] = useState<boolean>(true);
@@ -77,7 +77,7 @@ const Home = (): JSX.Element => {
     if (imageCache.length > 1) {
       setImageSrc(newCache[newCache.length - 1].src);
     } else {
-      setImageSrc("./placeholder-image.jpg");
+      setImageSrc("seed-classification-interface/placeholder-image.jpg");
       setCaptureEmpty(true);
     }
   };
@@ -85,7 +85,7 @@ const Home = (): JSX.Element => {
   const clearCache = (): void => {
     setImageCache([]);
     setCaptureEmpty(true);
-    setImageSrc("./placeholder-image.jpg");
+    setImageSrc("seed-classification-interface/placeholder-image.jpg");
   };
 
   const saveImage = (): void => {
@@ -133,7 +133,7 @@ const Home = (): JSX.Element => {
   const handleInferenceRequest = (): void => {
     (async () => {
       try {
-        const response = await fetch("./sim.json");
+        const response = await fetch("seed-classification-interface/sim.json");
         const data = await response.json().then((data) => data);
         loadResultsToCache(data);
       } catch (error) {
@@ -165,14 +165,24 @@ const Home = (): JSX.Element => {
             ctx.beginPath();
             ctx.font = "16px Arial";
             ctx.fillStyle = "red";
+            ctx.textAlign = "center";
             ctx.fillText(
-              `${prediction.split(" ").slice(1).join(" ")} - ${(
-                object.scores[index] * 100
-              ).toFixed(0)}%`,
-              object.regions[index].topX - 2,
+              `${prediction.split(" ").slice(1).join(" ")}`,
+              ((object.regions[index].bottomX as number) -
+                (object.regions[index].topX as number)) /
+                2 +
+                (object.regions[index].topX as number),
               object.regions[index].topY - 5,
             );
-            ctx.lineWidth = 1;
+            ctx.font = "25px Arial";
+            ctx.fillStyle = "blue";
+            ctx.textAlign = "center";
+            ctx.fillText(
+              (index + 1).toString(),
+              (object.regions[index].topX as number) + 13,
+              object.regions[index].bottomY - 5,
+            );
+            ctx.lineWidth = 3;
             ctx.setLineDash([5, 5]);
             ctx.strokeStyle = "red";
             ctx.rect(
@@ -188,7 +198,8 @@ const Home = (): JSX.Element => {
         if (object.src === imageSrc) {
           ctx.beginPath();
           ctx.font = "25px Arial";
-          ctx.fillStyle = "black";
+          ctx.textAlign = "left";
+          ctx.fillStyle = "white";
           ctx.fillText(object.label, 10, canvas.height - 15);
           ctx.stroke();
           ctx.closePath();

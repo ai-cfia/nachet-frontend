@@ -34,7 +34,11 @@ const ClassificationResults: React.FC<params> = (props) => {
           color: colours.CFIA_Font_Black,
         }}
       />
-      <TableContainer sx={{ overflow: "auto", height: 266 }} component={Paper}>
+      <TableContainer
+        sx={{ overflow: "auto", height: 266 }}
+        id={"container_with_scrolls"}
+        component={Paper}
+      >
         <Table>
           <TableBody>
             {props.savedImages.map((object: any, index) => {
@@ -45,6 +49,7 @@ const ClassificationResults: React.FC<params> = (props) => {
                       <TableCell align="left">
                         {prediction.split(" ").slice(1).join(" ")}
                       </TableCell>
+                      <TableCell align="center">{index + 1}</TableCell>
                       <TableCell align="right">
                         {object.scores[index] * 100}%
                       </TableCell>

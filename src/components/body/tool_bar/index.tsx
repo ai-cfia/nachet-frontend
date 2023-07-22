@@ -31,7 +31,7 @@ const ToolBar: React.FC<params> = (props) => {
     <Box
       sx={{
         width: 1625,
-        height: 170,
+        height: 180,
         border: 1,
         borderRadius: 1,
       }}
