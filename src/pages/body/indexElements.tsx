@@ -11,7 +11,7 @@ export const BodyContainer = styled.div`
   height: fit-content;
   z-index: 0;
   position: relative;
-  margin-top: 100px;
-  margin-bottom: 100px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   padding: 24px 24px 24px 24px;
 `;
