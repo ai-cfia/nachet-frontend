@@ -45,6 +45,7 @@ const ToolBar: React.FC<params> = (props) => {
           variant: "h6",
           align: "left",
           fontWeight: 600,
+          fontSize: "18px",
           color: colours.CFIA_Font_Black,
         }}
         sx={{

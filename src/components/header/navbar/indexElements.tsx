@@ -4,10 +4,9 @@ import { colours } from "../../../styles/colours";
 export const Nav = styled.nav`
   background-color: ${colours.CFIA_Background_White};
   color: ${colours.CFIA_Background_White};
-  height: 70px;
+  height: 50px;
   display: flex;
   width: 100%;
-  font-size: 1rem;
   justify-content: center;
   align-items: center;
   position: sticky;
@@ -21,7 +20,7 @@ export const Nav = styled.nav`
 export const NavbarContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  height: 70px;
+  height: 50px;
   z-index: 0;
   width: 100%;
   padding: 0 24px;
@@ -29,7 +28,7 @@ export const NavbarContainer = styled.div`
 `;
 
 export const NavLogo = styled.img`
-  width: 320px;
+  width: 300px;
   height: fit-content;
   margin: auto;
   margin-left: 0;

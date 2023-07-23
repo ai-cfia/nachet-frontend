@@ -25,6 +25,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
           variant: "h6",
           align: "left",
           fontWeight: 600,
+          fontSize: "18px",
           color: colours.CFIA_Font_Black,
         }}
       />
@@ -32,7 +33,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
         ref={props.webcamRef}
         mirrored={false}
         width={600}
-        height={600}
+        height={606.5}
         videoConstraints={{
           width: 600,
           height: 600,

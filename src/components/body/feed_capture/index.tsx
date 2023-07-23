@@ -22,7 +22,9 @@ const FeedCapture: React.FC<params> = (props) => {
           variant: "h6",
           align: "left",
           fontWeight: 600,
+          fontSize: "18px",
           color: colours.CFIA_Font_Black,
+          paddingBottom: "3.5px",
         }}
       />
       <Canvas ref={props.canvasRef} width={600} height={600} />

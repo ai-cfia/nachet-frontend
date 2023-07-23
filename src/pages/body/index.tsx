@@ -158,12 +158,10 @@ const Home = (): JSX.Element => {
     if (ctx === null) {
       return;
     }
+    ctx.clearRect(0, 0, 600, 600);
     image.onload = () => {
       canvas.width = image.width;
       canvas.height = image.height;
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = "high";
-      ctx.scale(1, 1);
       ctx.drawImage(image, 0, 0);
       imageCache.forEach((object) => {
         if (object.src === imageSrc && object.annotated) {

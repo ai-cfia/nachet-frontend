@@ -38,11 +38,12 @@ const ImageCache: React.FC<params> = (props) => {
           variant: "h6",
           align: "left",
           fontWeight: 600,
+          fontSize: "18px",
           color: colours.CFIA_Font_Black,
         }}
       />
       <TableContainer
-        sx={{ overflow: "auto", height: 258 }}
+        sx={{ overflow: "auto", height: 261 }}
         id={"container_with_scrolls"}
         component={Paper}
       >
