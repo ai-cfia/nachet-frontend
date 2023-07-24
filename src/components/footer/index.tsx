@@ -2,14 +2,23 @@ import {
   FooterContainer,
   FooterWrap,
   FooterLogo,
-  FooterText,
+  FooterLink,
 } from "./indexElements";
 
-const Footer = (): JSX.Element => {
+interface params {
+  windowSize: {
+    width: number;
+    height: number;
+  };
+}
+
+const Footer: React.FC<params> = (props) => {
   return (
     <FooterContainer>
-      <FooterWrap>
-        <FooterText>Developed by AI Lab</FooterText>
+      <FooterWrap width={props.windowSize.width}>
+        <FooterLink href="https://github.com/ai-cfia">
+          Developed by AI Lab
+        </FooterLink>
         <FooterLogo src={require("../../assets/Canada_logo.png")} />
       </FooterWrap>
     </FooterContainer>

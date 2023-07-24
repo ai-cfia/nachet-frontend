@@ -1,9 +1,17 @@
 import { AppbarWrap, AppbarContainer, AppbarHeader } from "./indexElements";
+import React from "react";
 
-const Appbar = (): JSX.Element => {
+interface params {
+  windowSize: {
+    width: number;
+    height: number;
+  };
+}
+
+const Appbar: React.FC<params> = (props) => {
   return (
     <AppbarWrap>
-      <AppbarContainer>
+      <AppbarContainer width={props.windowSize.width}>
         <AppbarHeader>Seed Classification Interface</AppbarHeader>
       </AppbarContainer>
     </AppbarWrap>

@@ -1,6 +1,6 @@
 import { Box, Button, CardHeader } from "@mui/material";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+// import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import DownloadIcon from "@mui/icons-material/Download";
 import CropFreeIcon from "@mui/icons-material/CropFree";
@@ -16,13 +16,14 @@ interface params {
   setSaveOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSwitchModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setAzureOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  windowSize: { width: number; height: number };
 }
 
 const buttonStyling = {
   alignContent: "center",
   alignItems: "center",
   padding: 1,
-  marginTop: 2,
+  marginTop: "10px",
   display: "flex",
   flexDirection: "column",
   fontSize: "0.9rem",
@@ -35,8 +36,8 @@ const ToolBar: React.FC<params> = (props) => {
   return (
     <Box
       sx={{
-        width: 1625,
-        height: 180,
+        width: props.windowSize.width * 0.708,
+        height: 160,
         border: 1,
         borderRadius: 1,
       }}
@@ -47,12 +48,10 @@ const ToolBar: React.FC<params> = (props) => {
           variant: "h6",
           align: "left",
           fontWeight: 600,
-          fontSize: "18px",
+          fontSize: "1.1rem",
           color: colours.CFIA_Font_Black,
         }}
-        sx={{
-          paddingBottom: 0,
-        }}
+        sx={{ padding: "10px 10px 0px 10px" }}
       />
       <div
         style={{
@@ -102,17 +101,6 @@ const ToolBar: React.FC<params> = (props) => {
         >
           <ClearAllIcon fontSize="large" sx={{ paddingBottom: 0.5 }} />
           CLEAR ALL
-        </Button>
-        <Button
-          variant="outlined"
-          size="large"
-          sx={buttonStyling}
-          onClick={() => {
-            props.setAzureOpen(true);
-          }}
-        >
-          <CloudUploadIcon fontSize="large" sx={{ paddingBottom: 0.5 }} />
-          AZURE
         </Button>
         <Button
           variant="outlined"

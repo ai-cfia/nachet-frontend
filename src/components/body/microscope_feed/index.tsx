@@ -7,16 +7,23 @@ interface params {
   webcamRef: React.RefObject<Webcam>;
   imageFormat: any;
   capture: () => void;
+  windowSize: {
+    width: number;
+    height: number;
+  };
 }
 
 const MicroscopeFeed: React.FC<params> = (props) => {
+  const width = props.windowSize.width * 0.262;
+  const height = props.windowSize.height * 0.4515;
   return (
     <Box
       sx={{
-        width: 600,
-        height: 664,
+        width: width,
+        height: height + 48.3,
         border: 1,
         borderRadius: 1,
+        padding: 0,
       }}
     >
       <CardHeader
@@ -25,18 +32,19 @@ const MicroscopeFeed: React.FC<params> = (props) => {
           variant: "h6",
           align: "left",
           fontWeight: 600,
-          fontSize: "18px",
+          fontSize: "1.1rem",
           color: colours.CFIA_Font_Black,
         }}
+        sx={{ padding: "10px 10px 10px 10px" }}
       />
       <Webcam
         ref={props.webcamRef}
         mirrored={false}
-        width={600}
-        height={606.5}
+        width={width} // 600
+        height={height} // 606.5
         videoConstraints={{
-          width: 600,
-          height: 600,
+          width: width,
+          height: height,
           facingMode: { ideal: "environment" },
         }}
         screenshotFormat={props.imageFormat}

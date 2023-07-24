@@ -62,7 +62,7 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
             variant: "h6",
             align: "left",
             fontWeight: 600,
-            fontSize: "18px",
+            fontSize: "1.1rem",
             color: colours.CFIA_Font_Black,
             zIndex: 30,
           }}

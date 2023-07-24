@@ -17,7 +17,14 @@ interface ImageCache {
   annotated: boolean;
 }
 
-const Home = (): JSX.Element => {
+interface params {
+  windowSize: {
+    width: number;
+    height: number;
+  };
+}
+
+const Body: React.FC<params> = (props) => {
   const [imageSrc, setImageSrc] = useState<string>(
     "https://ai-cfia.github.io/nachet-frontend/placeholder-image.jpg",
   );
@@ -208,7 +215,7 @@ const Home = (): JSX.Element => {
   }, [imageSrc, imageCache]);
 
   return (
-    <BodyContainer>
+    <BodyContainer width={props.windowSize.width}>
       {saveOpen && (
         <SavePopup
           setSaveOpen={setSaveOpen}
@@ -246,9 +253,10 @@ const Home = (): JSX.Element => {
         removeImage={removeFromCache}
         setSwitchModelOpen={setSwitchModelOpen}
         setAzureOpen={setAzureOpen}
+        windowSize={props.windowSize}
       />
     </BodyContainer>
   );
 };
 
-export default Home;
+export default Body;

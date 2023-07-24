@@ -4,7 +4,7 @@ import { colours } from "../../../styles/colours";
 export const AppbarWrap = styled.div`
   background-color: ${colours.CFIA_Background_Blue};
   color: ${colours.CFIA_Font_White};
-  height: 40px;
+  height: 30px;
   display: flex;
   width: 100%;
   justify-content: center;
@@ -18,19 +18,18 @@ export const AppbarWrap = styled.div`
   }
 `;
 
-export const AppbarContainer = styled.div`
+export const AppbarContainer = styled.div<{ width: number }>`
   display: flex;
   justify-content: space-between;
-  height: 40px;
+  height: 30px;
   z-index: 3;
-  width: 100%;
-  padding: 0 24px;
-  max-width: 1700px;
+  width: ${(props) => props.width * 0.71}px;
+  padding: 0px 10px 0px 10px;
 `;
 
 export const AppbarHeader = styled.h2`
   color: ${colours.CFIA_Font_White};
-  font-size: 18px;
+  font-size: 1.1rem;
   font-weight: bold;
   text-decoration: none;
   display: flex;

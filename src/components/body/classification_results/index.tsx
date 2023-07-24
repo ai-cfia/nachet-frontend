@@ -14,14 +14,17 @@ import { colours } from "../../../styles/colours";
 interface params {
   savedImages: any[];
   imageSrc: string;
+  windowSize: {
+    width: number;
+    height: number;
+  };
 }
 const ClassificationResults: React.FC<params> = (props) => {
   return (
     <Box
       sx={{
-        width: 400,
-        height: "330px",
-        maxHeight: "330px",
+        width: props.windowSize.width * 0.174,
+        height: props.windowSize.height * 0.2426,
         border: 1,
         borderRadius: 1,
       }}
@@ -32,12 +35,13 @@ const ClassificationResults: React.FC<params> = (props) => {
           variant: "h6",
           align: "left",
           fontWeight: 600,
-          fontSize: "18px",
+          fontSize: "1.1rem",
           color: colours.CFIA_Font_Black,
         }}
+        sx={{ padding: "10px 10px 10px 10px" }}
       />
       <TableContainer
-        sx={{ overflow: "auto", height: 269 }}
+        sx={{ overflow: "auto", height: props.windowSize.height * 0.207 }}
         id={"container_with_scrolls"}
         component={Paper}
       >

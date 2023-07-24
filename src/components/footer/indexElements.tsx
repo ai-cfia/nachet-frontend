@@ -4,26 +4,25 @@ import { colours } from "../../styles/colours";
 export const FooterContainer = styled.footer`
   background-color: ${colours.CFIA_Background_White};
   width: 100%;
-  height: 70px;
+  height: 40px;
 `;
 
-export const FooterWrap = styled.div`
-  padding: 24px 24px 24px 24px;
+export const FooterWrap = styled.div<{ width: number }>`
+  padding: 10px 10px 10px 10px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: space-between;
-  max-width: 1700px;
-  height: 70px;
+  width: ${(props) => props.width * 0.71}px;
+  height: 40px;
   margin: auto;
   position: relative;
   z-index: 0;
 `;
 
 export const InfoSection = styled.section`
-  max-width: 1700px;
   width: 100%;
-  height: 70px;
+  height: 40px
   justfiy-content: space-between;
   z-index: 0;
 `;
@@ -33,8 +32,8 @@ export const InfoWrap = styled.div`
   flex-direction: row;
   justfiy-content: space-between;
   align-items: center;
-  height: 70px;
-  max-width: 1500px;
+  height: 40px;
+  max-width: 1700px;
   margin: auto;
   z-index: 0;
 
@@ -44,7 +43,7 @@ export const InfoWrap = styled.div`
 `;
 
 export const FooterLogo = styled.img`
-  width: 120px;
+  width: 110px;
   z-index: 0;
   align-self: center;
   height: fit-content;
@@ -58,7 +57,7 @@ export const FooterLogo = styled.img`
   }
 `;
 
-export const FooterText = styled.a`
+export const FooterLink = styled.a`
   color: ${colours.CFIA_Font_Black};
   font-size: 0.8rem;
   text-decoration: none;

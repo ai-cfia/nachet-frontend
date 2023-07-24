@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { colours } from "../../styles/colours";
 
-export const BodyContainer = styled.div`
+export const BodyContainer = styled.div<{ width: number }>`
   background: ${colours.CFIA_Background_White};
   color: ${colours.CFIA_Font_Black};
   display: flex;
@@ -11,7 +11,5 @@ export const BodyContainer = styled.div`
   height: fit-content;
   z-index: 0;
   position: relative;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  padding: 24px 24px 24px 24px;
+  padding: 10px 24px 10px 24px;
 `;

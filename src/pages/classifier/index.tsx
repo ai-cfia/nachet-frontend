@@ -29,6 +29,10 @@ interface params {
   removeImage: (string: any) => void;
   setSwitchModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setAzureOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  windowSize: {
+    width: number;
+    height: number;
+  };
 }
 
 const Classifier: React.FC<params> = (props) => {
@@ -43,6 +47,7 @@ const Classifier: React.FC<params> = (props) => {
           setUploadOpen={props.setUploadOpen}
           setSwitchModelOpen={props.setSwitchModelOpen}
           setAzureOpen={props.setAzureOpen}
+          windowSize={props.windowSize}
         />
       </TopContent>
       <RowContainer>
@@ -51,20 +56,26 @@ const Classifier: React.FC<params> = (props) => {
             capture={props.capture}
             webcamRef={props.webcamRef}
             imageFormat={props.imageFormat}
+            windowSize={props.windowSize}
           />
         </LeftContent>
         <RightContent>
-          <FeedCapture canvasRef={props.canvasRef} />
+          <FeedCapture
+            canvasRef={props.canvasRef}
+            windowSize={props.windowSize}
+          />
         </RightContent>
         <InfoContent>
           <ClassificationResults
             savedImages={props.savedImages}
             imageSrc={props.imageSrc}
+            windowSize={props.windowSize}
           />
           <ImageCache
             removeImage={props.removeImage}
             savedImages={props.savedImages}
             loadImage={props.loadImage}
+            windowSize={props.windowSize}
           />
         </InfoContent>
       </RowContainer>
