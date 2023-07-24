@@ -30,7 +30,7 @@ const ImageCache: React.FC<params> = (props) => {
       sx={{
         width: props.windowSize.width * 0.174,
         height: props.windowSize.height * 0.235,
-        border: 1,
+        border: `0.05vw solid ${colours.CFIA_Font_Black}`,
         borderRadius: 1,
         marginTop: "1vh",
       }}
@@ -80,7 +80,7 @@ const ImageCache: React.FC<params> = (props) => {
                   {item.annotated === true ? (
                     <CropFreeIcon
                       color="success"
-                      sx={{ padding: 0, margin: 0 }}
+                      style={{ fontSize: "1.8vh", marginTop: 0, marginBottom: 0 }}
                     />
                   ) : (
                     <> </>
@@ -92,7 +92,7 @@ const ImageCache: React.FC<params> = (props) => {
                       props.removeImage(item.src);
                     }}
                   >
-                    <DeleteIcon color="warning" />
+                    <DeleteIcon color="warning" style={{ fontSize: "1.8vh", marginTop: 0, marginBottom: 0 }} />
                   </IconButton>
                 </TableCell>
               </TableRow>

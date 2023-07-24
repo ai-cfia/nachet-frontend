@@ -4,17 +4,18 @@ import { colours } from "../../styles/colours";
 export const FooterContainer = styled.footer<{ height: number }>`
   background-color: ${colours.CFIA_Background_White};
   width: 100%;
-  height: ${(props) => props.height * 0.035}px;
+  height: 5vh;
 `;
 
 export const FooterWrap = styled.div<{ width: number; height: number }>`
-  padding: 0.8vh 0.8vh 0.8vh 0.8vh;
+  padding: 0.8vh 0vh 0.8vh 0vh;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: space-between;
-  width: ${(props) => props.width * 0.71}px;
-  height: ${(props) => props.height * 0.035}px;
+  width: 90vw;
+  max-width: 100%;
+  height: 5vh;
   margin: auto;
   position: relative;
   z-index: 0;
@@ -31,7 +32,6 @@ export const InfoWrap = styled.div`
   flex-direction: row;
   justfiy-content: space-between;
   align-items: center;
-  max-width: 1700px;
   margin: auto;
   z-index: 0;
 
@@ -41,7 +41,7 @@ export const InfoWrap = styled.div`
 `;
 
 export const FooterLogo = styled.img<{ width: number; height: number }>`
-  width: ${(props) => props.width * 0.05}px;
+  width: 6vw;
   z-index: 0;
   align-self: center;
   height: fit-content;
@@ -49,18 +49,11 @@ export const FooterLogo = styled.img<{ width: number; height: number }>`
 
 export const FooterLink = styled.a`
   color: ${colours.CFIA_Font_Black};
-  font-size: 1vh;
+  font-size: 0.7vw;
   text-decoration: none;
   cursor: pointer;
   margin-bottom: auto;
   margin-top: auto;
   align-self: flex-start;
   z-index: 0;
-
-  @media screen and (max-width: 768px) {
-    font-size: 0.8rem;
-  }
-  @media screen and (max-width: 480px) {
-    font-size: 0.41rem;
-  }
 `;

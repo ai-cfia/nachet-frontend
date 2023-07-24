@@ -4,7 +4,7 @@ import { colours } from "../../../styles/colours";
 export const Nav = styled.nav<{ width: number; height: number }>`
   background-color: ${colours.CFIA_Background_White};
   color: ${colours.CFIA_Background_White};
-  height: ${(props) => props.height * 0.035}px;
+  height: 5vh;
   display: flex;
   width: 100%;
   justify-content: center;
@@ -17,14 +17,14 @@ export const Nav = styled.nav<{ width: number; height: number }>`
 export const NavbarContainer = styled.div<{ width: number; height: number }>`
   display: flex;
   justify-content: space-between;
-  height: 50px;
+  height: 5vh;
   z-index: 0;
   width: 100%;
-  max-width: ${(props) => props.width * 0.71}px;
+  max-width: 90vw;
 `;
 
 export const NavLogo = styled.img<{ width: number }>`
-  width: ${(props) => props.width * 0.13}px;
+  width: 15vw;
   height: fit-content;
   cover: contain;
   margin: auto;

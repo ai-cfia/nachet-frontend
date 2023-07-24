@@ -21,7 +21,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
       sx={{
         width: width,
         height: "48.9vh",
-        border: 1,
+        border: `0.05vw solid ${colours.CFIA_Font_Black}`,
         borderRadius: 1,
       }}
     >

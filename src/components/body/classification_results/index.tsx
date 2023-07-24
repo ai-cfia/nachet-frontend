@@ -25,7 +25,7 @@ const ClassificationResults: React.FC<params> = (props) => {
       sx={{
         width: props.windowSize.width * 0.174,
         height: props.windowSize.height * 0.2426,
-        border: 1,
+        border: `0.05vw solid ${colours.CFIA_Font_Black}`,
         borderRadius: 1,
       }}
     >
