@@ -3,8 +3,10 @@ import type Webcam from "react-webcam";
 import { saveAs } from "file-saver";
 import { BodyContainer } from "./indexElements";
 import Classifier from "../classifier";
-import SavePopup from "../../components/body/save_popup";
-import UploadPopup from "../../components/body/upload_image";
+import SavePopup from "../../components/body/save_capture";
+import UploadPopup from "../../components/body/load_image";
+import SwitchModelPopup from "../../components/body/switch_model";
+import AzurePopup from "../../components/body/azure";
 
 interface ImageCache {
   label: string;
@@ -23,6 +25,8 @@ const Home = (): JSX.Element => {
   const [imageLabel, setImageLabel] = useState<string>("");
   const [saveOpen, setSaveOpen] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
+  const [switchModelOpen, setSwitchModelOpen] = useState(false);
+  const [azureOpen, setAzureOpen] = useState(false);
   const [imageCache, setImageCache] = useState<ImageCache[]>([]);
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -95,14 +99,6 @@ const Home = (): JSX.Element => {
       }-${new Date().getDate()}.${imageFormat.split("/")[1]}`,
     );
     setSaveOpen(false);
-  };
-
-  const handleFormat = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-    setImageFormat(event.target.value);
-  };
-
-  const handleLabel = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setImageLabel(event.target.value);
   };
 
   const loadResultsToCache = (data: any): void => {
@@ -219,12 +215,21 @@ const Home = (): JSX.Element => {
           saveImage={saveImage}
           imageFormat={imageFormat}
           imageLabel={imageLabel}
-          handleFormat={handleFormat}
-          handleLabel={handleLabel}
+          setImageFormat={setImageFormat}
+          setImageLabel={setImageLabel}
         />
       )}
       {uploadOpen && (
         <UploadPopup setUploadOpen={setUploadOpen} uploadImage={uploadImage} />
+      )}
+      {switchModelOpen && (
+        <SwitchModelPopup
+          setSwitchModelOpen={setSwitchModelOpen}
+          switchModelOpen={switchModelOpen}
+        />
+      )}
+      {azureOpen && (
+        <AzurePopup setAzureOpen={setAzureOpen} azureOpen={azureOpen} />
       )}
       <Classifier
         handleInference={handleInferenceRequest}
@@ -239,6 +244,8 @@ const Home = (): JSX.Element => {
         loadImage={loadFromCache}
         canvasRef={canvasRef}
         removeImage={removeFromCache}
+        setSwitchModelOpen={setSwitchModelOpen}
+        setAzureOpen={setAzureOpen}
       />
     </BodyContainer>
   );

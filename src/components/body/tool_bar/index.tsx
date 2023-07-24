@@ -14,6 +14,8 @@ interface params {
   setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
   clearImageCache: () => void;
   setSaveOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setSwitchModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setAzureOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const buttonStyling = {
@@ -106,7 +108,7 @@ const ToolBar: React.FC<params> = (props) => {
           size="large"
           sx={buttonStyling}
           onClick={() => {
-            console.log("upload to azure");
+            props.setAzureOpen(true);
           }}
         >
           <CloudUploadIcon fontSize="large" sx={{ paddingBottom: 0.5 }} />
@@ -126,7 +128,7 @@ const ToolBar: React.FC<params> = (props) => {
           size="large"
           sx={buttonStyling}
           onClick={() => {
-            console.log("switch model");
+            props.setSwitchModelOpen(true);
           }}
         >
           <SwitchLeftIcon fontSize="large" sx={{ paddingBottom: 0.5 }} />

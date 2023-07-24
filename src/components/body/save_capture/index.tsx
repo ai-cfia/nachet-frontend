@@ -1,13 +1,15 @@
 import React from "react";
+import { Overlay, ButtonWrap, InfoContainer } from "./indexElements";
 import {
-  Overlay,
-  ButtonWrap,
+  Box,
+  CardHeader,
+  IconButton,
+  Button,
+  TextField,
+  MenuItem,
   Select,
-  Option,
-  LabelInput,
-  InfoContainer,
-} from "./indexElements";
-import { Box, CardHeader, IconButton, Button } from "@mui/material";
+} from "@mui/material";
+import type { SelectChangeEvent } from "@mui/material/Select";
 import CloseIcon from "@mui/icons-material/Close";
 import { colours } from "../../../styles/colours";
 
@@ -16,8 +18,8 @@ interface params {
   saveImage?: () => void;
   imageFormat?: string;
   imageLabel?: string;
-  handleFormat?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-  handleLabel?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  setImageFormat?: React.Dispatch<React.SetStateAction<string>>;
+  setImageLabel?: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const SavePopup: React.FC<params> = (props): JSX.Element => {
@@ -26,6 +28,20 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
       return;
     }
     props.setSaveOpen(false);
+  };
+
+  const handleFormat = (event: SelectChangeEvent): void => {
+    if (props.setImageFormat === undefined) {
+      return;
+    }
+    props.setImageFormat(event.target.value);
+  };
+
+  const handleLabel = (event: any): void => {
+    if (props.setImageLabel === undefined) {
+      return;
+    }
+    props.setImageLabel(event.target.value);
   };
 
   return (
@@ -41,7 +57,7 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
         }}
       >
         <CardHeader
-          title="Tools"
+          title="Save Capture"
           titleTypographyProps={{
             variant: "h6",
             align: "left",
@@ -60,20 +76,29 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
           }}
         />
         <InfoContainer>
-          <LabelInput
-            placeholder="Capture label"
-            onChange={props.handleLabel}
+          <TextField
+            id="outlined-basic"
+            label="Capture Name"
+            variant="outlined"
+            onChange={handleLabel}
             value={props.imageLabel}
+            size="small"
           />
-          <Select value={props.imageFormat} onChange={props.handleFormat}>
-            <Option value="image/png">Capture Format: PNG</Option>
-            <Option value="image/jpeg">Capture Format: JPEG</Option>
+          <Select
+            value={props.imageFormat}
+            onChange={handleFormat}
+            placeholder="Capture Format"
+            sx={{ width: "100%", marginTop: "1rem" }}
+            size="small"
+          >
+            <MenuItem value="image/png">PNG</MenuItem>
+            <MenuItem value="image/jpeg">JPEG</MenuItem>
           </Select>
         </InfoContainer>
         <ButtonWrap>
           <Button
             variant="outlined"
-            size="large"
+            size="medium"
             sx={{
               alignContent: "center",
               alignItems: "center",

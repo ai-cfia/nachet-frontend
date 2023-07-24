@@ -27,6 +27,8 @@ interface params {
   canvasRef: React.RefObject<HTMLCanvasElement>;
   handleInference: () => void;
   removeImage: (string: any) => void;
+  setSwitchModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setAzureOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Classifier: React.FC<params> = (props) => {
@@ -39,6 +41,8 @@ const Classifier: React.FC<params> = (props) => {
           handleInference={props.handleInference}
           capture={props.capture}
           setUploadOpen={props.setUploadOpen}
+          setSwitchModelOpen={props.setSwitchModelOpen}
+          setAzureOpen={props.setAzureOpen}
         />
       </TopContent>
       <RowContainer>
