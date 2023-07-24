@@ -35,7 +35,7 @@ const ClassificationResults: React.FC<params> = (props) => {
           variant: "h6",
           align: "left",
           fontWeight: 600,
-          fontSize: "1.1rem",
+          fontSize: "1.3vh",
           color: colours.CFIA_Font_Black,
         }}
         sx={{ padding: "10px 10px 10px 10px" }}
@@ -48,13 +48,22 @@ const ClassificationResults: React.FC<params> = (props) => {
         <Table>
           <TableBody>
             <TableRow>
-              <TableCell align="left" sx={{ fontWeight: 600 }}>
+              <TableCell
+                align="left"
+                sx={{ fontWeight: 600, fontSize: "1.1vh" }}
+              >
                 Index
               </TableCell>
-              <TableCell align="center" sx={{ fontWeight: 600 }}>
+              <TableCell
+                align="center"
+                sx={{ fontWeight: 600, fontSize: "1.1vh" }}
+              >
                 Type
               </TableCell>
-              <TableCell align="right" sx={{ fontWeight: 600 }}>
+              <TableCell
+                align="right"
+                sx={{ fontWeight: 600, fontSize: "1.1vh" }}
+              >
                 Score
               </TableCell>
             </TableRow>
@@ -63,11 +72,13 @@ const ClassificationResults: React.FC<params> = (props) => {
                 return object.predictions.map(
                   (prediction: any, index: number) => (
                     <TableRow key={index}>
-                      <TableCell align="left">{index + 1}</TableCell>
-                      <TableCell align="center">
+                      <TableCell align="left" sx={{ fontSize: "1.1vh" }}>
+                        {index + 1}
+                      </TableCell>
+                      <TableCell align="center" sx={{ fontSize: "1.1vh" }}>
                         {prediction.split(" ").slice(1).join(" ")}
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell align="right" sx={{ fontSize: "1.1vh" }}>
                         {object.scores[index] * 100}%
                       </TableCell>
                     </TableRow>

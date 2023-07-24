@@ -20,9 +20,12 @@ const MicroscopeFeed: React.FC<params> = (props) => {
     <Box
       sx={{
         width: width,
-        height: height + 48.3,
+        height: "fit-content",
         border: 1,
         borderRadius: 1,
+        borderBottom: 0,
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
         padding: 0,
       }}
     >
@@ -32,7 +35,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
           variant: "h6",
           align: "left",
           fontWeight: 600,
-          fontSize: "1.1rem",
+          fontSize: "1.3vh",
           color: colours.CFIA_Font_Black,
         }}
         sx={{ padding: "10px 10px 10px 10px" }}

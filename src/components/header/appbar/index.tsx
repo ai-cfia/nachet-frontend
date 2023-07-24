@@ -10,8 +10,11 @@ interface params {
 
 const Appbar: React.FC<params> = (props) => {
   return (
-    <AppbarWrap>
-      <AppbarContainer width={props.windowSize.width}>
+    <AppbarWrap width={props.windowSize.width} height={props.windowSize.height}>
+      <AppbarContainer
+        width={props.windowSize.width}
+        height={props.windowSize.height}
+      >
         <AppbarHeader>Seed Classification Interface</AppbarHeader>
       </AppbarContainer>
     </AppbarWrap>

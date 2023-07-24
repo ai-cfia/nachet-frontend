@@ -18,6 +18,7 @@ const Navbar: React.FC<params> = (props) => {
         <NavLogo
           src={require("../../../assets/CFIA_blackfont.png")}
           alt="CFIA Logo"
+          width={props.windowSize.width}
         />
       </NavbarContainer>
     </Nav>

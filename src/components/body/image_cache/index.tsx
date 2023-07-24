@@ -41,7 +41,7 @@ const ImageCache: React.FC<params> = (props) => {
           variant: "h6",
           align: "left",
           fontWeight: 600,
-          fontSize: "1.1rem",
+          fontSize: "1.3vh",
           color: colours.CFIA_Font_Black,
         }}
         sx={{ padding: "10px 10px 10px 10px" }}
@@ -67,6 +67,7 @@ const ImageCache: React.FC<params> = (props) => {
                   sx={{
                     cursor: "pointer",
                     paddingRight: 0,
+                    fontSize: "1.1vh",
                   }}
                   align="left"
                   onClick={() => {

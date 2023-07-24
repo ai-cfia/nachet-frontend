@@ -19,20 +19,19 @@ interface params {
   windowSize: { width: number; height: number };
 }
 
-const buttonStyling = {
-  alignContent: "center",
-  alignItems: "center",
-  padding: 1,
-  marginTop: "10px",
-  display: "flex",
-  flexDirection: "column",
-  fontSize: "0.9rem",
-  width: 0.07,
-  color: colours.CFIA_Font_Black,
-  borderColor: colours.CFIA_Font_Black,
-};
-
 const ToolBar: React.FC<params> = (props) => {
+  const buttonStyling = {
+    alignContent: "center",
+    alignItems: "center",
+    padding: "0.5vh",
+    marginTop: "1vh",
+    display: "flex",
+    flexDirection: "column",
+    fontSize: "1.1vh",
+    width: props.windowSize.width * 0.05,
+    color: colours.CFIA_Font_Black,
+    borderColor: colours.CFIA_Font_Black,
+  };
   return (
     <Box
       sx={{
@@ -48,10 +47,10 @@ const ToolBar: React.FC<params> = (props) => {
           variant: "h6",
           align: "left",
           fontWeight: 600,
-          fontSize: "1.1rem",
+          fontSize: "1.3vh",
           color: colours.CFIA_Font_Black,
         }}
-        sx={{ padding: "10px 10px 0px 10px" }}
+        sx={{ padding: "0.5vh 0.5vh 0px 0.5vh" }}
       />
       <div
         style={{
@@ -100,7 +99,7 @@ const ToolBar: React.FC<params> = (props) => {
           onClick={props.clearImageCache}
         >
           <ClearAllIcon fontSize="large" sx={{ paddingBottom: 0.5 }} />
-          CLEAR ALL
+          CLEAR
         </Button>
         <Button
           variant="outlined"

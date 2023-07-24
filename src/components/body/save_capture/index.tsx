@@ -62,7 +62,7 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
             variant: "h6",
             align: "left",
             fontWeight: 600,
-            fontSize: "1.1rem",
+            fontSize: "1.3vh",
             color: colours.CFIA_Font_Black,
             zIndex: 30,
           }}
@@ -104,7 +104,7 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
               alignItems: "center",
               paddingLeft: 4,
               paddingRight: 4,
-              fontSize: "0.9rem",
+              fontSize: "1.1vh",
               color: colours.CFIA_Font_Black,
               borderColor: colours.CFIA_Font_Black,
             }}

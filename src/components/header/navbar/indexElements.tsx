@@ -4,7 +4,7 @@ import { colours } from "../../../styles/colours";
 export const Nav = styled.nav<{ width: number; height: number }>`
   background-color: ${colours.CFIA_Background_White};
   color: ${colours.CFIA_Background_White};
-  height: 50px;
+  height: ${(props) => props.height * 0.035}px;
   display: flex;
   width: 100%;
   justify-content: center;
@@ -44,8 +44,8 @@ export const NavbarContainer = styled.div<{ width: number; height: number }>`
   }
 `;
 
-export const NavLogo = styled.img`
-  width: 280px;
+export const NavLogo = styled.img<{ width: number }>`
+  width: ${(props) => props.width * 0.15}px;
   height: fit-content;
   cover: contain;
   margin: auto;

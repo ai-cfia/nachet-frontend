@@ -59,7 +59,7 @@ export const FooterLogo = styled.img`
 
 export const FooterLink = styled.a`
   color: ${colours.CFIA_Font_Black};
-  font-size: 0.8rem;
+  font-size: 1vh;
   text-decoration: none;
   cursor: pointer;
   margin-bottom: auto;
