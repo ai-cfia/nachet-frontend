@@ -17,12 +17,9 @@ const FeedCapture: React.FC<params> = (props) => {
     <Box
       sx={{
         width: width,
-        height: "fit-content",
+        height: "48.9vh",
         border: 1,
         borderRadius: 1,
-        borderBottom: 0,
-        borderBottomLeftRadius: 0,
-        borderBottomRightRadius: 0,
       }}
     >
       <CardHeader
@@ -34,7 +31,7 @@ const FeedCapture: React.FC<params> = (props) => {
           fontSize: "1.3vh",
           color: colours.CFIA_Font_Black,
         }}
-        sx={{ padding: "10px 10px 10px 10px" }}
+        sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
       />
       <Canvas ref={props.canvasRef} width={width} height={height} />
     </Box>

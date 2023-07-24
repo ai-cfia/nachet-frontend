@@ -23,20 +23,20 @@ const ToolBar: React.FC<params> = (props) => {
   const buttonStyling = {
     alignContent: "center",
     alignItems: "center",
-    padding: "0.5vh",
     marginTop: "1vh",
     display: "flex",
     flexDirection: "column",
-    fontSize: "1.1vh",
+    fontSize: "0.7vw",
     width: props.windowSize.width * 0.05,
+    height: props.windowSize.height * 0.065,
     color: colours.CFIA_Font_Black,
     borderColor: colours.CFIA_Font_Black,
   };
   return (
     <Box
       sx={{
-        width: props.windowSize.width * 0.708,
-        height: 160,
+        width: props.windowSize.width * 0.71,
+        height: props.windowSize.height * 0.12,
         border: 1,
         borderRadius: 1,
       }}
@@ -50,7 +50,7 @@ const ToolBar: React.FC<params> = (props) => {
           fontSize: "1.3vh",
           color: colours.CFIA_Font_Black,
         }}
-        sx={{ padding: "0.5vh 0.5vh 0px 0.5vh" }}
+        sx={{ padding: "0.5vh 0.5vh 0 0.5vh" }}
       />
       <div
         style={{
@@ -58,7 +58,6 @@ const ToolBar: React.FC<params> = (props) => {
           flexDirection: "row",
           justifyContent: "space-evenly",
           alignItems: "center",
-          width: "100%",
         }}
       >
         <Button
@@ -67,7 +66,7 @@ const ToolBar: React.FC<params> = (props) => {
           sx={buttonStyling}
           onClick={props.capture}
         >
-          <AddAPhotoIcon fontSize="large" sx={{ paddingBottom: 0.5 }} />
+          <AddAPhotoIcon sx={{ paddingBottom: "0.5vh", fontSize: "2.5vh" }} />
           CAPTURE
         </Button>
         <Button
@@ -78,7 +77,7 @@ const ToolBar: React.FC<params> = (props) => {
             props.setUploadOpen(true);
           }}
         >
-          <UploadFileIcon fontSize="large" sx={{ paddingBottom: 0.5 }} />
+          <UploadFileIcon sx={{ paddingBottom: "0.5vh", fontSize: "2.5vh" }} />
           LOAD
         </Button>
         <Button
@@ -89,7 +88,7 @@ const ToolBar: React.FC<params> = (props) => {
             props.setSaveOpen(true);
           }}
         >
-          <DownloadIcon fontSize="large" sx={{ paddingBottom: 0.5 }} />
+          <DownloadIcon sx={{ paddingBottom: "0.5vh", fontSize: "2.5vh" }} />
           SAVE
         </Button>
         <Button
@@ -98,7 +97,7 @@ const ToolBar: React.FC<params> = (props) => {
           sx={buttonStyling}
           onClick={props.clearImageCache}
         >
-          <ClearAllIcon fontSize="large" sx={{ paddingBottom: 0.5 }} />
+          <ClearAllIcon sx={{ paddingBottom: "0.5vh", fontSize: "2.5vh" }} />
           CLEAR
         </Button>
         <Button
@@ -107,7 +106,7 @@ const ToolBar: React.FC<params> = (props) => {
           sx={buttonStyling}
           onClick={props.handleInference}
         >
-          <CropFreeIcon fontSize="large" sx={{ paddingBottom: 0.5 }} />
+          <CropFreeIcon sx={{ paddingBottom: "0.5vh", fontSize: "2.5vh" }} />
           CLASSIFY
         </Button>
         <Button
@@ -118,7 +117,7 @@ const ToolBar: React.FC<params> = (props) => {
             props.setSwitchModelOpen(true);
           }}
         >
-          <SwitchLeftIcon fontSize="large" sx={{ paddingBottom: 0.5 }} />
+          <SwitchLeftIcon sx={{ paddingBottom: "0.5vh", fontSize: "2.5vh" }} />
           MODEL
         </Button>
       </div>

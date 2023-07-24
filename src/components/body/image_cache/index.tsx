@@ -32,7 +32,7 @@ const ImageCache: React.FC<params> = (props) => {
         height: props.windowSize.height * 0.235,
         border: 1,
         borderRadius: 1,
-        marginTop: "10px",
+        marginTop: "1vh",
       }}
     >
       <CardHeader
@@ -44,10 +44,10 @@ const ImageCache: React.FC<params> = (props) => {
           fontSize: "1.3vh",
           color: colours.CFIA_Font_Black,
         }}
-        sx={{ padding: "10px 10px 10px 10px" }}
+        sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
       />
       <TableContainer
-        sx={{ overflow: "auto", height: props.windowSize.height * 0.199 }}
+        sx={{ overflow: "auto", height: props.windowSize.height * 0.198 }}
         id={"container_with_scrolls"}
         component={Paper}
       >
@@ -80,7 +80,6 @@ const ImageCache: React.FC<params> = (props) => {
                   {item.annotated === true ? (
                     <CropFreeIcon
                       color="success"
-                      fontSize="medium"
                       sx={{ padding: 0, margin: 0 }}
                     />
                   ) : (

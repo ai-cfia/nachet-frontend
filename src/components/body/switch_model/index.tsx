@@ -41,9 +41,7 @@ const SwitchModel: React.FC<params> = (props): JSX.Element => {
               <CloseIcon />
             </IconButton>
           }
-          sx={{
-            paddingBottom: 0,
-          }}
+          sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
         />
         <InfoContainer></InfoContainer>
       </Box>

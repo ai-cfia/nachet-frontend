@@ -38,7 +38,7 @@ export const InfoContent = styled.div`
   justify-content: start;
   width: fit-content;
   height: fit-content;
-  padding: 0px 0px 0px 10px;
+  padding: 0px 0px 0px 0.5vw;
   z-index: 0;
   position: relative;
 `;
@@ -49,19 +49,7 @@ export const TopContent = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 0px 0px 10px 0px;
-`;
-
-export const ControlContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: start;
-  width: fit-content;
-  height: fit-content;
-  padding: 0px 10px 0px 0px;
-  z-index: 0;
-  position: relative;
+  padding: 0px 0px 1vh 0px;
 `;
 
 export const LeftContent = styled.div`
@@ -71,7 +59,7 @@ export const LeftContent = styled.div`
   justify-content: start;
   width: fit-content;
   height: fit-content;
-  padding: 0px 5px 0px 0px;
+  padding: 0px 0.25vw 0px 0px;
   z-index: 0;
   position: relative;
 `;
@@ -83,17 +71,7 @@ export const RightContent = styled.div`
   justify-content: start;
   width: fit-content;
   height: fit-content;
-  padding: 0px 0px 0px 5px;
+  padding: 0px 0px 0px 0.25vw;
   z-index: 0;
   position: relative;
-`;
-
-export const BottomContent = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: start;
-  justify-content: center;
-  margin-top: 10px;
-  width: 610px;
-  height: fit-content;
 `;

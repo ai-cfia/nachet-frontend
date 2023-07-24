@@ -170,7 +170,7 @@ const Body: React.FC<params> = (props) => {
         if (object.src === imageSrc && object.annotated) {
           object.predictions.forEach((prediction, index) => {
             ctx.beginPath();
-            ctx.font = "1.1vh Arial";
+            ctx.font = "0.6vw Arial";
             ctx.fillStyle = "white";
             ctx.textAlign = "center";
             ctx.fillText(
@@ -199,7 +199,7 @@ const Body: React.FC<params> = (props) => {
         }
         if (object.src === imageSrc) {
           ctx.beginPath();
-          ctx.font = "1.6vh Arial";
+          ctx.font = "1vw Arial";
           ctx.textAlign = "left";
           ctx.fillStyle = "white";
           ctx.fillText(object.label, 10, canvas.height - 15);

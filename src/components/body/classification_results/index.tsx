@@ -38,10 +38,14 @@ const ClassificationResults: React.FC<params> = (props) => {
           fontSize: "1.3vh",
           color: colours.CFIA_Font_Black,
         }}
-        sx={{ padding: "10px 10px 10px 10px" }}
+        sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
       />
       <TableContainer
-        sx={{ overflow: "auto", height: props.windowSize.height * 0.207 }}
+        sx={{
+          overflow: "auto",
+          height: props.windowSize.height * 0.206,
+          maxHeight: props.windowSize.height * 0.207,
+        }}
         id={"container_with_scrolls"}
         component={Paper}
       >

@@ -14,12 +14,19 @@ interface params {
 
 const Footer: React.FC<params> = (props) => {
   return (
-    <FooterContainer>
-      <FooterWrap width={props.windowSize.width}>
+    <FooterContainer height={props.windowSize.height}>
+      <FooterWrap
+        width={props.windowSize.width}
+        height={props.windowSize.height}
+      >
         <FooterLink href="https://github.com/ai-cfia">
           Developed by AI Lab
         </FooterLink>
-        <FooterLogo src={require("../../assets/Canada_logo.png")} />
+        <FooterLogo
+          src={require("../../assets/Canada_logo.png")}
+          width={props.windowSize.width}
+          height={props.windowSize.height}
+        />
       </FooterWrap>
     </FooterContainer>
   );

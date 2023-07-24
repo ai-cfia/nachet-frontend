@@ -1,20 +1,20 @@
 import styled from "styled-components";
 import { colours } from "../../styles/colours";
 
-export const FooterContainer = styled.footer`
+export const FooterContainer = styled.footer<{ height: number }>`
   background-color: ${colours.CFIA_Background_White};
   width: 100%;
-  height: 40px;
+  height: ${(props) => props.height * 0.035}px;
 `;
 
-export const FooterWrap = styled.div<{ width: number }>`
-  padding: 10px 10px 10px 10px;
+export const FooterWrap = styled.div<{ width: number; height: number }>`
+  padding: 0.8vh 0.8vh 0.8vh 0.8vh;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: space-between;
   width: ${(props) => props.width * 0.71}px;
-  height: 40px;
+  height: ${(props) => props.height * 0.035}px;
   margin: auto;
   position: relative;
   z-index: 0;
@@ -22,7 +22,6 @@ export const FooterWrap = styled.div<{ width: number }>`
 
 export const InfoSection = styled.section`
   width: 100%;
-  height: 40px
   justfiy-content: space-between;
   z-index: 0;
 `;
@@ -32,7 +31,6 @@ export const InfoWrap = styled.div`
   flex-direction: row;
   justfiy-content: space-between;
   align-items: center;
-  height: 40px;
   max-width: 1700px;
   margin: auto;
   z-index: 0;
@@ -42,19 +40,11 @@ export const InfoWrap = styled.div`
   }
 `;
 
-export const FooterLogo = styled.img`
-  width: 110px;
+export const FooterLogo = styled.img<{ width: number; height: number }>`
+  width: ${(props) => props.width * 0.05}px;
   z-index: 0;
   align-self: center;
   height: fit-content;
-  @media screen and (max-width: 768px) {
-    width: 100px;
-    height: fit-content;
-  }
-  @media screen and (max-width: 480px) {
-    width: 80x;
-    height: fit-content;
-  }
 `;
 
 export const FooterLink = styled.a`
