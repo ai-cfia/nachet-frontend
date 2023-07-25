@@ -35,6 +35,10 @@ const Body: React.FC<params> = (props) => {
   const [switchModelOpen, setSwitchModelOpen] = useState(false);
   const [azureOpen, setAzureOpen] = useState(false);
   const [imageCache, setImageCache] = useState<ImageCache[]>([]);
+  const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
+  // const [activeDeviceId, setActiveDeviceId] = useState<string | undefined>(
+  //   undefined,
+  // );
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -213,6 +217,20 @@ const Body: React.FC<params> = (props) => {
   useEffect(() => {
     loadToCanvas();
   }, [imageSrc, imageCache]);
+
+  useEffect(() => {
+    (async () => {
+      const avaliableDevices = await navigator.mediaDevices.enumerateDevices();
+      const videoDevices = avaliableDevices.filter(
+        (i) => i.kind === "videoinput",
+      );
+      setDevices(videoDevices);
+      console.log(devices);
+    })().catch((error) => {
+      console.error(error);
+      alert("Cannot connect to camera");
+    });
+  });
 
   return (
     <BodyContainer width={props.windowSize.width}>

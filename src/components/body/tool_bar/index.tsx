@@ -1,6 +1,6 @@
 import { Box, Button, CardHeader } from "@mui/material";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
-// import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import CameraswitchIcon from "@mui/icons-material/Cameraswitch";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import DownloadIcon from "@mui/icons-material/Download";
 import CropFreeIcon from "@mui/icons-material/CropFree";
@@ -61,6 +61,19 @@ const ToolBar: React.FC<params> = (props) => {
           alignItems: "center",
         }}
       >
+        <Button
+          variant="outlined"
+          size="large"
+          sx={buttonStyling}
+          onClick={() => {
+            props.setUploadOpen(true);
+          }}
+        >
+          <CameraswitchIcon
+            sx={{ paddingBottom: "0.5vh", fontSize: "2.5vh" }}
+          />
+          SWITCH
+        </Button>
         <Button
           variant="outlined"
           size="large"
