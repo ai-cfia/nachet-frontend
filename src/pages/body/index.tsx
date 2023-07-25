@@ -160,10 +160,10 @@ const Body: React.FC<params> = (props) => {
         // const data = await response.json().then((data) => data);
         // loadResultsToCache(data);
 
-        const response = await fetch("http://172.17.0.2:5000", {
+        const response = await fetch("http://localhost:80", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(imageSrc),
+          body: JSON.stringify({"image": imageSrc}),
         });
         const data = await response.json().then((data) => data);
         console.log(data);
