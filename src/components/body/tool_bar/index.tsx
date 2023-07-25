@@ -26,7 +26,8 @@ const ToolBar: React.FC<params> = (props) => {
     marginTop: "1vh",
     display: "flex",
     flexDirection: "column",
-    fontSize: "0.7vw",
+    fontSize: "0.6vw",
+    fontWeight: 600,
     width: "5vw",
     height: "6.5vh",
     color: colours.CFIA_Font_Black,
@@ -35,7 +36,7 @@ const ToolBar: React.FC<params> = (props) => {
   return (
     <Box
       sx={{
-        width: props.windowSize.width * 0.71,
+        width: "88.8vw",
         height: props.windowSize.height * 0.12,
         border: `0.05vw solid ${colours.CFIA_Font_Black}`,
         borderRadius: 1,

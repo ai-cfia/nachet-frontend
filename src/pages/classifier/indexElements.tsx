@@ -49,7 +49,7 @@ export const TopContent = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 0px 0px 1vh 0px;
+  padding: 0px 0px 0.83vh 0px;
 `;
 
 export const LeftContent = styled.div`

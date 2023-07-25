@@ -13,6 +13,7 @@ import MicroscopeFeed from "../../components/body/microscope_feed";
 import ClassificationResults from "../../components/body/classification_results";
 import ImageCache from "../../components/body/image_cache";
 import ToolBar from "../../components/body/tool_bar";
+import SeedIdentForm from "../../components/body/seed_ident";
 
 interface params {
   imageSrc: string;
@@ -77,6 +78,9 @@ const Classifier: React.FC<params> = (props) => {
             loadImage={props.loadImage}
             windowSize={props.windowSize}
           />
+        </InfoContent>
+        <InfoContent>
+          <SeedIdentForm windowSize={props.windowSize} />
         </InfoContent>
       </RowContainer>
     </ColumnContainer>

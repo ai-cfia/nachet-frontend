@@ -24,7 +24,7 @@ const ClassificationResults: React.FC<params> = (props) => {
     <Box
       sx={{
         width: props.windowSize.width * 0.174,
-        height: props.windowSize.height * 0.2426,
+        height: "24.4vh",
         border: `0.05vw solid ${colours.CFIA_Font_Black}`,
         borderRadius: 1,
       }}
@@ -43,8 +43,8 @@ const ClassificationResults: React.FC<params> = (props) => {
       <TableContainer
         sx={{
           overflow: "auto",
-          height: props.windowSize.height * 0.206,
-          maxHeight: props.windowSize.height * 0.206,
+          height: "20.7vh",
+          maxHeight: "24.4vh",
         }}
         id={"container_with_scrolls"}
         component={Paper}

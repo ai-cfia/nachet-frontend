@@ -29,10 +29,10 @@ const ImageCache: React.FC<params> = (props) => {
     <Box
       sx={{
         width: props.windowSize.width * 0.174,
-        height: props.windowSize.height * 0.235,
+        height: "23.6vh",
         border: `0.05vw solid ${colours.CFIA_Font_Black}`,
         borderRadius: 1,
-        marginTop: "1vh",
+        marginTop: "0.83vh",
       }}
     >
       <CardHeader
