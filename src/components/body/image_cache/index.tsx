@@ -16,7 +16,7 @@ import { colours } from "../../../styles/colours";
 
 interface params {
   savedImages: any[];
-  loadImage: (src: string) => void;
+  loadImage: (index: number) => void;
   removeImage: (src: string) => void;
   windowSize: {
     width: number;
@@ -53,9 +53,9 @@ const ImageCache: React.FC<params> = (props) => {
       >
         <Table>
           <TableBody>
-            {props.savedImages.map((item: any, index) => (
+            {props.savedImages.map((item: any, i) => (
               <TableRow
-                key={index}
+                key={i}
                 sx={{
                   "&:hover": {
                     backgroundColor: "#D3D3D3",
@@ -74,10 +74,10 @@ const ImageCache: React.FC<params> = (props) => {
                   }}
                   align="left"
                   onClick={() => {
-                    props.loadImage(item.src);
+                    props.loadImage(item.index);
                   }}
                 >
-                  {item.label}
+                  CAPTURE {item.index}
                 </TableCell>
                 <TableCell
                   align="center"
@@ -117,7 +117,7 @@ const ImageCache: React.FC<params> = (props) => {
                 >
                   <IconButton
                     onClick={() => {
-                      props.removeImage(item.src);
+                      props.removeImage(item.index);
                     }}
                   >
                     <DeleteIcon

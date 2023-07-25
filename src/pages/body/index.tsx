@@ -9,7 +9,7 @@ import SwitchModelPopup from "../../components/body/switch_model";
 import AzurePopup from "../../components/body/azure";
 
 interface ImageCache {
-  label: string;
+  index: number;
   src: string;
   scores: number[];
   predictions: string[];
@@ -24,10 +24,13 @@ interface params {
   };
 }
 
+// fix duplication error after removal of one, recode indexing system
+
 const Body: React.FC<params> = (props) => {
   const [imageSrc, setImageSrc] = useState<string>(
     "https://ai-cfia.github.io/nachet-frontend/placeholder-image.jpg",
   );
+  const [imageIndex, setImageIndex] = useState<number>(0);
   const [imageFormat, setImageFormat] = useState<string>("image/png");
   const [imageLabel, setImageLabel] = useState<string>("");
   const [saveOpen, setSaveOpen] = useState(false);
@@ -35,7 +38,7 @@ const Body: React.FC<params> = (props) => {
   const [switchModelOpen, setSwitchModelOpen] = useState(false);
   const [azureOpen, setAzureOpen] = useState(false);
   const [imageCache, setImageCache] = useState<ImageCache[]>([]);
-  const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
+  // const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
   // const [activeDeviceId, setActiveDeviceId] = useState<string | undefined>(
   //   undefined,
   // );
@@ -52,7 +55,7 @@ const Body: React.FC<params> = (props) => {
     setImageCache((prevCache) => [
       ...prevCache,
       {
-        label: `CAPTURE ${prevCache.length + 1}`,
+        index: imageIndex + 1,
         src,
         scores,
         predictions,
@@ -60,6 +63,22 @@ const Body: React.FC<params> = (props) => {
         annotated,
       },
     ]);
+    setImageIndex((prevIndex) => prevIndex + 1); // might have to place this earlier
+    getCurrentImage(imageIndex);
+  };
+
+  const getCurrentImage = (index: number): void => {
+    if (imageCache.length >= 1) {
+      imageCache.forEach((object) => {
+        if (object.index === index) {
+          setImageSrc(object.src);
+        }
+      });
+    } else {
+      setImageSrc(
+        "https://ai-cfia.github.io/nachet-frontend/placeholder-image.jpg",
+      );
+    }
   };
 
   const captureFeed = (): void => {
@@ -68,7 +87,6 @@ const Body: React.FC<params> = (props) => {
       return;
     }
     loadCaptureToCache(src, [], [], [], false);
-    setImageSrc(src);
   };
 
   const uploadImage = (event: any): void => {
@@ -76,30 +94,26 @@ const Body: React.FC<params> = (props) => {
     const src = URL.createObjectURL(event.target.files[0]);
     loadCaptureToCache(src, [], [], [], false);
     setUploadOpen(false);
-    setImageSrc(src);
   };
 
-  const loadFromCache = (src: string): void => {
-    setImageSrc(src);
+  const loadFromCache = (index: number): void => {
+    setImageIndex(index);
   };
 
-  const removeFromCache = (src: string): void => {
-    const newCache = imageCache.filter((item) => item.src !== src);
+  const removeFromCache = (index: number): void => {
+    const newCache = imageCache.filter((item) => item.index !== index);
     setImageCache(newCache);
-    if (imageCache.length > 1) {
-      setImageSrc(newCache[newCache.length - 1].src);
+    if (newCache.length >= 1) {
+      setImageIndex(newCache[newCache.length - 1].index);
     } else {
-      setImageSrc(
-        "https://ai-cfia.github.io/nachet-frontend/placeholder-image.jpg",
-      );
+      setImageIndex(0);
     }
+    console.log("removed image from cache, current index", imageIndex);
   };
 
   const clearCache = (): void => {
     setImageCache([]);
-    setImageSrc(
-      "https://ai-cfia.github.io/nachet-frontend/placeholder-image.jpg",
-    );
+    setImageIndex(imageCache.length);
   };
 
   const saveImage = (): void => {
@@ -112,13 +126,13 @@ const Body: React.FC<params> = (props) => {
     setSaveOpen(false);
   };
 
-  const loadResultsToCache = (data: any): void => {
-    data.forEach((object: any) => {
+  const loadResultsToCache = (inferenceData: any): void => {
+    inferenceData.forEach((object: any) => {
       object.boxes.forEach((params: any) => {
         setImageCache((prevCache) =>
           prevCache.map((item) => {
             if (
-              item.src === imageSrc &&
+              item.index === imageIndex &&
               object.boxes.length !== item.scores.length
             ) {
               return {
@@ -170,9 +184,9 @@ const Body: React.FC<params> = (props) => {
       canvas.width = image.width;
       canvas.height = image.height;
       ctx.drawImage(image, 0, 0);
-      imageCache.forEach((object) => {
-        if (object.src === imageSrc && object.annotated) {
-          object.predictions.forEach((prediction, index) => {
+      imageCache.forEach((storedImage) => {
+        if (storedImage.index === imageIndex && storedImage.annotated) {
+          storedImage.predictions.forEach((prediction, index) => {
             ctx.beginPath();
             ctx.font = "0.6vw Arial";
             ctx.fillStyle = "white";
@@ -182,31 +196,33 @@ const Body: React.FC<params> = (props) => {
                 .split(" ")
                 .slice(1)
                 .join(" ")}`,
-              ((object.regions[index].bottomX as number) -
-                (object.regions[index].topX as number)) /
+              ((storedImage.regions[index].bottomX as number) -
+                (storedImage.regions[index].topX as number)) /
                 2 +
-                (object.regions[index].topX as number),
-              object.regions[index].topY - 10,
+                (storedImage.regions[index].topX as number),
+              storedImage.regions[index].topY - 10,
             );
             ctx.lineWidth = 2;
             ctx.setLineDash([5, 5]);
             ctx.strokeStyle = "red";
             ctx.rect(
-              object.regions[index].topX,
-              object.regions[index].topY,
-              object.regions[index].bottomX - object.regions[index].topX,
-              object.regions[index].bottomY - object.regions[index].topY,
+              storedImage.regions[index].topX,
+              storedImage.regions[index].topY,
+              storedImage.regions[index].bottomX -
+                storedImage.regions[index].topX,
+              storedImage.regions[index].bottomY -
+                storedImage.regions[index].topY,
             );
             ctx.stroke();
             ctx.closePath();
           });
         }
-        if (object.src === imageSrc) {
+        if (storedImage.index === imageIndex) {
           ctx.beginPath();
           ctx.font = "1vw Arial";
           ctx.textAlign = "left";
-          ctx.fillStyle = "white";
-          ctx.fillText(object.label, 10, canvas.height - 15);
+          ctx.fillStyle = "#4ee44e";
+          ctx.fillText(`CAPTURE ${storedImage.index}`, 10, canvas.height - 15);
           ctx.stroke();
           ctx.closePath();
         }
@@ -219,18 +235,22 @@ const Body: React.FC<params> = (props) => {
   }, [imageSrc, imageCache]);
 
   useEffect(() => {
-    (async () => {
-      const avaliableDevices = await navigator.mediaDevices.enumerateDevices();
-      const videoDevices = avaliableDevices.filter(
-        (i) => i.kind === "videoinput",
-      );
-      setDevices(videoDevices);
-      console.log(devices);
-    })().catch((error) => {
-      console.error(error);
-      alert("Cannot connect to camera");
-    });
-  });
+    getCurrentImage(imageIndex);
+  }, [imageIndex]);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     const avaliableDevices = await navigator.mediaDevices.enumerateDevices();
+  //     const videoDevices = avaliableDevices.filter(
+  //       (i) => i.kind === "videoinput",
+  //     );
+  //     setDevices(videoDevices);
+  //     //console.log(devices);
+  //   })().catch((error) => {
+  //     //console.error(error);
+  //     alert("Cannot connect to camera");
+  //   });
+  // });
 
   return (
     <BodyContainer width={props.windowSize.width}>
@@ -258,6 +278,7 @@ const Body: React.FC<params> = (props) => {
       )}
       <Classifier
         handleInference={handleInferenceRequest}
+        imageIndex={imageIndex}
         setUploadOpen={setUploadOpen}
         imageSrc={imageSrc}
         webcamRef={webcamRef}

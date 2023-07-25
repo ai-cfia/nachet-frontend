@@ -66,7 +66,7 @@ const ToolBar: React.FC<params> = (props) => {
           size="large"
           sx={buttonStyling}
           onClick={() => {
-            props.setUploadOpen(true);
+            console.log("switching camera");
           }}
         >
           <CameraswitchIcon

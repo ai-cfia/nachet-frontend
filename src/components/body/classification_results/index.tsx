@@ -14,6 +14,7 @@ import { colours } from "../../../styles/colours";
 interface params {
   savedImages: any[];
   imageSrc: string;
+  imageIndex: number;
   windowSize: {
     width: number;
     height: number;
@@ -96,7 +97,10 @@ const ClassificationResults: React.FC<params> = (props) => {
               </TableCell>
             </TableRow>
             {props.savedImages.map((object: any) => {
-              if (object.src === props.imageSrc && object.annotated === true) {
+              if (
+                object.index === props.imageIndex &&
+                object.annotated === true
+              ) {
                 return object.predictions.map(
                   (prediction: any, index: number) => (
                     <TableRow

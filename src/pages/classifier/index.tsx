@@ -23,13 +23,14 @@ interface params {
   capture: () => void;
   savedImages: any[];
   clearImageCache: () => void;
-  loadImage: (src: string) => void;
+  loadImage: (index: number) => void;
   setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
   canvasRef: React.RefObject<HTMLCanvasElement>;
   handleInference: () => void;
   removeImage: (string: any) => void;
   setSwitchModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setAzureOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  imageIndex: number;
   windowSize: {
     width: number;
     height: number;
@@ -71,6 +72,7 @@ const Classifier: React.FC<params> = (props) => {
             savedImages={props.savedImages}
             imageSrc={props.imageSrc}
             windowSize={props.windowSize}
+            imageIndex={props.imageIndex}
           />
           <ImageCache
             removeImage={props.removeImage}
