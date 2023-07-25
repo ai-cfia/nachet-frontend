@@ -154,10 +154,19 @@ const Body: React.FC<params> = (props) => {
   const handleInferenceRequest = (): void => {
     (async () => {
       try {
-        const response = await fetch(
-          "https://ai-cfia.github.io/nachet-frontend/sim.json",
-        );
+        // const response = await fetch(
+        //   "https://ai-cfia.github.io/nachet-frontend/sim.json",
+        // );
+        // const data = await response.json().then((data) => data);
+        // loadResultsToCache(data);
+
+        const response = await fetch("http://172.17.0.2:5000", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(imageSrc),
+        });
         const data = await response.json().then((data) => data);
+        console.log(data);
         loadResultsToCache(data);
       } catch (error) {
         console.error("error fetching inference data", error);
