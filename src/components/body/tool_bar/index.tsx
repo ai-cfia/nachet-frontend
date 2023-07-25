@@ -15,7 +15,7 @@ interface params {
   clearImageCache: () => void;
   setSaveOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSwitchModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setAzureOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setSwitchDeviceOpen: React.Dispatch<React.SetStateAction<boolean>>;
   windowSize: { width: number; height: number };
 }
 
@@ -66,7 +66,7 @@ const ToolBar: React.FC<params> = (props) => {
           size="large"
           sx={buttonStyling}
           onClick={() => {
-            console.log("switching camera");
+            props.setSwitchDeviceOpen(true);
           }}
         >
           <CameraswitchIcon

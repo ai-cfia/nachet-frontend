@@ -6,7 +6,7 @@ import Classifier from "../classifier";
 import SavePopup from "../../components/body/save_capture";
 import UploadPopup from "../../components/body/load_image";
 import SwitchModelPopup from "../../components/body/switch_model";
-import AzurePopup from "../../components/body/azure";
+import SwitchDevice from "../../components/body/switch_device";
 
 interface ImageCache {
   index: number;
@@ -24,8 +24,6 @@ interface params {
   };
 }
 
-// fix duplication error after removal of one, recode indexing system
-
 const Body: React.FC<params> = (props) => {
   const [imageSrc, setImageSrc] = useState<string>(
     "https://ai-cfia.github.io/nachet-frontend/placeholder-image.jpg",
@@ -36,12 +34,12 @@ const Body: React.FC<params> = (props) => {
   const [saveOpen, setSaveOpen] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
   const [switchModelOpen, setSwitchModelOpen] = useState(false);
-  const [azureOpen, setAzureOpen] = useState(false);
+  const [switchDeviceOpen, setSwitchDeviceOpen] = useState(false);
   const [imageCache, setImageCache] = useState<ImageCache[]>([]);
-  // const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
-  // const [activeDeviceId, setActiveDeviceId] = useState<string | undefined>(
-  //   undefined,
-  // );
+  const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
+  const [activeDeviceId, setActiveDeviceId] = useState<string | undefined>(
+    undefined,
+  );
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -55,7 +53,10 @@ const Body: React.FC<params> = (props) => {
     setImageCache((prevCache) => [
       ...prevCache,
       {
-        index: imageIndex + 1,
+        index:
+          imageCache.length > 0
+            ? imageCache[imageCache.length - 1].index + 1
+            : imageIndex + 1,
         src,
         scores,
         predictions,
@@ -63,14 +64,14 @@ const Body: React.FC<params> = (props) => {
         annotated,
       },
     ]);
-    setImageIndex((prevIndex) => prevIndex + 1); // might have to place this earlier
-    getCurrentImage(imageIndex);
+    setImageIndex((prevIndex) => prevIndex + 1);
   };
 
   const getCurrentImage = (index: number): void => {
     if (imageCache.length >= 1) {
       imageCache.forEach((object) => {
         if (object.index === index) {
+          console.log("found image in cache", object.index);
           setImageSrc(object.src);
         }
       });
@@ -238,19 +239,17 @@ const Body: React.FC<params> = (props) => {
     getCurrentImage(imageIndex);
   }, [imageIndex]);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const avaliableDevices = await navigator.mediaDevices.enumerateDevices();
-  //     const videoDevices = avaliableDevices.filter(
-  //       (i) => i.kind === "videoinput",
-  //     );
-  //     setDevices(videoDevices);
-  //     //console.log(devices);
-  //   })().catch((error) => {
-  //     //console.error(error);
-  //     alert("Cannot connect to camera");
-  //   });
-  // });
+  useEffect(() => {
+    (async () => {
+      const avaliableDevices = await navigator.mediaDevices.enumerateDevices();
+      const videoDevices = avaliableDevices.filter(
+        (i) => i.kind === "videoinput",
+      );
+      setDevices(videoDevices);
+    })().catch((error) => {
+      alert(error);
+    });
+  });
 
   return (
     <BodyContainer width={props.windowSize.width}>
@@ -273,8 +272,13 @@ const Body: React.FC<params> = (props) => {
           switchModelOpen={switchModelOpen}
         />
       )}
-      {azureOpen && (
-        <AzurePopup setAzureOpen={setAzureOpen} azureOpen={azureOpen} />
+      {switchDeviceOpen && (
+        <SwitchDevice
+          setSwitchDeviceOpen={setSwitchDeviceOpen}
+          devices={devices}
+          setDeviceId={setActiveDeviceId}
+          activeDeviceId={activeDeviceId}
+        />
       )}
       <Classifier
         handleInference={handleInferenceRequest}
@@ -291,7 +295,7 @@ const Body: React.FC<params> = (props) => {
         canvasRef={canvasRef}
         removeImage={removeFromCache}
         setSwitchModelOpen={setSwitchModelOpen}
-        setAzureOpen={setAzureOpen}
+        setSwitchDeviceOpen={setSwitchDeviceOpen}
         windowSize={props.windowSize}
       />
     </BodyContainer>

@@ -29,7 +29,7 @@ interface params {
   handleInference: () => void;
   removeImage: (string: any) => void;
   setSwitchModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setAzureOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setSwitchDeviceOpen: React.Dispatch<React.SetStateAction<boolean>>;
   imageIndex: number;
   windowSize: {
     width: number;
@@ -48,7 +48,7 @@ const Classifier: React.FC<params> = (props) => {
           capture={props.capture}
           setUploadOpen={props.setUploadOpen}
           setSwitchModelOpen={props.setSwitchModelOpen}
-          setAzureOpen={props.setAzureOpen}
+          setSwitchDeviceOpen={props.setSwitchDeviceOpen}
           windowSize={props.windowSize}
         />
       </TopContent>
