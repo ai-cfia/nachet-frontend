@@ -44,7 +44,7 @@ const ClassificationResults: React.FC<params> = (props) => {
         sx={{
           overflow: "auto",
           height: props.windowSize.height * 0.206,
-          maxHeight: props.windowSize.height * 0.207,
+          maxHeight: props.windowSize.height * 0.206,
         }}
         id={"container_with_scrolls"}
         component={Paper}
@@ -54,19 +54,43 @@ const ClassificationResults: React.FC<params> = (props) => {
             <TableRow>
               <TableCell
                 align="left"
-                sx={{ fontWeight: 600, fontSize: "1.1vh" }}
+                sx={{
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  paddingRight: 0,
+                  fontSize: "1.0vh",
+                  paddingTop: "0.5vh",
+                  paddingBottom: "0.5vh",
+                  paddingLeft: "0.8vh",
+                }}
               >
                 Index
               </TableCell>
               <TableCell
                 align="center"
-                sx={{ fontWeight: 600, fontSize: "1.1vh" }}
+                sx={{
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  fontSize: "1.0vh",
+                  paddingRight: 0,
+                  paddingLeft: 0,
+                  paddingTop: "0.5vh",
+                  paddingBottom: "0.5vh",
+                }}
               >
                 Type
               </TableCell>
               <TableCell
                 align="right"
-                sx={{ fontWeight: 600, fontSize: "1.1vh" }}
+                sx={{
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  paddingLeft: 0,
+                  fontSize: "1.0vh",
+                  paddingTop: "0.5vh",
+                  paddingBottom: "0.5vh",
+                  paddingRight: "0.8vh",
+                }}
               >
                 Score
               </TableCell>
@@ -75,14 +99,52 @@ const ClassificationResults: React.FC<params> = (props) => {
               if (object.src === props.imageSrc && object.annotated === true) {
                 return object.predictions.map(
                   (prediction: any, index: number) => (
-                    <TableRow key={index}>
-                      <TableCell align="left" sx={{ fontSize: "1.1vh" }}>
+                    <TableRow
+                      key={index}
+                      sx={{
+                        "&:hover": {
+                          backgroundColor: "#D3D3D3",
+                          transition: "0.1s ease-in-out all",
+                        },
+                      }}
+                    >
+                      <TableCell
+                        align="left"
+                        sx={{
+                          cursor: "pointer",
+                          paddingRight: 0,
+                          fontSize: "1.0vh",
+                          paddingTop: "0.5vh",
+                          paddingBottom: "0.5vh",
+                          paddingLeft: "0.8vh",
+                        }}
+                      >
                         {index + 1}
                       </TableCell>
-                      <TableCell align="center" sx={{ fontSize: "1.1vh" }}>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          cursor: "pointer",
+                          paddingRight: 0,
+                          fontSize: "1.0vh",
+                          paddingLeft: 0,
+                          paddingTop: "0.5vh",
+                          paddingBottom: "0.5vh",
+                        }}
+                      >
                         {prediction.split(" ").slice(1).join(" ")}
                       </TableCell>
-                      <TableCell align="right" sx={{ fontSize: "1.1vh" }}>
+                      <TableCell
+                        align="right"
+                        sx={{
+                          cursor: "pointer",
+                          paddingLeft: 0,
+                          fontSize: "1.0vh",
+                          paddingTop: "0.5vh",
+                          paddingBottom: "0.5vh",
+                          paddingRight: "0.8vh",
+                        }}
+                      >
                         {object.scores[index] * 100}%
                       </TableCell>
                     </TableRow>

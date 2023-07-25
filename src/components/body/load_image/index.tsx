@@ -18,7 +18,7 @@ const UploadPopup: React.FC<params> = (props): JSX.Element => {
     <Overlay>
       <Box
         sx={{
-          width: "15vw",
+          width: "20vw",
           height: "20vh",
           zIndex: 30,
           border: `0.05vw solid ${colours.CFIA_Font_Black}`,

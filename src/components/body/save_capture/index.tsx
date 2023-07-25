@@ -86,7 +86,7 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
             value={props.imageFormat}
             onChange={handleFormat}
             placeholder="Capture Format"
-            sx={{ width: "100%", marginTop: "1rem" }}
+            sx={{ width: "100%", marginTop: "1vh" }}
             size="small"
           >
             <MenuItem value="image/png">PNG</MenuItem>
@@ -100,8 +100,8 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
             sx={{
               alignContent: "center",
               alignItems: "center",
-              paddingLeft: 4,
-              paddingRight: 4,
+              paddingLeft: "0.8vw",
+              paddingRight: "0.8vw",
               fontSize: "1.1vh",
               color: colours.CFIA_Font_Black,
               borderColor: colours.CFIA_Font_Black,

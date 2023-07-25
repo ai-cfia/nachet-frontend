@@ -67,7 +67,10 @@ const ImageCache: React.FC<params> = (props) => {
                   sx={{
                     cursor: "pointer",
                     paddingRight: 0,
-                    fontSize: "1.1vh",
+                    fontSize: "1.0vh",
+                    paddingTop: "0.5vh",
+                    paddingBottom: "0.5vh",
+                    paddingLeft: "0.8vh",
                   }}
                   align="left"
                   onClick={() => {
@@ -76,23 +79,57 @@ const ImageCache: React.FC<params> = (props) => {
                 >
                   {item.label}
                 </TableCell>
-                <TableCell align="center">
+                <TableCell
+                  align="center"
+                  sx={{
+                    cursor: "pointer",
+                    paddingRight: 0,
+                    paddingLeft: 0,
+                    paddingTop: "0.5vh",
+                    paddingBottom: "0.5vh",
+                  }}
+                >
                   {item.annotated === true ? (
                     <CropFreeIcon
                       color="success"
-                      style={{ fontSize: "1.8vh", marginTop: 0, marginBottom: 0 }}
+                      style={{
+                        fontSize: "1.8vh",
+                        marginTop: 0,
+                        marginBottom: 0,
+                        paddingTop: 0,
+                        paddingBottom: 0,
+                      }}
                     />
                   ) : (
                     <> </>
                   )}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell
+                  align="right"
+                  sx={{
+                    cursor: "pointer",
+                    paddingLeft: 0,
+                    fontSize: "1.0vh",
+                    paddingTop: "0.5vh",
+                    paddingBottom: "0.5vh",
+                    paddingRight: "0.8vh",
+                  }}
+                >
                   <IconButton
                     onClick={() => {
                       props.removeImage(item.src);
                     }}
                   >
-                    <DeleteIcon color="warning" style={{ fontSize: "1.8vh", marginTop: 0, marginBottom: 0 }} />
+                    <DeleteIcon
+                      color="warning"
+                      style={{
+                        fontSize: "1.8vh",
+                        marginTop: 0,
+                        marginBottom: 0,
+                        paddingTop: 0,
+                        paddingBottom: 0,
+                      }}
+                    />
                   </IconButton>
                 </TableCell>
               </TableRow>
