@@ -29,7 +29,7 @@ const SwitchDevice: React.FC<params> = (props): JSX.Element => {
       <Box
         sx={{
           width: "20vw",
-          height: "20vh",
+          height: "22vh",
           zIndex: 30,
           border: `0.05vw solid ${colours.CFIA_Font_Black}`,
           borderRadius: 1,
@@ -37,7 +37,7 @@ const SwitchDevice: React.FC<params> = (props): JSX.Element => {
         }}
       >
         <CardHeader
-          title="Switch Media Device"
+          title="Choose Media Device"
           titleTypographyProps={{
             variant: "h6",
             align: "left",
@@ -57,7 +57,6 @@ const SwitchDevice: React.FC<params> = (props): JSX.Element => {
           <Select
             value={props.activeDeviceId}
             onChange={handleSwitch}
-            placeholder="Capture Format"
             sx={{ width: "100%", marginTop: "1vh" }}
             size="small"
           >

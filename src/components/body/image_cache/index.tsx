@@ -48,7 +48,7 @@ const ImageCache: React.FC<params> = (props) => {
       />
       <TableContainer
         sx={{ overflow: "auto", height: props.windowSize.height * 0.198 }}
-        id={"container_with_scrolls"}
+        id={"container_with_scrolls_"}
         component={Paper}
       >
         <Table>

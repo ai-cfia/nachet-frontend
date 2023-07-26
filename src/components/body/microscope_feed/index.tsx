@@ -7,6 +7,7 @@ interface params {
   webcamRef: React.RefObject<Webcam>;
   imageFormat: any;
   capture: () => void;
+  activeDeviceId: string | undefined;
   windowSize: {
     width: number;
     height: number;
@@ -15,7 +16,7 @@ interface params {
 
 const MicroscopeFeed: React.FC<params> = (props) => {
   const width = props.windowSize.width * 0.262;
-  const height = props.windowSize.height * 0.4515;
+  const height = props.windowSize.height * 0.4515; // 0.4515
   return (
     <Box
       sx={{
@@ -39,11 +40,13 @@ const MicroscopeFeed: React.FC<params> = (props) => {
       <Webcam
         ref={props.webcamRef}
         mirrored={false}
-        width={width} // 600
-        height={height} // 606.5
+        width={width + 1} // 600
+        height={height + 1} // 606.5
+        style={{ objectFit: "cover" }}
         videoConstraints={{
-          width: width,
-          height: height,
+          width: width + 1,
+          height: height + 1,
+          deviceId: props.activeDeviceId,
           facingMode: { ideal: "environment" },
         }}
         screenshotFormat={props.imageFormat}

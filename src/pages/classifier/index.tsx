@@ -31,6 +31,7 @@ interface params {
   setSwitchModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSwitchDeviceOpen: React.Dispatch<React.SetStateAction<boolean>>;
   imageIndex: number;
+  activeDeviceId: string | undefined;
   windowSize: {
     width: number;
     height: number;
@@ -59,6 +60,7 @@ const Classifier: React.FC<params> = (props) => {
             webcamRef={props.webcamRef}
             imageFormat={props.imageFormat}
             windowSize={props.windowSize}
+            activeDeviceId={props.activeDeviceId}
           />
         </LeftContent>
         <RightContent>

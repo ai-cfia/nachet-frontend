@@ -7,6 +7,7 @@ import SavePopup from "../../components/body/save_capture";
 import UploadPopup from "../../components/body/load_image";
 import SwitchModelPopup from "../../components/body/switch_model";
 import SwitchDevice from "../../components/body/switch_device";
+import axios from "axios";
 
 interface ImageCache {
   index: number;
@@ -64,14 +65,18 @@ const Body: React.FC<params> = (props) => {
         annotated,
       },
     ]);
-    setImageIndex((prevIndex) => prevIndex + 1);
+    setImageIndex(
+      imageCache.length > 0
+        ? imageCache[imageCache.length - 1].index + 1
+        : imageIndex + 1,
+    );
   };
 
   const getCurrentImage = (index: number): void => {
+    console.log(imageCache);
     if (imageCache.length >= 1) {
       imageCache.forEach((object) => {
         if (object.index === index) {
-          console.log("found image in cache", object.index);
           setImageSrc(object.src);
         }
       });
@@ -109,12 +114,11 @@ const Body: React.FC<params> = (props) => {
     } else {
       setImageIndex(0);
     }
-    console.log("removed image from cache, current index", imageIndex);
   };
 
   const clearCache = (): void => {
     setImageCache([]);
-    setImageIndex(imageCache.length);
+    setImageIndex(0);
   };
 
   const saveImage = (): void => {
@@ -154,20 +158,21 @@ const Body: React.FC<params> = (props) => {
   const handleInferenceRequest = (): void => {
     (async () => {
       try {
-        // const response = await fetch(
-        //   "https://ai-cfia.github.io/nachet-frontend/sim.json",
-        // );
-        // const data = await response.json().then((data) => data);
-        // loadResultsToCache(data);
-
-        const response = await fetch("http://localhost:80", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({"image": imageSrc}),
+        await axios({
+          method: "post",
+          url: `http://127.0.0.1:80`,
+          withCredentials: false,
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          data: {
+            image: imageSrc,
+          },
+        }).then((response) => {
+          console.log(response.data);
+          loadResultsToCache(response.data);
         });
-        const data = await response.json().then((data) => data);
-        console.log(data);
-        loadResultsToCache(data);
       } catch (error) {
         console.error("error fetching inference data", error);
         alert("No response from server");
@@ -241,12 +246,12 @@ const Body: React.FC<params> = (props) => {
   };
 
   useEffect(() => {
-    loadToCanvas();
-  }, [imageSrc, imageCache]);
-
-  useEffect(() => {
     getCurrentImage(imageIndex);
   }, [imageIndex]);
+
+  useEffect(() => {
+    loadToCanvas();
+  }, [imageSrc]);
 
   useEffect(() => {
     (async () => {
@@ -306,6 +311,7 @@ const Body: React.FC<params> = (props) => {
         setSwitchModelOpen={setSwitchModelOpen}
         setSwitchDeviceOpen={setSwitchDeviceOpen}
         windowSize={props.windowSize}
+        activeDeviceId={activeDeviceId}
       />
     </BodyContainer>
   );
