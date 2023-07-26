@@ -73,7 +73,6 @@ const Body: React.FC<params> = (props) => {
   };
 
   const getCurrentImage = (index: number): void => {
-    console.log(imageCache);
     if (imageCache.length >= 1) {
       imageCache.forEach((object) => {
         if (object.index === index) {

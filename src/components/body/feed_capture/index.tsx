@@ -11,13 +11,11 @@ interface params {
 }
 
 const FeedCapture: React.FC<params> = (props) => {
-  const width = props.windowSize.width * 0.262;
-  const height = props.windowSize.height * 0.4515;
   return (
     <Box
       sx={{
-        width: width,
-        height: "48.9vh",
+        width: "100%",
+        height: "fit-content",
         borderRadius: 1,
         border: `0.05vw solid ${colours.CFIA_Font_Black}`,
       }}
@@ -33,7 +31,8 @@ const FeedCapture: React.FC<params> = (props) => {
         }}
         sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
       />
-      <Canvas ref={props.canvasRef} width={width} height={height} />
+      {/* <Canvas ref={props.canvasRef} width={width} height={height} /> */}
+      <Canvas ref={props.canvasRef} width={800} height={800} />
     </Box>
   );
 };

@@ -8,8 +8,9 @@ export const BodyContainer = styled.div<{ width: number }>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: fit-content;
   z-index: 0;
+  max-width: 100%;
   position: relative;
-  padding: 1.5vh 1.5vh 1.5vh 1.5vh;
+  margin-top: 7vh;
+  margin-bottom: 7vh;
 `;

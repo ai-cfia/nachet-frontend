@@ -25,7 +25,7 @@ export const AppbarContainer = styled.div<{ width: number; height: number }>`
 
 export const AppbarHeader = styled.h2`
   color: ${colours.CFIA_Font_White};
-  font-size: 1.3vh;
+  font-size: 1.4vh;
   font-weight: bold;
   text-decoration: none;
   display: flex;
