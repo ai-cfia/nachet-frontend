@@ -96,8 +96,18 @@ const Body: React.FC<params> = (props) => {
 
   const uploadImage = (event: any): void => {
     event.preventDefault();
-    const src = URL.createObjectURL(event.target.files[0]);
-    loadCaptureToCache(src, [], [], [], false);
+    // const src = URL.createObjectURL(event.target.files[0]);
+    const file = event.target.files[0];
+    if (file !== undefined) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result !== "string") {
+          return;
+        }
+        loadCaptureToCache(reader.result, [], [], [], false);
+      };
+      reader.readAsDataURL(file);
+    }
     setUploadOpen(false);
   };
 
@@ -159,8 +169,7 @@ const Body: React.FC<params> = (props) => {
       try {
         await axios({
           method: "post",
-          url: `http://127.0.0.1:80`,
-          withCredentials: false,
+          url: `http://localhost:2323`,
           headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
