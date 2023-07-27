@@ -29,6 +29,7 @@ const Body: React.FC<params> = (props) => {
   const [imageSrc, setImageSrc] = useState<string>(
     "https://ai-cfia.github.io/nachet-frontend/placeholder-image.jpg",
   );
+  const [imageSrcKey, setImageSrcKey] = useState<boolean>(false);
   const [imageIndex, setImageIndex] = useState<number>(0);
   const [imageFormat, setImageFormat] = useState<string>("image/png");
   const [imageLabel, setImageLabel] = useState<string>("");
@@ -76,9 +77,12 @@ const Body: React.FC<params> = (props) => {
 
   const getCurrentImage = (index: number): void => {
     if (imageCache.length >= 1) {
-      imageCache.forEach((object) => {
-        if (object.index === index) {
-          setImageSrc(object.src);
+      imageCache.forEach((image) => {
+        if (image.index === index) {
+          setImageSrc(image.src);
+          if (image.src === imageSrc) {
+            setImageSrcKey(!imageSrcKey);
+          }
         }
       });
     } else {
@@ -98,7 +102,6 @@ const Body: React.FC<params> = (props) => {
 
   const uploadImage = (event: any): void => {
     event.preventDefault();
-    // const src = URL.createObjectURL(event.target.files[0]);
     const file = event.target.files[0];
     if (file !== undefined) {
       const reader = new FileReader();
@@ -312,7 +315,7 @@ const Body: React.FC<params> = (props) => {
 
   useEffect(() => {
     loadToCanvas();
-  }, [imageSrc]);
+  }, [imageSrc, imageSrcKey]);
 
   useEffect(() => {
     (async () => {
