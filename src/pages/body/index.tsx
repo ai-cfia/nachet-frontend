@@ -38,6 +38,8 @@ const Body: React.FC<params> = (props) => {
   const [switchDeviceOpen, setSwitchDeviceOpen] = useState(false);
   const [imageCache, setImageCache] = useState<ImageCache[]>([]);
   const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
+  const [apiKey, setApiKey] = useState<string>("");
+  const [apiURL, setApiURL] = useState<string>("");
   const [activeDeviceId, setActiveDeviceId] = useState<string | undefined>(
     undefined,
   );
@@ -165,6 +167,10 @@ const Body: React.FC<params> = (props) => {
   };
 
   const handleInferenceRequest = (): void => {
+    if (apiKey === "" || apiURL === "") {
+      alert("Please enter API key and URL");
+      return;
+    }
     (async () => {
       try {
         await axios({
@@ -176,6 +182,8 @@ const Body: React.FC<params> = (props) => {
           },
           data: {
             image: imageSrc,
+            API_key: apiKey,
+            API_url: apiURL,
           },
         }).then((response) => {
           console.log(response.data);
@@ -253,6 +261,51 @@ const Body: React.FC<params> = (props) => {
     };
   };
 
+  const saveJSONToLocalStorage = (cache: any[]): void => {
+    try {
+      const serializedData = JSON.stringify(cache);
+      localStorage.setItem("image_cache", serializedData);
+    } catch (error) {
+      // Handle error, e.g., if the browser's storage is full
+      console.error("Error saving JSON to localStorage:", error);
+    }
+  };
+
+  const getJSONFromLocalStorage = (): any => {
+    try {
+      const serializedData = localStorage.getItem("image_cache");
+      if (serializedData === null) {
+        return undefined;
+      }
+      return JSON.parse(serializedData);
+    } catch (error) {
+      // Handle error, e.g., if the data is not valid JSON
+      console.error("Error retrieving JSON from localStorage:", error);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("beforeunload", () => {
+      saveJSONToLocalStorage(imageCache);
+    });
+
+    // Remove the event listener when the component is unmounted
+    return () => {
+      window.removeEventListener("beforeunload", () => {
+        saveJSONToLocalStorage(imageCache);
+      });
+    };
+  }, [imageCache]);
+
+  useEffect(() => {
+    const cachedData = getJSONFromLocalStorage();
+    if (cachedData !== null && cachedData !== undefined) {
+      setImageCache(cachedData);
+      console.log(cachedData);
+    }
+  }, []);
+
   useEffect(() => {
     getCurrentImage(imageIndex);
   }, [imageIndex]);
@@ -295,6 +348,10 @@ const Body: React.FC<params> = (props) => {
         <SwitchModelPopup
           setSwitchModelOpen={setSwitchModelOpen}
           switchModelOpen={switchModelOpen}
+          setApiKey={setApiKey}
+          setApiURL={setApiURL}
+          apiURL={apiURL}
+          apiKey={apiKey}
         />
       )}
       {switchDeviceOpen && (
