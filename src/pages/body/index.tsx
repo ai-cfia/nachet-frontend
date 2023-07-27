@@ -16,6 +16,7 @@ interface ImageCache {
   predictions: string[];
   regions: any[];
   annotated: boolean;
+  imageDims: number[];
 }
 
 interface params {
@@ -53,6 +54,7 @@ const Body: React.FC<params> = (props) => {
     predictions: string[],
     regions: any[],
     annotated: boolean,
+    imageDims: number[],
   ): void => {
     setImageCache((prevCache) => [
       ...prevCache,
@@ -66,6 +68,7 @@ const Body: React.FC<params> = (props) => {
         predictions,
         regions,
         annotated,
+        imageDims,
       },
     ]);
     setImageIndex(
@@ -97,7 +100,7 @@ const Body: React.FC<params> = (props) => {
     if (src === null || src === undefined) {
       return;
     }
-    loadCaptureToCache(src, [], [], [], false);
+    loadCaptureToCache(src, [], [], [], false, [0, 0]);
   };
 
   const uploadImage = (event: any): void => {
@@ -109,7 +112,7 @@ const Body: React.FC<params> = (props) => {
         if (typeof reader.result !== "string") {
           return;
         }
-        loadCaptureToCache(reader.result, [], [], [], false);
+        loadCaptureToCache(reader.result, [], [], [], false, [0, 0]);
       };
       reader.readAsDataURL(file);
     }
@@ -252,6 +255,7 @@ const Body: React.FC<params> = (props) => {
           });
         }
         if (storedImage.index === imageIndex) {
+          storedImage.imageDims = [image.width, image.height];
           ctx.beginPath();
           ctx.font = "1vw Arial";
           ctx.textAlign = "left";
@@ -269,7 +273,6 @@ const Body: React.FC<params> = (props) => {
       const serializedData = JSON.stringify(cache);
       localStorage.setItem("image_cache", serializedData);
     } catch (error) {
-      // Handle error, e.g., if the browser's storage is full
       console.error("Error saving JSON to localStorage:", error);
     }
   };
@@ -282,7 +285,6 @@ const Body: React.FC<params> = (props) => {
       }
       return JSON.parse(serializedData);
     } catch (error) {
-      // Handle error, e.g., if the data is not valid JSON
       console.error("Error retrieving JSON from localStorage:", error);
       return null;
     }
@@ -315,6 +317,7 @@ const Body: React.FC<params> = (props) => {
 
   useEffect(() => {
     loadToCanvas();
+    console.log(imageCache);
   }, [imageSrc, imageSrcKey]);
 
   useEffect(() => {

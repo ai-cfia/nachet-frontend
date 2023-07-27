@@ -94,7 +94,7 @@ const ClassificationResults: React.FC<params> = (props) => {
                   paddingRight: "0.8vh",
                 }}
               >
-                Score
+                Confidence
               </TableCell>
             </TableRow>
             {props.savedImages.map((object: any) => {
