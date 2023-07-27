@@ -6,6 +6,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import CropFreeIcon from "@mui/icons-material/CropFree";
 import ClearAllIcon from "@mui/icons-material/ClearAll";
 import SwitchLeftIcon from "@mui/icons-material/SwitchLeft";
+import ZoomOutMapIcon from "@mui/icons-material/ZoomOutMap";
 import { colours } from "../../../styles/colours";
 
 interface params {
@@ -30,8 +31,17 @@ const ToolBar: React.FC<params> = (props) => {
     fontWeight: 600,
     width: "5vw",
     height: "6.5vh",
+    padding: "0.2vh",
     color: colours.CFIA_Font_Black,
     border: `0.05vw solid ${colours.CFIA_Font_Black}`,
+  };
+
+  const iconStyling = {
+    paddingBottom: "0.4vh",
+    paddingLeft: "0.2vh",
+    paddingRight: "0.2vh",
+    paddingTop: "0.2vh",
+    fontSize: "2.5vh",
   };
   return (
     <Box
@@ -69,9 +79,7 @@ const ToolBar: React.FC<params> = (props) => {
             props.setSwitchDeviceOpen(true);
           }}
         >
-          <CameraswitchIcon
-            sx={{ paddingBottom: "0.5vh", fontSize: "2.5vh" }}
-          />
+          <CameraswitchIcon sx={iconStyling} />
           SWITCH
         </Button>
         <Button
@@ -80,7 +88,7 @@ const ToolBar: React.FC<params> = (props) => {
           sx={buttonStyling}
           onClick={props.capture}
         >
-          <AddAPhotoIcon sx={{ paddingBottom: "0.5vh", fontSize: "2.5vh" }} />
+          <AddAPhotoIcon sx={iconStyling} />
           CAPTURE
         </Button>
         <Button
@@ -91,7 +99,7 @@ const ToolBar: React.FC<params> = (props) => {
             props.setUploadOpen(true);
           }}
         >
-          <UploadFileIcon sx={{ paddingBottom: "0.5vh", fontSize: "2.5vh" }} />
+          <UploadFileIcon sx={iconStyling} />
           LOAD
         </Button>
         <Button
@@ -102,7 +110,7 @@ const ToolBar: React.FC<params> = (props) => {
             props.setSaveOpen(true);
           }}
         >
-          <DownloadIcon sx={{ paddingBottom: "0.5vh", fontSize: "2.5vh" }} />
+          <DownloadIcon sx={iconStyling} />
           SAVE
         </Button>
         <Button
@@ -111,7 +119,7 @@ const ToolBar: React.FC<params> = (props) => {
           sx={buttonStyling}
           onClick={props.clearImageCache}
         >
-          <ClearAllIcon sx={{ paddingBottom: "0.5vh", fontSize: "2.5vh" }} />
+          <ClearAllIcon sx={iconStyling} />
           CLEAR
         </Button>
         <Button
@@ -120,8 +128,12 @@ const ToolBar: React.FC<params> = (props) => {
           sx={buttonStyling}
           onClick={props.handleInference}
         >
-          <CropFreeIcon sx={{ paddingBottom: "0.5vh", fontSize: "2.5vh" }} />
+          <CropFreeIcon sx={iconStyling} />
           CLASSIFY
+        </Button>
+        <Button variant="outlined" size="large" sx={buttonStyling}>
+          <ZoomOutMapIcon sx={iconStyling} />
+          Zoom
         </Button>
         <Button
           variant="outlined"
@@ -131,7 +143,7 @@ const ToolBar: React.FC<params> = (props) => {
             props.setSwitchModelOpen(true);
           }}
         >
-          <SwitchLeftIcon sx={{ paddingBottom: "0.5vh", fontSize: "2.5vh" }} />
+          <SwitchLeftIcon sx={iconStyling} />
           MODEL
         </Button>
       </div>

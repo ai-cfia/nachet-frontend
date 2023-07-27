@@ -60,9 +60,9 @@ const SwitchDevice: React.FC<params> = (props): JSX.Element => {
             sx={{ width: "100%", marginTop: "1vh" }}
             size="small"
           >
-            {props.devices.map((d) => (
-              <MenuItem key={d.deviceId} value={d.deviceId}>
-                {d.label}
+            {props.devices.map((device) => (
+              <MenuItem key={device.deviceId} value={device.deviceId}>
+                {device.label}
               </MenuItem>
             ))}
           </Select>

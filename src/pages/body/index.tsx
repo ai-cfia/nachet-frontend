@@ -202,7 +202,7 @@ const Body: React.FC<params> = (props) => {
     if (ctx === null) {
       return;
     }
-    ctx.clearRect(0, 0, 600, 600);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     image.onload = () => {
       canvas.width = image.width;
       canvas.height = image.height;
@@ -268,6 +268,7 @@ const Body: React.FC<params> = (props) => {
         (i) => i.kind === "videoinput",
       );
       setDevices(videoDevices);
+      setActiveDeviceId(videoDevices[0].deviceId);
     })().catch((error) => {
       alert(error);
     });

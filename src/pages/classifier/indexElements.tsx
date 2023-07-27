@@ -20,7 +20,7 @@ export const ColumnContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: start;
+  align-items: center;
   width: 100%;
   max-width: 90vw;
   height: fit-content;
@@ -32,7 +32,7 @@ export const InfoContent = styled.div`
   flex-direction: column;
   align-items: start;
   justify-content: start;
-  width: 33.33%;
+  width: 22.1%;
   height: fit-content;
   padding: 0px 0px 0px 0.5vw;
   z-index: 0;
@@ -44,7 +44,7 @@ export const TopContent = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: 66.66%;
+  width: 90%;
   padding: 0px 0px 0.83vh 0px;
 `;
 

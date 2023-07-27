@@ -37,20 +37,6 @@ const MicroscopeFeed: React.FC<params> = (props) => {
         }}
         sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
       />
-      {/* <Webcam
-        ref={props.webcamRef}
-        mirrored={false}
-        width={width + 1} // 600
-        height={height + 1} // 606.5
-        style={{ objectFit: "cover" }}
-        videoConstraints={{
-          width: width + 1,
-          height: height + 1,
-          deviceId: props.activeDeviceId,
-          facingMode: { ideal: "environment" },
-        }}
-        screenshotFormat={props.imageFormat}
-      /> */}
       <Webcam
         ref={props.webcamRef}
         mirrored={false}
