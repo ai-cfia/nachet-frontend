@@ -268,7 +268,9 @@ const Body: React.FC<params> = (props) => {
         (i) => i.kind === "videoinput",
       );
       setDevices(videoDevices);
-      setActiveDeviceId(videoDevices[0].deviceId);
+      if (activeDeviceId === "" || activeDeviceId === undefined) {
+        setActiveDeviceId(videoDevices[0].deviceId);
+      }
     })().catch((error) => {
       alert(error);
     });
