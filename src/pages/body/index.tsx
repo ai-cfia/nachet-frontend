@@ -31,6 +31,7 @@ const Body: React.FC<params> = (props) => {
     "https://ai-cfia.github.io/nachet-frontend/placeholder-image.jpg",
   );
   const [imageSrcKey, setImageSrcKey] = useState<boolean>(false);
+  const [resultsRendered, setResultsRendered] = useState<boolean>(false);
   const [imageIndex, setImageIndex] = useState<number>(0);
   const [imageFormat, setImageFormat] = useState<string>("image/png");
   const [imageLabel, setImageLabel] = useState<string>("");
@@ -170,6 +171,7 @@ const Body: React.FC<params> = (props) => {
         );
       });
     });
+    setResultsRendered(!resultsRendered);
   };
 
   const handleInferenceRequest = (): void => {
@@ -177,6 +179,7 @@ const Body: React.FC<params> = (props) => {
       alert("Please enter API key and URL");
       return;
     }
+    const imageObject = imageCache.filter((item) => item.index === imageIndex);
     (async () => {
       try {
         await axios({
@@ -190,9 +193,12 @@ const Body: React.FC<params> = (props) => {
             image: imageSrc,
             API_key: apiKey,
             API_url: apiURL,
+            imageDims: [
+              imageObject[0].imageDims[0],
+              imageObject[0].imageDims[1],
+            ],
           },
         }).then((response) => {
-          console.log(response.data);
           loadResultsToCache(response.data);
         });
       } catch (error) {
@@ -225,8 +231,8 @@ const Body: React.FC<params> = (props) => {
         if (storedImage.index === imageIndex && storedImage.annotated) {
           storedImage.predictions.forEach((prediction, index) => {
             ctx.beginPath();
-            ctx.font = "0.6vw Arial";
-            ctx.fillStyle = "white";
+            ctx.font = "1.2vh Arial";
+            ctx.fillStyle = "black";
             ctx.textAlign = "center";
             ctx.fillText(
               `[${(index + 1).toString()}] ${prediction
@@ -294,8 +300,6 @@ const Body: React.FC<params> = (props) => {
     window.addEventListener("beforeunload", () => {
       saveJSONToLocalStorage(imageCache);
     });
-
-    // Remove the event listener when the component is unmounted
     return () => {
       window.removeEventListener("beforeunload", () => {
         saveJSONToLocalStorage(imageCache);
@@ -307,7 +311,6 @@ const Body: React.FC<params> = (props) => {
     const cachedData = getJSONFromLocalStorage();
     if (cachedData !== null && cachedData !== undefined) {
       setImageCache(cachedData);
-      console.log(cachedData);
     }
   }, []);
 
@@ -317,8 +320,11 @@ const Body: React.FC<params> = (props) => {
 
   useEffect(() => {
     loadToCanvas();
-    console.log(imageCache);
   }, [imageSrc, imageSrcKey]);
+
+  useEffect(() => {
+    loadToCanvas();
+  }, [resultsRendered]);
 
   useEffect(() => {
     (async () => {

@@ -150,7 +150,7 @@ const ClassificationResults: React.FC<params> = (props) => {
                           paddingRight: "0.8vh",
                         }}
                       >
-                        {object.scores[index] * 100}%
+                        {(object.scores[index] * 100).toFixed(0)}%
                       </TableCell>
                     </TableRow>
                   ),
