@@ -326,20 +326,49 @@ const Body: React.FC<params> = (props) => {
     loadToCanvas();
   }, [resultsRendered]);
 
+  // useEffect(() => {
+  //   (async () => {
+  //     const avaliableDevices = await navigator.mediaDevices.enumerateDevices();
+  //     const videoDevices = avaliableDevices.filter(
+  //       (i) => i.kind === "videoinput",
+  //     );
+  //     setDevices(videoDevices);
+  //     if (activeDeviceId === "" || activeDeviceId === undefined) {
+  //       setActiveDeviceId(videoDevices[0].deviceId);
+  //     }
+  //   })().catch((error) => {
+  //     alert(error);
+  //   });
+  // });
   useEffect(() => {
-    (async () => {
-      const avaliableDevices = await navigator.mediaDevices.enumerateDevices();
-      const videoDevices = avaliableDevices.filter(
-        (i) => i.kind === "videoinput",
-      );
-      setDevices(videoDevices);
-      if (activeDeviceId === "" || activeDeviceId === undefined) {
-        setActiveDeviceId(videoDevices[0].deviceId);
+    const updateDevices = async (): void => {
+      try {
+        const availableDevices =
+          await navigator.mediaDevices.enumerateDevices();
+        const videoDevices = availableDevices.filter(
+          (i) => i.kind === "videoinput",
+        );
+        setDevices(videoDevices);
+
+        if (activeDeviceId === "" || activeDeviceId === undefined) {
+          setActiveDeviceId(videoDevices[0].deviceId);
+        }
+      } catch (error) {
+        alert(error);
       }
-    })().catch((error) => {
-      alert(error);
-    });
-  });
+    };
+    updateDevices();
+    const handleDeviceChange = (): void => {
+      updateDevices();
+    };
+    navigator.mediaDevices.addEventListener(
+      "devicechange",
+      handleDeviceChange
+    );
+    return () => {
+      navigator.mediaDevices.removeEventListener("devicechange", handleDeviceChange);
+    };
+  }, [activeDeviceId]);
 
   return (
     <BodyContainer width={props.windowSize.width}>

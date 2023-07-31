@@ -48,7 +48,7 @@ const SwitchDevice: React.FC<params> = (props): JSX.Element => {
           }}
           action={
             <IconButton onClick={handleClose}>
-              <CloseIcon />
+              <CloseIcon sx={{ fontSize: "2vh" }} />
             </IconButton>
           }
           sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
@@ -57,12 +57,16 @@ const SwitchDevice: React.FC<params> = (props): JSX.Element => {
           <Select
             value={props.activeDeviceId}
             onChange={handleSwitch}
-            sx={{ width: "100%", marginTop: "1vh" }}
+            sx={{ width: "10vw", fontSize: "1.2vh" }}
             size="small"
           >
             {props.devices.map((device) => (
-              <MenuItem key={device.deviceId} value={device.deviceId}>
-                {device.label}
+              <MenuItem
+                key={device.deviceId}
+                value={device.deviceId}
+                sx={{ fontSize: "1.2vh" }}
+              >
+                {device.label.split("(")[0]}
               </MenuItem>
             ))}
           </Select>
