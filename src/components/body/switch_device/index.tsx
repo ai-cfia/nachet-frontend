@@ -22,6 +22,7 @@ const SwitchDevice: React.FC<params> = (props): JSX.Element => {
       return;
     }
     props.setDeviceId(event.target.value);
+    props.setSwitchDeviceOpen(false);
   };
 
   return (

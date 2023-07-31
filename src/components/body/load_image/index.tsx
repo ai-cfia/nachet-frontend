@@ -48,7 +48,8 @@ const UploadPopup: React.FC<params> = (props): JSX.Element => {
             type="file"
             onChange={props.uploadImage}
             sx={{
-              fontSize: 17,
+              fontSize: "0.8vw",
+              width: "10.6vw",
             }}
           />
         </InfoContainer>

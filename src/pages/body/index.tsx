@@ -341,7 +341,7 @@ const Body: React.FC<params> = (props) => {
   //   });
   // });
   useEffect(() => {
-    const updateDevices = async (): void => {
+    const updateDevices = async (): Promise<any> => {
       try {
         const availableDevices =
           await navigator.mediaDevices.enumerateDevices();
@@ -357,16 +357,21 @@ const Body: React.FC<params> = (props) => {
         alert(error);
       }
     };
-    updateDevices();
+
+    updateDevices().catch((error) => {
+      alert(error);
+    });
     const handleDeviceChange = (): void => {
-      updateDevices();
+      updateDevices().catch((error) => {
+        alert(error);
+      });
     };
-    navigator.mediaDevices.addEventListener(
-      "devicechange",
-      handleDeviceChange
-    );
+    navigator.mediaDevices.addEventListener("devicechange", handleDeviceChange);
     return () => {
-      navigator.mediaDevices.removeEventListener("devicechange", handleDeviceChange);
+      navigator.mediaDevices.removeEventListener(
+        "devicechange",
+        handleDeviceChange,
+      );
     };
   }, [activeDeviceId]);
 

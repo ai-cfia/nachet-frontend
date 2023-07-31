@@ -29,9 +29,9 @@ export const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: start;
+  align-items: center;
   width: fit-content;
   height: fit-content;
   margin: auto;
-  margin-top: 40px;
+  margin-top: 3vh;
 `;
