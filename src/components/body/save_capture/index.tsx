@@ -80,13 +80,14 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
             variant="outlined"
             onChange={handleLabel}
             value={props.imageLabel}
+            sx={{ width: "10vw", fontSize: "1.2vh" }}
             size="small"
           />
           <Select
             value={props.imageFormat}
             onChange={handleFormat}
             placeholder="Capture Format"
-            sx={{ width: "100%", marginTop: "1vh" }}
+            sx={{ width: "10vw", fontSize: "1.2vh" }}
             size="small"
           >
             <MenuItem value="image/png">PNG</MenuItem>

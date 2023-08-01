@@ -175,10 +175,6 @@ const Body: React.FC<params> = (props) => {
   };
 
   const handleInferenceRequest = (): void => {
-    if (apiKey === "" || apiURL === "") {
-      alert("Please enter API key and URL");
-      return;
-    }
     const imageObject = imageCache.filter((item) => item.index === imageIndex);
     (async () => {
       try {
@@ -191,8 +187,6 @@ const Body: React.FC<params> = (props) => {
           },
           data: {
             image: imageSrc,
-            API_key: apiKey,
-            API_url: apiURL,
             imageDims: [
               imageObject[0].imageDims[0],
               imageObject[0].imageDims[1],
@@ -326,20 +320,6 @@ const Body: React.FC<params> = (props) => {
     loadToCanvas();
   }, [resultsRendered]);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const avaliableDevices = await navigator.mediaDevices.enumerateDevices();
-  //     const videoDevices = avaliableDevices.filter(
-  //       (i) => i.kind === "videoinput",
-  //     );
-  //     setDevices(videoDevices);
-  //     if (activeDeviceId === "" || activeDeviceId === undefined) {
-  //       setActiveDeviceId(videoDevices[0].deviceId);
-  //     }
-  //   })().catch((error) => {
-  //     alert(error);
-  //   });
-  // });
   useEffect(() => {
     const updateDevices = async (): Promise<any> => {
       try {
@@ -349,6 +329,7 @@ const Body: React.FC<params> = (props) => {
           (i) => i.kind === "videoinput",
         );
         setDevices(videoDevices);
+        console.log(videoDevices);
 
         if (activeDeviceId === "" || activeDeviceId === undefined) {
           setActiveDeviceId(videoDevices[0].deviceId);
