@@ -47,7 +47,7 @@ const ToolBar: React.FC<params> = (props) => {
     <Box
       sx={{
         width: "100%",
-        height: props.windowSize.height * 0.12,
+        height: props.windowSize.height * 0.125,
         border: `0.05vw solid ${colours.CFIA_Font_Black}`,
         borderRadius: 1,
       }}

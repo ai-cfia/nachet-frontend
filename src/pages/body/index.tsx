@@ -41,8 +41,6 @@ const Body: React.FC<params> = (props) => {
   const [switchDeviceOpen, setSwitchDeviceOpen] = useState(false);
   const [imageCache, setImageCache] = useState<ImageCache[]>([]);
   const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
-  const [apiKey, setApiKey] = useState<string>("");
-  const [apiURL, setApiURL] = useState<string>("");
   const [activeDeviceId, setActiveDeviceId] = useState<string | undefined>(
     undefined,
   );
@@ -191,13 +189,15 @@ const Body: React.FC<params> = (props) => {
               imageObject[0].imageDims[0],
               imageObject[0].imageDims[1],
             ],
+            folder_name: "project_1",
+            container_name: "994c23ee-3aa2",
           },
         }).then((response) => {
           loadResultsToCache(response.data);
         });
       } catch (error) {
-        console.error("error fetching inference data", error);
-        alert("No response from server");
+        console.log(error);
+        alert("Error fetching inference data");
       }
     })().catch((error) => {
       console.error(error);
@@ -225,20 +225,34 @@ const Body: React.FC<params> = (props) => {
         if (storedImage.index === imageIndex && storedImage.annotated) {
           storedImage.predictions.forEach((prediction, index) => {
             ctx.beginPath();
-            ctx.font = "1.2vh Arial";
+            ctx.font = "1.3vh Arial";
             ctx.fillStyle = "black";
             ctx.textAlign = "center";
-            ctx.fillText(
-              `[${(index + 1).toString()}] ${prediction
-                .split(" ")
-                .slice(1)
-                .join(" ")}`,
-              ((storedImage.regions[index].bottomX as number) -
-                (storedImage.regions[index].topX as number)) /
-                2 +
-                (storedImage.regions[index].topX as number),
-              storedImage.regions[index].topY - 10,
-            );
+            if (storedImage.regions[index].topY <= 15) {
+              ctx.fillText(
+                `[${(index + 1).toString()}] ${prediction
+                  .split(" ")
+                  .slice(1)
+                  .join(" ")}`,
+                ((storedImage.regions[index].bottomX as number) -
+                  (storedImage.regions[index].topX as number)) /
+                  2 +
+                  (storedImage.regions[index].topX as number),
+                (storedImage.regions[index].bottomY as number) + 15,
+              );
+            } else {
+              ctx.fillText(
+                `[${(index + 1).toString()}] ${prediction
+                  .split(" ")
+                  .slice(1)
+                  .join(" ")}`,
+                ((storedImage.regions[index].bottomX as number) -
+                  (storedImage.regions[index].topX as number)) /
+                  2 +
+                  (storedImage.regions[index].topX as number),
+                storedImage.regions[index].topY - 8,
+              );
+            }
             ctx.lineWidth = 2;
             ctx.setLineDash([5, 5]);
             ctx.strokeStyle = "red";
@@ -375,10 +389,6 @@ const Body: React.FC<params> = (props) => {
         <SwitchModelPopup
           setSwitchModelOpen={setSwitchModelOpen}
           switchModelOpen={switchModelOpen}
-          setApiKey={setApiKey}
-          setApiURL={setApiURL}
-          apiURL={apiURL}
-          apiKey={apiKey}
         />
       )}
       {switchDeviceOpen && (

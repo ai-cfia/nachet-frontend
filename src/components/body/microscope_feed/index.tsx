@@ -15,7 +15,7 @@ interface params {
 }
 
 const MicroscopeFeed: React.FC<params> = (props) => {
-  const width = props.windowSize.width * 0.2999;
+  const width = props.windowSize.width * 0.2994;
   const height = props.windowSize.height * 0.5218;
   return (
     <Box
@@ -39,17 +39,17 @@ const MicroscopeFeed: React.FC<params> = (props) => {
       />
       <Webcam
         ref={props.webcamRef}
-        mirrored={false}
-        width={width} // 687.5vw
-        height={height} // 679.5vh
+        mirrored={true}
+        width={width}
+        height={height}
         style={{ objectFit: "cover" }}
         videoConstraints={{
           width: width,
           height: height,
           deviceId: props.activeDeviceId,
-          facingMode: { ideal: "environment" },
         }}
         screenshotFormat={props.imageFormat}
+        screenshotQuality={1}
       />
     </Box>
   );
