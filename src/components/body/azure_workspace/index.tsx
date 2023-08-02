@@ -64,35 +64,32 @@ const AzureStorageWorkspace: React.FC<params> = (props) => {
               </TableCell>
             </TableRow>
             {props.azureStorageDir.map((folders: any) => {
-              return object.folders.map(
-                (folder: any, index: number) => (
-                  <TableRow
-                    key={index}
+              return folders.folders.map((folder: any, index: number) => (
+                <TableRow
+                  key={index}
+                  sx={{
+                    "&:hover": {
+                      backgroundColor: "#D3D3D3",
+                      transition: "0.1s ease-in-out all",
+                    },
+                  }}
+                >
+                  <TableCell
+                    align="left"
                     sx={{
-                      "&:hover": {
-                        backgroundColor: "#D3D3D3",
-                        transition: "0.1s ease-in-out all",
-                      },
+                      cursor: "pointer",
+                      paddingRight: 0,
+                      fontSize: "1.0vh",
+                      paddingTop: "0.5vh",
+                      paddingBottom: "0.5vh",
+                      paddingLeft: "0.8vh",
                     }}
                   >
-                    <TableCell
-                      align="left"
-                      sx={{
-                        cursor: "pointer",
-                        paddingRight: 0,
-                        fontSize: "1.0vh",
-                        paddingTop: "0.5vh",
-                        paddingBottom: "0.5vh",
-                        paddingLeft: "0.8vh",
-                      }}
-                    >
-                      {folder}
-                    </TableCell>
-                  </TableRow>
-                )
-              );
-            }
-            )}
+                    {folder}
+                  </TableCell>
+                </TableRow>
+              ));
+            })}
           </TableBody>
         </Table>
       </TableContainer>
