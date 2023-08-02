@@ -7,7 +7,7 @@ export const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
+  align-items: start;
   width: 100%;
   height: fit-content;
   position: relative;
@@ -42,9 +42,9 @@ export const InfoContent = styled.div`
 export const TopContent = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  width: 90%;
+  align-items: start;
+  justify-content: start;
+  width: 100%;
   padding: 0px 0px 0.83vh 0px;
 `;
 

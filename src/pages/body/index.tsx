@@ -24,6 +24,7 @@ interface params {
     width: number;
     height: number;
   };
+  getUuid: () => string;
 }
 
 const Body: React.FC<params> = (props) => {
@@ -44,6 +45,7 @@ const Body: React.FC<params> = (props) => {
   const [activeDeviceId, setActiveDeviceId] = useState<string | undefined>(
     undefined,
   );
+  const [azureStorageDir, setAzureStorageDir] = useState<any[]>([]);
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -172,13 +174,39 @@ const Body: React.FC<params> = (props) => {
     setResultsRendered(!resultsRendered);
   };
 
+  const getAzureStorageDir = (): void => {
+    (async () => {
+      try {
+        await axios({
+          method: "post",
+          url: `http://localhost:2323/dir`,
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          data: {
+            container_name: props.getUuid(),
+          },
+        }).then((response) => {
+          setAzureStorageDir(response.data);
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    })().catch((error) => {
+      console.error(error);
+    });
+  };
+
+  getAzureStorageDir();
+
   const handleInferenceRequest = (): void => {
     const imageObject = imageCache.filter((item) => item.index === imageIndex);
     (async () => {
       try {
         await axios({
           method: "post",
-          url: `http://localhost:2323`,
+          url: `http://localhost:2323/inf`,
           headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
@@ -190,7 +218,7 @@ const Body: React.FC<params> = (props) => {
               imageObject[0].imageDims[1],
             ],
             folder_name: "project_1",
-            container_name: "994c23ee-3aa2",
+            container_name: props.getUuid(),
           },
         }).then((response) => {
           loadResultsToCache(response.data);
@@ -253,7 +281,7 @@ const Body: React.FC<params> = (props) => {
                 storedImage.regions[index].topY - 8,
               );
             }
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 1;
             ctx.setLineDash([5, 5]);
             ctx.strokeStyle = "red";
             ctx.rect(
@@ -285,7 +313,10 @@ const Body: React.FC<params> = (props) => {
   const saveJSONToLocalStorage = (cache: any[]): void => {
     try {
       const serializedData = JSON.stringify(cache);
-      localStorage.setItem("image_cache", serializedData);
+      localStorage.setItem(
+        "seed_classification_interface_image_cache",
+        serializedData,
+      );
     } catch (error) {
       console.error("Error saving JSON to localStorage:", error);
     }
@@ -293,7 +324,9 @@ const Body: React.FC<params> = (props) => {
 
   const getJSONFromLocalStorage = (): any => {
     try {
-      const serializedData = localStorage.getItem("image_cache");
+      const serializedData = localStorage.getItem(
+        "seed_classification_interface_image_cache",
+      );
       if (serializedData === null) {
         return undefined;
       }
@@ -417,6 +450,7 @@ const Body: React.FC<params> = (props) => {
         setSwitchDeviceOpen={setSwitchDeviceOpen}
         windowSize={props.windowSize}
         activeDeviceId={activeDeviceId}
+        azureStorageDir={azureStorageDir}
       />
     </BodyContainer>
   );

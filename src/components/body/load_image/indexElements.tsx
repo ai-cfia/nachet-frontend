@@ -24,5 +24,5 @@ export const InfoContainer = styled.div`
   width: fit-content;
   height: fit-content;
   margin: auto;
-  margin-top: 5.5vh;
+  margin-top: 6vh;
 `;

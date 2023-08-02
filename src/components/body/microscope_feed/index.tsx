@@ -15,7 +15,7 @@ interface params {
 }
 
 const MicroscopeFeed: React.FC<params> = (props) => {
-  const width = props.windowSize.width * 0.2994;
+  const width = props.windowSize.width * 0.2999;
   const height = props.windowSize.height * 0.5218;
   return (
     <Box
@@ -48,7 +48,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
           height: height,
           deviceId: props.activeDeviceId,
         }}
-        screenshotFormat={props.imageFormat}
+        screenshotFormat={"image/png"}
         screenshotQuality={1}
       />
     </Box>
