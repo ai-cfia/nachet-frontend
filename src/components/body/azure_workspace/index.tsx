@@ -18,8 +18,8 @@ const AzureStorageWorkspace: React.FC<params> = (props) => {
   return (
     <Box
       sx={{
-        width: "100%",
-        height: "27.6vh",
+        width: "22%",
+        height: "20vh",
         border: `0.05vw solid ${colours.CFIA_Font_Black}`,
         borderRadius: 1,
       }}
@@ -38,8 +38,8 @@ const AzureStorageWorkspace: React.FC<params> = (props) => {
       <TableContainer
         sx={{
           overflow: "auto",
-          height: "23.9vh",
-          maxHeight: "23.9vh",
+          height: "16.3vh",
+          maxHeight: "16.3vh",
           border: 0,
         }}
         id={"container_with_scrolls"}

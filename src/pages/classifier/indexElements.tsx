@@ -12,8 +12,9 @@ export const RowContainer = styled.div`
   height: fit-content;
   position: relative;
   z-index: 0;
+  margin-top: 0.83vh;
 `;
-// changed width
+
 export const ColumnContainer = styled.div`
   background: ${colours.CFIA_Background_White};
   color: ${colours.CFIA_Font_Black};
@@ -42,10 +43,10 @@ export const InfoContent = styled.div`
 export const TopContent = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: start;
-  justify-content: start;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  padding: 0px 0px 0.83vh 0px;
+  padding: 0px 0px 0px 0px;
 `;
 
 export const LeftContent = styled.div`

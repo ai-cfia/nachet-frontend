@@ -2,7 +2,6 @@ import {
   RowContainer,
   LeftContent,
   RightContent,
-  InfoContent,
   TopContent,
   ColumnContainer,
 } from "./indexElements";
@@ -70,23 +69,21 @@ const Classifier: React.FC<params> = (props) => {
             windowSize={props.windowSize}
           />
         </RightContent>
-        <InfoContent>
-          <ClassificationResults
-            savedImages={props.savedImages}
-            imageSrc={props.imageSrc}
-            windowSize={props.windowSize}
-            imageIndex={props.imageIndex}
-          />
-          <ImageCache
-            removeImage={props.removeImage}
-            savedImages={props.savedImages}
-            loadImage={props.loadImage}
-            windowSize={props.windowSize}
-          />
-        </InfoContent>
-        <InfoContent>
-          <AzureStorageWorkspace azureStorageDir={props.azureStorageDir} />
-        </InfoContent>
+      </RowContainer>
+      <RowContainer>
+        <AzureStorageWorkspace azureStorageDir={props.azureStorageDir} />
+        <ImageCache
+          removeImage={props.removeImage}
+          savedImages={props.savedImages}
+          loadImage={props.loadImage}
+          windowSize={props.windowSize}
+        />
+        <ClassificationResults
+          savedImages={props.savedImages}
+          imageSrc={props.imageSrc}
+          windowSize={props.windowSize}
+          imageIndex={props.imageIndex}
+        />
       </RowContainer>
     </ColumnContainer>
   );

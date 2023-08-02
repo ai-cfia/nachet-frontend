@@ -11,6 +11,6 @@ export const BodyContainer = styled.div<{ width: number }>`
   z-index: 0;
   max-width: 100%;
   position: relative;
-  margin-top: 7vh;
-  margin-bottom: 7vh;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
 `;
