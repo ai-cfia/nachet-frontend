@@ -33,6 +33,7 @@ interface params {
   activeDeviceId: string | undefined;
   azureStorageDir: any[];
   curDir: string;
+  setCreateDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleDirChange: (dir: string) => void;
   windowSize: {
     width: number;
@@ -77,6 +78,7 @@ const Classifier: React.FC<params> = (props) => {
           azureStorageDir={props.azureStorageDir}
           curDir={props.curDir}
           handleDirChange={props.handleDirChange}
+          setCreateDirectoryOpen={props.setCreateDirectoryOpen}
         />
         <ImageCache
           removeImage={props.removeImage}

@@ -8,13 +8,15 @@ import {
   Paper,
   Box,
   CardHeader,
-  Button,
+  IconButton,
 } from "@mui/material";
 import { colours } from "../../../styles/colours";
+import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
 
 interface params {
   azureStorageDir: any[];
   curDir: string;
+  setCreateDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleDirChange: (dir: string) => void;
 }
 const AzureStorageWorkspace: React.FC<params> = (props) => {
@@ -38,32 +40,29 @@ const AzureStorageWorkspace: React.FC<params> = (props) => {
         }}
         sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
         action={
-          <Button
-            variant="contained"
-            size="small"
-            sx={{
-              backgroundColor: colours.CFIA_Blue,
-              color: colours.CFIA_Font_White,
-              fontSize: "1.0vh",
-              fontWeight: 600,
-              textTransform: "none",
-              "&:hover": {
-                backgroundColor: colours.CFIA_Blue,
-                color: colours.CFIA_Font_White,
-              },
-            }}
+          <IconButton
             onClick={() => {
-              props.handleDirChange("");
+              props.setCreateDirectoryOpen(true);
             }}
-            >Create Directory</Button>
-
+          >
+            <CreateNewFolderIcon
+              color="success"
+              style={{
+                fontSize: "2vh",
+                marginTop: 0,
+                marginBottom: 0,
+                paddingTop: 0,
+                paddingBottom: 0,
+              }}
+            />
+          </IconButton>
         }
       />
       <TableContainer
         sx={{
           overflow: "auto",
-          height: "16.3vh",
-          maxHeight: "16.3vh",
+          height: "15.7vh",
+          maxHeight: "15.7vh",
           border: 0,
         }}
         id={"container_with_scrolls"}

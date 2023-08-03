@@ -7,6 +7,7 @@ import SavePopup from "../../components/body/save_capture";
 import UploadPopup from "../../components/body/load_image";
 import SwitchModelPopup from "../../components/body/switch_model";
 import SwitchDevice from "../../components/body/switch_device";
+import CreateDirectory from "../../components/body/create_directory";
 import axios from "axios";
 
 interface ImageCache {
@@ -40,6 +41,7 @@ const Body: React.FC<params> = (props) => {
   const [uploadOpen, setUploadOpen] = useState(false);
   const [switchModelOpen, setSwitchModelOpen] = useState(false);
   const [switchDeviceOpen, setSwitchDeviceOpen] = useState(false);
+  const [createDirectoryOpen, setCreateDirectoryOpen] = useState(false);
   const [imageCache, setImageCache] = useState<ImageCache[]>([]);
   const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
   const [activeDeviceId, setActiveDeviceId] = useState<string | undefined>(
@@ -177,6 +179,16 @@ const Body: React.FC<params> = (props) => {
 
   const handleDirChange = (dir: string): void => {
     setCurDir(dir);
+  };
+
+  const addToDirectory = (): void => {
+    if (!azureStorageDir.includes(curDir)) {
+      setAzureStorageDir([...azureStorageDir, curDir]);
+      setCreateDirectoryOpen(false);
+      setCurDir("");
+    } else {
+      alert("Directory already exists");
+    }
   };
 
   const getAzureStorageDir = (): void => {
@@ -380,7 +392,6 @@ const Body: React.FC<params> = (props) => {
           (i) => i.kind === "videoinput",
         );
         setDevices(videoDevices);
-        console.log(videoDevices);
 
         if (activeDeviceId === "" || activeDeviceId === undefined) {
           setActiveDeviceId(videoDevices[0].deviceId);
@@ -409,7 +420,7 @@ const Body: React.FC<params> = (props) => {
 
   useEffect(() => {
     getAzureStorageDir();
-  }, [props.uuid]);
+  }, [props.uuid, azureStorageDir]);
 
   return (
     <BodyContainer width={props.windowSize.width}>
@@ -440,6 +451,14 @@ const Body: React.FC<params> = (props) => {
           activeDeviceId={activeDeviceId}
         />
       )}
+      {createDirectoryOpen && (
+        <CreateDirectory
+          setCreateDirectoryOpen={setCreateDirectoryOpen}
+          handeDirChange={handleDirChange}
+          curDir={curDir}
+          addToDirectory={addToDirectory}
+        />
+      )}
       <Classifier
         handleInference={handleInferenceRequest}
         imageIndex={imageIndex}
@@ -461,6 +480,7 @@ const Body: React.FC<params> = (props) => {
         azureStorageDir={azureStorageDir}
         curDir={curDir}
         handleDirChange={handleDirChange}
+        setCreateDirectoryOpen={setCreateDirectoryOpen}
       />
     </BodyContainer>
   );
