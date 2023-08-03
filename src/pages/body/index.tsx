@@ -24,7 +24,7 @@ interface params {
     width: number;
     height: number;
   };
-  getUuid: () => string;
+  uuid: string;
 }
 
 const Body: React.FC<params> = (props) => {
@@ -45,6 +45,7 @@ const Body: React.FC<params> = (props) => {
   const [activeDeviceId, setActiveDeviceId] = useState<string | undefined>(
     undefined,
   );
+  const [curDir, setCurDir] = useState<string>("");
   const [azureStorageDir, setAzureStorageDir] = useState<any[]>([]);
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -174,6 +175,10 @@ const Body: React.FC<params> = (props) => {
     setResultsRendered(!resultsRendered);
   };
 
+  const handleDirChange = (dir: string): void => {
+    setCurDir(dir);
+  };
+
   const getAzureStorageDir = (): void => {
     (async () => {
       try {
@@ -185,9 +190,10 @@ const Body: React.FC<params> = (props) => {
             "Access-Control-Allow-Origin": "*",
           },
           data: {
-            container_name: props.getUuid(),
+            container_name: props.uuid,
           },
         }).then((response) => {
+          console.log(response.data);
           setAzureStorageDir(response.data);
         });
       } catch (error) {
@@ -197,8 +203,6 @@ const Body: React.FC<params> = (props) => {
       console.error(error);
     });
   };
-
-  getAzureStorageDir();
 
   const handleInferenceRequest = (): void => {
     const imageObject = imageCache.filter((item) => item.index === imageIndex);
@@ -217,8 +221,8 @@ const Body: React.FC<params> = (props) => {
               imageObject[0].imageDims[0],
               imageObject[0].imageDims[1],
             ],
-            folder_name: "project_1",
-            container_name: props.getUuid(),
+            folder_name: curDir,
+            container_name: props.uuid,
           },
         }).then((response) => {
           loadResultsToCache(response.data);
@@ -403,6 +407,10 @@ const Body: React.FC<params> = (props) => {
     };
   }, [activeDeviceId]);
 
+  useEffect(() => {
+    getAzureStorageDir();
+  }, [props.uuid]);
+
   return (
     <BodyContainer width={props.windowSize.width}>
       {saveOpen && (
@@ -451,6 +459,8 @@ const Body: React.FC<params> = (props) => {
         windowSize={props.windowSize}
         activeDeviceId={activeDeviceId}
         azureStorageDir={azureStorageDir}
+        curDir={curDir}
+        handleDirChange={handleDirChange}
       />
     </BodyContainer>
   );

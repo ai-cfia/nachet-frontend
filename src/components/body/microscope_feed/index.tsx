@@ -39,7 +39,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
       />
       <Webcam
         ref={props.webcamRef}
-        mirrored={true}
+        mirrored={false}
         width={width}
         height={height}
         style={{ objectFit: "cover" }}
@@ -49,7 +49,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
           deviceId: props.activeDeviceId,
         }}
         screenshotFormat={"image/png"}
-        screenshotQuality={1}
+        screenshotQuality={0}
       />
     </Box>
   );

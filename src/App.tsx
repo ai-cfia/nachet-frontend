@@ -13,19 +13,28 @@ function App(): JSX.Element {
     width: window.innerWidth,
     height: window.innerHeight,
   });
+  const [uuid, setUuid] = useState<string>("");
 
   const createUuid = (): void => {
-    const uuid = uuidv4();
-    Cookies.set("user-uuid", uuid, { expires: 60 * 60 * 24 * 365 * 10 });
+    const newUuid = uuidv4();
+    setUuid(newUuid);
+    Cookies.set("user-uuid", newUuid, { expires: 60 * 60 * 24 * 365 * 10 });
   };
 
-  const getUuid = (): string => {
-    return Cookies.get("user-uuid") as string;
+  const getUuid = (): void => {
+    const existingUuid = Cookies.get("user-uuid") as string;
+    if (existingUuid !== undefined) {
+      setUuid(existingUuid);
+      console.log("Existing UUID: " + existingUuid);
+    } else {
+      console.log("Creating new UUID");
+      createUuid();
+    }
   };
 
-  if (Cookies.get("user-uuid") === undefined) {
-    createUuid();
-  }
+  useEffect(() => {
+    getUuid();
+  }, []);
 
   useEffect(() => {
     const handleResize = (): void => {
@@ -48,7 +57,7 @@ function App(): JSX.Element {
         <Routes>
           <Route
             path="/"
-            element={<Home windowSize={windowSize} getUuid={getUuid} />}
+            element={<Home windowSize={windowSize} uuid={uuid} />}
           />
         </Routes>
         <Footer windowSize={windowSize} />

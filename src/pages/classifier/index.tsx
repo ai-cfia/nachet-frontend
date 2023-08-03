@@ -32,6 +32,8 @@ interface params {
   imageIndex: number;
   activeDeviceId: string | undefined;
   azureStorageDir: any[];
+  curDir: string;
+  handleDirChange: (dir: string) => void;
   windowSize: {
     width: number;
     height: number;
@@ -71,7 +73,11 @@ const Classifier: React.FC<params> = (props) => {
         </RightContent>
       </RowContainer>
       <RowContainer>
-        <AzureStorageWorkspace azureStorageDir={props.azureStorageDir} />
+        <AzureStorageWorkspace
+          azureStorageDir={props.azureStorageDir}
+          curDir={props.curDir}
+          handleDirChange={props.handleDirChange}
+        />
         <ImageCache
           removeImage={props.removeImage}
           savedImages={props.savedImages}
