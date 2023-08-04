@@ -45,30 +45,23 @@ const Classifier: React.FC<params> = (props) => {
   return (
     <ColumnContainer>
       <RowContainer>
-        {/* <ToolBarContent>
-          <ToolBar
-            setSaveOpen={props.setSaveOpen}
-            handleInference={props.handleInference}
-            capture={props.capture}
-            setUploadOpen={props.setUploadOpen}
-            setSwitchModelOpen={props.setSwitchModelOpen}
-            setSwitchDeviceOpen={props.setSwitchDeviceOpen}
-            windowSize={props.windowSize}
-          />
-        </ToolBarContent> */}
         <LeftContent>
           <MicroscopeFeed
             capture={props.capture}
             webcamRef={props.webcamRef}
-            imageFormat={props.imageFormat}
             windowSize={props.windowSize}
             activeDeviceId={props.activeDeviceId}
+            setSwitchDeviceOpen={props.setSwitchDeviceOpen}
           />
         </LeftContent>
         <RightContent>
           <FeedCapture
             canvasRef={props.canvasRef}
             windowSize={props.windowSize}
+            setSaveOpen={props.setSaveOpen}
+            handleInference={props.handleInference}
+            setUploadOpen={props.setUploadOpen}
+            setSwitchModelOpen={props.setSwitchModelOpen}
           />
         </RightContent>
         <InfoContent>
