@@ -9,6 +9,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.1",
     "@mui/material": "^5.14.1",
+    "@saithodev/ts-appversion": "^2.2.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -38,6 +39,8 @@
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
+    "prestart": "ts-appversion",
+    "prebuild": "ts-appversion",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
