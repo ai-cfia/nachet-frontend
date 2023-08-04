@@ -27,7 +27,6 @@ const ToolBar: React.FC<params> = (props) => {
     fontWeight: 600,
     width: "5vw",
     height: "6.5vh",
-    padding: "0.2vh",
     color: colours.CFIA_Font_Black,
     border: `0.05vw solid ${colours.CFIA_Font_Black}`,
   };

@@ -6,13 +6,14 @@ export const RowContainer = styled.div`
   color: ${colours.CFIA_Font_Black};
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   width: 100%;
   height: fit-content;
   position: relative;
   z-index: 0;
   margin-top: 0.5vh;
+  padding: 0px 0px 0px 0px;
 `;
 
 export const ColumnContainer = styled.div`
@@ -26,6 +27,7 @@ export const ColumnContainer = styled.div`
   max-width: 90vw;
   height: fit-content;
   position: relative;
+  padding: 0px 0px 0px 0px;
 `;
 
 export const InfoContent = styled.div`
@@ -67,7 +69,7 @@ export const ToolBarContent = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 9.83%;
+  width: 7.9%;
   height: fit-content;
   padding: 0px 0.5vw 0px 0px;
   z-index: 0;

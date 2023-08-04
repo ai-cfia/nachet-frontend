@@ -15,7 +15,7 @@ interface params {
 }
 
 const MicroscopeFeed: React.FC<params> = (props) => {
-  const width = props.windowSize.width * 0.4031;
+  const width = props.windowSize.width * 0.4034;
   const height = props.windowSize.height * 0.65;
   return (
     <Box

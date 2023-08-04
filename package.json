@@ -39,7 +39,6 @@
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "prestart": "ts-appversion",
     "prebuild": "ts-appversion",
     "start": "react-scripts start",
     "build": "react-scripts build",

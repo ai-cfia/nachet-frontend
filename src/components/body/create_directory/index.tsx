@@ -11,7 +11,7 @@ interface params {
   addToDirectory: () => void;
 }
 
-const CreateDirectory: React.FC<params> = (props): JSX.Element => {
+const CreateFolder: React.FC<params> = (props): JSX.Element => {
   const handleClose = (): void => {
     props.setCreateDirectoryOpen(false);
   };
@@ -29,7 +29,7 @@ const CreateDirectory: React.FC<params> = (props): JSX.Element => {
         }}
       >
         <CardHeader
-          title="Create New Directory"
+          title="Create New Folder"
           titleTypographyProps={{
             variant: "h6",
             align: "left",
@@ -73,7 +73,7 @@ const CreateDirectory: React.FC<params> = (props): JSX.Element => {
               props.addToDirectory();
             }}
           >
-            Create
+            Create Folder
           </Button>
         </InfoContainer>
       </Box>
@@ -81,4 +81,4 @@ const CreateDirectory: React.FC<params> = (props): JSX.Element => {
   );
 };
 
-export default CreateDirectory;
+export default CreateFolder;

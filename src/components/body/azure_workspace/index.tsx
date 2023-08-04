@@ -23,10 +23,11 @@ const AzureStorageWorkspace: React.FC<params> = (props) => {
   return (
     <Box
       sx={{
-        width: "22%",
+        width: "22.25%",
         height: "20vh",
         border: `0.05vw solid ${colours.CFIA_Font_Black}`,
         borderRadius: 1,
+        marginLeft: "7.5vw",
       }}
     >
       <CardHeader
