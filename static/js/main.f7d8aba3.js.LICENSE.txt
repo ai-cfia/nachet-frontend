@@ -1,5 +1,7 @@
 /*! exports provided: default */
 
+/*! js-cookie v3.0.5 | MIT */
+
 /*! no static exports found */
 
 /*! react */
