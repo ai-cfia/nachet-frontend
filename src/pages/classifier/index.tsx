@@ -2,8 +2,8 @@ import {
   RowContainer,
   LeftContent,
   RightContent,
-  TopContent,
   ColumnContainer,
+  ToolBarContent,
 } from "./indexElements";
 import type Webcam from "react-webcam";
 import React from "react";
@@ -44,19 +44,18 @@ interface params {
 const Classifier: React.FC<params> = (props) => {
   return (
     <ColumnContainer>
-      <TopContent>
-        <ToolBar
-          setSaveOpen={props.setSaveOpen}
-          clearImageCache={props.clearImageCache}
-          handleInference={props.handleInference}
-          capture={props.capture}
-          setUploadOpen={props.setUploadOpen}
-          setSwitchModelOpen={props.setSwitchModelOpen}
-          setSwitchDeviceOpen={props.setSwitchDeviceOpen}
-          windowSize={props.windowSize}
-        />
-      </TopContent>
       <RowContainer>
+        <ToolBarContent>
+          <ToolBar
+            setSaveOpen={props.setSaveOpen}
+            handleInference={props.handleInference}
+            capture={props.capture}
+            setUploadOpen={props.setUploadOpen}
+            setSwitchModelOpen={props.setSwitchModelOpen}
+            setSwitchDeviceOpen={props.setSwitchDeviceOpen}
+            windowSize={props.windowSize}
+          />
+        </ToolBarContent>
         <LeftContent>
           <MicroscopeFeed
             capture={props.capture}
@@ -85,6 +84,7 @@ const Classifier: React.FC<params> = (props) => {
           savedImages={props.savedImages}
           loadImage={props.loadImage}
           windowSize={props.windowSize}
+          clearImageCache={props.clearImageCache}
         />
         <ClassificationResults
           savedImages={props.savedImages}

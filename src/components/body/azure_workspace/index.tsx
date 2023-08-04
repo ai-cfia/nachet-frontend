@@ -41,6 +41,7 @@ const AzureStorageWorkspace: React.FC<params> = (props) => {
         sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
         action={
           <IconButton
+            sx={{ padding: 0, marginTop: "0.27vh", marginRight: "0.4vh" }}
             onClick={() => {
               props.setCreateDirectoryOpen(true);
             }}
@@ -61,8 +62,8 @@ const AzureStorageWorkspace: React.FC<params> = (props) => {
       <TableContainer
         sx={{
           overflow: "auto",
-          height: "15.7vh",
-          maxHeight: "15.7vh",
+          height: "16.3vh",
+          maxHeight: "16.3vh",
           border: 0,
         }}
         id={"container_with_scrolls"}

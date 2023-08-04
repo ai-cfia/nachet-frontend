@@ -4,16 +4,13 @@ import CameraswitchIcon from "@mui/icons-material/Cameraswitch";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import DownloadIcon from "@mui/icons-material/Download";
 import CropFreeIcon from "@mui/icons-material/CropFree";
-import ClearAllIcon from "@mui/icons-material/ClearAll";
 import SwitchLeftIcon from "@mui/icons-material/SwitchLeft";
-import ZoomOutMapIcon from "@mui/icons-material/ZoomOutMap";
 import { colours } from "../../../styles/colours";
 
 interface params {
   handleInference: () => void;
   capture: () => void;
   setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  clearImageCache: () => void;
   setSaveOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSwitchModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSwitchDeviceOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -46,8 +43,8 @@ const ToolBar: React.FC<params> = (props) => {
   return (
     <Box
       sx={{
-        width: "67%",
-        height: props.windowSize.height * 0.125,
+        width: "100%",
+        height: props.windowSize.height * 0.69,
         border: `0.05vw solid ${colours.CFIA_Font_Black}`,
         borderRadius: 1,
       }}
@@ -61,14 +58,15 @@ const ToolBar: React.FC<params> = (props) => {
           fontSize: "1.3vh",
           color: colours.CFIA_Font_Black,
         }}
-        sx={{ padding: "0.5vh 0.5vh 0 0.5vh" }}
+        sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
       />
       <div
         style={{
           display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-evenly",
+          flexDirection: "column",
+          justifyContent: "space-around",
           alignItems: "center",
+          width: "100%",
         }}
       >
         <Button
@@ -117,23 +115,10 @@ const ToolBar: React.FC<params> = (props) => {
           variant="outlined"
           size="large"
           sx={buttonStyling}
-          onClick={props.clearImageCache}
-        >
-          <ClearAllIcon sx={iconStyling} />
-          CLEAR
-        </Button>
-        <Button
-          variant="outlined"
-          size="large"
-          sx={buttonStyling}
           onClick={props.handleInference}
         >
           <CropFreeIcon sx={iconStyling} />
           CLASSIFY
-        </Button>
-        <Button variant="outlined" size="large" sx={buttonStyling}>
-          <ZoomOutMapIcon sx={iconStyling} />
-          Zoom
         </Button>
         <Button
           variant="outlined"

@@ -185,7 +185,6 @@ const Body: React.FC<params> = (props) => {
     if (!azureStorageDir.includes(curDir)) {
       setAzureStorageDir([...azureStorageDir, curDir]);
       setCreateDirectoryOpen(false);
-      setCurDir("");
     } else {
       alert("Directory already exists");
     }
@@ -217,36 +216,42 @@ const Body: React.FC<params> = (props) => {
   };
 
   const handleInferenceRequest = (): void => {
-    const imageObject = imageCache.filter((item) => item.index === imageIndex);
-    (async () => {
-      try {
-        await axios({
-          method: "post",
-          url: `http://localhost:2323/inf`,
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-          data: {
-            image: imageSrc,
-            imageDims: [
-              imageObject[0].imageDims[0],
-              imageObject[0].imageDims[1],
-            ],
-            folder_name: curDir,
-            container_name: props.uuid,
-          },
-        }).then((response) => {
-          loadResultsToCache(response.data);
-        });
-      } catch (error) {
-        console.log(error);
-        alert("Error fetching inference data");
-      }
-    })().catch((error) => {
-      console.error(error);
-      alert("Cannot connect to server");
-    });
+    if (curDir !== "") {
+      const imageObject = imageCache.filter(
+        (item) => item.index === imageIndex,
+      );
+      (async () => {
+        try {
+          await axios({
+            method: "post",
+            url: `http://localhost:2323/inf`,
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+            },
+            data: {
+              image: imageSrc,
+              imageDims: [
+                imageObject[0].imageDims[0],
+                imageObject[0].imageDims[1],
+              ],
+              folder_name: curDir,
+              container_name: props.uuid,
+            },
+          }).then((response) => {
+            loadResultsToCache(response.data);
+          });
+        } catch (error) {
+          console.log(error);
+          alert("Error fetching inference data");
+        }
+      })().catch((error) => {
+        console.error(error);
+        alert("Cannot connect to server");
+      });
+    } else {
+      alert("Please select a directory");
+    }
   };
 
   const loadToCanvas = (): void => {
@@ -297,7 +302,7 @@ const Body: React.FC<params> = (props) => {
                 storedImage.regions[index].topY - 8,
               );
             }
-            ctx.lineWidth = 1;
+            ctx.lineWidth = 2;
             ctx.setLineDash([5, 5]);
             ctx.strokeStyle = "red";
             ctx.rect(
@@ -420,7 +425,7 @@ const Body: React.FC<params> = (props) => {
 
   useEffect(() => {
     getAzureStorageDir();
-  }, [props.uuid, azureStorageDir]);
+  }, [props.uuid]);
 
   return (
     <BodyContainer width={props.windowSize.width}>

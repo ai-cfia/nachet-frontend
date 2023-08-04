@@ -12,12 +12,14 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CropFreeIcon from "@mui/icons-material/CropFree";
+import ClearAllIcon from "@mui/icons-material/ClearAll";
 import { colours } from "../../../styles/colours";
 
 interface params {
   savedImages: any[];
   loadImage: (index: number) => void;
   removeImage: (src: string) => void;
+  clearImageCache: () => void;
   windowSize: {
     width: number;
     height: number;
@@ -32,8 +34,8 @@ const ImageCache: React.FC<params> = (props) => {
         height: "20vh",
         border: `0.05vw solid ${colours.CFIA_Font_Black}`,
         borderRadius: 1,
-        marginLeft: "0.83vh",
-        marginRight: "0.83vh",
+        marginLeft: "0.50vh",
+        marginRight: "0.50vh",
       }}
     >
       <CardHeader
@@ -46,6 +48,25 @@ const ImageCache: React.FC<params> = (props) => {
           color: colours.CFIA_Font_Black,
         }}
         sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
+        action={
+          <IconButton
+            sx={{ padding: 0, marginTop: "0.27vh", marginRight: "0.4vh" }}
+            onClick={() => {
+              props.clearImageCache();
+            }}
+          >
+            <ClearAllIcon
+              color="warning"
+              style={{
+                fontSize: "2.4vh",
+                marginTop: 0,
+                marginBottom: 0,
+                paddingTop: 0,
+                paddingBottom: 0,
+              }}
+            />
+          </IconButton>
+        }
       />
       <TableContainer
         sx={{
@@ -125,6 +146,7 @@ const ImageCache: React.FC<params> = (props) => {
                     onClick={() => {
                       props.removeImage(item.index);
                     }}
+                    sx={{ padding: 0 }}
                   >
                     <DeleteIcon
                       color="warning"

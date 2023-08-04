@@ -11,6 +11,8 @@ interface params {
 }
 
 const FeedCapture: React.FC<params> = (props) => {
+  const width = props.windowSize.width * 0.405; // 0.2999 is the ratio of the width to height of the microscope feed
+  const height = props.windowSize.height * 0.65; // 0.5218 is the ratio of the height to width of the microscope feed
   return (
     <Box
       sx={{
@@ -31,7 +33,7 @@ const FeedCapture: React.FC<params> = (props) => {
         }}
         sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
       />
-      <Canvas ref={props.canvasRef} width={800} height={800} />
+      <Canvas ref={props.canvasRef} width={width} height={height} />
     </Box>
   );
 };

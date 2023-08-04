@@ -12,7 +12,7 @@ export const RowContainer = styled.div`
   height: fit-content;
   position: relative;
   z-index: 0;
-  margin-top: 0.83vh;
+  margin-top: 0.5vh;
 `;
 
 export const ColumnContainer = styled.div`
@@ -54,9 +54,22 @@ export const LeftContent = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 33.33%;
+  width: 44.83%;
+  max-width: 44.83%;
   height: fit-content;
   padding: 0px 0.25vw 0px 0px;
+  z-index: 0;
+  position: relative;
+`;
+
+export const ToolBarContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 9.83%;
+  height: fit-content;
+  padding: 0px 0.5vw 0px 0px;
   z-index: 0;
   position: relative;
 `;
@@ -66,7 +79,8 @@ export const RightContent = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 33.33%;
+  width: 44.83%;
+  max-width: 44.83%;
   height: fit-content;
   padding: 0px 0px 0px 0.25vw;
   z-index: 0;
