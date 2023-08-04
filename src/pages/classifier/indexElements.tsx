@@ -7,7 +7,7 @@ export const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: start;
+  align-items: center;
   width: 100%;
   height: fit-content;
   position: relative;

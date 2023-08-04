@@ -21,7 +21,6 @@ const ToolBar: React.FC<params> = (props) => {
   const buttonStyling = {
     alignContent: "center",
     alignItems: "center",
-    marginTop: "1vh",
     display: "flex",
     flexDirection: "column",
     fontSize: "0.6vw",
@@ -64,9 +63,10 @@ const ToolBar: React.FC<params> = (props) => {
         style={{
           display: "flex",
           flexDirection: "column",
-          justifyContent: "space-around",
+          justifyContent: "space-evenly",
           alignItems: "center",
           width: "100%",
+          height: props.windowSize.height * 0.655,
         }}
       >
         <Button
