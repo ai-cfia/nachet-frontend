@@ -4,7 +4,7 @@ import { Fragment, useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Cookies from "js-cookie";
 import Navbar from "./components/header/navbar";
-import Home from "./pages/body";
+import Home from "./root/body";
 import Footer from "./components/footer";
 import Appbar from "./components/header/appbar";
 

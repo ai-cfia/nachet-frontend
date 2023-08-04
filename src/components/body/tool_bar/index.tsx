@@ -1,4 +1,4 @@
-import { Box, Button, CardHeader } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import CameraswitchIcon from "@mui/icons-material/Cameraswitch";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
@@ -45,9 +45,13 @@ const ToolBar: React.FC<params> = (props) => {
         height: props.windowSize.height * 0.69,
         border: `0.05vw solid ${colours.CFIA_Font_Black}`,
         borderRadius: 1,
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
-      <CardHeader
+      {/* <CardHeader
         title="TOOLS"
         titleTypographyProps={{
           variant: "h6",
@@ -57,14 +61,15 @@ const ToolBar: React.FC<params> = (props) => {
           color: colours.CFIA_Font_Black,
         }}
         sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
-      />
+      /> */}
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
+          flexDirection: "row",
           justifyContent: "space-evenly",
           alignItems: "center",
           width: "100%",
+          margin: "auto",
           height: props.windowSize.height * 0.655,
         }}
       >

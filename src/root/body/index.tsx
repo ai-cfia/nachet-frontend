@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import type Webcam from "react-webcam";
 import { saveAs } from "file-saver";
 import { BodyContainer } from "./indexElements";
-import Classifier from "../classifier";
+import Classifier from "../../pages/classifier";
 import SavePopup from "../../components/body/save_capture";
 import UploadPopup from "../../components/body/load_image";
 import SwitchModelPopup from "../../components/body/switch_model";

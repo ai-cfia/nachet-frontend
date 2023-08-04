@@ -10,7 +10,8 @@ export const BodyContainer = styled.div<{ width: number }>`
   justify-content: center;
   z-index: 0;
   max-width: 100%;
+  padding: 0px 1.5vw;
   position: relative;
   margin-top: 2vh;
-  margin-bottom: 2vh;
+  margin-bottom: 15.5vh;
 `;

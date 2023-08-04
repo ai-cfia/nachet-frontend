@@ -19,7 +19,7 @@ export const AppbarContainer = styled.div<{ width: number; height: number }>`
   justify-content: space-between;
   z-index: 3;
   width: 100%;
-  max-width: 90vw;
+  padding: 0 1.5vw;
   height: 2.8vh;
 `;
 

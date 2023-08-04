@@ -19,15 +19,14 @@ interface params {
   setCreateDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleDirChange: (dir: string) => void;
 }
-const AzureStorageWorkspace: React.FC<params> = (props) => {
+const StorageDirectory: React.FC<params> = (props) => {
   return (
     <Box
       sx={{
-        width: "22.25%",
-        height: "20vh",
+        width: "100%",
+        height: "22.425vh",
         border: `0.05vw solid ${colours.CFIA_Font_Black}`,
         borderRadius: 1,
-        marginLeft: "7.5vw",
       }}
     >
       <CardHeader
@@ -63,8 +62,8 @@ const AzureStorageWorkspace: React.FC<params> = (props) => {
       <TableContainer
         sx={{
           overflow: "auto",
-          height: "16.3vh",
-          maxHeight: "16.3vh",
+          height: "18.75vh",
+          maxHeight: "18.75vh",
           border: 0,
         }}
         id={"container_with_scrolls"}
@@ -127,4 +126,4 @@ const AzureStorageWorkspace: React.FC<params> = (props) => {
   );
 };
 
-export default AzureStorageWorkspace;
+export default StorageDirectory;

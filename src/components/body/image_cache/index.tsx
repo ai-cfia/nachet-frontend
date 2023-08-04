@@ -30,12 +30,12 @@ const ImageCache: React.FC<params> = (props) => {
   return (
     <Box
       sx={{
-        width: "22.25%",
-        height: "20vh",
+        width: "100%",
+        height: "22.425vh",
         border: `0.05vw solid ${colours.CFIA_Font_Black}`,
         borderRadius: 1,
-        marginLeft: "0.50vh",
-        marginRight: "0.50vh",
+        marginTop: "0.665vh",
+        marginBottom: "0.665vh",
       }}
     >
       <CardHeader
@@ -71,8 +71,8 @@ const ImageCache: React.FC<params> = (props) => {
       <TableContainer
         sx={{
           overflow: "auto",
-          height: "16.3vh",
-          maxHeight: "16.3vh",
+          height: "18.75vh",
+          maxHeight: "18.75vh",
           border: 0,
         }}
         id={"container_with_scrolls_"}

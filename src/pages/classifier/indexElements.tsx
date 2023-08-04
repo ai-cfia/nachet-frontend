@@ -24,22 +24,8 @@ export const ColumnContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 90vw;
+  max-width: 100%;
   height: fit-content;
-  position: relative;
-  padding: 0px 0px 0px 0px;
-`;
-
-export const InfoContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: start;
-  width: 22.1%;
-  height: fit-content;
-  padding: 0px 0px 0px 0.5vw;
-  z-index: 0;
-  position: relative;
 `;
 
 export const TopContent = styled.div`
@@ -59,19 +45,20 @@ export const LeftContent = styled.div`
   width: 44.83%;
   max-width: 44.83%;
   height: fit-content;
-  padding: 0px 0.25vw 0px 0px;
+  padding-right: 0.5vw;
   z-index: 0;
   position: relative;
 `;
 
-export const ToolBarContent = styled.div`
+export const InfoContent = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 7.9%;
+  align-items: start;
+  justify-content: start;
+  width: 19%;
+  max-width: 19%;
   height: fit-content;
-  padding: 0px 0.5vw 0px 0px;
+  padding: 0vw 0vw 0vw 0.5vw;
   z-index: 0;
   position: relative;
 `;
@@ -84,7 +71,7 @@ export const RightContent = styled.div`
   width: 44.83%;
   max-width: 44.83%;
   height: fit-content;
-  padding: 0px 0px 0px 0.25vw;
+  padding: 0vw;
   z-index: 0;
   position: relative;
 `;

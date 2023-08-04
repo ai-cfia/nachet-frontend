@@ -3,7 +3,7 @@ import {
   LeftContent,
   RightContent,
   ColumnContainer,
-  ToolBarContent,
+  InfoContent,
 } from "./indexElements";
 import type Webcam from "react-webcam";
 import React from "react";
@@ -11,8 +11,8 @@ import FeedCapture from "../../components/body/feed_capture";
 import MicroscopeFeed from "../../components/body/microscope_feed";
 import ClassificationResults from "../../components/body/classification_results";
 import ImageCache from "../../components/body/image_cache";
-import ToolBar from "../../components/body/tool_bar";
-import AzureStorageWorkspace from "../../components/body/azure_workspace";
+// import ToolBar from "../../components/body/tool_bar";
+import StorageDirectory from "../../components/body/storage_directory";
 
 interface params {
   imageSrc: string;
@@ -45,7 +45,7 @@ const Classifier: React.FC<params> = (props) => {
   return (
     <ColumnContainer>
       <RowContainer>
-        <ToolBarContent>
+        {/* <ToolBarContent>
           <ToolBar
             setSaveOpen={props.setSaveOpen}
             handleInference={props.handleInference}
@@ -55,7 +55,7 @@ const Classifier: React.FC<params> = (props) => {
             setSwitchDeviceOpen={props.setSwitchDeviceOpen}
             windowSize={props.windowSize}
           />
-        </ToolBarContent>
+        </ToolBarContent> */}
         <LeftContent>
           <MicroscopeFeed
             capture={props.capture}
@@ -71,27 +71,27 @@ const Classifier: React.FC<params> = (props) => {
             windowSize={props.windowSize}
           />
         </RightContent>
-      </RowContainer>
-      <RowContainer>
-        <AzureStorageWorkspace
-          azureStorageDir={props.azureStorageDir}
-          curDir={props.curDir}
-          handleDirChange={props.handleDirChange}
-          setCreateDirectoryOpen={props.setCreateDirectoryOpen}
-        />
-        <ImageCache
-          removeImage={props.removeImage}
-          savedImages={props.savedImages}
-          loadImage={props.loadImage}
-          windowSize={props.windowSize}
-          clearImageCache={props.clearImageCache}
-        />
-        <ClassificationResults
-          savedImages={props.savedImages}
-          imageSrc={props.imageSrc}
-          windowSize={props.windowSize}
-          imageIndex={props.imageIndex}
-        />
+        <InfoContent>
+          <StorageDirectory
+            azureStorageDir={props.azureStorageDir}
+            curDir={props.curDir}
+            handleDirChange={props.handleDirChange}
+            setCreateDirectoryOpen={props.setCreateDirectoryOpen}
+          />
+          <ImageCache
+            removeImage={props.removeImage}
+            savedImages={props.savedImages}
+            loadImage={props.loadImage}
+            windowSize={props.windowSize}
+            clearImageCache={props.clearImageCache}
+          />
+          <ClassificationResults
+            savedImages={props.savedImages}
+            imageSrc={props.imageSrc}
+            windowSize={props.windowSize}
+            imageIndex={props.imageIndex}
+          />
+        </InfoContent>
       </RowContainer>
     </ColumnContainer>
   );

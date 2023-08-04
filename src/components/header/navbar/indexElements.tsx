@@ -20,7 +20,7 @@ export const NavbarContainer = styled.div<{ width: number; height: number }>`
   height: 3.5vh;
   z-index: 0;
   width: 100%;
-  max-width: 90vw;
+  padding: 0 1.5vw;
 `;
 
 export const NavLogo = styled.img<{ width: number }>`

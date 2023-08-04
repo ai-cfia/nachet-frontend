@@ -13,12 +13,13 @@ export const FooterWrap = styled.div<{ width: number; height: number }>`
   flex-direction: row;
   justify-content: space-between;
   align-items: space-between;
-  width: 90vw;
   max-width: 100%;
   height: 5vh;
   margin: auto;
   position: relative;
   z-index: 0;
+  padding-left: 1.5vw;
+  padding-right: 1.5vw;
 `;
 
 export const InfoSection = styled.section`

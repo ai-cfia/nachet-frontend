@@ -16,7 +16,7 @@ const FeedCapture: React.FC<params> = (props) => {
   return (
     <Box
       sx={{
-        width: "100%",
+        width: "99.79%",
         height: "fit-content",
         borderRadius: 1,
         border: `0.05vw solid ${colours.CFIA_Font_Black}`,

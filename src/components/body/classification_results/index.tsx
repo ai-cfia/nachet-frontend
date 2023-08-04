@@ -24,14 +24,14 @@ const ClassificationResults: React.FC<params> = (props) => {
   return (
     <Box
       sx={{
-        width: "22.5%",
-        height: "20vh",
+        width: "100%",
+        height: "22.425vh",
         border: `0.05vw solid ${colours.CFIA_Font_Black}`,
         borderRadius: 1,
       }}
     >
       <CardHeader
-        title="CLASSIFICATION RESULTS"
+        title="CLASSIFICATION"
         titleTypographyProps={{
           variant: "h6",
           align: "left",
@@ -44,8 +44,8 @@ const ClassificationResults: React.FC<params> = (props) => {
       <TableContainer
         sx={{
           overflow: "auto",
-          height: "16.3vh",
-          maxHeight: "16.3vh",
+          height: "18.75vh",
+          maxHeight: "18.75vh",
           border: 0,
         }}
         id={"container_with_scrolls"}
