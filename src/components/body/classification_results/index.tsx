@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { colours } from "../../../styles/colours";
 import TuneIcon from "@mui/icons-material/Tune";
+import SwitchLeftIcon from "@mui/icons-material/SwitchLeft";
 
 interface params {
   savedImages: any[];
@@ -26,15 +27,16 @@ interface params {
     height: number;
   };
 }
-const ClassificationResults: React.FC<params> = (props) => {
 
-  const handleSelect = (key: string) => {
+const ClassificationResults: React.FC<params> = (props) => {
+  const [switchTable, setSwitchTable] = React.useState<boolean>(false);
+  const handleSelect = (key: string): void => {
     if (key === props.selectedLabel) {
       props.setSelectedLabel("all");
     } else {
       props.setSelectedLabel(key);
     }
-  }
+  };
 
   return (
     <Box
@@ -74,6 +76,23 @@ const ClassificationResults: React.FC<params> = (props) => {
                 }}
               />
             </IconButton>
+            <IconButton
+              sx={{ padding: 0, marginTop: "0.27vh", marginRight: "0.4vh" }}
+              onClick={() => {
+                setSwitchTable(!switchTable);
+              }}
+            >
+              <SwitchLeftIcon
+                color="info"
+                style={{
+                  fontSize: "2vh",
+                  marginTop: 0,
+                  marginBottom: 0,
+                  paddingTop: 0,
+                  paddingBottom: 0,
+                }}
+              />
+            </IconButton>
           </div>
         }
       />
@@ -89,125 +108,107 @@ const ClassificationResults: React.FC<params> = (props) => {
       >
         <Table>
           <TableBody>
-            <TableRow>
-              <TableCell
-                align="left"
-                sx={{
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  paddingRight: 0,
-                  fontSize: "1.0vh",
-                  paddingTop: "0.5vh",
-                  paddingBottom: "0.5vh",
-                  paddingLeft: "0.8vh",
-                }}
-              >
-                Index
-              </TableCell>
-              <TableCell
-                align="center"
-                sx={{
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  fontSize: "1.0vh",
-                  paddingRight: 0,
-                  paddingLeft: 0,
-                  paddingTop: "0.5vh",
-                  paddingBottom: "0.5vh",
-                }}
-              >
-                Classification
-              </TableCell>
-              <TableCell
-                align="right"
-                sx={{
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  paddingLeft: 0,
-                  fontSize: "1.0vh",
-                  paddingTop: "0.5vh",
-                  paddingBottom: "0.5vh",
-                  paddingRight: "0.8vh",
-                }}
-              >
-                Total
-              </TableCell>
-            </TableRow>
-            {props.savedImages
-              .map((object: any) => {
-                if (
-                  object.index === props.imageIndex &&
-                  object.annotated === true
-                ) {
-                  return Object.keys(object.labelOccurrence).map((key, index) => (
-                    <TableRow
-                      key={index}
-                      sx={{
-                        "&:hover": {
-                          backgroundColor: "#D3D3D3",
-                          transition: "0.1s ease-in-out all",
-                        },
-                      }}
-                    >
-                      <TableCell
-                        align="left"
-                        sx={{
-                          cursor: "pointer",
-                          paddingRight: 0,
-                          fontSize: "1.0vh",
-                          paddingTop: "0.5vh",
-                          paddingBottom: "0.5vh",
-                          paddingLeft: "0.8vh",
-                        }}
-                        onClick={() => {
-                          handleSelect(key);
-                        }}
-                      >
-                        {index + 1}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        sx={{
-                          cursor: "pointer",
-                          paddingRight: 0,
-                          fontSize: "1.0vh",
-                          paddingLeft: 0,
-                          paddingTop: "0.5vh",
-                          paddingBottom: "0.5vh",
-                        }}
-                        onClick={() => {
-                          handleSelect(key);
-                        }}
-                      >
-                        {key.split(" ").slice(1).join(" ")}
-                      </TableCell>
-                      <TableCell
-                        align="right"
-                        sx={{
-                          cursor: "pointer",
-                          paddingLeft: 0,
-                          fontSize: "1.0vh",
-                          paddingTop: "0.5vh",
-                          paddingBottom: "0.5vh",
-                          paddingRight: "0.8vh",
-                        }}
-                      >
-                        {object.labelOccurrence[key]}
-                      </TableCell>
-                    </TableRow>
-                  ));
-                }
-              })
-              .flat()}
-            {/* {props.savedImages.map((object: any) => {
-              if (
-                object.index === props.imageIndex &&
-                object.annotated === true
-              ) {
-                return object.classifications.map(
-                  (prediction: any, index: number) => {
-                    if (object.scores[index] >= props.scoreThreshold / 100) {
-                      return (
+            {!switchTable && (
+              <TableRow>
+                <TableCell
+                  align="left"
+                  sx={{
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    paddingRight: 0,
+                    fontSize: "1.0vh",
+                    paddingTop: "0.5vh",
+                    paddingBottom: "0.5vh",
+                    paddingLeft: "0.8vh",
+                  }}
+                >
+                  Index
+                </TableCell>
+                <TableCell
+                  align="center"
+                  sx={{
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    fontSize: "1.0vh",
+                    paddingRight: 0,
+                    paddingLeft: 0,
+                    paddingTop: "0.5vh",
+                    paddingBottom: "0.5vh",
+                  }}
+                >
+                  Classification
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    paddingLeft: 0,
+                    fontSize: "1.0vh",
+                    paddingTop: "0.5vh",
+                    paddingBottom: "0.5vh",
+                    paddingRight: "0.8vh",
+                  }}
+                >
+                  Confidence
+                </TableCell>
+              </TableRow>
+            )}
+            {switchTable && (
+              <TableRow>
+                <TableCell
+                  align="left"
+                  sx={{
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    paddingRight: 0,
+                    fontSize: "1.0vh",
+                    paddingTop: "0.5vh",
+                    paddingBottom: "0.5vh",
+                    paddingLeft: "0.8vh",
+                  }}
+                >
+                  Index
+                </TableCell>
+                <TableCell
+                  align="center"
+                  sx={{
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    fontSize: "1.0vh",
+                    paddingRight: 0,
+                    paddingLeft: 0,
+                    paddingTop: "0.5vh",
+                    paddingBottom: "0.5vh",
+                  }}
+                >
+                  Classification
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    paddingLeft: 0,
+                    fontSize: "1.0vh",
+                    paddingTop: "0.5vh",
+                    paddingBottom: "0.5vh",
+                    paddingRight: "0.8vh",
+                  }}
+                >
+                  Total
+                </TableCell>
+              </TableRow>
+            )}
+            {switchTable &&
+              props.savedImages
+                .map((object: any) => {
+                  if (
+                    object.index === props.imageIndex &&
+                    object.annotated === true
+                  ) {
+                    return Object.keys(object.labelOccurrence).map(
+                      (key, index) => (
                         <TableRow
                           key={index}
                           sx={{
@@ -227,6 +228,9 @@ const ClassificationResults: React.FC<params> = (props) => {
                               paddingBottom: "0.5vh",
                               paddingLeft: "0.8vh",
                             }}
+                            onClick={() => {
+                              handleSelect(key);
+                            }}
                           >
                             {index + 1}
                           </TableCell>
@@ -240,8 +244,11 @@ const ClassificationResults: React.FC<params> = (props) => {
                               paddingTop: "0.5vh",
                               paddingBottom: "0.5vh",
                             }}
+                            onClick={() => {
+                              handleSelect(key);
+                            }}
                           >
-                            {prediction.split(" ").slice(1).join(" ")}
+                            {key.split(" ").slice(1).join(" ")}
                           </TableCell>
                           <TableCell
                             align="right"
@@ -254,18 +261,84 @@ const ClassificationResults: React.FC<params> = (props) => {
                               paddingRight: "0.8vh",
                             }}
                           >
-                            {(object.scores[index] * 100).toFixed(0)}%
+                            {object.labelOccurrence[key]}
                           </TableCell>
                         </TableRow>
-                      );
-                    }
+                      ),
+                    );
+                  } else {
                     return null;
-                  },
-                );
-              } else {
-                return null;
-              }
-            })} */}
+                  }
+                })
+                .flat()}
+            {!switchTable &&
+              props.savedImages.map((object: any) => {
+                if (
+                  object.index === props.imageIndex &&
+                  object.annotated === true
+                ) {
+                  return object.classifications.map(
+                    (prediction: any, index: number) => {
+                      if (object.scores[index] >= props.scoreThreshold / 100) {
+                        return (
+                          <TableRow
+                            key={index}
+                            sx={{
+                              "&:hover": {
+                                backgroundColor: "#D3D3D3",
+                                transition: "0.1s ease-in-out all",
+                              },
+                            }}
+                          >
+                            <TableCell
+                              align="left"
+                              sx={{
+                                cursor: "pointer",
+                                paddingRight: 0,
+                                fontSize: "1.0vh",
+                                paddingTop: "0.5vh",
+                                paddingBottom: "0.5vh",
+                                paddingLeft: "0.8vh",
+                              }}
+                            >
+                              {index + 1}
+                            </TableCell>
+                            <TableCell
+                              align="center"
+                              sx={{
+                                cursor: "pointer",
+                                paddingRight: 0,
+                                fontSize: "1.0vh",
+                                paddingLeft: 0,
+                                paddingTop: "0.5vh",
+                                paddingBottom: "0.5vh",
+                              }}
+                            >
+                              {prediction.split(" ").slice(1).join(" ")}
+                            </TableCell>
+                            <TableCell
+                              align="right"
+                              sx={{
+                                cursor: "pointer",
+                                paddingLeft: 0,
+                                fontSize: "1.0vh",
+                                paddingTop: "0.5vh",
+                                paddingBottom: "0.5vh",
+                                paddingRight: "0.8vh",
+                              }}
+                            >
+                              {(object.scores[index] * 100).toFixed(0)}%
+                            </TableCell>
+                          </TableRow>
+                        );
+                      }
+                      return null;
+                    },
+                  );
+                } else {
+                  return null;
+                }
+              })}
           </TableBody>
         </Table>
       </TableContainer>
