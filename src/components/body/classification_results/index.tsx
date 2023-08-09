@@ -27,6 +27,15 @@ interface params {
   };
 }
 const ClassificationResults: React.FC<params> = (props) => {
+
+  const handleSelect = (key: string) => {
+    if (key === props.selectedLabel) {
+      props.setSelectedLabel("all");
+    } else {
+      props.setSelectedLabel(key);
+    }
+  }
+
   return (
     <Box
       sx={{
@@ -151,7 +160,7 @@ const ClassificationResults: React.FC<params> = (props) => {
                           paddingLeft: "0.8vh",
                         }}
                         onClick={() => {
-                          props.setSelectedLabel(key);
+                          handleSelect(key);
                         }}
                       >
                         {index + 1}
@@ -167,7 +176,7 @@ const ClassificationResults: React.FC<params> = (props) => {
                           paddingBottom: "0.5vh",
                         }}
                         onClick={() => {
-                          props.setSelectedLabel(key);
+                          handleSelect(key);
                         }}
                       >
                         {key.split(" ").slice(1).join(" ")}
