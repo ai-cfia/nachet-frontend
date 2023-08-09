@@ -126,63 +126,68 @@ const ClassificationResults: React.FC<params> = (props) => {
             </TableRow>
             {props.savedImages
               .map((object: any) => {
-                return Object.keys(object.labelOccurrence).map((key, index) => (
-                  <TableRow
-                    key={index}
-                    sx={{
-                      "&:hover": {
-                        backgroundColor: "#D3D3D3",
-                        transition: "0.1s ease-in-out all",
-                      },
-                    }}
-                  >
-                    <TableCell
-                      align="left"
+                if (
+                  object.index === props.imageIndex &&
+                  object.annotated === true
+                ) {
+                  return Object.keys(object.labelOccurrence).map((key, index) => (
+                    <TableRow
+                      key={index}
                       sx={{
-                        cursor: "pointer",
-                        paddingRight: 0,
-                        fontSize: "1.0vh",
-                        paddingTop: "0.5vh",
-                        paddingBottom: "0.5vh",
-                        paddingLeft: "0.8vh",
-                      }}
-                      onClick={() => {
-                        props.setSelectedLabel(key);
+                        "&:hover": {
+                          backgroundColor: "#D3D3D3",
+                          transition: "0.1s ease-in-out all",
+                        },
                       }}
                     >
-                      {index + 1}
-                    </TableCell>
-                    <TableCell
-                      align="center"
-                      sx={{
-                        cursor: "pointer",
-                        paddingRight: 0,
-                        fontSize: "1.0vh",
-                        paddingLeft: 0,
-                        paddingTop: "0.5vh",
-                        paddingBottom: "0.5vh",
-                      }}
-                      onClick={() => {
-                        props.setSelectedLabel(key);
-                      }}
-                    >
-                      {key.split(" ").slice(1).join(" ")}
-                    </TableCell>
-                    <TableCell
-                      align="right"
-                      sx={{
-                        cursor: "pointer",
-                        paddingLeft: 0,
-                        fontSize: "1.0vh",
-                        paddingTop: "0.5vh",
-                        paddingBottom: "0.5vh",
-                        paddingRight: "0.8vh",
-                      }}
-                    >
-                      {object.labelOccurrence[key]}
-                    </TableCell>
-                  </TableRow>
-                ));
+                      <TableCell
+                        align="left"
+                        sx={{
+                          cursor: "pointer",
+                          paddingRight: 0,
+                          fontSize: "1.0vh",
+                          paddingTop: "0.5vh",
+                          paddingBottom: "0.5vh",
+                          paddingLeft: "0.8vh",
+                        }}
+                        onClick={() => {
+                          props.setSelectedLabel(key);
+                        }}
+                      >
+                        {index + 1}
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          cursor: "pointer",
+                          paddingRight: 0,
+                          fontSize: "1.0vh",
+                          paddingLeft: 0,
+                          paddingTop: "0.5vh",
+                          paddingBottom: "0.5vh",
+                        }}
+                        onClick={() => {
+                          props.setSelectedLabel(key);
+                        }}
+                      >
+                        {key.split(" ").slice(1).join(" ")}
+                      </TableCell>
+                      <TableCell
+                        align="right"
+                        sx={{
+                          cursor: "pointer",
+                          paddingLeft: 0,
+                          fontSize: "1.0vh",
+                          paddingTop: "0.5vh",
+                          paddingBottom: "0.5vh",
+                          paddingRight: "0.8vh",
+                        }}
+                      >
+                        {object.labelOccurrence[key]}
+                      </TableCell>
+                    </TableRow>
+                  ));
+                }
               })
               .flat()}
             {/* {props.savedImages.map((object: any) => {

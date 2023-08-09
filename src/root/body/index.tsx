@@ -341,7 +341,7 @@ const Body: React.FC<params> = (props) => {
                   if (storedImage.boxes[index].topY <= 15) {
                     if (prediction === key) {
                       ctx.fillText(
-                        `[${labelIndex}]`,
+                        `[${labelIndex + 1}]`,
                         ((storedImage.boxes[index].bottomX as number) -
                           (storedImage.boxes[index].topX as number)) /
                           2 +
@@ -352,7 +352,7 @@ const Body: React.FC<params> = (props) => {
                   } else {
                     if (prediction === key) {
                       ctx.fillText(
-                        `[${labelIndex}]`,
+                        `[${labelIndex + 1}]`,
                         ((storedImage.boxes[index].bottomX as number) -
                           (storedImage.boxes[index].topX as number)) /
                           2 +
@@ -410,7 +410,7 @@ const Body: React.FC<params> = (props) => {
 
   useEffect(() => {
     loadToCanvas();
-  }, [scoreThreshold]);
+  }, [scoreThreshold, selectedLabel]);
 
   useEffect(() => {
     const updateDevices = async (): Promise<any> => {
