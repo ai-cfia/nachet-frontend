@@ -1,0 +1,31 @@
+[
+  {
+    "family": "Malvaceae",
+
+    "common_name": "Velvetleaf",
+
+    "duration_of_life_cycle": "Annual",
+
+    "seed_or_fruit_type": "Seed",
+
+    "identification_features": {
+      "seed_length": "3.0 - 4.0 mm",
+
+      "seed_width": "2.3 - 3.6 mm",
+
+      "shape": "Heart-shaped seed with unequal lobes and a conspicuous notch at hilum end",
+
+      "surface_texture": "Seed dull with minute reticulations and scattered tubercles,concentrated at the hilum",
+
+      "colour": "Seed greyish brown with a lighter-coloured pubescence",
+
+      "other_features": "Flap-like tissue covering the hilum may be present"
+    },
+
+    "photos": [
+      "https://inspection.canada.ca/DAM/DAM-plants-vegetaux/STAGING/images-images/invasive_plants_seed_factsheet_abutilon_theophrasti_01cnsh_1476382781946_eng.jpg",
+      "https://inspection.canada.ca/DAM/DAM-plants-vegetaux/STAGING/images-images/invasive_plants_seed_factsheet_abutilon_theophrasti_01cnsh_1476382781946_eng.jpg"
+    ],
+    "source": "https://inspection.canada.ca/plant-health/seeds/seed-testing-and-grading/seeds-identification/abutilon-theophrasti/eng/1472604373914/1472604374428"
+  }
+]

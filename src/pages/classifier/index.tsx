@@ -12,7 +12,7 @@ import MicroscopeFeed from "../../components/body/microscope_feed";
 import ClassificationResults from "../../components/body/classification_results";
 import ImageCache from "../../components/body/image_cache";
 // import ToolBar from "../../components/body/tool_bar";
-import StorageDirectory from "../../components/body/storage_directory";
+import StorageDirectory from "../../components/body/directory_list";
 
 interface params {
   imageSrc: string;
@@ -35,6 +35,9 @@ interface params {
   curDir: string;
   setCreateDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleDirChange: (dir: string) => void;
+  setDelDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setResultsTunerOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  scoreThreshold: number;
   windowSize: {
     width: number;
     height: number;
@@ -62,6 +65,8 @@ const Classifier: React.FC<params> = (props) => {
             handleInference={props.handleInference}
             setUploadOpen={props.setUploadOpen}
             setSwitchModelOpen={props.setSwitchModelOpen}
+            imageCache={props.savedImages}
+            imageIndex={props.imageIndex}
           />
         </RightContent>
         <InfoContent>
@@ -70,6 +75,7 @@ const Classifier: React.FC<params> = (props) => {
             curDir={props.curDir}
             handleDirChange={props.handleDirChange}
             setCreateDirectoryOpen={props.setCreateDirectoryOpen}
+            setDelDirectoryOpen={props.setDelDirectoryOpen}
           />
           <ImageCache
             removeImage={props.removeImage}
@@ -79,6 +85,8 @@ const Classifier: React.FC<params> = (props) => {
             clearImageCache={props.clearImageCache}
           />
           <ClassificationResults
+            scoreThreshold={props.scoreThreshold}
+            setResultsTunerOpen={props.setResultsTunerOpen}
             savedImages={props.savedImages}
             imageSrc={props.imageSrc}
             windowSize={props.windowSize}

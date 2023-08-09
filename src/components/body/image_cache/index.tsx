@@ -10,7 +10,7 @@ import {
   Box,
   CardHeader,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import CloseIcon from "@mui/icons-material/Close";
 import CropFreeIcon from "@mui/icons-material/CropFree";
 import ClearAllIcon from "@mui/icons-material/ClearAll";
 import { colours } from "../../../styles/colours";
@@ -94,7 +94,7 @@ const ImageCache: React.FC<params> = (props) => {
                   sx={{
                     cursor: "pointer",
                     paddingRight: 0,
-                    fontSize: "1.0vh",
+                    fontSize: "1vh",
                     paddingTop: "0.5vh",
                     paddingBottom: "0.5vh",
                     paddingLeft: "0.8vh",
@@ -104,7 +104,7 @@ const ImageCache: React.FC<params> = (props) => {
                     props.loadImage(item.index);
                   }}
                 >
-                  CAPTURE {item.index}
+                  CAPTURE: {item.index}
                 </TableCell>
                 <TableCell
                   align="center"
@@ -148,7 +148,7 @@ const ImageCache: React.FC<params> = (props) => {
                     }}
                     sx={{ padding: 0 }}
                   >
-                    <DeleteIcon
+                    <CloseIcon
                       color="warning"
                       style={{
                         fontSize: "1.8vh",

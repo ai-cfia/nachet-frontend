@@ -26,6 +26,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
         height: height + 51,
         border: `0.05vw solid ${colours.CFIA_Font_Black}`,
         borderRadius: 1,
+        borderBottom: 0,
       }}
     >
       <CardHeader
@@ -88,16 +89,16 @@ const MicroscopeFeed: React.FC<params> = (props) => {
       <Webcam
         ref={props.webcamRef}
         mirrored={false}
-        width={width}
+        width={width - 1}
         height={height}
         style={{ objectFit: "cover" }}
         videoConstraints={{
-          width: width,
+          width: width - 1,
           height: height,
           deviceId: props.activeDeviceId,
         }}
         screenshotFormat={"image/png"}
-        screenshotQuality={0}
+        screenshotQuality={1}
       />
     </Box>
   );

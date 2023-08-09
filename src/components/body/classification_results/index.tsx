@@ -8,13 +8,17 @@ import {
   Paper,
   Box,
   CardHeader,
+  IconButton,
 } from "@mui/material";
 import { colours } from "../../../styles/colours";
+import TuneIcon from "@mui/icons-material/Tune";
 
 interface params {
   savedImages: any[];
   imageSrc: string;
   imageIndex: number;
+  setResultsTunerOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  scoreThreshold: number;
   windowSize: {
     width: number;
     height: number;
@@ -31,7 +35,7 @@ const ClassificationResults: React.FC<params> = (props) => {
       }}
     >
       <CardHeader
-        title="CLASSIFICATION"
+        title="RESULTS"
         titleTypographyProps={{
           variant: "h6",
           align: "left",
@@ -40,6 +44,27 @@ const ClassificationResults: React.FC<params> = (props) => {
           color: colours.CFIA_Font_Black,
         }}
         sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
+        action={
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <IconButton
+              sx={{ padding: 0, marginTop: "0.27vh", marginRight: "0.4vh" }}
+              onClick={() => {
+                props.setResultsTunerOpen(true);
+              }}
+            >
+              <TuneIcon
+                color="info"
+                style={{
+                  fontSize: "2vh",
+                  marginTop: 0,
+                  marginBottom: 0,
+                  paddingTop: 0,
+                  paddingBottom: 0,
+                }}
+              />
+            </IconButton>
+          </div>
+        }
       />
       <TableContainer
         sx={{
@@ -94,71 +119,129 @@ const ClassificationResults: React.FC<params> = (props) => {
                   paddingRight: "0.8vh",
                 }}
               >
-                Confidence
+                Total
               </TableCell>
             </TableRow>
             {props.savedImages.map((object: any) => {
+              return Object.keys(object.labelOccurrence).map((key, index) => (
+                <TableRow
+                  key={index}
+                  sx={{
+                    "&:hover": {
+                      backgroundColor: "#D3D3D3",
+                      transition: "0.1s ease-in-out all",
+                    },
+                  }}
+                >
+                  <TableCell
+                    align="left"
+                    sx={{
+                      cursor: "pointer",
+                      paddingRight: 0,
+                      fontSize: "1.0vh",
+                      paddingTop: "0.5vh",
+                      paddingBottom: "0.5vh",
+                      paddingLeft: "0.8vh",
+                    }}
+                  >
+                    {index + 1}
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{
+                      cursor: "pointer",
+                      paddingRight: 0,
+                      fontSize: "1.0vh",
+                      paddingLeft: 0,
+                      paddingTop: "0.5vh",
+                      paddingBottom: "0.5vh",
+                    }}
+                  >
+                    {key.split(" ").slice(1).join(" ")}
+                  </TableCell>
+                  <TableCell
+                    align="right"
+                    sx={{
+                      cursor: "pointer",
+                      paddingLeft: 0,
+                      fontSize: "1.0vh",
+                      paddingTop: "0.5vh",
+                      paddingBottom: "0.5vh",
+                      paddingRight: "0.8vh",
+                    }}
+                  >
+                    {object.labelOccurrence[key]}
+                  </TableCell>
+                </TableRow>
+              ));
+            }).flat()}
+            {/* {props.savedImages.map((object: any) => {
               if (
                 object.index === props.imageIndex &&
                 object.annotated === true
               ) {
-                return object.predictions.map(
-                  (prediction: any, index: number) => (
-                    <TableRow
-                      key={index}
-                      sx={{
-                        "&:hover": {
-                          backgroundColor: "#D3D3D3",
-                          transition: "0.1s ease-in-out all",
-                        },
-                      }}
-                    >
-                      <TableCell
-                        align="left"
-                        sx={{
-                          cursor: "pointer",
-                          paddingRight: 0,
-                          fontSize: "1.0vh",
-                          paddingTop: "0.5vh",
-                          paddingBottom: "0.5vh",
-                          paddingLeft: "0.8vh",
-                        }}
-                      >
-                        {index + 1}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        sx={{
-                          cursor: "pointer",
-                          paddingRight: 0,
-                          fontSize: "1.0vh",
-                          paddingLeft: 0,
-                          paddingTop: "0.5vh",
-                          paddingBottom: "0.5vh",
-                        }}
-                      >
-                        {prediction.split(" ").slice(1).join(" ")}
-                      </TableCell>
-                      <TableCell
-                        align="right"
-                        sx={{
-                          cursor: "pointer",
-                          paddingLeft: 0,
-                          fontSize: "1.0vh",
-                          paddingTop: "0.5vh",
-                          paddingBottom: "0.5vh",
-                          paddingRight: "0.8vh",
-                        }}
-                      >
-                        {(object.scores[index] * 100).toFixed(0)}%
-                      </TableCell>
-                    </TableRow>
-                  ),
+                return object.classifications.map(
+                  (prediction: any, index: number) => {
+                    if (object.scores[index] >= props.scoreThreshold / 100) {
+                      return (
+                        <TableRow
+                          key={index}
+                          sx={{
+                            "&:hover": {
+                              backgroundColor: "#D3D3D3",
+                              transition: "0.1s ease-in-out all",
+                            },
+                          }}
+                        >
+                          <TableCell
+                            align="left"
+                            sx={{
+                              cursor: "pointer",
+                              paddingRight: 0,
+                              fontSize: "1.0vh",
+                              paddingTop: "0.5vh",
+                              paddingBottom: "0.5vh",
+                              paddingLeft: "0.8vh",
+                            }}
+                          >
+                            {index + 1}
+                          </TableCell>
+                          <TableCell
+                            align="center"
+                            sx={{
+                              cursor: "pointer",
+                              paddingRight: 0,
+                              fontSize: "1.0vh",
+                              paddingLeft: 0,
+                              paddingTop: "0.5vh",
+                              paddingBottom: "0.5vh",
+                            }}
+                          >
+                            {prediction.split(" ").slice(1).join(" ")}
+                          </TableCell>
+                          <TableCell
+                            align="right"
+                            sx={{
+                              cursor: "pointer",
+                              paddingLeft: 0,
+                              fontSize: "1.0vh",
+                              paddingTop: "0.5vh",
+                              paddingBottom: "0.5vh",
+                              paddingRight: "0.8vh",
+                            }}
+                          >
+                            {(object.scores[index] * 100).toFixed(0)}%
+                          </TableCell>
+                        </TableRow>
+                      );
+                    }
+                    return null;
+                  },
                 );
               } else {
                 return null;
               }
-            })}
+            })} */}
           </TableBody>
         </Table>
       </TableContainer>

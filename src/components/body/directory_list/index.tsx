@@ -12,14 +12,24 @@ import {
 } from "@mui/material";
 import { colours } from "../../../styles/colours";
 import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
+// import FolderDeleteIcon from "@mui/icons-material/FolderDelete";
+import FolderOffIcon from "@mui/icons-material/FolderOff";
 
 interface params {
   azureStorageDir: any[];
   curDir: string;
   setCreateDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setDelDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleDirChange: (dir: string) => void;
 }
 const StorageDirectory: React.FC<params> = (props) => {
+  const handleDelete = (): void => {
+    if (props.curDir !== "") {
+      props.setDelDirectoryOpen(true);
+    } else {
+      alert("Please select a directory to delete.");
+    }
+  };
   return (
     <Box
       sx={{
@@ -30,7 +40,7 @@ const StorageDirectory: React.FC<params> = (props) => {
       }}
     >
       <CardHeader
-        title="STORAGE DIRECTORY"
+        title="DIRECTORIES"
         titleTypographyProps={{
           variant: "h6",
           align: "left",
@@ -40,23 +50,40 @@ const StorageDirectory: React.FC<params> = (props) => {
         }}
         sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
         action={
-          <IconButton
-            sx={{ padding: 0, marginTop: "0.27vh", marginRight: "0.4vh" }}
-            onClick={() => {
-              props.setCreateDirectoryOpen(true);
-            }}
-          >
-            <CreateNewFolderIcon
-              color="success"
-              style={{
-                fontSize: "2vh",
-                marginTop: 0,
-                marginBottom: 0,
-                paddingTop: 0,
-                paddingBottom: 0,
+          <div>
+            <IconButton
+              sx={{ padding: 0, marginTop: "0.27vh", marginRight: "0.4vh" }}
+              onClick={() => {
+                props.setCreateDirectoryOpen(true);
               }}
-            />
-          </IconButton>
+            >
+              <CreateNewFolderIcon
+                color="info"
+                style={{
+                  fontSize: "2vh",
+                  marginTop: 0,
+                  marginBottom: 0,
+                  paddingTop: 0,
+                  paddingBottom: 0,
+                }}
+              />
+            </IconButton>
+            <IconButton
+              sx={{ padding: 0, marginTop: "0.27vh", marginRight: "0.4vh" }}
+              onClick={handleDelete}
+            >
+              <FolderOffIcon
+                color="warning"
+                style={{
+                  fontSize: "2vh",
+                  marginTop: 0,
+                  marginBottom: 0,
+                  paddingTop: 0,
+                  paddingBottom: 0,
+                }}
+              />
+            </IconButton>
+          </div>
         }
       />
       <TableContainer
@@ -71,22 +98,6 @@ const StorageDirectory: React.FC<params> = (props) => {
       >
         <Table>
           <TableBody>
-            <TableRow>
-              <TableCell
-                align="left"
-                sx={{
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  paddingRight: 0,
-                  fontSize: "1.0vh",
-                  paddingTop: "0.5vh",
-                  paddingBottom: "0.5vh",
-                  paddingLeft: "0.8vh",
-                }}
-              >
-                Folders
-              </TableCell>
-            </TableRow>
             {props.azureStorageDir.map((folder: any, index: number) => (
               <TableRow
                 key={index}
@@ -106,10 +117,10 @@ const StorageDirectory: React.FC<params> = (props) => {
                     paddingTop: "0.5vh",
                     paddingBottom: "0.5vh",
                     paddingLeft: "0.8vh",
-                    color:
+                    backgroundColor:
                       folder.split("/")[0] === props.curDir
-                        ? "red"
-                        : colours.CFIA_Font_Black,
+                        ? "#D3D3D3"
+                        : colours.CFIA_Background_White,
                   }}
                   onClick={() => {
                     props.handleDirChange(folder.split("/")[0]);

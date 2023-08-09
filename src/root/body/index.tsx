@@ -3,21 +3,27 @@ import type Webcam from "react-webcam";
 import { saveAs } from "file-saver";
 import { BodyContainer } from "./indexElements";
 import Classifier from "../../pages/classifier";
-import SavePopup from "../../components/body/save_capture";
-import UploadPopup from "../../components/body/load_image";
-import SwitchModelPopup from "../../components/body/switch_model";
-import SwitchDevice from "../../components/body/switch_device";
-import CreateDirectory from "../../components/body/create_directory";
+import SavePopup from "../../components/body/save_capture_popup";
+import UploadPopup from "../../components/body/load_image_popup";
+import SwitchModelPopup from "../../components/body/switch_model_popup";
+import SwitchDevice from "../../components/body/switch_device_popup";
+import CreateDirectory from "../../components/body/create_directory_popup";
+import DeleteDirectoryPopup from "../../components/body/del_directory_popup";
+import ResultsTunerPopup from "../../components/body/results_tuner_popup";
 import axios from "axios";
 
 interface ImageCache {
   index: number;
   src: string;
   scores: number[];
-  predictions: string[];
-  regions: any[];
+  classifications: string[];
+  boxes: any[];
   annotated: boolean;
   imageDims: number[];
+  overlapping: boolean[];
+  overlappingIndex: number[];
+  totalBoxes: number;
+  labelOccurrence: any;
 }
 
 interface params {
@@ -49,17 +55,13 @@ const Body: React.FC<params> = (props) => {
   );
   const [curDir, setCurDir] = useState<string>("");
   const [azureStorageDir, setAzureStorageDir] = useState<any[]>([]);
+  const [delDirectoryOpen, setDelDirectoryOpen] = useState<boolean>(false);
+  const [resultsTunerOpen, setResultsTunerOpen] = useState<boolean>(false);
+  const [scoreThreshold, setScoreThreshold] = useState<number>(50);
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  const loadCaptureToCache = (
-    src: string,
-    scores: number[],
-    predictions: string[],
-    regions: any[],
-    annotated: boolean,
-    imageDims: number[],
-  ): void => {
+  const loadCaptureToCache = (src: string): void => {
     setImageCache((prevCache) => [
       ...prevCache,
       {
@@ -68,11 +70,15 @@ const Body: React.FC<params> = (props) => {
             ? imageCache[imageCache.length - 1].index + 1
             : imageIndex + 1,
         src,
-        scores,
-        predictions,
-        regions,
-        annotated,
-        imageDims,
+        scores: [],
+        classifications: [],
+        boxes: [],
+        annotated: false,
+        imageDims: [],
+        overlapping: [],
+        overlappingIndex: [],
+        totalBoxes: 0,
+        labelOccurrence: {},
       },
     ]);
     setImageIndex(
@@ -104,7 +110,7 @@ const Body: React.FC<params> = (props) => {
     if (src === null || src === undefined) {
       return;
     }
-    loadCaptureToCache(src, [], [], [], false, [0, 0]);
+    loadCaptureToCache(src);
   };
 
   const uploadImage = (event: any): void => {
@@ -116,7 +122,7 @@ const Body: React.FC<params> = (props) => {
         if (typeof reader.result !== "string") {
           return;
         }
-        loadCaptureToCache(reader.result, [], [], [], false, [0, 0]);
+        loadCaptureToCache(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -164,8 +170,13 @@ const Body: React.FC<params> = (props) => {
               return {
                 ...item,
                 scores: [...item.scores, params.score.toFixed(2)],
-                predictions: [...item.predictions, params.label],
-                regions: [...item.regions, params.box],
+                classifications: [...item.classifications, params.label],
+                boxes: [...item.boxes, params.box],
+                overlapping: [...item.overlapping, params.overlapping],
+                overlappingIndex: [
+                  ...item.overlappingIndex,
+                  params.overlappingIndex,
+                ],
                 annotated: true,
               };
             }
@@ -174,6 +185,18 @@ const Body: React.FC<params> = (props) => {
         );
       });
     });
+    setImageCache((prevCache) =>
+      prevCache.map((item) => {
+        if (item.index === imageIndex) {
+          return {
+            ...item,
+            totalBoxes: inferenceData[0].totalBoxes,
+            labelOccurrence: inferenceData[0].labelOccurrence,
+          };
+        }
+        return item;
+      }),
+    );
     setResultsRendered(!resultsRendered);
   };
 
@@ -190,6 +213,36 @@ const Body: React.FC<params> = (props) => {
     }
   };
 
+  const delFromDirectory = (): void => {
+    (async () => {
+      try {
+        await axios({
+          method: "post",
+          url: `http://localhost:2323/del`,
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          data: {
+            container_name: props.uuid,
+            folder_name: curDir,
+          },
+        }).then((response) => {
+          if (response.data.length > 0) {
+            setCurDir("");
+            getAzureStorageDir();
+          } else {
+            alert("Failed to delete directory");
+          }
+        });
+      } catch (error) {
+        alert(error);
+      }
+    })().catch((error) => {
+      alert(error);
+    });
+  };
+
   const getAzureStorageDir = (): void => {
     (async () => {
       try {
@@ -204,7 +257,6 @@ const Body: React.FC<params> = (props) => {
             container_name: props.uuid,
           },
         }).then((response) => {
-          console.log(response.data);
           setAzureStorageDir(response.data);
         });
       } catch (error) {
@@ -265,116 +317,101 @@ const Body: React.FC<params> = (props) => {
     if (ctx === null) {
       return;
     }
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // ctx.clearRect(0, 0, canvas.width, canvas.height);
     image.onload = () => {
       canvas.width = image.width;
       canvas.height = image.height;
       ctx.drawImage(image, 0, 0);
       imageCache.forEach((storedImage) => {
         if (storedImage.index === imageIndex && storedImage.annotated) {
-          storedImage.predictions.forEach((prediction, index) => {
-            ctx.beginPath();
-            ctx.font = "1.3vh Arial";
-            ctx.fillStyle = "black";
-            ctx.textAlign = "center";
-            if (storedImage.regions[index].topY <= 15) {
+          storedImage.classifications.forEach((prediction, index) => {
+            // !storedImage.overlapping[index]
+            if (storedImage.scores[index] >= scoreThreshold / 100) {
+              ctx.beginPath();
+              ctx.font = "0.9vw Arial";
+              ctx.fillStyle = "black";
+              ctx.textAlign = "center";
+              if (storedImage.boxes[index].topY <= 15) {
+                ctx.fillText(
+                  `[${(index + 1).toString()}] ${prediction
+                    .split(" ")
+                    .slice(1)
+                    .join(" ")}`,
+                  ((storedImage.boxes[index].bottomX as number) -
+                    (storedImage.boxes[index].topX as number)) /
+                    2 +
+                    (storedImage.boxes[index].topX as number),
+                  (storedImage.boxes[index].bottomY as number) + 25,
+                );
+              } else {
+                ctx.fillText(
+                  `[${(index + 1).toString()}] ${prediction
+                    .split(" ")
+                    .slice(1)
+                    .join(" ")}`,
+                  ((storedImage.boxes[index].bottomX as number) -
+                    (storedImage.boxes[index].topX as number)) /
+                    2 +
+                    (storedImage.boxes[index].topX as number),
+                  storedImage.boxes[index].topY - 8,
+                );
+              }
+              ctx.font = "0.9vw Arial";
+              ctx.textAlign = "left";
+              ctx.fillStyle = "#4ee44e";
               ctx.fillText(
-                `[${(index + 1).toString()}] ${prediction
+                `TOTAL DETECTIONS: ${storedImage.totalBoxes}`,
+                10,
+                canvas.height - 50,
+              );
+              let counter = 35;
+              for (const key in storedImage.labelOccurrence) {
+                ctx.font = "0.9vw Arial";
+                ctx.textAlign = "left";
+                ctx.fillStyle = "#4ee44e";
+                const label = String(key)
                   .split(" ")
                   .slice(1)
-                  .join(" ")}`,
-                ((storedImage.regions[index].bottomX as number) -
-                  (storedImage.regions[index].topX as number)) /
-                  2 +
-                  (storedImage.regions[index].topX as number),
-                (storedImage.regions[index].bottomY as number) + 15,
+                  .join(" ")
+                  .toUpperCase();
+                const total = String(storedImage.labelOccurrence[key]);
+                ctx.fillText(
+                  label + ": " + total,
+                  10,
+                  canvas.height - (50 + counter),
+                );
+                counter = counter + 35;
+              }
+              // bounding box
+              ctx.lineWidth = 2;
+              ctx.setLineDash([7, 7]);
+              ctx.strokeStyle = "red";
+              ctx.rect(
+                storedImage.boxes[index].topX,
+                storedImage.boxes[index].topY,
+                storedImage.boxes[index].bottomX -
+                  storedImage.boxes[index].topX,
+                storedImage.boxes[index].bottomY -
+                  storedImage.boxes[index].topY,
               );
-            } else {
-              ctx.fillText(
-                `[${(index + 1).toString()}] ${prediction
-                  .split(" ")
-                  .slice(1)
-                  .join(" ")}`,
-                ((storedImage.regions[index].bottomX as number) -
-                  (storedImage.regions[index].topX as number)) /
-                  2 +
-                  (storedImage.regions[index].topX as number),
-                storedImage.regions[index].topY - 8,
-              );
+              ctx.stroke();
+              ctx.closePath();
             }
-            ctx.lineWidth = 2;
-            ctx.setLineDash([5, 5]);
-            ctx.strokeStyle = "red";
-            ctx.rect(
-              storedImage.regions[index].topX,
-              storedImage.regions[index].topY,
-              storedImage.regions[index].bottomX -
-                storedImage.regions[index].topX,
-              storedImage.regions[index].bottomY -
-                storedImage.regions[index].topY,
-            );
-            ctx.stroke();
-            ctx.closePath();
           });
         }
         if (storedImage.index === imageIndex) {
           storedImage.imageDims = [image.width, image.height];
           ctx.beginPath();
-          ctx.font = "1vw Arial";
+          ctx.font = "0.9vw Arial";
           ctx.textAlign = "left";
           ctx.fillStyle = "#4ee44e";
-          ctx.fillText(`CAPTURE ${storedImage.index}`, 10, canvas.height - 15);
+          ctx.fillText(`CAPTURE: ${storedImage.index}`, 10, canvas.height - 15);
           ctx.stroke();
           ctx.closePath();
         }
       });
     };
   };
-
-  const saveJSONToLocalStorage = (cache: any[]): void => {
-    try {
-      const serializedData = JSON.stringify(cache);
-      localStorage.setItem(
-        "seed_classification_interface_image_cache",
-        serializedData,
-      );
-    } catch (error) {
-      console.error("Error saving JSON to localStorage:", error);
-    }
-  };
-
-  const getJSONFromLocalStorage = (): any => {
-    try {
-      const serializedData = localStorage.getItem(
-        "seed_classification_interface_image_cache",
-      );
-      if (serializedData === null) {
-        return undefined;
-      }
-      return JSON.parse(serializedData);
-    } catch (error) {
-      console.error("Error retrieving JSON from localStorage:", error);
-      return null;
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("beforeunload", () => {
-      saveJSONToLocalStorage(imageCache);
-    });
-    return () => {
-      window.removeEventListener("beforeunload", () => {
-        saveJSONToLocalStorage(imageCache);
-      });
-    };
-  }, [imageCache]);
-
-  useEffect(() => {
-    const cachedData = getJSONFromLocalStorage();
-    if (cachedData !== null && cachedData !== undefined) {
-      setImageCache(cachedData);
-    }
-  }, []);
 
   useEffect(() => {
     getCurrentImage(imageIndex);
@@ -385,8 +422,13 @@ const Body: React.FC<params> = (props) => {
   }, [imageSrc, imageSrcKey]);
 
   useEffect(() => {
+    console.log(imageCache);
     loadToCanvas();
   }, [resultsRendered]);
+
+  useEffect(() => {
+    loadToCanvas();
+  }, [scoreThreshold]);
 
   useEffect(() => {
     const updateDevices = async (): Promise<any> => {
@@ -456,12 +498,26 @@ const Body: React.FC<params> = (props) => {
           activeDeviceId={activeDeviceId}
         />
       )}
+      {delDirectoryOpen && (
+        <DeleteDirectoryPopup
+          setDelDirectoryOpen={setDelDirectoryOpen}
+          delFromDirectory={delFromDirectory}
+          curDir={curDir}
+        />
+      )}
       {createDirectoryOpen && (
         <CreateDirectory
           setCreateDirectoryOpen={setCreateDirectoryOpen}
           handeDirChange={handleDirChange}
           curDir={curDir}
           addToDirectory={addToDirectory}
+        />
+      )}
+      {resultsTunerOpen && (
+        <ResultsTunerPopup
+          setResultsTunerOpen={setResultsTunerOpen}
+          setScoreThreshold={setScoreThreshold}
+          scoreThreshold={scoreThreshold}
         />
       )}
       <Classifier
@@ -486,6 +542,9 @@ const Body: React.FC<params> = (props) => {
         curDir={curDir}
         handleDirChange={handleDirChange}
         setCreateDirectoryOpen={setCreateDirectoryOpen}
+        setDelDirectoryOpen={setDelDirectoryOpen}
+        setResultsTunerOpen={setResultsTunerOpen}
+        scoreThreshold={scoreThreshold}
       />
     </BodyContainer>
   );

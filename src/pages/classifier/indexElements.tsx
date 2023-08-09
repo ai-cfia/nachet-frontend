@@ -12,7 +12,6 @@ export const RowContainer = styled.div`
   height: fit-content;
   position: relative;
   z-index: 0;
-  margin-top: 0.5vh;
   padding: 0px 0px 0px 0px;
 `;
 
@@ -57,7 +56,8 @@ export const InfoContent = styled.div`
   justify-content: start;
   width: 19%;
   max-width: 19%;
-  height: fit-content;
+  height: 100%;
+  max-height: 100%;
   padding: 0vw 0vw 0vw 0.5vw;
   z-index: 0;
   position: relative;

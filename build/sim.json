@@ -1,0 +1,37 @@
+[
+  {
+    "filename": "/tmp/tmpf40hzadn/tmp6fmlakdl",
+    "boxes": [
+      {
+        "box": {
+          "topX": 50,
+          "topY": 50,
+          "bottomX": 100,
+          "bottomY": 100
+        },
+        "label": "1 Canola",
+        "score": 0.9849483370780945
+      },
+      {
+        "box": {
+          "topX": 110,
+          "topY": 110,
+          "bottomX": 200,
+          "bottomY": 200
+        },
+        "label": "8 Lolium temulentum",
+        "score": 0.9729371666908264
+      },
+      {
+        "box": {
+          "topX": 110,
+          "topY": 250,
+          "bottomX": 250,
+          "bottomY": 300
+        },
+        "label": "8 Lolium temulentum",
+        "score": 0.9129371666908264
+      }
+    ]
+  }
+]

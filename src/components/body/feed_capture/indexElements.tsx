@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
-export const Canvas = styled.canvas<{ width: number; height: number }>`
-  width: ${(props) => props.width};
+export const Canvas = styled.canvas`
   height: 65vh;
   width: 40.35vw;
   object-fit: fit;
