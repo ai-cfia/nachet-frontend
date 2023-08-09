@@ -38,6 +38,8 @@ interface params {
   setDelDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setResultsTunerOpen: React.Dispatch<React.SetStateAction<boolean>>;
   scoreThreshold: number;
+  selectedLabel: string;
+  setSelectedLabel: React.Dispatch<React.SetStateAction<string>>;
   windowSize: {
     width: number;
     height: number;
@@ -91,6 +93,8 @@ const Classifier: React.FC<params> = (props) => {
             imageSrc={props.imageSrc}
             windowSize={props.windowSize}
             imageIndex={props.imageIndex}
+            selectedLabel={props.selectedLabel}
+            setSelectedLabel={props.setSelectedLabel}
           />
         </InfoContent>
       </RowContainer>

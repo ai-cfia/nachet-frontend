@@ -58,6 +58,7 @@ const Body: React.FC<params> = (props) => {
   const [delDirectoryOpen, setDelDirectoryOpen] = useState<boolean>(false);
   const [resultsTunerOpen, setResultsTunerOpen] = useState<boolean>(false);
   const [scoreThreshold, setScoreThreshold] = useState<number>(50);
+  const [selectedLabel, setSelectedLabel] = useState<string>("all");
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -326,63 +327,43 @@ const Body: React.FC<params> = (props) => {
         if (storedImage.index === imageIndex && storedImage.annotated) {
           storedImage.classifications.forEach((prediction, index) => {
             // !storedImage.overlapping[index]
-            if (storedImage.scores[index] >= scoreThreshold / 100) {
+            if (
+              storedImage.scores[index] >= scoreThreshold / 100 &&
+              (prediction === selectedLabel || selectedLabel === "all")
+            ) {
               ctx.beginPath();
+              // draw label index
               ctx.font = "0.9vw Arial";
               ctx.fillStyle = "black";
               ctx.textAlign = "center";
-              if (storedImage.boxes[index].topY <= 15) {
-                ctx.fillText(
-                  `[${(index + 1).toString()}] ${prediction
-                    .split(" ")
-                    .slice(1)
-                    .join(" ")}`,
-                  ((storedImage.boxes[index].bottomX as number) -
-                    (storedImage.boxes[index].topX as number)) /
-                    2 +
-                    (storedImage.boxes[index].topX as number),
-                  (storedImage.boxes[index].bottomY as number) + 25,
-                );
-              } else {
-                ctx.fillText(
-                  `[${(index + 1).toString()}] ${prediction
-                    .split(" ")
-                    .slice(1)
-                    .join(" ")}`,
-                  ((storedImage.boxes[index].bottomX as number) -
-                    (storedImage.boxes[index].topX as number)) /
-                    2 +
-                    (storedImage.boxes[index].topX as number),
-                  storedImage.boxes[index].topY - 8,
-                );
-              }
-              ctx.font = "0.9vw Arial";
-              ctx.textAlign = "left";
-              ctx.fillStyle = "#4ee44e";
-              ctx.fillText(
-                `TOTAL DETECTIONS: ${storedImage.totalBoxes}`,
-                10,
-                canvas.height - 50,
+              Object.keys(storedImage.labelOccurrence).forEach(
+                (key, labelIndex) => {
+                  if (storedImage.boxes[index].topY <= 15) {
+                    if (prediction === key) {
+                      ctx.fillText(
+                        `[${labelIndex}]`,
+                        ((storedImage.boxes[index].bottomX as number) -
+                          (storedImage.boxes[index].topX as number)) /
+                          2 +
+                          (storedImage.boxes[index].topX as number),
+                        (storedImage.boxes[index].bottomY as number) + 25,
+                      );
+                    }
+                  } else {
+                    if (prediction === key) {
+                      ctx.fillText(
+                        `[${labelIndex}]`,
+                        ((storedImage.boxes[index].bottomX as number) -
+                          (storedImage.boxes[index].topX as number)) /
+                          2 +
+                          (storedImage.boxes[index].topX as number),
+                        storedImage.boxes[index].topY - 8,
+                      );
+                    }
+                  }
+                },
               );
-              let counter = 35;
-              for (const key in storedImage.labelOccurrence) {
-                ctx.font = "0.9vw Arial";
-                ctx.textAlign = "left";
-                ctx.fillStyle = "#4ee44e";
-                const label = String(key)
-                  .split(" ")
-                  .slice(1)
-                  .join(" ")
-                  .toUpperCase();
-                const total = String(storedImage.labelOccurrence[key]);
-                ctx.fillText(
-                  label + ": " + total,
-                  10,
-                  canvas.height - (50 + counter),
-                );
-                counter = counter + 35;
-              }
-              // bounding box
+              // draw bounding box
               ctx.lineWidth = 2;
               ctx.setLineDash([7, 7]);
               ctx.strokeStyle = "red";
@@ -399,6 +380,7 @@ const Body: React.FC<params> = (props) => {
             }
           });
         }
+        // capture label in bottom left
         if (storedImage.index === imageIndex) {
           storedImage.imageDims = [image.width, image.height];
           ctx.beginPath();
@@ -545,6 +527,8 @@ const Body: React.FC<params> = (props) => {
         setDelDirectoryOpen={setDelDirectoryOpen}
         setResultsTunerOpen={setResultsTunerOpen}
         scoreThreshold={scoreThreshold}
+        selectedLabel={selectedLabel}
+        setSelectedLabel={setSelectedLabel}
       />
     </BodyContainer>
   );
