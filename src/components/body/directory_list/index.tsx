@@ -12,31 +12,38 @@ import {
 } from "@mui/material";
 import { colours } from "../../../styles/colours";
 import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
-// import FolderDeleteIcon from "@mui/icons-material/FolderDelete";
-import FolderOffIcon from "@mui/icons-material/FolderOff";
+import CloseIcon from "@mui/icons-material/Close";
 
 interface params {
-  azureStorageDir: any[];
+  azureStorageDir: any;
   curDir: string;
   setCreateDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setDelDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleDirChange: (dir: string) => void;
+  windowSize: {
+    width: number;
+    height: number;
+  };
 }
 const StorageDirectory: React.FC<params> = (props) => {
-  const handleDelete = (): void => {
-    if (props.curDir !== "") {
-      props.setDelDirectoryOpen(true);
+  const handleDelete = (folder: string): void => {
+    props.handleDirChange(folder);
+    props.setDelDirectoryOpen(true);
+  };
+  const handleSelect = (folder: string): void => {
+    if (folder === props.curDir) {
+      props.handleDirChange("");
     } else {
-      alert("Please select a directory to delete.");
+      props.handleDirChange(folder);
     }
   };
   return (
     <Box
       sx={{
         width: "100%",
-        height: "22.425vh",
-        border: `0.05vw solid ${colours.CFIA_Font_Black}`,
-        borderRadius: 1,
+        height: "22.23vh",
+        border: `0.01vh solid ${colours.CFIA_Font_Black}`,
+        borderRadius: "0.4vh",
       }}
     >
       <CardHeader
@@ -58,23 +65,8 @@ const StorageDirectory: React.FC<params> = (props) => {
               }}
             >
               <CreateNewFolderIcon
-                color="info"
                 style={{
-                  fontSize: "2vh",
-                  marginTop: 0,
-                  marginBottom: 0,
-                  paddingTop: 0,
-                  paddingBottom: 0,
-                }}
-              />
-            </IconButton>
-            <IconButton
-              sx={{ padding: 0, marginTop: "0.27vh", marginRight: "0.4vh" }}
-              onClick={handleDelete}
-            >
-              <FolderOffIcon
-                color="warning"
-                style={{
+                  color: colours.CFIA_Background_Blue,
                   fontSize: "2vh",
                   marginTop: 0,
                   marginBottom: 0,
@@ -89,47 +81,106 @@ const StorageDirectory: React.FC<params> = (props) => {
       <TableContainer
         sx={{
           overflow: "auto",
-          height: "18.75vh",
-          maxHeight: "18.75vh",
+          height: "18.465vh", // 18.75
+          maxHeight: "18.465vh",
           border: 0,
+          borderTopRightRadius: 0,
+          borderTopLeftRadius: 0,
+          borderTop: `0.01vh solid LightGrey`,
+          borderBottom: 0,
         }}
         id={"container_with_scrolls"}
         component={Paper}
       >
-        <Table>
-          <TableBody>
-            {props.azureStorageDir.map((folder: any, index: number) => (
-              <TableRow
-                key={index}
-                sx={{
-                  "&:hover": {
-                    backgroundColor: "#D3D3D3",
-                    transition: "0.1s ease-in-out all",
-                  },
-                }}
-              >
-                <TableCell
-                  align="left"
+        <Table sx={{ borderBottom: 0 }}>
+          <TableBody sx={{ borderBottom: 0 }}>
+            {Object.keys(props.azureStorageDir).map(
+              (folderKey: string, index: number) => (
+                <TableRow
+                  key={index}
                   sx={{
-                    cursor: "pointer",
-                    paddingRight: 0,
-                    fontSize: "1.0vh",
-                    paddingTop: "0.5vh",
-                    paddingBottom: "0.5vh",
-                    paddingLeft: "0.8vh",
                     backgroundColor:
-                      folder.split("/")[0] === props.curDir
-                        ? "#D3D3D3"
+                      folderKey === props.curDir
+                        ? colours.CFIA_Background_Blue
                         : colours.CFIA_Background_White,
-                  }}
-                  onClick={() => {
-                    props.handleDirChange(folder.split("/")[0]);
+                    "&:hover": {
+                      backgroundColor: "#D3D3D3",
+                      transition: "0.1s ease-in-out all",
+                    },
                   }}
                 >
-                  {folder.split("/")[0]}
-                </TableCell>
-              </TableRow>
-            ))}
+                  <TableCell
+                    align="left"
+                    sx={{
+                      cursor: "pointer",
+                      paddingRight: 0,
+                      fontSize: "1.0vh",
+                      paddingTop: "0.5vh",
+                      paddingBottom: "0.5vh",
+                      paddingLeft: "0.8vh",
+                      color:
+                        folderKey === props.curDir
+                          ? colours.CFIA_Font_White
+                          : colours.CFIA_Font_Black,
+                    }}
+                    onClick={() => {
+                      handleSelect(folderKey);
+                    }}
+                  >
+                    {folderKey}
+                  </TableCell>
+                  <TableCell
+                    align="left"
+                    sx={{
+                      cursor: "pointer",
+                      paddingRight: 0,
+                      fontSize: "1.0vh",
+                      paddingTop: "0.5vh",
+                      paddingBottom: "0.5vh",
+                      paddingLeft: "0.8vh",
+                      color:
+                        folderKey === props.curDir
+                          ? colours.CFIA_Font_White
+                          : colours.CFIA_Font_Black,
+                    }}
+                    onClick={() => {
+                      handleSelect(folderKey);
+                    }}
+                  >
+                    {props.azureStorageDir[folderKey]}
+                  </TableCell>
+                  <TableCell
+                    align="right"
+                    sx={{
+                      cursor: "pointer",
+                      paddingLeft: 0,
+                      fontSize: "1.0vh",
+                      paddingTop: "0.5vh",
+                      paddingBottom: "0.5vh",
+                      paddingRight: "0.8vh",
+                    }}
+                  >
+                    <IconButton
+                      onClick={() => {
+                        handleDelete(folderKey);
+                      }}
+                      sx={{ padding: 0 }}
+                    >
+                      <CloseIcon
+                        style={{
+                          color: "red",
+                          fontSize: "1.8vh",
+                          marginTop: 0,
+                          marginBottom: 0,
+                          paddingTop: 0,
+                          paddingBottom: 0,
+                        }}
+                      />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ),
+            )}
           </TableBody>
         </Table>
       </TableContainer>

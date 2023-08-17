@@ -18,7 +18,7 @@ function App(): JSX.Element {
   const createUuid = (): void => {
     const newUuid = uuidv4();
     setUuid(newUuid);
-    Cookies.set("user-uuid", newUuid, { expires: 60 * 60 * 24 * 365 * 10 });
+    Cookies.set("user-uuid", newUuid, { expires: 365 * 10 });
   };
 
   const getUuid = (): void => {

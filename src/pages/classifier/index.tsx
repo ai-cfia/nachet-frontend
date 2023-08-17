@@ -11,7 +11,6 @@ import FeedCapture from "../../components/body/feed_capture";
 import MicroscopeFeed from "../../components/body/microscope_feed";
 import ClassificationResults from "../../components/body/classification_results";
 import ImageCache from "../../components/body/image_cache";
-// import ToolBar from "../../components/body/tool_bar";
 import StorageDirectory from "../../components/body/directory_list";
 
 interface params {
@@ -31,7 +30,7 @@ interface params {
   setSwitchDeviceOpen: React.Dispatch<React.SetStateAction<boolean>>;
   imageIndex: number;
   activeDeviceId: string | undefined;
-  azureStorageDir: any[];
+  azureStorageDir: any;
   curDir: string;
   setCreateDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleDirChange: (dir: string) => void;
@@ -40,6 +39,9 @@ interface params {
   scoreThreshold: number;
   selectedLabel: string;
   setSelectedLabel: React.Dispatch<React.SetStateAction<string>>;
+  labelOccurrences: any;
+  switchTable: boolean;
+  setSwitchTable: React.Dispatch<React.SetStateAction<boolean>>;
   windowSize: {
     width: number;
     height: number;
@@ -78,6 +80,7 @@ const Classifier: React.FC<params> = (props) => {
             handleDirChange={props.handleDirChange}
             setCreateDirectoryOpen={props.setCreateDirectoryOpen}
             setDelDirectoryOpen={props.setDelDirectoryOpen}
+            windowSize={props.windowSize}
           />
           <ImageCache
             removeImage={props.removeImage}
@@ -85,6 +88,7 @@ const Classifier: React.FC<params> = (props) => {
             loadImage={props.loadImage}
             windowSize={props.windowSize}
             clearImageCache={props.clearImageCache}
+            imageIndex={props.imageIndex}
           />
           <ClassificationResults
             scoreThreshold={props.scoreThreshold}
@@ -95,6 +99,9 @@ const Classifier: React.FC<params> = (props) => {
             imageIndex={props.imageIndex}
             selectedLabel={props.selectedLabel}
             setSelectedLabel={props.setSelectedLabel}
+            labelOccurrences={props.labelOccurrences}
+            switchTable={props.switchTable}
+            setSwitchTable={props.setSwitchTable}
           />
         </InfoContent>
       </RowContainer>

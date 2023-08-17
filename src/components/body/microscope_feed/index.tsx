@@ -19,13 +19,36 @@ interface params {
 const MicroscopeFeed: React.FC<params> = (props) => {
   const width = props.windowSize.width * 0.405;
   const height = props.windowSize.height * 0.65;
+  const buttonStyle = {
+    marginRight: "0.9vh",
+    marginLeft: 0,
+    borderRadius: "0.4vh",
+    paddingTop: "0.3vh",
+    paddingBottom: "0.3vh",
+    paddingLeft: "0.7vh",
+    paddingRight: "0.7vh",
+    fontSize: "1.16vh",
+    width: "fit-content",
+    border: `0.01vh solid ${colours.CFIA_Font_Black}`,
+  };
+  const iconStyle = {
+    fontSize: "1.7vh",
+    paddingRight: "0.4vh",
+    marginTop: 0,
+    marginBottom: 0,
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingLeft: 0,
+  };
   return (
     <Box
       sx={{
         width: width - 0.5,
-        height: height + 51,
-        border: `0.05vw solid ${colours.CFIA_Font_Black}`,
-        borderRadius: 1,
+        height: "fit-content",
+        border: `0.01vh solid ${colours.CFIA_Font_Black}`,
+        borderRadius: "0.4vh",
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
         borderBottom: 0,
       }}
     >
@@ -47,19 +70,9 @@ const MicroscopeFeed: React.FC<params> = (props) => {
               onClick={() => {
                 props.capture();
               }}
-              sx={{ marginRight: "0.4vw", borderRadius: 1 }}
+              sx={buttonStyle}
             >
-              <AddAPhotoIcon
-                color="inherit"
-                style={{
-                  fontSize: "1.7vh",
-                  paddingRight: "0.2vw",
-                  marginTop: 0,
-                  marginBottom: 0,
-                  paddingTop: 0,
-                  paddingBottom: 0,
-                }}
-              />
+              <AddAPhotoIcon color="inherit" style={iconStyle} />
               CAPTURE
             </Button>
             <Button
@@ -68,38 +81,30 @@ const MicroscopeFeed: React.FC<params> = (props) => {
               onClick={() => {
                 props.setSwitchDeviceOpen(true);
               }}
-              sx={{ marginRight: "0.4vw", borderRadius: 1 }}
+              sx={buttonStyle}
             >
-              <CameraswitchIcon
-                color="inherit"
-                style={{
-                  fontSize: "1.7vh",
-                  paddingRight: "0.2vw",
-                  marginTop: 0,
-                  marginBottom: 0,
-                  paddingTop: 0,
-                  paddingBottom: 0,
-                }}
-              />
+              <CameraswitchIcon color="inherit" style={iconStyle} />
               SWITCH
             </Button>
           </div>
         }
       />
-      <Webcam
-        ref={props.webcamRef}
-        mirrored={false}
-        width={width - 1}
-        height={height}
-        style={{ objectFit: "cover" }}
-        videoConstraints={{
-          width: width - 1,
-          height: height,
-          deviceId: props.activeDeviceId,
-        }}
-        screenshotFormat={"image/png"}
-        screenshotQuality={1}
-      />
+      <div>
+        <Webcam
+          ref={props.webcamRef}
+          mirrored={false}
+          width={width - 1}
+          height={height}
+          style={{ objectFit: "cover" }}
+          videoConstraints={{
+            width: width - 1,
+            height: height,
+            deviceId: props.activeDeviceId,
+          }}
+          screenshotFormat={"image/png"}
+          screenshotQuality={1}
+        />
+      </div>
     </Box>
   );
 };

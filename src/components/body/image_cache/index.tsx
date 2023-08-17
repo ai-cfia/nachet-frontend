@@ -20,6 +20,7 @@ interface params {
   loadImage: (index: number) => void;
   removeImage: (src: string) => void;
   clearImageCache: () => void;
+  imageIndex: number;
   windowSize: {
     width: number;
     height: number;
@@ -31,11 +32,11 @@ const ImageCache: React.FC<params> = (props) => {
     <Box
       sx={{
         width: "100%",
-        height: "22.425vh",
-        border: `0.05vw solid ${colours.CFIA_Font_Black}`,
-        borderRadius: 1,
-        marginTop: "0.665vh",
-        marginBottom: "0.665vh",
+        height: "22.23vh",
+        border: `0.01vh solid ${colours.CFIA_Font_Black}`,
+        borderRadius: "0.4vh",
+        marginTop: "0.95vh",
+        marginBottom: "0.95vh",
       }}
     >
       <CardHeader
@@ -56,8 +57,8 @@ const ImageCache: React.FC<params> = (props) => {
             }}
           >
             <ClearAllIcon
-              color="warning"
               style={{
+                color: "red",
                 fontSize: "2.4vh",
                 marginTop: 0,
                 marginBottom: 0,
@@ -71,19 +72,27 @@ const ImageCache: React.FC<params> = (props) => {
       <TableContainer
         sx={{
           overflow: "auto",
-          height: "18.75vh",
-          maxHeight: "18.75vh",
+          height: "18.465vh", // 18.75
+          maxHeight: "18.465vh",
           border: 0,
+          borderTopRightRadius: 0,
+          borderTopLeftRadius: 0,
+          borderTop: `0.01vh solid LightGrey`,
+          borderBottom: 0,
         }}
         id={"container_with_scrolls_"}
         component={Paper}
       >
-        <Table>
-          <TableBody>
+        <Table sx={{ borderBottom: 0 }}>
+          <TableBody sx={{ borderBottom: 0 }}>
             {props.savedImages.map((item: any, i) => (
               <TableRow
                 key={i}
                 sx={{
+                  backgroundColor:
+                    item.index === props.imageIndex
+                      ? colours.CFIA_Background_Blue
+                      : colours.CFIA_Background_White,
                   "&:hover": {
                     backgroundColor: "#D3D3D3",
                     transition: "0.1s ease-in-out all",
@@ -98,13 +107,17 @@ const ImageCache: React.FC<params> = (props) => {
                     paddingTop: "0.5vh",
                     paddingBottom: "0.5vh",
                     paddingLeft: "0.8vh",
+                    color:
+                      item.index === props.imageIndex
+                        ? colours.CFIA_Font_White
+                        : colours.CFIA_Font_Black,
                   }}
                   align="left"
                   onClick={() => {
                     props.loadImage(item.index);
                   }}
                 >
-                  CAPTURE: {item.index}
+                  CAPTURE {item.index}
                 </TableCell>
                 <TableCell
                   align="center"
@@ -113,18 +126,20 @@ const ImageCache: React.FC<params> = (props) => {
                     paddingRight: 0,
                     paddingLeft: 0,
                     paddingTop: "0.5vh",
-                    paddingBottom: "0.5vh",
+                    paddingBottom: "0.2vh",
                   }}
                 >
                   {item.annotated === true ? (
                     <CropFreeIcon
-                      color="success"
                       style={{
                         fontSize: "1.8vh",
                         marginTop: 0,
                         marginBottom: 0,
                         paddingTop: 0,
                         paddingBottom: 0,
+                        paddingLeft: 0,
+                        paddingRight: 0,
+                        color: "#98fb98",
                       }}
                     />
                   ) : (
@@ -149,8 +164,8 @@ const ImageCache: React.FC<params> = (props) => {
                     sx={{ padding: 0 }}
                   >
                     <CloseIcon
-                      color="warning"
                       style={{
+                        color: "red",
                         fontSize: "1.8vh",
                         marginTop: 0,
                         marginBottom: 0,

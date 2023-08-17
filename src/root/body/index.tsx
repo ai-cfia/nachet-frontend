@@ -21,7 +21,7 @@ interface ImageCache {
   annotated: boolean;
   imageDims: number[];
   overlapping: boolean[];
-  overlappingIndex: number[];
+  overlappingIndices: number[];
   totalBoxes: number;
   labelOccurrence: any;
 }
@@ -54,11 +54,13 @@ const Body: React.FC<params> = (props) => {
     undefined,
   );
   const [curDir, setCurDir] = useState<string>("");
-  const [azureStorageDir, setAzureStorageDir] = useState<any[]>([]);
+  const [azureStorageDir, setAzureStorageDir] = useState<any>({});
   const [delDirectoryOpen, setDelDirectoryOpen] = useState<boolean>(false);
   const [resultsTunerOpen, setResultsTunerOpen] = useState<boolean>(false);
   const [scoreThreshold, setScoreThreshold] = useState<number>(50);
   const [selectedLabel, setSelectedLabel] = useState<string>("all");
+  const [labelOccurrences, setLabelOccurrences] = useState<any>({});
+  const [switchTable, setSwitchTable] = useState<boolean>(true);
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -77,7 +79,7 @@ const Body: React.FC<params> = (props) => {
         annotated: false,
         imageDims: [],
         overlapping: [],
-        overlappingIndex: [],
+        overlappingIndices: [],
         totalBoxes: 0,
         labelOccurrence: {},
       },
@@ -94,6 +96,7 @@ const Body: React.FC<params> = (props) => {
       imageCache.forEach((image) => {
         if (image.index === index) {
           setImageSrc(image.src);
+          setSelectedLabel("all");
           if (image.src === imageSrc) {
             setImageSrcKey(!imageSrcKey);
           }
@@ -174,9 +177,9 @@ const Body: React.FC<params> = (props) => {
                 classifications: [...item.classifications, params.label],
                 boxes: [...item.boxes, params.box],
                 overlapping: [...item.overlapping, params.overlapping],
-                overlappingIndex: [
-                  ...item.overlappingIndex,
-                  params.overlappingIndex,
+                overlappingIndices: [
+                  ...item.overlappingIndices,
+                  params.overlappingIndices,
                 ],
                 annotated: true,
               };
@@ -201,25 +204,35 @@ const Body: React.FC<params> = (props) => {
     setResultsRendered(!resultsRendered);
   };
 
+  const getLabelOccurrence = (): void => {
+    const result: any = {};
+    imageCache.forEach((object: any) => {
+      if (object.index === imageIndex && object.annotated === true) {
+        object.scores.forEach((score: number, index: number) => {
+          if (score * 100 >= scoreThreshold) {
+            const label: string = object.classifications[index];
+            if (result[label] !== undefined) {
+              result[label] = (result[label] as number) + 1;
+            } else {
+              result[label] = 1;
+            }
+          }
+        });
+      }
+    });
+    setLabelOccurrences(result);
+  };
+
   const handleDirChange = (dir: string): void => {
     setCurDir(dir);
   };
 
-  const addToDirectory = (): void => {
-    if (!azureStorageDir.includes(curDir)) {
-      setAzureStorageDir([...azureStorageDir, curDir]);
-      setCreateDirectoryOpen(false);
-    } else {
-      alert("Directory already exists");
-    }
-  };
-
-  const delFromDirectory = (): void => {
+  const handleCreateDirectory = (): void => {
     (async () => {
       try {
         await axios({
           method: "post",
-          url: `http://localhost:2323/del`,
+          url: `http://localhost:8080/create-dir`,
           headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
@@ -229,11 +242,42 @@ const Body: React.FC<params> = (props) => {
             folder_name: curDir,
           },
         }).then((response) => {
-          if (response.data.length > 0) {
+          if (response.status === 200) {
+            setCreateDirectoryOpen(false);
             setCurDir("");
             getAzureStorageDir();
           } else {
-            alert("Failed to delete directory");
+            alert("Error creating directory, it may already exist");
+          }
+        });
+      } catch (error) {
+        alert(error);
+      }
+    })().catch((error) => {
+      alert(error);
+    });
+  };
+
+  const delFromDirectory = (): void => {
+    (async () => {
+      try {
+        await axios({
+          method: "post",
+          url: `http://localhost:8080/del`,
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          data: {
+            container_name: props.uuid,
+            folder_name: curDir,
+          },
+        }).then((response) => {
+          if (response.status === 200) {
+            setCurDir("");
+            getAzureStorageDir();
+          } else {
+            alert(response.data);
           }
         });
       } catch (error) {
@@ -249,7 +293,7 @@ const Body: React.FC<params> = (props) => {
       try {
         await axios({
           method: "post",
-          url: `http://localhost:2323/dir`,
+          url: `http://localhost:8080/dir`,
           headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
@@ -258,7 +302,12 @@ const Body: React.FC<params> = (props) => {
             container_name: props.uuid,
           },
         }).then((response) => {
-          setAzureStorageDir(response.data);
+          if (response.status === 200) {
+            console.log(response.data);
+            setAzureStorageDir(response.data);
+          } else {
+            alert(response.data[0]);
+          }
         });
       } catch (error) {
         console.log(error);
@@ -277,7 +326,7 @@ const Body: React.FC<params> = (props) => {
         try {
           await axios({
             method: "post",
-            url: `http://localhost:2323/inf`,
+            url: `http://localhost:8080/inf`,
             headers: {
               "Content-Type": "application/json",
               "Access-Control-Allow-Origin": "*",
@@ -292,7 +341,12 @@ const Body: React.FC<params> = (props) => {
               container_name: props.uuid,
             },
           }).then((response) => {
-            loadResultsToCache(response.data);
+            if (response.status === 200) {
+              getAzureStorageDir();
+              loadResultsToCache(response.data);
+            } else {
+              alert(response.data[0]);
+            }
           });
         } catch (error) {
           console.log(error);
@@ -333,26 +387,49 @@ const Body: React.FC<params> = (props) => {
             ) {
               ctx.beginPath();
               // draw label index
-              ctx.font = "0.9vw Arial";
+              ctx.font = "bold 0.9vw Arial";
               ctx.fillStyle = "black";
               ctx.textAlign = "center";
-              Object.keys(storedImage.labelOccurrence).forEach(
-                (key, labelIndex) => {
-                  if (storedImage.boxes[index].topY <= 15) {
-                    if (prediction === key) {
+              Object.keys(labelOccurrences).forEach((key, labelIndex) => {
+                const scorePercentage = (
+                  storedImage.scores[index] * 100
+                ).toFixed(0);
+                if (storedImage.boxes[index].topY <= 40) {
+                  if (prediction === key) {
+                    if (switchTable) {
                       ctx.fillText(
-                        `[${labelIndex + 1}]`,
+                        `[${labelIndex + 1}] - ${scorePercentage}%`,
                         ((storedImage.boxes[index].bottomX as number) -
                           (storedImage.boxes[index].topX as number)) /
                           2 +
                           (storedImage.boxes[index].topX as number),
-                        (storedImage.boxes[index].bottomY as number) + 25,
+                        (storedImage.boxes[index].bottomY as number) + 23,
+                      );
+                    } else {
+                      ctx.fillText(
+                        `[${index + 1}] - ${scorePercentage}%`,
+                        ((storedImage.boxes[index].bottomX as number) -
+                          (storedImage.boxes[index].topX as number)) /
+                          2 +
+                          (storedImage.boxes[index].topX as number),
+                        (storedImage.boxes[index].bottomY as number) + 23,
                       );
                     }
-                  } else {
-                    if (prediction === key) {
+                  }
+                } else {
+                  if (prediction === key) {
+                    if (switchTable) {
                       ctx.fillText(
-                        `[${labelIndex + 1}]`,
+                        `[${labelIndex + 1}] - ${scorePercentage}%`,
+                        ((storedImage.boxes[index].bottomX as number) -
+                          (storedImage.boxes[index].topX as number)) /
+                          2 +
+                          (storedImage.boxes[index].topX as number),
+                        storedImage.boxes[index].topY - 8,
+                      );
+                    } else {
+                      ctx.fillText(
+                        `[${index + 1}] - ${scorePercentage}%`,
                         ((storedImage.boxes[index].bottomX as number) -
                           (storedImage.boxes[index].topX as number)) /
                           2 +
@@ -361,11 +438,11 @@ const Body: React.FC<params> = (props) => {
                       );
                     }
                   }
-                },
-              );
+                }
+              });
               // draw bounding box
               ctx.lineWidth = 2;
-              ctx.setLineDash([7, 7]);
+              // ctx.setLineDash([1, 1]);
               ctx.strokeStyle = "red";
               ctx.rect(
                 storedImage.boxes[index].topX,
@@ -384,10 +461,10 @@ const Body: React.FC<params> = (props) => {
         if (storedImage.index === imageIndex) {
           storedImage.imageDims = [image.width, image.height];
           ctx.beginPath();
-          ctx.font = "0.9vw Arial";
+          ctx.font = "bold 0.9vw Arial";
           ctx.textAlign = "left";
           ctx.fillStyle = "#4ee44e";
-          ctx.fillText(`CAPTURE: ${storedImage.index}`, 10, canvas.height - 15);
+          ctx.fillText(`CAPTURE ${storedImage.index}`, 10, canvas.height - 15);
           ctx.stroke();
           ctx.closePath();
         }
@@ -401,16 +478,19 @@ const Body: React.FC<params> = (props) => {
 
   useEffect(() => {
     loadToCanvas();
-  }, [imageSrc, imageSrcKey]);
+  }, [
+    scoreThreshold,
+    selectedLabel,
+    resultsRendered,
+    labelOccurrences,
+    switchTable,
+    imageSrc,
+    imageSrcKey,
+  ]);
 
   useEffect(() => {
-    console.log(imageCache);
-    loadToCanvas();
-  }, [resultsRendered]);
-
-  useEffect(() => {
-    loadToCanvas();
-  }, [scoreThreshold, selectedLabel]);
+    getLabelOccurrence();
+  }, [imageIndex, scoreThreshold, imageCache]);
 
   useEffect(() => {
     const updateDevices = async (): Promise<any> => {
@@ -492,7 +572,7 @@ const Body: React.FC<params> = (props) => {
           setCreateDirectoryOpen={setCreateDirectoryOpen}
           handeDirChange={handleDirChange}
           curDir={curDir}
-          addToDirectory={addToDirectory}
+          handleCreateDirectory={handleCreateDirectory}
         />
       )}
       {resultsTunerOpen && (
@@ -529,6 +609,9 @@ const Body: React.FC<params> = (props) => {
         scoreThreshold={scoreThreshold}
         selectedLabel={selectedLabel}
         setSelectedLabel={setSelectedLabel}
+        labelOccurrences={labelOccurrences}
+        switchTable={switchTable}
+        setSwitchTable={setSwitchTable}
       />
     </BodyContainer>
   );

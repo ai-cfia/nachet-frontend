@@ -22,14 +22,39 @@ interface params {
 
 const FeedCapture: React.FC<params> = (props) => {
   const width = props.windowSize.width * 0.405;
-  const height = props.windowSize.height * 0.65;
+  // const height = props.windowSize.height * 0.65;
+  const buttonStyle = {
+    marginRight: "0.9vh",
+    marginLeft: 0,
+    borderRadius: "0.4vh",
+    paddingTop: "0.3vh",
+    paddingBottom: "0.3vh",
+    paddingLeft: "0.7vh",
+    paddingRight: "0.7vh",
+    fontSize: "1.16vh",
+    width: "fit-content",
+    border: `0.01vh solid ${colours.CFIA_Font_Black}`,
+  };
+  const iconStyle = {
+    fontSize: "1.6vh",
+    paddingRight: "0.4vh",
+    marginTop: 0,
+    marginBottom: 0,
+    marginRight: 0,
+    marginLeft: 0,
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingLeft: 0,
+  };
   return (
     <Box
       sx={{
         width: width - 3.2,
-        height: height + 51,
-        borderRadius: 1,
-        border: `0.05vw solid ${colours.CFIA_Font_Black}`,
+        height: "fit-content",
+        border: `0.01vh solid ${colours.CFIA_Font_Black}`,
+        borderRadius: "0.4vh",
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
         borderBottom: 0,
       }}
     >
@@ -51,19 +76,9 @@ const FeedCapture: React.FC<params> = (props) => {
               onClick={() => {
                 props.setUploadOpen(true);
               }}
-              sx={{ marginRight: "0.4vw", borderRadius: 1 }}
+              sx={buttonStyle}
             >
-              <UploadFileIcon
-                color="inherit"
-                style={{
-                  fontSize: "1.7vh",
-                  paddingRight: "0.2vw",
-                  marginTop: 0,
-                  marginBottom: 0,
-                  paddingTop: 0,
-                  paddingBottom: 0,
-                }}
-              />
+              <UploadFileIcon color="inherit" style={iconStyle} />
               LOAD
             </Button>
             <Button
@@ -72,19 +87,9 @@ const FeedCapture: React.FC<params> = (props) => {
               onClick={() => {
                 props.setSaveOpen(true);
               }}
-              sx={{ marginRight: "0.4vw", borderRadius: 1 }}
+              sx={buttonStyle}
             >
-              <DownloadIcon
-                color="inherit"
-                style={{
-                  fontSize: "1.7vh",
-                  paddingRight: "0.2vw",
-                  marginTop: 0,
-                  marginBottom: 0,
-                  paddingTop: 0,
-                  paddingBottom: 0,
-                }}
-              />
+              <DownloadIcon color="inherit" style={iconStyle} />
               SAVE
             </Button>
             <Button
@@ -93,19 +98,9 @@ const FeedCapture: React.FC<params> = (props) => {
               onClick={() => {
                 props.handleInference();
               }}
-              sx={{ marginRight: "0.4vw", borderRadius: 1 }}
+              sx={buttonStyle}
             >
-              <CropFreeIcon
-                color="inherit"
-                style={{
-                  fontSize: "1.7vh",
-                  paddingRight: "0.2vw",
-                  marginTop: 0,
-                  marginBottom: 0,
-                  paddingTop: 0,
-                  paddingBottom: 0,
-                }}
-              />
+              <CropFreeIcon color="inherit" style={iconStyle} />
               CLASSIFY
             </Button>
             <Button
@@ -114,25 +109,17 @@ const FeedCapture: React.FC<params> = (props) => {
               onClick={() => {
                 props.setSwitchModelOpen(true);
               }}
-              sx={{ marginRight: "0.4vw", borderRadius: 1 }}
+              sx={buttonStyle}
             >
-              <SwitchLeftIcon
-                color="inherit"
-                style={{
-                  fontSize: "1.7vh",
-                  paddingRight: "0.2vw",
-                  marginTop: 0,
-                  marginBottom: 0,
-                  paddingTop: 0,
-                  paddingBottom: 0,
-                }}
-              />
+              <SwitchLeftIcon color="inherit" style={iconStyle} />
               SWITCH MODEL
             </Button>
           </div>
         }
       />
-      <Canvas ref={props.canvasRef} />
+      <div>
+        <Canvas ref={props.canvasRef} />
+      </div>
     </Box>
   );
 };

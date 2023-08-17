@@ -66,7 +66,7 @@ const DeleteDirectoryPopup: React.FC<params> = (props): JSX.Element => {
               }}
               onClick={handleYes}
             >
-              Yes
+              Delete
             </Button>
             <Button
               variant="outlined"
@@ -82,7 +82,7 @@ const DeleteDirectoryPopup: React.FC<params> = (props): JSX.Element => {
               }}
               onClick={handleClose}
             >
-              No
+              Cancel
             </Button>
           </ButtonWrap>
         </InfoContainer>

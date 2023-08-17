@@ -22,6 +22,9 @@ interface params {
   scoreThreshold: number;
   selectedLabel: string;
   setSelectedLabel: React.Dispatch<React.SetStateAction<string>>;
+  labelOccurrences: any;
+  switchTable: boolean;
+  setSwitchTable: React.Dispatch<React.SetStateAction<boolean>>;
   windowSize: {
     width: number;
     height: number;
@@ -29,7 +32,6 @@ interface params {
 }
 
 const ClassificationResults: React.FC<params> = (props) => {
-  const [switchTable, setSwitchTable] = React.useState<boolean>(false);
   const handleSelect = (key: string): void => {
     if (key === props.selectedLabel) {
       props.setSelectedLabel("all");
@@ -42,9 +44,9 @@ const ClassificationResults: React.FC<params> = (props) => {
     <Box
       sx={{
         width: "100%",
-        height: "22.425vh",
-        border: `0.05vw solid ${colours.CFIA_Font_Black}`,
-        borderRadius: 1,
+        height: "22.23vh", // "22.425vh"
+        border: `0.01vh solid ${colours.CFIA_Font_Black}`,
+        borderRadius: "0.4vh",
       }}
     >
       <CardHeader
@@ -66,8 +68,8 @@ const ClassificationResults: React.FC<params> = (props) => {
               }}
             >
               <TuneIcon
-                color="info"
                 style={{
+                  color: colours.CFIA_Background_Blue,
                   fontSize: "2vh",
                   marginTop: 0,
                   marginBottom: 0,
@@ -79,12 +81,12 @@ const ClassificationResults: React.FC<params> = (props) => {
             <IconButton
               sx={{ padding: 0, marginTop: "0.27vh", marginRight: "0.4vh" }}
               onClick={() => {
-                setSwitchTable(!switchTable);
+                props.setSwitchTable(!props.switchTable);
               }}
             >
               <SwitchLeftIcon
-                color="info"
                 style={{
+                  color: colours.CFIA_Background_Blue,
                   fontSize: "2vh",
                   marginTop: 0,
                   marginBottom: 0,
@@ -99,16 +101,20 @@ const ClassificationResults: React.FC<params> = (props) => {
       <TableContainer
         sx={{
           overflow: "auto",
-          height: "18.75vh",
-          maxHeight: "18.75vh",
+          height: "18.465vh", // 18.75
+          maxHeight: "18.465vh",
           border: 0,
+          borderTopRightRadius: 0,
+          borderTopLeftRadius: 0,
+          borderTop: `0.01vh solid LightGrey`,
+          borderBottom: 0,
         }}
         id={"container_with_scrolls"}
         component={Paper}
       >
-        <Table>
-          <TableBody>
-            {!switchTable && (
+        <Table sx={{ borderBottom: 0 }}>
+          <TableBody sx={{ borderBottom: 0 }}>
+            {!props.switchTable && (
               <TableRow>
                 <TableCell
                   align="left"
@@ -154,7 +160,7 @@ const ClassificationResults: React.FC<params> = (props) => {
                 </TableCell>
               </TableRow>
             )}
-            {switchTable && (
+            {props.switchTable && (
               <TableRow>
                 <TableCell
                   align="left"
@@ -200,78 +206,82 @@ const ClassificationResults: React.FC<params> = (props) => {
                 </TableCell>
               </TableRow>
             )}
-            {switchTable &&
-              props.savedImages
-                .map((object: any) => {
-                  if (
-                    object.index === props.imageIndex &&
-                    object.annotated === true
-                  ) {
-                    return Object.keys(object.labelOccurrence).map(
-                      (key, index) => (
-                        <TableRow
-                          key={index}
-                          sx={{
-                            "&:hover": {
-                              backgroundColor: "#D3D3D3",
-                              transition: "0.1s ease-in-out all",
-                            },
-                          }}
-                        >
-                          <TableCell
-                            align="left"
-                            sx={{
-                              cursor: "pointer",
-                              paddingRight: 0,
-                              fontSize: "1.0vh",
-                              paddingTop: "0.5vh",
-                              paddingBottom: "0.5vh",
-                              paddingLeft: "0.8vh",
-                            }}
-                            onClick={() => {
-                              handleSelect(key);
-                            }}
-                          >
-                            {index + 1}
-                          </TableCell>
-                          <TableCell
-                            align="center"
-                            sx={{
-                              cursor: "pointer",
-                              paddingRight: 0,
-                              fontSize: "1.0vh",
-                              paddingLeft: 0,
-                              paddingTop: "0.5vh",
-                              paddingBottom: "0.5vh",
-                            }}
-                            onClick={() => {
-                              handleSelect(key);
-                            }}
-                          >
-                            {key.split(" ").slice(1).join(" ")}
-                          </TableCell>
-                          <TableCell
-                            align="right"
-                            sx={{
-                              cursor: "pointer",
-                              paddingLeft: 0,
-                              fontSize: "1.0vh",
-                              paddingTop: "0.5vh",
-                              paddingBottom: "0.5vh",
-                              paddingRight: "0.8vh",
-                            }}
-                          >
-                            {object.labelOccurrence[key]}
-                          </TableCell>
-                        </TableRow>
-                      ),
-                    );
-                  } else {
-                    return null;
-                  }
-                })
-                .flat()}
-            {!switchTable &&
+            {props.switchTable &&
+              Object.keys(props.labelOccurrences).map((key, index) => (
+                <TableRow
+                  key={index}
+                  sx={{
+                    backgroundColor:
+                      props.selectedLabel === key
+                        ? colours.CFIA_Background_Blue
+                        : colours.CFIA_Background_White,
+                    "&:hover": {
+                      backgroundColor: "#D3D3D3",
+                      transition: "0.1s ease-in-out all",
+                    },
+                  }}
+                >
+                  <TableCell
+                    align="left"
+                    sx={{
+                      cursor: "pointer",
+                      paddingRight: 0,
+                      fontSize: "1.0vh",
+                      paddingTop: "0.5vh",
+                      paddingBottom: "0.5vh",
+                      paddingLeft: "0.8vh",
+                      color:
+                        props.selectedLabel === key
+                          ? colours.CFIA_Font_White
+                          : colours.CFIA_Font_Black,
+                    }}
+                    onClick={() => {
+                      handleSelect(key);
+                    }}
+                  >
+                    {index + 1}
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{
+                      cursor: "pointer",
+                      paddingRight: 0,
+                      fontSize: "1.0vh",
+                      paddingLeft: 0,
+                      paddingTop: "0.5vh",
+                      paddingBottom: "0.5vh",
+                      color:
+                        props.selectedLabel === key
+                          ? colours.CFIA_Font_White
+                          : colours.CFIA_Font_Black,
+                    }}
+                    onClick={() => {
+                      handleSelect(key);
+                    }}
+                  >
+                    {key.split(" ").slice(1).join(" ")}
+                  </TableCell>
+                  <TableCell
+                    align="right"
+                    sx={{
+                      cursor: "pointer",
+                      paddingLeft: 0,
+                      fontSize: "1.0vh",
+                      paddingTop: "0.5vh",
+                      paddingBottom: "0.5vh",
+                      paddingRight: "0.8vh",
+                      color:
+                        props.selectedLabel === key
+                          ? colours.CFIA_Font_White
+                          : colours.CFIA_Font_Black,
+                    }}
+                  >
+                    {props.labelOccurrences[key]}
+                  </TableCell>
+                </TableRow>
+              ))}
+
+            {!props.switchTable &&
               props.savedImages.map((object: any) => {
                 if (
                   object.index === props.imageIndex &&
@@ -279,7 +289,11 @@ const ClassificationResults: React.FC<params> = (props) => {
                 ) {
                   return object.classifications.map(
                     (prediction: any, index: number) => {
-                      if (object.scores[index] >= props.scoreThreshold / 100) {
+                      if (
+                        object.scores[index] >= props.scoreThreshold / 100 &&
+                        (props.selectedLabel === "all" ||
+                          props.selectedLabel === prediction)
+                      ) {
                         return (
                           <TableRow
                             key={index}

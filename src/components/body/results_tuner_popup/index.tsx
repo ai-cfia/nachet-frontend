@@ -18,6 +18,7 @@ const ResultsTunerPopup: React.FC<params> = (props): JSX.Element => {
   const handleSliderChange = (event: any, value: any): void => {
     props.setScoreThreshold(value);
   };
+
   return (
     <Overlay>
       <Box
@@ -50,6 +51,7 @@ const ResultsTunerPopup: React.FC<params> = (props): JSX.Element => {
         <InfoContainer>
           <Text> Minimum Confidence Threshhold ({props.scoreThreshold}%) </Text>
           <Slider
+            sx={{ color: colours.CFIA_Background_Blue }}
             key={`slider-${props.scoreThreshold}`}
             aria-label="Confidence Threshold"
             defaultValue={props.scoreThreshold}

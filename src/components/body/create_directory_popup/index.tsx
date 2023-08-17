@@ -8,7 +8,7 @@ interface params {
   setCreateDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handeDirChange: (dir: string) => void;
   curDir: string;
-  addToDirectory: () => void;
+  handleCreateDirectory: () => void;
 }
 
 const CreateFolder: React.FC<params> = (props): JSX.Element => {
@@ -67,14 +67,31 @@ const CreateFolder: React.FC<params> = (props): JSX.Element => {
                 paddingLeft: "0.8vw",
                 paddingRight: "0.8vw",
                 fontSize: "1.1vh",
+                marginRight: "2vw",
                 color: colours.CFIA_Font_Black,
                 borderColor: colours.CFIA_Font_Black,
               }}
               onClick={() => {
-                props.addToDirectory();
+                props.handleCreateDirectory();
               }}
             >
               Create
+            </Button>
+            <Button
+              variant="outlined"
+              size="medium"
+              sx={{
+                alignContent: "center",
+                alignItems: "center",
+                paddingLeft: "0.8vw",
+                paddingRight: "0.8vw",
+                fontSize: "1.1vh",
+                color: colours.CFIA_Font_Black,
+                borderColor: colours.CFIA_Font_Black,
+              }}
+              onClick={handleClose}
+            >
+              Cancel
             </Button>
           </ButtonWrap>
         </InfoContainer>
