@@ -303,7 +303,6 @@ const Body: React.FC<params> = (props) => {
           },
         }).then((response) => {
           if (response.status === 200) {
-            console.log(response.data);
             setAzureStorageDir(response.data);
           } else {
             alert(response.data[0]);
@@ -407,7 +406,7 @@ const Body: React.FC<params> = (props) => {
                       );
                     } else {
                       ctx.fillText(
-                        `[${index + 1}] - ${scorePercentage}%`,
+                        `[${index + 1}]`,
                         ((storedImage.boxes[index].bottomX as number) -
                           (storedImage.boxes[index].topX as number)) /
                           2 +
@@ -429,7 +428,7 @@ const Body: React.FC<params> = (props) => {
                       );
                     } else {
                       ctx.fillText(
-                        `[${index + 1}] - ${scorePercentage}%`,
+                        `[${index + 1}]`,
                         ((storedImage.boxes[index].bottomX as number) -
                           (storedImage.boxes[index].topX as number)) /
                           2 +
@@ -612,6 +611,7 @@ const Body: React.FC<params> = (props) => {
         labelOccurrences={labelOccurrences}
         switchTable={switchTable}
         setSwitchTable={setSwitchTable}
+        setCurDir={setCurDir}
       />
     </BodyContainer>
   );

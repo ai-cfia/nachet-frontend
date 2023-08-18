@@ -42,6 +42,7 @@ interface params {
   labelOccurrences: any;
   switchTable: boolean;
   setSwitchTable: React.Dispatch<React.SetStateAction<boolean>>;
+  setCurDir: React.Dispatch<React.SetStateAction<string>>;
   windowSize: {
     width: number;
     height: number;
@@ -81,6 +82,7 @@ const Classifier: React.FC<params> = (props) => {
             setCreateDirectoryOpen={props.setCreateDirectoryOpen}
             setDelDirectoryOpen={props.setDelDirectoryOpen}
             windowSize={props.windowSize}
+            setCurDir={props.setCurDir}
           />
           <ImageCache
             removeImage={props.removeImage}

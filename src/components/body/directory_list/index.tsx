@@ -17,6 +17,7 @@ import CloseIcon from "@mui/icons-material/Close";
 interface params {
   azureStorageDir: any;
   curDir: string;
+  setCurDir: React.Dispatch<React.SetStateAction<string>>;
   setCreateDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setDelDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleDirChange: (dir: string) => void;
@@ -36,6 +37,10 @@ const StorageDirectory: React.FC<params> = (props) => {
     } else {
       props.handleDirChange(folder);
     }
+  };
+  const handleCreateDirectory = (): void => {
+    props.setCreateDirectoryOpen(true);
+    props.setCurDir("");
   };
   return (
     <Box
@@ -60,9 +65,7 @@ const StorageDirectory: React.FC<params> = (props) => {
           <div>
             <IconButton
               sx={{ padding: 0, marginTop: "0.27vh", marginRight: "0.4vh" }}
-              onClick={() => {
-                props.setCreateDirectoryOpen(true);
-              }}
+              onClick={handleCreateDirectory}
             >
               <CreateNewFolderIcon
                 style={{
