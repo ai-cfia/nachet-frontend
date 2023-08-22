@@ -41,6 +41,8 @@ export const TextArea = styled.div`
   margin: auto;
   overflow-y: auto;
   max-height: 25vw;
+  padding-top: 0.1vh;
+  padding-bottom: 0.1vh;
   word-wrap: break-word;
 `;
 

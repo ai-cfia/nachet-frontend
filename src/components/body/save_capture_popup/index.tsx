@@ -8,6 +8,8 @@ import {
   TextField,
   MenuItem,
   Select,
+  ToggleButton,
+  ToggleButtonGroup,
 } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material/Select";
 import CloseIcon from "@mui/icons-material/Close";
@@ -20,6 +22,8 @@ interface params {
   imageLabel?: string;
   setImageFormat?: React.Dispatch<React.SetStateAction<string>>;
   setImageLabel?: React.Dispatch<React.SetStateAction<string>>;
+  setSaveIndividualImage?: React.Dispatch<React.SetStateAction<string>>;
+  saveIndividualImage?: string;
 }
 
 const SavePopup: React.FC<params> = (props): JSX.Element => {
@@ -44,12 +48,23 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
     props.setImageLabel(event.target.value);
   };
 
+  const handleToggle = (): void => {
+    if (props.setSaveIndividualImage === undefined) {
+      return;
+    }
+    if (props.saveIndividualImage === "0") {
+      props.setSaveIndividualImage("1");
+    } else {
+      props.setSaveIndividualImage("0");
+    }
+  };
+
   return (
     <Overlay>
       <Box
         sx={{
           width: "20vw",
-          height: "22vh",
+          height: "fit-content",
           zIndex: 30,
           border: `0.05vw solid ${colours.CFIA_Font_Black}`,
           borderRadius: 1,
@@ -74,25 +89,77 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
           sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
         />
         <InfoContainer>
-          <TextField
-            id="outlined-basic"
-            label="Capture Name"
-            variant="outlined"
-            onChange={handleLabel}
-            value={props.imageLabel}
-            sx={{ width: "11vw", fontSize: "1.2vh" }}
-            size="small"
-          />
-          <Select
-            value={props.imageFormat}
-            onChange={handleFormat}
-            placeholder="Capture Format"
-            sx={{ width: "11vw", fontSize: "1.2vh" }}
-            size="small"
-          >
-            <MenuItem value="image/png">Format: PNG</MenuItem>
-            <MenuItem value="image/jpeg">Format: JPEG</MenuItem>
-          </Select>
+          <div style={{ marginBottom: "2vh", marginTop: "1vh" }}>
+            <ToggleButtonGroup
+              sx={{
+                color: colours.CFIA_Font_Black,
+                fontSize: "1.0vh",
+                width: "100%",
+                height: "3vh",
+              }}
+              exclusive
+              onChange={handleToggle}
+              value={props.saveIndividualImage}
+              aria-label="Platform"
+            >
+              <ToggleButton value="0">Selected Capture</ToggleButton>
+              <ToggleButton value="1">Image Cache</ToggleButton>
+            </ToggleButtonGroup>
+          </div>
+          {props.saveIndividualImage === "0" && (
+            <>
+              <>
+                <TextField
+                  id="outlined-basic"
+                  label="Capture Name"
+                  variant="outlined"
+                  onChange={handleLabel}
+                  value={props.imageLabel}
+                  sx={{
+                    width: "90%",
+                    fontSize: "1.0vh",
+                    height: "2vh",
+                    marginBottom: "3vh",
+                  }}
+                />
+              </>
+              <Select
+                value={props.imageFormat}
+                onChange={handleFormat}
+                sx={{ width: "90%", fontSize: "1.2vh", height: "3vh" }}
+              >
+                <MenuItem value="image/png">Format: PNG</MenuItem>
+                <MenuItem value="image/jpeg">Format: JPEG</MenuItem>
+              </Select>
+            </>
+          )}
+          {props.saveIndividualImage === "1" && (
+            <>
+              <>
+                <TextField
+                  id="outlined-basic"
+                  label="Folder Name"
+                  variant="outlined"
+                  onChange={handleLabel}
+                  value={props.imageLabel}
+                  sx={{
+                    width: "90%",
+                    fontSize: "1.0vh",
+                    height: "2vh",
+                    marginBottom: "3vh",
+                  }}
+                />
+              </>
+              <Select
+                value={props.imageFormat}
+                onChange={handleFormat}
+                sx={{ width: "90%", fontSize: "1.2vh", height: "3vh" }}
+              >
+                <MenuItem value="image/png">Format: PNG</MenuItem>
+                <MenuItem value="image/jpeg">Format: JPEG</MenuItem>
+              </Select>
+            </>
+          )}
           <ButtonWrap>
             <Button
               variant="outlined"

@@ -6,7 +6,7 @@ import { colours } from "../../../styles/colours";
 
 interface params {
   setDelDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  delFromDirectory: () => void;
+  handleDelFromDirectory: () => void;
   curDir: string;
 }
 
@@ -15,7 +15,7 @@ const DeleteDirectoryPopup: React.FC<params> = (props): JSX.Element => {
     props.setDelDirectoryOpen(false);
   };
   const handleYes = (): void => {
-    props.delFromDirectory();
+    props.handleDelFromDirectory();
     props.setDelDirectoryOpen(false);
   };
 

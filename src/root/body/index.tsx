@@ -11,6 +11,7 @@ import CreateDirectory from "../../components/body/create_directory_popup";
 import DeleteDirectoryPopup from "../../components/body/del_directory_popup";
 import ResultsTunerPopup from "../../components/body/results_tuner_popup";
 import CreativeCommonsPopup from "../../components/body/creative_commons_popup";
+import JSZip from "jszip";
 import axios from "axios";
 
 interface ImageCache {
@@ -23,8 +24,6 @@ interface ImageCache {
   imageDims: number[];
   overlapping: boolean[];
   overlappingIndices: number[];
-  totalBoxes: number;
-  labelOccurrence: any;
 }
 
 interface params {
@@ -64,6 +63,7 @@ const Body: React.FC<params> = (props) => {
   const [scoreThreshold, setScoreThreshold] = useState<number>(50);
   const [selectedLabel, setSelectedLabel] = useState<string>("all");
   const [labelOccurrences, setLabelOccurrences] = useState<any>({});
+  const [saveIndividualImage, setSaveIndividualImage] = useState<string>("0");
   const [switchTable, setSwitchTable] = useState<boolean>(true);
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -84,8 +84,6 @@ const Body: React.FC<params> = (props) => {
         imageDims: [],
         overlapping: [],
         overlappingIndices: [],
-        totalBoxes: 0,
-        labelOccurrence: {},
       },
     ]);
     setImageIndex(
@@ -137,10 +135,6 @@ const Body: React.FC<params> = (props) => {
     setUploadOpen(false);
   };
 
-  const loadFromCache = (index: number): void => {
-    setImageIndex(index);
-  };
-
   const removeFromCache = (index: number): void => {
     const newCache = imageCache.filter((item) => item.index !== index);
     setImageCache(newCache);
@@ -157,13 +151,35 @@ const Body: React.FC<params> = (props) => {
   };
 
   const saveImage = (): void => {
-    saveAs(
-      imageSrc,
-      `${imageLabel}-${new Date().getFullYear()}-${
-        new Date().getMonth() + 1
-      }-${new Date().getDate()}.${imageFormat.split("/")[1]}`,
-    );
-    setSaveOpen(false);
+    (async () => {
+      if (saveIndividualImage === "0" && imageCache.length > 0) {
+        saveAs(
+          imageSrc,
+          `${imageLabel}-${new Date().getFullYear()}-${
+            new Date().getMonth() + 1
+          }-${new Date().getDate()}.${imageFormat.split("/")[1]}`,
+        );
+        setSaveOpen(false);
+      } else if (saveIndividualImage === "1" && imageCache.length > 0) {
+        const zip = new JSZip();
+        imageCache.forEach((image) => {
+          const base64Data = image.src.replace(/^data:image\/\w+;base64,/, "");
+          zip.file(
+            `Capture-${image.index}-${new Date().getFullYear()}-${
+              new Date().getMonth() + 1
+            }-${new Date().getDate()}.${imageFormat.split("/")[1]}`,
+            base64Data,
+            {
+              base64: true,
+            },
+          );
+        });
+        const content = await zip.generateAsync({ type: "blob" });
+        saveAs(content, `${imageLabel}.zip`);
+      }
+    })().catch((error) => {
+      alert(error);
+    });
   };
 
   const loadResultsToCache = (inferenceData: any): void => {
@@ -193,18 +209,6 @@ const Body: React.FC<params> = (props) => {
         );
       });
     });
-    setImageCache((prevCache) =>
-      prevCache.map((item) => {
-        if (item.index === imageIndex) {
-          return {
-            ...item,
-            totalBoxes: inferenceData[0].totalBoxes,
-            labelOccurrence: inferenceData[0].labelOccurrence,
-          };
-        }
-        return item;
-      }),
-    );
     setResultsRendered(!resultsRendered);
   };
 
@@ -228,7 +232,7 @@ const Body: React.FC<params> = (props) => {
   };
 
   const handleDirChange = (dir: string): void => {
-    setCurDir(dir);
+    setCurDir(dir.replace(/\s/g, "-"));
   };
 
   const handleCreateDirectory = (): void => {
@@ -249,7 +253,7 @@ const Body: React.FC<params> = (props) => {
           if (response.status === 200) {
             setCreateDirectoryOpen(false);
             setCurDir("General");
-            getAzureStorageDir();
+            handleAzureStorageDir();
           } else {
             alert("Error creating directory, it may already exist");
           }
@@ -262,7 +266,7 @@ const Body: React.FC<params> = (props) => {
     });
   };
 
-  const delFromDirectory = (): void => {
+  const handleDelFromDirectory = (): void => {
     (async () => {
       try {
         await axios({
@@ -279,7 +283,7 @@ const Body: React.FC<params> = (props) => {
         }).then((response) => {
           if (response.status === 200) {
             setCurDir("General");
-            getAzureStorageDir();
+            handleAzureStorageDir();
           } else {
             alert(response.data);
           }
@@ -292,7 +296,7 @@ const Body: React.FC<params> = (props) => {
     });
   };
 
-  const getAzureStorageDir = (): void => {
+  const handleAzureStorageDir = (): void => {
     (async () => {
       try {
         await axios({
@@ -345,7 +349,7 @@ const Body: React.FC<params> = (props) => {
             },
           }).then((response) => {
             if (response.status === 200) {
-              getAzureStorageDir();
+              handleAzureStorageDir();
               loadResultsToCache(response.data);
             } else {
               alert(response.data[0]);
@@ -529,7 +533,7 @@ const Body: React.FC<params> = (props) => {
   }, [activeDeviceId]);
 
   useEffect(() => {
-    getAzureStorageDir();
+    handleAzureStorageDir();
   }, [props.uuid]);
 
   return (
@@ -542,6 +546,8 @@ const Body: React.FC<params> = (props) => {
           imageLabel={imageLabel}
           setImageFormat={setImageFormat}
           setImageLabel={setImageLabel}
+          setSaveIndividualImage={setSaveIndividualImage}
+          saveIndividualImage={saveIndividualImage}
         />
       )}
       {uploadOpen && (
@@ -564,7 +570,7 @@ const Body: React.FC<params> = (props) => {
       {delDirectoryOpen && (
         <DeleteDirectoryPopup
           setDelDirectoryOpen={setDelDirectoryOpen}
-          delFromDirectory={delFromDirectory}
+          handleDelFromDirectory={handleDelFromDirectory}
           curDir={curDir}
         />
       )}
@@ -600,7 +606,6 @@ const Body: React.FC<params> = (props) => {
         capture={captureFeed}
         savedImages={imageCache}
         clearImageCache={clearCache}
-        loadImage={loadFromCache}
         canvasRef={canvasRef}
         removeImage={removeFromCache}
         setSwitchModelOpen={setModelInfoPopupOpen}
@@ -609,6 +614,7 @@ const Body: React.FC<params> = (props) => {
         activeDeviceId={activeDeviceId}
         azureStorageDir={azureStorageDir}
         curDir={curDir}
+        setImageIndex={setImageIndex}
         handleDirChange={handleDirChange}
         setCreateDirectoryOpen={setCreateDirectoryOpen}
         setDelDirectoryOpen={setDelDirectoryOpen}

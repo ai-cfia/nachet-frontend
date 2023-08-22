@@ -22,7 +22,7 @@ By uploading your images to Seed Classification Interface, you agree to license 
   const termsAndConditions = `
 Attribution: You allow others to copy, distribute, display, and perform your copyrighted work—and derivative works based upon it—but only if they give you the proper credit by citing your name and the source.
 Share Alike: You allow others to distribute derivative works only under a license identical to the license that governs your work.
-Machine Learning: You grant the AI Lab at the CFIA the right to use your images to train machine learning models. These models may be used for various purposes, including research, analysis, and commercial activities.
+Machine Learning: You grant the CFIA the right to use your images to train machine learning models. These models may be used for various purposes, including research, analysis, and commercial activities.
 Warranty: You represent and warrant that you are the legal owner of the content you are uploading and that it does not infringe on any copyright, trademark, or other rights of third parties.
 Consent: If your image includes identifiable individuals, you affirm that you have obtained their consent for the image to be shared and used under these terms.
 Waiver: The image is provided "as-is." You waive all warranties, including any regarding the image's accuracy or fitness for a particular purpose.`;

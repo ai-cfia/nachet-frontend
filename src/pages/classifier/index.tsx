@@ -21,7 +21,7 @@ interface params {
   capture: () => void;
   savedImages: any[];
   clearImageCache: () => void;
-  loadImage: (index: number) => void;
+  setImageIndex: React.Dispatch<React.SetStateAction<number>>;
   setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
   canvasRef: React.RefObject<HTMLCanvasElement>;
   handleInference: () => void;
@@ -87,7 +87,7 @@ const Classifier: React.FC<params> = (props) => {
           <ImageCache
             removeImage={props.removeImage}
             savedImages={props.savedImages}
-            loadImage={props.loadImage}
+            setImageIndex={props.setImageIndex}
             windowSize={props.windowSize}
             clearImageCache={props.clearImageCache}
             imageIndex={props.imageIndex}

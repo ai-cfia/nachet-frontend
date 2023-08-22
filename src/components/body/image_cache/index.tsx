@@ -18,7 +18,7 @@ import { colours } from "../../../styles/colours";
 
 interface params {
   savedImages: any[];
-  loadImage: (index: number) => void;
+  setImageIndex: React.Dispatch<React.SetStateAction<number>>;
   removeImage: (src: string) => void;
   clearImageCache: () => void;
   imageIndex: number;
@@ -117,7 +117,7 @@ const ImageCache: React.FC<params> = (props) => {
                   }}
                   align="left"
                   onClick={() => {
-                    props.loadImage(item.index);
+                    props.setImageIndex(item.index);
                   }}
                 >
                   <div
