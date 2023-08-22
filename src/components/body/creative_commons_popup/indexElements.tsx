@@ -21,7 +21,6 @@ export const InfoContainer = styled.div`
   flex-direction: column;
   justify-content: start;
   align-items: start;
-  width: fit-content;
   padding-left: 1vw;
   padding-right: 1vw;
 `;
@@ -41,9 +40,8 @@ export const TextArea = styled.div`
   justify-content: center;
   margin: auto;
   overflow-y: auto;
-  height: fit-content;
+  max-height: 25vw;
   word-wrap: break-word;
-  max-height: 30vh;
 `;
 
 export const Paragraph = styled.p`

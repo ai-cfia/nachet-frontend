@@ -15,7 +15,7 @@ function App(): JSX.Element {
   });
   const [uuid, setUuid] = useState<string>("");
   const [creativeCommonsPopupOpen, setCreativeCommonsPopupOpen] =
-    useState<boolean>(false);
+    useState<boolean>(true);
 
   const handleCreativeCommonsAgreement = (agree: boolean): void => {
     if (agree) {
