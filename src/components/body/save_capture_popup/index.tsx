@@ -94,16 +94,19 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
               sx={{
                 color: colours.CFIA_Font_Black,
                 fontSize: "1.0vh",
-                width: "100%",
-                height: "3vh",
+                height: "2vh",
               }}
               exclusive
               onChange={handleToggle}
               value={props.saveIndividualImage}
               aria-label="Platform"
             >
-              <ToggleButton value="0">Selected Capture</ToggleButton>
-              <ToggleButton value="1">Image Cache</ToggleButton>
+              <ToggleButton value="0" sx={{ color: colours.CFIA_Font_Black }}>
+                Selected Capture
+              </ToggleButton>
+              <ToggleButton value="1" sx={{ color: colours.CFIA_Font_Black }}>
+                Image Cache
+              </ToggleButton>
             </ToggleButtonGroup>
           </div>
           {props.saveIndividualImage === "0" && (
@@ -115,18 +118,18 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
                   variant="outlined"
                   onChange={handleLabel}
                   value={props.imageLabel}
+                  size="small"
                   sx={{
-                    width: "90%",
                     fontSize: "1.0vh",
                     height: "2vh",
-                    marginBottom: "3vh",
+                    marginBottom: "2vh",
                   }}
                 />
               </>
               <Select
                 value={props.imageFormat}
                 onChange={handleFormat}
-                sx={{ width: "90%", fontSize: "1.2vh", height: "3vh" }}
+                sx={{ fontSize: "1.2vh", height: "3vh" }}
               >
                 <MenuItem value="image/png">Format: PNG</MenuItem>
                 <MenuItem value="image/jpeg">Format: JPEG</MenuItem>
@@ -135,25 +138,10 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
           )}
           {props.saveIndividualImage === "1" && (
             <>
-              <>
-                <TextField
-                  id="outlined-basic"
-                  label="Folder Name"
-                  variant="outlined"
-                  onChange={handleLabel}
-                  value={props.imageLabel}
-                  sx={{
-                    width: "90%",
-                    fontSize: "1.0vh",
-                    height: "2vh",
-                    marginBottom: "3vh",
-                  }}
-                />
-              </>
               <Select
                 value={props.imageFormat}
                 onChange={handleFormat}
-                sx={{ width: "90%", fontSize: "1.2vh", height: "3vh" }}
+                sx={{ fontSize: "1.2vh", height: "3vh" }}
               >
                 <MenuItem value="image/png">Format: PNG</MenuItem>
                 <MenuItem value="image/jpeg">Format: JPEG</MenuItem>

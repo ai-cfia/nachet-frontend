@@ -24,7 +24,7 @@ export const NavbarContainer = styled.div<{ width: number; height: number }>`
 `;
 
 export const NavLogo = styled.img<{ width: number }>`
-  width: 14.5vw;
+  width: 27vh;
   height: fit-content;
   cover: contain;
   margin: auto;

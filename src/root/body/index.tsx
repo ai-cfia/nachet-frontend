@@ -5,7 +5,7 @@ import { BodyContainer } from "./indexElements";
 import Classifier from "../../pages/classifier";
 import SavePopup from "../../components/body/save_capture_popup";
 import UploadPopup from "../../components/body/load_image_popup";
-import ModelInfoPopup from "../../components/body/model_info_popup";
+import ModelInfoPopup from "../../components/body/model_popup";
 import SwitchDevice from "../../components/body/switch_device_popup";
 import CreateDirectory from "../../components/body/create_directory_popup";
 import DeleteDirectoryPopup from "../../components/body/del_directory_popup";
@@ -94,7 +94,7 @@ const Body: React.FC<params> = (props) => {
   };
 
   const getCurrentImage = (index: number): void => {
-    if (imageCache.length >= 1) {
+    if (imageCache.length > 0) {
       imageCache.forEach((image) => {
         if (image.index === index) {
           setImageSrc(image.src);
@@ -175,7 +175,12 @@ const Body: React.FC<params> = (props) => {
           );
         });
         const content = await zip.generateAsync({ type: "blob" });
-        saveAs(content, `${imageLabel}.zip`);
+        saveAs(
+          content,
+          `${new Date().getFullYear()}-${
+            new Date().getMonth() + 1
+          }-${new Date().getDate()}.${imageFormat.split("/")[1]}.zip`,
+        );
       }
     })().catch((error) => {
       alert(error);
