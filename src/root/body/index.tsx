@@ -5,11 +5,12 @@ import { BodyContainer } from "./indexElements";
 import Classifier from "../../pages/classifier";
 import SavePopup from "../../components/body/save_capture_popup";
 import UploadPopup from "../../components/body/load_image_popup";
-import SwitchModelPopup from "../../components/body/switch_model_popup";
+import ModelInfoPopup from "../../components/body/model_info_popup";
 import SwitchDevice from "../../components/body/switch_device_popup";
 import CreateDirectory from "../../components/body/create_directory_popup";
 import DeleteDirectoryPopup from "../../components/body/del_directory_popup";
 import ResultsTunerPopup from "../../components/body/results_tuner_popup";
+import CreativeCommonsPopup from "../../components/body/creative_commons_popup";
 import axios from "axios";
 
 interface ImageCache {
@@ -32,6 +33,9 @@ interface params {
     height: number;
   };
   uuid: string;
+  creativeCommonsPopupOpen: boolean;
+  setCreativeCommonsPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  handleCreativeCommonsAgreement: (agree: boolean) => void;
 }
 
 const Body: React.FC<params> = (props) => {
@@ -45,7 +49,7 @@ const Body: React.FC<params> = (props) => {
   const [imageLabel, setImageLabel] = useState<string>("");
   const [saveOpen, setSaveOpen] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
-  const [switchModelOpen, setSwitchModelOpen] = useState(false);
+  const [modelInfoPopupOpen, setModelInfoPopupOpen] = useState(false);
   const [switchDeviceOpen, setSwitchDeviceOpen] = useState(false);
   const [createDirectoryOpen, setCreateDirectoryOpen] = useState(false);
   const [imageCache, setImageCache] = useState<ImageCache[]>([]);
@@ -53,7 +57,7 @@ const Body: React.FC<params> = (props) => {
   const [activeDeviceId, setActiveDeviceId] = useState<string | undefined>(
     undefined,
   );
-  const [curDir, setCurDir] = useState<string>("");
+  const [curDir, setCurDir] = useState<string>("General");
   const [azureStorageDir, setAzureStorageDir] = useState<any>({});
   const [delDirectoryOpen, setDelDirectoryOpen] = useState<boolean>(false);
   const [resultsTunerOpen, setResultsTunerOpen] = useState<boolean>(false);
@@ -181,7 +185,7 @@ const Body: React.FC<params> = (props) => {
                   ...item.overlappingIndices,
                   params.overlappingIndices,
                 ],
-                annotated: true,
+                annotated: [...item.scores, params.score.toFixed(2)].length > 0,
               };
             }
             return item;
@@ -244,7 +248,7 @@ const Body: React.FC<params> = (props) => {
         }).then((response) => {
           if (response.status === 200) {
             setCreateDirectoryOpen(false);
-            setCurDir("");
+            setCurDir("General");
             getAzureStorageDir();
           } else {
             alert("Error creating directory, it may already exist");
@@ -274,7 +278,7 @@ const Body: React.FC<params> = (props) => {
           },
         }).then((response) => {
           if (response.status === 200) {
-            setCurDir("");
+            setCurDir("General");
             getAzureStorageDir();
           } else {
             alert(response.data);
@@ -371,7 +375,6 @@ const Body: React.FC<params> = (props) => {
     if (ctx === null) {
       return;
     }
-    // ctx.clearRect(0, 0, canvas.width, canvas.height);
     image.onload = () => {
       canvas.width = image.width;
       canvas.height = image.height;
@@ -441,7 +444,6 @@ const Body: React.FC<params> = (props) => {
               });
               // draw bounding box
               ctx.lineWidth = 2;
-              // ctx.setLineDash([1, 1]);
               ctx.strokeStyle = "red";
               ctx.rect(
                 storedImage.boxes[index].topX,
@@ -545,10 +547,10 @@ const Body: React.FC<params> = (props) => {
       {uploadOpen && (
         <UploadPopup setUploadOpen={setUploadOpen} uploadImage={uploadImage} />
       )}
-      {switchModelOpen && (
-        <SwitchModelPopup
-          setSwitchModelOpen={setSwitchModelOpen}
-          switchModelOpen={switchModelOpen}
+      {modelInfoPopupOpen && (
+        <ModelInfoPopup
+          setSwitchModelOpen={setModelInfoPopupOpen}
+          switchModelOpen={modelInfoPopupOpen}
         />
       )}
       {switchDeviceOpen && (
@@ -581,6 +583,12 @@ const Body: React.FC<params> = (props) => {
           scoreThreshold={scoreThreshold}
         />
       )}
+      {props.creativeCommonsPopupOpen && (
+        <CreativeCommonsPopup
+          setCreativeCommonsPopupOpen={props.setCreativeCommonsPopupOpen}
+          handleCreativeCommonsAgreement={props.handleCreativeCommonsAgreement}
+        />
+      )}
       <Classifier
         handleInference={handleInferenceRequest}
         imageIndex={imageIndex}
@@ -595,7 +603,7 @@ const Body: React.FC<params> = (props) => {
         loadImage={loadFromCache}
         canvasRef={canvasRef}
         removeImage={removeFromCache}
-        setSwitchModelOpen={setSwitchModelOpen}
+        setSwitchModelOpen={setModelInfoPopupOpen}
         setSwitchDeviceOpen={setSwitchDeviceOpen}
         windowSize={props.windowSize}
         activeDeviceId={activeDeviceId}

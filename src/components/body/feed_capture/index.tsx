@@ -4,7 +4,7 @@ import { colours } from "../../../styles/colours";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import DownloadIcon from "@mui/icons-material/Download";
 import CropFreeIcon from "@mui/icons-material/CropFree";
-import SwitchLeftIcon from "@mui/icons-material/SwitchLeft";
+import InfoIcon from "@mui/icons-material/Info";
 
 interface params {
   canvasRef: React.RefObject<HTMLCanvasElement>;
@@ -78,8 +78,16 @@ const FeedCapture: React.FC<params> = (props) => {
               }}
               sx={buttonStyle}
             >
-              <UploadFileIcon color="inherit" style={iconStyle} />
-              LOAD
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                }}
+              >
+                <UploadFileIcon color="inherit" style={iconStyle} />
+                <span>LOAD</span>
+              </div>
             </Button>
             <Button
               color="inherit"
@@ -89,8 +97,16 @@ const FeedCapture: React.FC<params> = (props) => {
               }}
               sx={buttonStyle}
             >
-              <DownloadIcon color="inherit" style={iconStyle} />
-              SAVE
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                }}
+              >
+                <DownloadIcon color="inherit" style={iconStyle} />
+                <span>SAVE</span>
+              </div>
             </Button>
             <Button
               color="inherit"
@@ -100,8 +116,16 @@ const FeedCapture: React.FC<params> = (props) => {
               }}
               sx={buttonStyle}
             >
-              <CropFreeIcon color="inherit" style={iconStyle} />
-              CLASSIFY
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                }}
+              >
+                <CropFreeIcon color="inherit" style={iconStyle} />
+                <span>CLASSIFY</span>
+              </div>
             </Button>
             <Button
               color="inherit"
@@ -111,8 +135,16 @@ const FeedCapture: React.FC<params> = (props) => {
               }}
               sx={buttonStyle}
             >
-              <SwitchLeftIcon color="inherit" style={iconStyle} />
-              SWITCH MODEL
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                }}
+              >
+                <InfoIcon color="inherit" style={iconStyle} />
+                <span>MODEL</span>
+              </div>
             </Button>
           </div>
         }

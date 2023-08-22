@@ -14,6 +14,28 @@ function App(): JSX.Element {
     height: window.innerHeight,
   });
   const [uuid, setUuid] = useState<string>("");
+  const [creativeCommonsPopupOpen, setCreativeCommonsPopupOpen] =
+    useState<boolean>(false);
+
+  const handleCreativeCommonsAgreement = (agree: boolean): void => {
+    if (agree) {
+      Cookies.set("creative-commons-agreement", "true", { expires: 365 * 10 });
+      console.log(
+        "Creative Commons Agreement: ",
+        Cookies.get("creative-commons-agreement"),
+      );
+    } else {
+      Cookies.set("creative-commons-agreement", "false", { expires: 365 * 10 });
+    }
+    setCreativeCommonsPopupOpen(false);
+  };
+
+  const getCreativeCommonsAgreement = (): void => {
+    const existingAgreement = Cookies.get("creative-commons-agreement");
+    if (existingAgreement === undefined || existingAgreement === "false") {
+      setCreativeCommonsPopupOpen(true);
+    }
+  };
 
   const createUuid = (): void => {
     const newUuid = uuidv4();
@@ -34,6 +56,7 @@ function App(): JSX.Element {
 
   useEffect(() => {
     getUuid();
+    getCreativeCommonsAgreement();
   }, []);
 
   useEffect(() => {
@@ -57,7 +80,15 @@ function App(): JSX.Element {
         <Routes>
           <Route
             path="/"
-            element={<Home windowSize={windowSize} uuid={uuid} />}
+            element={
+              <Home
+                windowSize={windowSize}
+                uuid={uuid}
+                creativeCommonsPopupOpen={creativeCommonsPopupOpen}
+                setCreativeCommonsPopupOpen={setCreativeCommonsPopupOpen}
+                handleCreativeCommonsAgreement={handleCreativeCommonsAgreement}
+              />
+            }
           />
         </Routes>
         <Footer windowSize={windowSize} />

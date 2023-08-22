@@ -13,6 +13,8 @@ import {
 import { colours } from "../../../styles/colours";
 import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
 import CloseIcon from "@mui/icons-material/Close";
+import FolderIcon from "@mui/icons-material/Folder";
+import FilterIcon from "@mui/icons-material/Filter";
 
 interface params {
   azureStorageDir: any;
@@ -33,7 +35,7 @@ const StorageDirectory: React.FC<params> = (props) => {
   };
   const handleSelect = (folder: string): void => {
     if (folder === props.curDir) {
-      props.handleDirChange("");
+      props.handleDirChange("General");
     } else {
       props.handleDirChange(folder);
     }
@@ -75,6 +77,8 @@ const StorageDirectory: React.FC<params> = (props) => {
                   marginBottom: 0,
                   paddingTop: 0,
                   paddingBottom: 0,
+                  paddingRight: "0.3vw",
+                  paddingLeft: "0.3vw",
                 }}
               />
             </IconButton>
@@ -104,10 +108,10 @@ const StorageDirectory: React.FC<params> = (props) => {
                   sx={{
                     backgroundColor:
                       folderKey === props.curDir
-                        ? colours.CFIA_Background_Blue
+                        ? "#D3D3D3"
                         : colours.CFIA_Background_White,
                     "&:hover": {
-                      backgroundColor: "#D3D3D3",
+                      backgroundColor: "#F5F5F5",
                       transition: "0.1s ease-in-out all",
                     },
                   }}
@@ -117,40 +121,77 @@ const StorageDirectory: React.FC<params> = (props) => {
                     sx={{
                       cursor: "pointer",
                       paddingRight: 0,
-                      fontSize: "1.0vh",
+                      fontSize: "1.1vh",
                       paddingTop: "0.5vh",
                       paddingBottom: "0.5vh",
                       paddingLeft: "0.8vh",
-                      color:
-                        folderKey === props.curDir
-                          ? colours.CFIA_Font_White
-                          : colours.CFIA_Font_Black,
+                      width: "10vw",
+                      maxWidth: "10vw",
+                      textOverflow: "break-word",
+                      color: colours.CFIA_Font_Black,
                     }}
                     onClick={() => {
                       handleSelect(folderKey);
                     }}
                   >
-                    {folderKey}
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <FolderIcon
+                        style={{
+                          color: colours.CFIA_Background_Blue,
+                          fontSize: "1.8vh",
+                          marginTop: 0,
+                          marginBottom: 0,
+                          paddingTop: 0,
+                          paddingBottom: 0,
+                          paddingRight: "0.3vw",
+                        }}
+                      />
+                      <span>{folderKey}</span>
+                    </div>
                   </TableCell>
                   <TableCell
                     align="left"
                     sx={{
                       cursor: "pointer",
                       paddingRight: 0,
-                      fontSize: "1.0vh",
+                      fontSize: "1.15vh",
                       paddingTop: "0.5vh",
                       paddingBottom: "0.5vh",
                       paddingLeft: "0.8vh",
-                      color:
-                        folderKey === props.curDir
-                          ? colours.CFIA_Font_White
-                          : colours.CFIA_Font_Black,
+                      color: colours.CFIA_Font_Black,
                     }}
                     onClick={() => {
                       handleSelect(folderKey);
                     }}
                   >
-                    {props.azureStorageDir[folderKey]}
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <span style={{ width: "0.7vw", textAlign: "right" }}>
+                        {props.azureStorageDir[folderKey]}
+                      </span>
+                      <FilterIcon
+                        style={{
+                          color: colours.CFIA_Background_Blue,
+                          fontSize: "1.7vh",
+                          marginTop: 0,
+                          marginBottom: 0,
+                          paddingTop: 0,
+                          paddingBottom: 0,
+                          paddingLeft: "0.3vw",
+                        }}
+                      />
+                    </div>
                   </TableCell>
                   <TableCell
                     align="right"
@@ -163,23 +204,25 @@ const StorageDirectory: React.FC<params> = (props) => {
                       paddingRight: "0.8vh",
                     }}
                   >
-                    <IconButton
-                      onClick={() => {
-                        handleDelete(folderKey);
-                      }}
-                      sx={{ padding: 0 }}
-                    >
-                      <CloseIcon
-                        style={{
-                          color: "red",
-                          fontSize: "1.8vh",
-                          marginTop: 0,
-                          marginBottom: 0,
-                          paddingTop: 0,
-                          paddingBottom: 0,
+                    {folderKey !== "General" && (
+                      <IconButton
+                        onClick={() => {
+                          handleDelete(folderKey);
                         }}
-                      />
-                    </IconButton>
+                        sx={{ padding: 0 }}
+                      >
+                        <CloseIcon
+                          style={{
+                            color: "red",
+                            fontSize: "1.8vh",
+                            marginTop: 0,
+                            marginBottom: 0,
+                            paddingTop: 0,
+                            paddingBottom: 0,
+                          }}
+                        />
+                      </IconButton>
+                    )}
                   </TableCell>
                 </TableRow>
               ),

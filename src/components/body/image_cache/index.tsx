@@ -13,6 +13,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import CropFreeIcon from "@mui/icons-material/CropFree";
 import ClearAllIcon from "@mui/icons-material/ClearAll";
+import ImageIcon from "@mui/icons-material/Image";
 import { colours } from "../../../styles/colours";
 
 interface params {
@@ -59,11 +60,13 @@ const ImageCache: React.FC<params> = (props) => {
             <ClearAllIcon
               style={{
                 color: "red",
-                fontSize: "2.4vh",
+                fontSize: "2.3vh",
                 marginTop: 0,
                 marginBottom: 0,
                 paddingTop: 0,
                 paddingBottom: 0,
+                paddingRight: "0.3vw",
+                paddingLeft: "0.3vw",
               }}
             />
           </IconButton>
@@ -91,10 +94,10 @@ const ImageCache: React.FC<params> = (props) => {
                 sx={{
                   backgroundColor:
                     item.index === props.imageIndex
-                      ? colours.CFIA_Background_Blue
+                      ? "#D3D3D3"
                       : colours.CFIA_Background_White,
                   "&:hover": {
-                    backgroundColor: "#D3D3D3",
+                    backgroundColor: "#F5F5F5",
                     transition: "0.1s ease-in-out all",
                   },
                 }}
@@ -103,21 +106,40 @@ const ImageCache: React.FC<params> = (props) => {
                   sx={{
                     cursor: "pointer",
                     paddingRight: 0,
-                    fontSize: "1vh",
+                    fontSize: "1.1vh",
                     paddingTop: "0.5vh",
                     paddingBottom: "0.5vh",
                     paddingLeft: "0.8vh",
-                    color:
-                      item.index === props.imageIndex
-                        ? colours.CFIA_Font_White
-                        : colours.CFIA_Font_Black,
+                    width: "11vw",
+                    maxWidth: "11vw",
+                    textOverflow: "break-word",
+                    color: colours.CFIA_Font_Black,
                   }}
                   align="left"
                   onClick={() => {
                     props.loadImage(item.index);
                   }}
                 >
-                  CAPTURE {item.index}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    <ImageIcon
+                      style={{
+                        color: colours.CFIA_Background_Blue,
+                        fontSize: "1.8vh",
+                        marginTop: 0,
+                        marginBottom: 0,
+                        paddingTop: 0,
+                        paddingBottom: 0,
+                        paddingRight: "0.3vw",
+                      }}
+                    />
+                    <span>CAPTURE {item.index}</span>
+                  </div>
                 </TableCell>
                 <TableCell
                   align="center"
@@ -132,14 +154,14 @@ const ImageCache: React.FC<params> = (props) => {
                   {item.annotated === true ? (
                     <CropFreeIcon
                       style={{
-                        fontSize: "1.8vh",
+                        fontSize: "1.7vh",
                         marginTop: 0,
                         marginBottom: 0,
                         paddingTop: 0,
                         paddingBottom: 0,
                         paddingLeft: 0,
                         paddingRight: 0,
-                        color: "#98fb98",
+                        color: colours.CFIA_Background_Blue,
                       }}
                     />
                   ) : (

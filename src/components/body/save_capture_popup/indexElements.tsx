@@ -25,6 +25,7 @@ export const InfoContainer = styled.div`
   height: fit-content;
   margin: auto;
   margin-top: 3vh;
+  margin-bottom: 6vh;
 `;
 
 export const ButtonWrap = styled.div`
@@ -33,5 +34,5 @@ export const ButtonWrap = styled.div`
     align-items: center;
     justify-content: center;
     margin: auto;
-    margin-top: 4vh;
+    margin-top: 2vh;
 `;

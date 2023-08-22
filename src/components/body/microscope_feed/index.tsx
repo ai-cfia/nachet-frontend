@@ -72,8 +72,16 @@ const MicroscopeFeed: React.FC<params> = (props) => {
               }}
               sx={buttonStyle}
             >
-              <AddAPhotoIcon color="inherit" style={iconStyle} />
-              CAPTURE
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                }}
+              >
+                <AddAPhotoIcon color="inherit" style={iconStyle} />
+                <span>CAPTURE</span>
+              </div>
             </Button>
             <Button
               color="inherit"
@@ -83,8 +91,16 @@ const MicroscopeFeed: React.FC<params> = (props) => {
               }}
               sx={buttonStyle}
             >
-              <CameraswitchIcon color="inherit" style={iconStyle} />
-              SWITCH
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                }}
+              >
+                <CameraswitchIcon color="inherit" style={iconStyle} />
+                <span>SWITCH</span>
+              </div>
             </Button>
           </div>
         }

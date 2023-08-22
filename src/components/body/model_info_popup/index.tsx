@@ -27,7 +27,7 @@ const SwitchModel: React.FC<params> = (props): JSX.Element => {
         }}
       >
         <CardHeader
-          title="Switch Model"
+          title="Model Information"
           titleTypographyProps={{
             variant: "h6",
             align: "left",

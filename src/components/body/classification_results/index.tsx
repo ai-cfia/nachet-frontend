@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -32,6 +32,7 @@ interface params {
 }
 
 const ClassificationResults: React.FC<params> = (props) => {
+  const [isAnnotated, setIsAnnotated] = React.useState<boolean>(false);
   const handleSelect = (key: string): void => {
     if (key === props.selectedLabel) {
       props.setSelectedLabel("all");
@@ -39,6 +40,20 @@ const ClassificationResults: React.FC<params> = (props) => {
       props.setSelectedLabel(key);
     }
   };
+
+  const checkAnnotated = (): void => {
+    props.savedImages.forEach((object: any) => {
+      if (object.index === props.imageIndex) {
+        setIsAnnotated(
+          object.annotated === true && object.classifications.length > 0,
+        );
+      }
+    });
+  };
+
+  useEffect(() => {
+    checkAnnotated();
+  }, [props.savedImages, props.imageIndex]);
 
   return (
     <Box
@@ -114,7 +129,7 @@ const ClassificationResults: React.FC<params> = (props) => {
       >
         <Table sx={{ borderBottom: 0 }}>
           <TableBody sx={{ borderBottom: 0 }}>
-            {!props.switchTable && (
+            {!props.switchTable && isAnnotated && (
               <TableRow>
                 <TableCell
                   align="left"
@@ -160,7 +175,7 @@ const ClassificationResults: React.FC<params> = (props) => {
                 </TableCell>
               </TableRow>
             )}
-            {props.switchTable && (
+            {props.switchTable && isAnnotated && (
               <TableRow>
                 <TableCell
                   align="left"
@@ -213,10 +228,10 @@ const ClassificationResults: React.FC<params> = (props) => {
                   sx={{
                     backgroundColor:
                       props.selectedLabel === key
-                        ? colours.CFIA_Background_Blue
+                        ? "#D3D3D3"
                         : colours.CFIA_Background_White,
                     "&:hover": {
-                      backgroundColor: "#D3D3D3",
+                      backgroundColor: "#F5F5F5",
                       transition: "0.1s ease-in-out all",
                     },
                   }}
@@ -230,10 +245,7 @@ const ClassificationResults: React.FC<params> = (props) => {
                       paddingTop: "0.5vh",
                       paddingBottom: "0.5vh",
                       paddingLeft: "0.8vh",
-                      color:
-                        props.selectedLabel === key
-                          ? colours.CFIA_Font_White
-                          : colours.CFIA_Font_Black,
+                      color: colours.CFIA_Font_Black,
                     }}
                     onClick={() => {
                       handleSelect(key);
@@ -250,10 +262,7 @@ const ClassificationResults: React.FC<params> = (props) => {
                       paddingLeft: 0,
                       paddingTop: "0.5vh",
                       paddingBottom: "0.5vh",
-                      color:
-                        props.selectedLabel === key
-                          ? colours.CFIA_Font_White
-                          : colours.CFIA_Font_Black,
+                      color: colours.CFIA_Font_Black,
                     }}
                     onClick={() => {
                       handleSelect(key);
@@ -270,10 +279,7 @@ const ClassificationResults: React.FC<params> = (props) => {
                       paddingTop: "0.5vh",
                       paddingBottom: "0.5vh",
                       paddingRight: "0.8vh",
-                      color:
-                        props.selectedLabel === key
-                          ? colours.CFIA_Font_White
-                          : colours.CFIA_Font_Black,
+                      color: colours.CFIA_Font_Black,
                     }}
                   >
                     {props.labelOccurrences[key]}

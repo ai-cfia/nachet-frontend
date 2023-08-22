@@ -48,8 +48,8 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
     <Overlay>
       <Box
         sx={{
-          width: "15vw",
-          height: "23vh",
+          width: "20vw",
+          height: "22vh",
           zIndex: 30,
           border: `0.05vw solid ${colours.CFIA_Font_Black}`,
           borderRadius: 1,
@@ -80,38 +80,38 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
             variant="outlined"
             onChange={handleLabel}
             value={props.imageLabel}
-            sx={{ width: "10vw", fontSize: "1.2vh" }}
+            sx={{ width: "11vw", fontSize: "1.2vh" }}
             size="small"
           />
           <Select
             value={props.imageFormat}
             onChange={handleFormat}
             placeholder="Capture Format"
-            sx={{ width: "10vw", fontSize: "1.2vh" }}
+            sx={{ width: "11vw", fontSize: "1.2vh" }}
             size="small"
           >
-            <MenuItem value="image/png">PNG</MenuItem>
-            <MenuItem value="image/jpeg">JPEG</MenuItem>
+            <MenuItem value="image/png">Format: PNG</MenuItem>
+            <MenuItem value="image/jpeg">Format: JPEG</MenuItem>
           </Select>
+          <ButtonWrap>
+            <Button
+              variant="outlined"
+              size="medium"
+              sx={{
+                alignContent: "center",
+                alignItems: "center",
+                paddingLeft: "0.8vw",
+                paddingRight: "0.8vw",
+                fontSize: "1.1vh",
+                color: colours.CFIA_Font_Black,
+                borderColor: colours.CFIA_Font_Black,
+              }}
+              onClick={props.saveImage}
+            >
+              SAVE
+            </Button>
+          </ButtonWrap>
         </InfoContainer>
-        <ButtonWrap>
-          <Button
-            variant="outlined"
-            size="medium"
-            sx={{
-              alignContent: "center",
-              alignItems: "center",
-              paddingLeft: "0.8vw",
-              paddingRight: "0.8vw",
-              fontSize: "1.1vh",
-              color: colours.CFIA_Font_Black,
-              borderColor: colours.CFIA_Font_Black,
-            }}
-            onClick={props.saveImage}
-          >
-            SAVE
-          </Button>
-        </ButtonWrap>
       </Box>
     </Overlay>
   );
