@@ -2,7 +2,7 @@ import Webcam from "react-webcam";
 import React from "react";
 import { Box, CardHeader, Button } from "@mui/material";
 import { colours } from "../../../styles/colours";
-import CameraswitchIcon from "@mui/icons-material/Cameraswitch";
+import SwitchCameraIcon from "@mui/icons-material/SwitchCamera";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 
 interface params {
@@ -27,15 +27,21 @@ const MicroscopeFeed: React.FC<params> = (props) => {
     paddingBottom: "0.3vh",
     paddingLeft: "0.7vh",
     paddingRight: "0.7vh",
-    fontSize: "1.16vh",
+    fontSize: "1.17vh",
     width: "fit-content",
-    border: `0.01vh solid ${colours.CFIA_Font_Black}`,
+    border: `0.01vh solid LightGrey`,
+    "&:hover": {
+      backgroundColor: "#F5F5F5",
+      transition: "0.1s ease-in-out all",
+    },
   };
   const iconStyle = {
     fontSize: "1.7vh",
     paddingRight: "0.4vh",
     marginTop: 0,
     marginBottom: 0,
+    marginRight: 0,
+    marginLeft: 0,
     paddingTop: 0,
     paddingBottom: 0,
     paddingLeft: 0,
@@ -45,12 +51,10 @@ const MicroscopeFeed: React.FC<params> = (props) => {
       sx={{
         width: width - 0.5,
         height: "fit-content",
-        border: `0.01vh solid ${colours.CFIA_Font_Black}`,
+        border: `0.01vh solid LightGrey`,
         borderRadius: "0.4vh",
-        borderBottomLeftRadius: 0,
-        borderBottomRightRadius: 0,
-        borderBottom: 0,
       }}
+      boxShadow={0}
     >
       <CardHeader
         title="MICROSCOPE FEED"
@@ -63,7 +67,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
         }}
         sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
         action={
-          <div>
+          <>
             <Button
               color="inherit"
               variant="outlined"
@@ -98,11 +102,11 @@ const MicroscopeFeed: React.FC<params> = (props) => {
                   flexWrap: "wrap",
                 }}
               >
-                <CameraswitchIcon color="inherit" style={iconStyle} />
+                <SwitchCameraIcon color="inherit" style={iconStyle} />
                 <span>SWITCH</span>
               </div>
             </Button>
-          </div>
+          </>
         }
       />
       <div>

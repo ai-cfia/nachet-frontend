@@ -26,13 +26,14 @@ const DeleteDirectoryPopup: React.FC<params> = (props): JSX.Element => {
           width: "15vw",
           height: "20vh",
           zIndex: 30,
-          border: `0.05vw solid ${colours.CFIA_Font_Black}`,
+          border: `0.01vh solid LightGrey`,
           borderRadius: 1,
           background: colours.CFIA_Background_White,
         }}
+        boxShadow={1}
       >
         <CardHeader
-          title="Delete From Directory"
+          title="Delete Directory"
           titleTypographyProps={{
             variant: "h6",
             align: "left",
@@ -55,13 +56,21 @@ const DeleteDirectoryPopup: React.FC<params> = (props): JSX.Element => {
               variant="outlined"
               size="medium"
               sx={{
-                alignContent: "center",
-                alignItems: "center",
-                paddingLeft: "0.8vw",
-                paddingRight: "0.8vw",
-                fontSize: "1.1vh",
+                marginLeft: 0,
+                borderRadius: "0.4vh",
+                paddingTop: "0.3vh",
+                paddingBottom: "0.3vh",
+                paddingLeft: "0.7vh",
+                paddingRight: "0.7vh",
+                fontSize: "1.17vh",
+                width: "fit-content",
+                border: `0.01vh solid LightGrey`,
                 color: colours.CFIA_Font_Black,
-                borderColor: colours.CFIA_Font_Black,
+                "&:hover": {
+                  backgroundColor: "#F5F5F5",
+                  transition: "0.1s ease-in-out all",
+                  border: `0.01vh solid LightGrey`,
+                },
                 marginRight: "2vw",
               }}
               onClick={handleYes}
@@ -72,13 +81,21 @@ const DeleteDirectoryPopup: React.FC<params> = (props): JSX.Element => {
               variant="outlined"
               size="medium"
               sx={{
-                alignContent: "center",
-                alignItems: "center",
-                paddingLeft: "0.8vw",
-                paddingRight: "0.8vw",
-                fontSize: "1.1vh",
+                marginLeft: 0,
+                borderRadius: "0.4vh",
+                paddingTop: "0.3vh",
+                paddingBottom: "0.3vh",
+                paddingLeft: "0.7vh",
+                paddingRight: "0.7vh",
+                fontSize: "1.17vh",
+                width: "fit-content",
+                border: `0.01vh solid LightGrey`,
                 color: colours.CFIA_Font_Black,
-                borderColor: colours.CFIA_Font_Black,
+                "&:hover": {
+                  backgroundColor: "#F5F5F5",
+                  transition: "0.1s ease-in-out all",
+                  border: `0.01vh solid LightGrey`,
+                },
               }}
               onClick={handleClose}
             >

@@ -66,10 +66,11 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
           width: "20vw",
           height: "fit-content",
           zIndex: 30,
-          border: `0.05vw solid ${colours.CFIA_Font_Black}`,
+          border: `0.01vh solid LightGrey`,
           borderRadius: 1,
           background: colours.CFIA_Background_White,
         }}
+        boxShadow={1}
       >
         <CardHeader
           title="Save Capture"
@@ -96,16 +97,25 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
                 fontSize: "1.0vh",
                 height: "2vh",
               }}
+              fullWidth
               exclusive
               onChange={handleToggle}
               value={props.saveIndividualImage}
               aria-label="Platform"
             >
-              <ToggleButton value="0" sx={{ color: colours.CFIA_Font_Black }}>
-                Selected Capture
+              <ToggleButton
+                value="0"
+                fullWidth
+                sx={{ color: colours.CFIA_Font_Black }}
+              >
+                CAPTURE
               </ToggleButton>
-              <ToggleButton value="1" sx={{ color: colours.CFIA_Font_Black }}>
-                Image Cache
+              <ToggleButton
+                value="1"
+                fullWidth
+                sx={{ color: colours.CFIA_Font_Black }}
+              >
+                CACHE
               </ToggleButton>
             </ToggleButtonGroup>
           </div>
@@ -119,16 +129,19 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
                   onChange={handleLabel}
                   value={props.imageLabel}
                   size="small"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
                   sx={{
-                    fontSize: "1.0vh",
                     height: "2vh",
                     marginBottom: "2vh",
+                    fontSize: "1.2vh",
                   }}
                 />
               </>
               <Select
                 value={props.imageFormat}
                 onChange={handleFormat}
+                fullWidth
                 sx={{ fontSize: "1.2vh", height: "3vh" }}
               >
                 <MenuItem value="image/png">Format: PNG</MenuItem>
@@ -139,6 +152,7 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
           {props.saveIndividualImage === "1" && (
             <>
               <Select
+                fullWidth
                 value={props.imageFormat}
                 onChange={handleFormat}
                 sx={{ fontSize: "1.2vh", height: "3vh" }}
@@ -153,13 +167,22 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
               variant="outlined"
               size="medium"
               sx={{
-                alignContent: "center",
-                alignItems: "center",
-                paddingLeft: "0.8vw",
-                paddingRight: "0.8vw",
-                fontSize: "1.1vh",
+                marginRight: 0,
+                marginLeft: 0,
+                borderRadius: "0.4vh",
+                paddingTop: "0.3vh",
+                paddingBottom: "0.3vh",
+                paddingLeft: "0.7vh",
+                paddingRight: "0.7vh",
+                fontSize: "1.17vh",
+                width: "fit-content",
+                border: `0.01vh solid LightGrey`,
                 color: colours.CFIA_Font_Black,
-                borderColor: colours.CFIA_Font_Black,
+                "&:hover": {
+                  backgroundColor: "#F5F5F5",
+                  transition: "0.1s ease-in-out all",
+                  border: `0.01vh solid LightGrey`,
+                },
               }}
               onClick={props.saveImage}
             >

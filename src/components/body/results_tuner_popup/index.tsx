@@ -26,10 +26,11 @@ const ResultsTunerPopup: React.FC<params> = (props): JSX.Element => {
           width: "20vw",
           height: "22vh",
           zIndex: 30,
-          border: `0.05vw solid ${colours.CFIA_Font_Black}`,
+          border: `0.01vh solid LightGrey`,
           borderRadius: 1,
           background: colours.CFIA_Background_White,
         }}
+        boxShadow={1}
       >
         <CardHeader
           title="Configuration"

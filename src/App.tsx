@@ -4,7 +4,7 @@ import { Fragment, useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Cookies from "js-cookie";
 import Navbar from "./components/header/navbar";
-import Home from "./root/body";
+import Body from "./root/body";
 import Footer from "./components/footer";
 import Appbar from "./components/header/appbar";
 
@@ -15,7 +15,10 @@ function App(): JSX.Element {
   });
   const [uuid, setUuid] = useState<string>("");
   const [creativeCommonsPopupOpen, setCreativeCommonsPopupOpen] =
-    useState<boolean>(true);
+    useState<boolean>(false);
+  const [switchLanguage, setSwitchLanguage] = useState<boolean>(false);
+  const [signedIn, setSignedIn] = useState<boolean>(false);
+  const [signUpOpen, setSignUpOpen] = useState<boolean>(false);
 
   const handleCreativeCommonsAgreement = (agree: boolean): void => {
     if (agree) {
@@ -75,18 +78,30 @@ function App(): JSX.Element {
   return (
     <Router>
       <Fragment>
-        <Navbar windowSize={windowSize} />
-        <Appbar windowSize={windowSize} />
+        <Navbar
+          windowSize={windowSize}
+          setSignedIn={setSignedIn}
+          signedIn={signedIn}
+          setSignUpOpen={setSignUpOpen}
+          signUpOpen={signUpOpen}
+        />
+        <Appbar
+          windowSize={windowSize}
+          setSwitchLanguage={setSwitchLanguage}
+          switchLanguage={switchLanguage}
+        />
         <Routes>
           <Route
             path="/"
             element={
-              <Home
+              <Body
                 windowSize={windowSize}
                 uuid={uuid}
                 creativeCommonsPopupOpen={creativeCommonsPopupOpen}
                 setCreativeCommonsPopupOpen={setCreativeCommonsPopupOpen}
                 handleCreativeCommonsAgreement={handleCreativeCommonsAgreement}
+                setSignUpOpen={setSignUpOpen}
+                signUpOpen={signUpOpen}
               />
             }
           />

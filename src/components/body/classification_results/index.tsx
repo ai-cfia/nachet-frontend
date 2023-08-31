@@ -5,7 +5,6 @@ import {
   TableRow,
   TableCell,
   TableContainer,
-  Paper,
   Box,
   CardHeader,
   IconButton,
@@ -13,6 +12,7 @@ import {
 import { colours } from "../../../styles/colours";
 import TuneIcon from "@mui/icons-material/Tune";
 import SwitchLeftIcon from "@mui/icons-material/SwitchLeft";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 interface params {
   savedImages: any[];
@@ -60,9 +60,10 @@ const ClassificationResults: React.FC<params> = (props) => {
       sx={{
         width: "100%",
         height: "22.23vh", // "22.425vh"
-        border: `0.01vh solid ${colours.CFIA_Font_Black}`,
+        border: `0.01vh solid LightGrey`,
         borderRadius: "0.4vh",
       }}
+      boxShadow={0}
     >
       <CardHeader
         title="RESULTS"
@@ -73,9 +74,9 @@ const ClassificationResults: React.FC<params> = (props) => {
           fontSize: "1.3vh",
           color: colours.CFIA_Font_Black,
         }}
-        sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
+        sx={{ padding: "0.8vh 1vh 0.8vh 0.8vh" }}
         action={
-          <div style={{ display: "flex", flexDirection: "row" }}>
+          <>
             <IconButton
               sx={{ padding: 0, marginTop: "0.27vh", marginRight: "0.4vh" }}
               onClick={() => {
@@ -86,8 +87,9 @@ const ClassificationResults: React.FC<params> = (props) => {
                 style={{
                   color: colours.CFIA_Background_Blue,
                   fontSize: "2vh",
-                  marginTop: 0,
-                  marginBottom: 0,
+                  marginTop: "0.1vh",
+                  marginBottom: "0.1vh",
+                  marginRight: "0.1vh",
                   paddingTop: 0,
                   paddingBottom: 0,
                 }}
@@ -103,14 +105,15 @@ const ClassificationResults: React.FC<params> = (props) => {
                 style={{
                   color: colours.CFIA_Background_Blue,
                   fontSize: "2vh",
-                  marginTop: 0,
-                  marginBottom: 0,
+                  marginTop: "0.1vh",
+                  marginBottom: "0.1vh",
+                  marginRight: "0.1vh",
                   paddingTop: 0,
                   paddingBottom: 0,
                 }}
               />
             </IconButton>
-          </div>
+          </>
         }
       />
       <TableContainer
@@ -123,13 +126,13 @@ const ClassificationResults: React.FC<params> = (props) => {
           borderTopLeftRadius: 0,
           borderTop: `0.01vh solid LightGrey`,
           borderBottom: 0,
+          boxShadow: "none",
         }}
         id={"container_with_scrolls"}
-        component={Paper}
       >
         <Table sx={{ borderBottom: 0 }}>
           <TableBody sx={{ borderBottom: 0 }}>
-            {!props.switchTable && isAnnotated && (
+            {/* {!props.switchTable && isAnnotated && (
               <TableRow>
                 <TableCell
                   align="left"
@@ -174,7 +177,7 @@ const ClassificationResults: React.FC<params> = (props) => {
                   Confidence
                 </TableCell>
               </TableRow>
-            )}
+            )} */}
             {props.switchTable && isAnnotated && (
               <TableRow>
                 <TableCell
@@ -228,7 +231,7 @@ const ClassificationResults: React.FC<params> = (props) => {
                   sx={{
                     backgroundColor:
                       props.selectedLabel === key
-                        ? "#D3D3D3"
+                        ? "#F5F5F5"
                         : colours.CFIA_Background_White,
                     "&:hover": {
                       backgroundColor: "#F5F5F5",
@@ -305,7 +308,7 @@ const ClassificationResults: React.FC<params> = (props) => {
                             key={index}
                             sx={{
                               "&:hover": {
-                                backgroundColor: "#D3D3D3",
+                                backgroundColor: "#F5F5F5",
                                 transition: "0.1s ease-in-out all",
                               },
                             }}
@@ -348,6 +351,35 @@ const ClassificationResults: React.FC<params> = (props) => {
                               }}
                             >
                               {(object.scores[index] * 100).toFixed(0)}%
+                            </TableCell>
+                            <TableCell
+                              align="right"
+                              sx={{
+                                cursor: "pointer",
+                                paddingLeft: 0,
+                                fontSize: "1.0vh",
+                                paddingTop: "0.5vh",
+                                paddingBottom: "0.5vh",
+                                paddingRight: "0.8vh",
+                              }}
+                            >
+                              <IconButton
+                                onClick={() => {
+                                  console.log("more options");
+                                }}
+                                sx={{ padding: 0 }}
+                              >
+                                <MoreVertIcon
+                                  style={{
+                                    color: colours.CFIA_Background_Blue,
+                                    fontSize: "1.8vh",
+                                    marginTop: 0,
+                                    marginBottom: 0,
+                                    paddingTop: 0,
+                                    paddingBottom: 0,
+                                  }}
+                                />
+                              </IconButton>
                             </TableCell>
                           </TableRow>
                         );

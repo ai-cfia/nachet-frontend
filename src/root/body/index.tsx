@@ -10,6 +10,7 @@ import SwitchDevice from "../../components/body/switch_device_popup";
 import CreateDirectory from "../../components/body/create_directory_popup";
 import DeleteDirectoryPopup from "../../components/body/del_directory_popup";
 import ResultsTunerPopup from "../../components/body/results_tuner_popup";
+import SignUp from "../../components/body/authentication/signup";
 import CreativeCommonsPopup from "../../components/body/creative_commons_popup";
 import JSZip from "jszip";
 import axios from "axios";
@@ -35,6 +36,8 @@ interface params {
   creativeCommonsPopupOpen: boolean;
   setCreativeCommonsPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleCreativeCommonsAgreement: (agree: boolean) => void;
+  setSignUpOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  signUpOpen: boolean;
 }
 
 const Body: React.FC<params> = (props) => {
@@ -594,6 +597,7 @@ const Body: React.FC<params> = (props) => {
           scoreThreshold={scoreThreshold}
         />
       )}
+      {props.signUpOpen && <SignUp setSignUpOpen={props.setSignUpOpen} />}
       {props.creativeCommonsPopupOpen && (
         <CreativeCommonsPopup
           setCreativeCommonsPopupOpen={props.setCreativeCommonsPopupOpen}

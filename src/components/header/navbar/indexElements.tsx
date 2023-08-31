@@ -31,3 +31,10 @@ export const NavLogo = styled.img<{ width: number }>`
   margin-left: 0;
   margin-right: 0;
 `;
+
+export const NavMenu = styled.div`
+  display: flex;
+  align-items: center;
+  list-style: none;
+  text-align: center;
+`;

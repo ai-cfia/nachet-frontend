@@ -21,8 +21,8 @@ export const InfoContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: fit-content;
-  height: fit-content;
-  margin: auto;
-  margin-top: 6vh;
+  padding-left: 1vw;
+  padding-right: 1vw;
+  margin-top: 1vh;
+  margin-bottom: 3vh;
 `;

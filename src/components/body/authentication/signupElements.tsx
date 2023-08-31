@@ -19,10 +19,12 @@ export const Overlay = styled.div`
 export const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: start;
-  align-items: start;
+  justify-content: center;
+  align-items: center;
   padding-left: 1vw;
   padding-right: 1vw;
+  margin-top: 2vh;
+  padding-bottom: 3vh;
 `;
 
 export const ButtonWrap = styled.div`
@@ -32,32 +34,4 @@ export const ButtonWrap = styled.div`
     margin: auto;
     margin-top: 2vh;
     margin-bottom: 2vh;
-`;
-
-export const TextArea = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin: auto;
-  overflow-y: auto;
-  max-height: 25vw;
-  padding-top: 10px;
-  padding-bottom: 5px;
-  word-wrap: break-word;
-`;
-
-export const Paragraph = styled.p`
-  font-size: 1.1vh;
-  font-weight: 500;
-  color: black;
-  text-align: left;
-`;
-
-export const Header = styled.h3`
-  font-size: 1.3vh;
-  font-weight: 600;
-  color: black;
-  text-align: left;
-  margin-bottom: 0.5vh;
-  margin-top: 0.5vh;
 `;

@@ -5,14 +5,13 @@ import {
   TableRow,
   TableCell,
   TableContainer,
-  Paper,
   IconButton,
   Box,
   CardHeader,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CropFreeIcon from "@mui/icons-material/CropFree";
-import ClearAllIcon from "@mui/icons-material/ClearAll";
+import DeleteIcon from "@mui/icons-material/Delete";
 import ImageIcon from "@mui/icons-material/Image";
 import { colours } from "../../../styles/colours";
 
@@ -34,11 +33,12 @@ const ImageCache: React.FC<params> = (props) => {
       sx={{
         width: "100%",
         height: "22.23vh",
-        border: `0.01vh solid ${colours.CFIA_Font_Black}`,
+        border: `0.01vh solid LightGrey`,
         borderRadius: "0.4vh",
         marginTop: "0.95vh",
         marginBottom: "0.95vh",
       }}
+      boxShadow={0}
     >
       <CardHeader
         title="CACHE"
@@ -49,7 +49,7 @@ const ImageCache: React.FC<params> = (props) => {
           fontSize: "1.3vh",
           color: colours.CFIA_Font_Black,
         }}
-        sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
+        sx={{ padding: "0.8vh 1vh 0.8vh 0.8vh" }}
         action={
           <IconButton
             sx={{ padding: 0, marginTop: "0.27vh", marginRight: "0.4vh" }}
@@ -57,16 +57,15 @@ const ImageCache: React.FC<params> = (props) => {
               props.clearImageCache();
             }}
           >
-            <ClearAllIcon
+            <DeleteIcon
               style={{
-                color: "red",
-                fontSize: "2.3vh",
-                marginTop: 0,
-                marginBottom: 0,
+                color: colours.CFIA_Background_Blue,
+                fontSize: "2vh",
+                marginTop: "0.1vh",
+                marginBottom: "0.1vh",
+                marginRight: "0.1vh",
                 paddingTop: 0,
                 paddingBottom: 0,
-                paddingRight: "0.3vw",
-                paddingLeft: "0.3vw",
               }}
             />
           </IconButton>
@@ -82,9 +81,9 @@ const ImageCache: React.FC<params> = (props) => {
           borderTopLeftRadius: 0,
           borderTop: `0.01vh solid LightGrey`,
           borderBottom: 0,
+          boxShadow: "none",
         }}
         id={"container_with_scrolls_"}
-        component={Paper}
       >
         <Table sx={{ borderBottom: 0 }}>
           <TableBody sx={{ borderBottom: 0 }}>
@@ -94,7 +93,7 @@ const ImageCache: React.FC<params> = (props) => {
                 sx={{
                   backgroundColor:
                     item.index === props.imageIndex
-                      ? "#D3D3D3"
+                      ? "#F5F5F5"
                       : colours.CFIA_Background_White,
                   "&:hover": {
                     backgroundColor: "#F5F5F5",
@@ -187,7 +186,7 @@ const ImageCache: React.FC<params> = (props) => {
                   >
                     <CloseIcon
                       style={{
-                        color: "red",
+                        color: colours.CFIA_Background_Blue,
                         fontSize: "1.8vh",
                         marginTop: 0,
                         marginBottom: 0,

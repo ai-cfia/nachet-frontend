@@ -21,17 +21,16 @@ export const InfoContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: fit-content;
-  height: fit-content;
-  margin: auto;
-  margin-top: 3vh;
-  padding: 0 0.9vh;
+  padding-left: 1vw;
+  padding-right: 1vw;
+  margin-top: 2vh;
 `;
 
 export const ButtonWrap = styled.div`
     display flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-evenly;
+    margin: auto;
     margin-top: 2vh;
+    margin-bottom: 2vh;
 `;

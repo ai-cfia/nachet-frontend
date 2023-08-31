@@ -30,12 +30,13 @@ const SwitchDevice: React.FC<params> = (props): JSX.Element => {
       <Box
         sx={{
           width: "20vw",
-          height: "22vh",
+          height: "fit-content",
           zIndex: 30,
-          border: `0.05vw solid ${colours.CFIA_Font_Black}`,
+          border: `0.01vh solid LightGrey`,
           borderRadius: 1,
           background: colours.CFIA_Background_White,
         }}
+        boxShadow={1}
       >
         <CardHeader
           title="Choose Media Device"
@@ -58,8 +59,9 @@ const SwitchDevice: React.FC<params> = (props): JSX.Element => {
           <Select
             value={props.activeDeviceId}
             onChange={handleSwitch}
-            sx={{ width: "10vw", fontSize: "1.2vh" }}
+            sx={{ fontSize: "1.2vh" }}
             size="small"
+            fullWidth
           >
             {props.devices.map((device) => (
               <MenuItem

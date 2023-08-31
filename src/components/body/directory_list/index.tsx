@@ -5,7 +5,6 @@ import {
   TableRow,
   TableCell,
   TableContainer,
-  Paper,
   Box,
   CardHeader,
   IconButton,
@@ -49,9 +48,10 @@ const StorageDirectory: React.FC<params> = (props) => {
       sx={{
         width: "100%",
         height: "22.23vh",
-        border: `0.01vh solid ${colours.CFIA_Font_Black}`,
+        border: `0.01vh solid LightGrey`,
         borderRadius: "0.4vh",
       }}
+      boxShadow={0}
     >
       <CardHeader
         title="DIRECTORIES"
@@ -62,7 +62,7 @@ const StorageDirectory: React.FC<params> = (props) => {
           fontSize: "1.3vh",
           color: colours.CFIA_Font_Black,
         }}
-        sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
+        sx={{ padding: "0.8vh 1vh 0.8vh 0.8vh" }}
         action={
           <div>
             <IconButton
@@ -73,12 +73,11 @@ const StorageDirectory: React.FC<params> = (props) => {
                 style={{
                   color: colours.CFIA_Background_Blue,
                   fontSize: "2vh",
-                  marginTop: 0,
-                  marginBottom: 0,
+                  marginTop: "0.1vh",
+                  marginBottom: "0.1vh",
+                  marginRight: "0.1vh",
                   paddingTop: 0,
                   paddingBottom: 0,
-                  paddingRight: "0.3vw",
-                  paddingLeft: "0.3vw",
                 }}
               />
             </IconButton>
@@ -95,9 +94,9 @@ const StorageDirectory: React.FC<params> = (props) => {
           borderTopLeftRadius: 0,
           borderTop: `0.01vh solid LightGrey`,
           borderBottom: 0,
+          boxShadow: "none",
         }}
         id={"container_with_scrolls"}
-        component={Paper}
       >
         <Table sx={{ borderBottom: 0 }}>
           <TableBody sx={{ borderBottom: 0 }}>
@@ -108,7 +107,7 @@ const StorageDirectory: React.FC<params> = (props) => {
                   sx={{
                     backgroundColor:
                       folderKey === props.curDir
-                        ? "#D3D3D3"
+                        ? "#F5F5F5"
                         : colours.CFIA_Background_White,
                     "&:hover": {
                       backgroundColor: "#F5F5F5",
@@ -213,7 +212,7 @@ const StorageDirectory: React.FC<params> = (props) => {
                       >
                         <CloseIcon
                           style={{
-                            color: "red",
+                            color: colours.CFIA_Background_Blue,
                             fontSize: "1.8vh",
                             marginTop: 0,
                             marginBottom: 0,

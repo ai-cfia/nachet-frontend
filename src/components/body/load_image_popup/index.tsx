@@ -19,12 +19,13 @@ const UploadPopup: React.FC<params> = (props): JSX.Element => {
       <Box
         sx={{
           width: "20vw",
-          height: "22vh",
+          height: "fit-content",
           zIndex: 30,
-          border: `0.05vw solid ${colours.CFIA_Font_Black}`,
+          border: `0.01vh solid LightGrey`,
           borderRadius: 1,
           background: colours.CFIA_Background_White,
         }}
+        boxShadow={1}
       >
         <CardHeader
           title="Load Image"
@@ -46,10 +47,10 @@ const UploadPopup: React.FC<params> = (props): JSX.Element => {
         <InfoContainer>
           <Input
             type="file"
+            fullWidth
             onChange={props.uploadImage}
             sx={{
               fontSize: "0.7vw",
-              width: "10.6vw",
             }}
           />
         </InfoContainer>
