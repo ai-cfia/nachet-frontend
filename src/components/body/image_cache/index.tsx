@@ -10,7 +10,6 @@ import {
   CardHeader,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import CropFreeIcon from "@mui/icons-material/CropFree";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ImageIcon from "@mui/icons-material/Image";
 import { colours } from "../../../styles/colours";
@@ -137,35 +136,10 @@ const ImageCache: React.FC<params> = (props) => {
                         paddingRight: "0.3vw",
                       }}
                     />
-                    <span>CAPTURE {item.index}</span>
+                    <span style={{ textAlign: "right" }}>
+                      Capture {item.index}
+                    </span>
                   </div>
-                </TableCell>
-                <TableCell
-                  align="center"
-                  sx={{
-                    cursor: "pointer",
-                    paddingRight: 0,
-                    paddingLeft: 0,
-                    paddingTop: "0.5vh",
-                    paddingBottom: "0.2vh",
-                  }}
-                >
-                  {item.annotated === true ? (
-                    <CropFreeIcon
-                      style={{
-                        fontSize: "1.7vh",
-                        marginTop: 0,
-                        marginBottom: 0,
-                        paddingTop: 0,
-                        paddingBottom: 0,
-                        paddingLeft: 0,
-                        paddingRight: 0,
-                        color: colours.CFIA_Background_Blue,
-                      }}
-                    />
-                  ) : (
-                    <> </>
-                  )}
                 </TableCell>
                 <TableCell
                   align="right"

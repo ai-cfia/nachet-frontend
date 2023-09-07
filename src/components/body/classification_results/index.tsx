@@ -13,6 +13,8 @@ import { colours } from "../../../styles/colours";
 import TuneIcon from "@mui/icons-material/Tune";
 import SwitchLeftIcon from "@mui/icons-material/SwitchLeft";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import CropFreeIcon from "@mui/icons-material/CropFree";
+import LabelIcon from "@mui/icons-material/Label";
 
 interface params {
   savedImages: any[];
@@ -39,16 +41,6 @@ const ClassificationResults: React.FC<params> = (props) => {
       props.setSelectedLabel(key);
     }
   };
-
-  // const checkAnnotated = (): void => {
-  //   props.savedImages.forEach((object: any) => {
-  //     if (object.index === props.imageIndex) {
-  //       setIsAnnotated(
-  //         object.annotated === true && object.classifications.length > 0,
-  //       );
-  //     }
-  //   });
-  // };
 
   return (
     <Box
@@ -157,7 +149,28 @@ const ClassificationResults: React.FC<params> = (props) => {
                       handleSelect(key);
                     }}
                   >
-                    {index + 1}
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <LabelIcon
+                        style={{
+                          color: colours.CFIA_Background_Blue,
+                          fontSize: "1.8vh",
+                          marginTop: 0,
+                          marginBottom: 0,
+                          paddingTop: 0,
+                          paddingBottom: 0,
+                          paddingRight: "0.3vw",
+                        }}
+                      />
+                      <span style={{ width: "0.7vw", textAlign: "left" }}>
+                        {index + 1}
+                      </span>
+                    </div>
                   </TableCell>
                   <TableCell
                     align="center"
@@ -180,15 +193,36 @@ const ClassificationResults: React.FC<params> = (props) => {
                     align="right"
                     sx={{
                       cursor: "pointer",
-                      paddingLeft: 0,
-                      fontSize: "1.0vh",
+                      paddingRight: 0,
+                      fontSize: "1.15vh",
                       paddingTop: "0.5vh",
                       paddingBottom: "0.5vh",
-                      paddingRight: "0.8vh",
+                      paddingLeft: "0.8vh",
                       color: colours.CFIA_Font_Black,
                     }}
                   >
-                    {props.labelOccurrences[key]}
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "right",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <span style={{ width: "0.7vw", textAlign: "right" }}>
+                        {props.labelOccurrences[key]}
+                      </span>
+                      <CropFreeIcon
+                        style={{
+                          color: colours.CFIA_Background_Blue,
+                          fontSize: "1.7vh",
+                          marginTop: 0,
+                          marginBottom: 0,
+                          paddingTop: 0,
+                          paddingBottom: 0,
+                          paddingLeft: "0.3vw",
+                        }}
+                      />
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}
@@ -227,7 +261,30 @@ const ClassificationResults: React.FC<params> = (props) => {
                                 paddingLeft: "0.8vh",
                               }}
                             >
-                              {index + 1}
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  flexWrap: "wrap",
+                                }}
+                              >
+                                <LabelIcon
+                                  style={{
+                                    color: colours.CFIA_Background_Blue,
+                                    fontSize: "1.8vh",
+                                    marginTop: 0,
+                                    marginBottom: 0,
+                                    paddingTop: 0,
+                                    paddingBottom: 0,
+                                    paddingRight: "0.3vw",
+                                  }}
+                                />
+                                <span
+                                  style={{ width: "0.7vw", textAlign: "left" }}
+                                >
+                                  {index + 1}
+                                </span>
+                              </div>
                             </TableCell>
                             <TableCell
                               align="center"

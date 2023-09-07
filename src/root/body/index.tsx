@@ -499,7 +499,7 @@ const Body: React.FC<params> = (props) => {
           ctx.font = "bold 0.9vw Arial";
           ctx.textAlign = "left";
           ctx.fillStyle = "#4ee44e";
-          ctx.fillText(`CAPTURE ${storedImage.index}`, 10, canvas.height - 15);
+          ctx.fillText(`Capture ${storedImage.index}`, 10, canvas.height - 15);
           ctx.stroke();
           ctx.closePath();
         }
