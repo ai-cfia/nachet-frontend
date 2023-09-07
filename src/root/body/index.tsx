@@ -72,6 +72,7 @@ const Body: React.FC<params> = (props) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const loadCaptureToCache = (src: string): void => {
+    // appends new image to image cache and its corresponding details
     setImageCache((prevCache) => [
       ...prevCache,
       {
@@ -89,6 +90,7 @@ const Body: React.FC<params> = (props) => {
         overlappingIndices: [],
       },
     ]);
+    // sets the current image index to the new image
     setImageIndex(
       imageCache.length > 0
         ? imageCache[imageCache.length - 1].index + 1
@@ -97,6 +99,7 @@ const Body: React.FC<params> = (props) => {
   };
 
   const getCurrentImage = (index: number): void => {
+    // gets the current image from the image cache based on index value
     if (imageCache.length > 0) {
       imageCache.forEach((image) => {
         if (image.index === index) {
@@ -115,6 +118,7 @@ const Body: React.FC<params> = (props) => {
   };
 
   const captureFeed = (): void => {
+    // takes screenshot of webcam feed and loads it to cache when capture button is pressed
     const src: string | null | undefined = webcamRef.current?.getScreenshot();
     if (src === null || src === undefined) {
       return;
@@ -123,6 +127,7 @@ const Body: React.FC<params> = (props) => {
   };
 
   const uploadImage = (event: any): void => {
+    // loads image from local storage to cache when upload button is pressed
     event.preventDefault();
     const file = event.target.files[0];
     if (file !== undefined) {
@@ -139,6 +144,7 @@ const Body: React.FC<params> = (props) => {
   };
 
   const removeFromCache = (index: number): void => {
+    // removes image from cache based on given index value when delete button is pressed
     const newCache = imageCache.filter((item) => item.index !== index);
     setImageCache(newCache);
     if (newCache.length >= 1) {
@@ -149,11 +155,13 @@ const Body: React.FC<params> = (props) => {
   };
 
   const clearCache = (): void => {
+    // clears image cache when clear button is pressed
     setImageCache([]);
     setImageIndex(0);
   };
 
   const saveImage = (): void => {
+    // saves image to local storage or compresses the entire cache into a zip file which is then saved to local storage
     (async () => {
       if (saveIndividualImage === "0" && imageCache.length > 0) {
         saveAs(
@@ -191,6 +199,8 @@ const Body: React.FC<params> = (props) => {
   };
 
   const loadResultsToCache = (inferenceData: any): void => {
+    // amends the image cache given an image index, with the inference data
+    // which is recieved from the server
     inferenceData.forEach((object: any) => {
       object.boxes.forEach((params: any) => {
         setImageCache((prevCache) =>
@@ -221,6 +231,8 @@ const Body: React.FC<params> = (props) => {
   };
 
   const getLabelOccurrence = (): void => {
+    // gets the number of occurences of each label in the current
+    // image based on score threshold and seed label selection in classification results
     const result: any = {};
     imageCache.forEach((object: any) => {
       if (object.index === imageIndex && object.annotated === true) {
@@ -240,10 +252,12 @@ const Body: React.FC<params> = (props) => {
   };
 
   const handleDirChange = (dir: string): void => {
+    // sets the current directory for azure storage
     setCurDir(dir.replace(/\s/g, "-"));
   };
 
   const handleCreateDirectory = (): void => {
+    // makes a post request to the backend to create a new directory in azure storage
     (async () => {
       try {
         await axios({
@@ -275,6 +289,7 @@ const Body: React.FC<params> = (props) => {
   };
 
   const handleDelFromDirectory = (): void => {
+    // makes a post request to the backend to delete a directory in azure storage
     (async () => {
       try {
         await axios({
@@ -305,6 +320,8 @@ const Body: React.FC<params> = (props) => {
   };
 
   const handleAzureStorageDir = (): void => {
+    // makes a post request to the backend to get the current directories in azure storage,
+    // should be called whenever a directory is deleted, created and when page is rendered
     (async () => {
       try {
         await axios({
@@ -333,6 +350,7 @@ const Body: React.FC<params> = (props) => {
   };
 
   const handleInferenceRequest = (): void => {
+    // makes a post request to the backend to get inference data for the current image
     if (curDir !== "") {
       const imageObject = imageCache.filter(
         (item) => item.index === imageIndex,
@@ -377,6 +395,8 @@ const Body: React.FC<params> = (props) => {
   };
 
   const loadToCanvas = (): void => {
+    // loads the current image to the canvas and draws the bounding boxes and labels,
+    // should update whenever a change is made to the image cache or the score threshold and the selected label is changed
     const image = new Image();
     image.src = imageSrc;
     const canvas: HTMLCanvasElement | null = canvasRef.current;
@@ -408,6 +428,7 @@ const Body: React.FC<params> = (props) => {
                 const scorePercentage = (
                   storedImage.scores[index] * 100
                 ).toFixed(0);
+                // check to see if label is cut off by the canvas edge, if so, move it to the bottom of the bounding box
                 if (storedImage.boxes[index].topY <= 40) {
                   if (prediction === key) {
                     if (switchTable) {
@@ -506,6 +527,7 @@ const Body: React.FC<params> = (props) => {
   }, [imageIndex, scoreThreshold, imageCache]);
 
   useEffect(() => {
+    // retrieves the available devices and sets the active device to the first available device
     const updateDevices = async (): Promise<any> => {
       try {
         const availableDevices =
