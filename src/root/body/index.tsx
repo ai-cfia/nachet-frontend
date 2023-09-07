@@ -192,6 +192,7 @@ const Body: React.FC<params> = (props) => {
             new Date().getMonth() + 1
           }-${new Date().getDate()}.${imageFormat.split("/")[1]}.zip`,
         );
+        setSaveOpen(false);
       }
     })().catch((error) => {
       alert(error);

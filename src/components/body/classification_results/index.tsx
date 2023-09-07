@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Table,
   TableBody,
@@ -32,7 +32,6 @@ interface params {
 }
 
 const ClassificationResults: React.FC<params> = (props) => {
-  const [isAnnotated, setIsAnnotated] = React.useState<boolean>(false);
   const handleSelect = (key: string): void => {
     if (key === props.selectedLabel) {
       props.setSelectedLabel("all");
@@ -41,19 +40,15 @@ const ClassificationResults: React.FC<params> = (props) => {
     }
   };
 
-  const checkAnnotated = (): void => {
-    props.savedImages.forEach((object: any) => {
-      if (object.index === props.imageIndex) {
-        setIsAnnotated(
-          object.annotated === true && object.classifications.length > 0,
-        );
-      }
-    });
-  };
-
-  useEffect(() => {
-    checkAnnotated();
-  }, [props.savedImages, props.imageIndex]);
+  // const checkAnnotated = (): void => {
+  //   props.savedImages.forEach((object: any) => {
+  //     if (object.index === props.imageIndex) {
+  //       setIsAnnotated(
+  //         object.annotated === true && object.classifications.length > 0,
+  //       );
+  //     }
+  //   });
+  // };
 
   return (
     <Box
@@ -132,98 +127,6 @@ const ClassificationResults: React.FC<params> = (props) => {
       >
         <Table sx={{ borderBottom: 0 }}>
           <TableBody sx={{ borderBottom: 0 }}>
-            {/* {!props.switchTable && isAnnotated && (
-              <TableRow>
-                <TableCell
-                  align="left"
-                  sx={{
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    paddingRight: 0,
-                    fontSize: "1.0vh",
-                    paddingTop: "0.5vh",
-                    paddingBottom: "0.5vh",
-                    paddingLeft: "0.8vh",
-                  }}
-                >
-                  Index
-                </TableCell>
-                <TableCell
-                  align="center"
-                  sx={{
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    fontSize: "1.0vh",
-                    paddingRight: 0,
-                    paddingLeft: 0,
-                    paddingTop: "0.5vh",
-                    paddingBottom: "0.5vh",
-                  }}
-                >
-                  Classification
-                </TableCell>
-                <TableCell
-                  align="right"
-                  sx={{
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    paddingLeft: 0,
-                    fontSize: "1.0vh",
-                    paddingTop: "0.5vh",
-                    paddingBottom: "0.5vh",
-                    paddingRight: "0.8vh",
-                  }}
-                >
-                  Confidence
-                </TableCell>
-              </TableRow>
-            )} */}
-            {props.switchTable && isAnnotated && (
-              <TableRow>
-                <TableCell
-                  align="left"
-                  sx={{
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    paddingRight: 0,
-                    fontSize: "1.0vh",
-                    paddingTop: "0.5vh",
-                    paddingBottom: "0.5vh",
-                    paddingLeft: "0.8vh",
-                  }}
-                >
-                  Index
-                </TableCell>
-                <TableCell
-                  align="center"
-                  sx={{
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    fontSize: "1.0vh",
-                    paddingRight: 0,
-                    paddingLeft: 0,
-                    paddingTop: "0.5vh",
-                    paddingBottom: "0.5vh",
-                  }}
-                >
-                  Classification
-                </TableCell>
-                <TableCell
-                  align="right"
-                  sx={{
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    paddingLeft: 0,
-                    fontSize: "1.0vh",
-                    paddingTop: "0.5vh",
-                    paddingBottom: "0.5vh",
-                    paddingRight: "0.8vh",
-                  }}
-                >
-                  Total
-                </TableCell>
-              </TableRow>
-            )}
             {props.switchTable &&
               Object.keys(props.labelOccurrences).map((key, index) => (
                 <TableRow
