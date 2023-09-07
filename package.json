@@ -1,8 +1,15 @@
 {
   "name": "nachet-frontend",
+  "homepage": "https://ai-cfia.github.io/nachet-frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.16.7",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.1",
+    "@mui/material": "^5.14.1",
+    "@saithodev/ts-appversion": "^2.2.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -10,22 +17,35 @@
     "@types/node": "^16.18.38",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
+    "axios": "^1.4.0",
+    "browser-image-compression": "^2.0.2",
+    "express": "^4.18.2",
     "file-saver": "^2.0.5",
+    "js-cookie": "^3.0.5",
+    "jszip": "^3.10.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^4.10.1",
     "react-picture-annotation": "^1.2.0",
     "react-router-dom": "^6.14.1",
     "react-scripts": "5.0.1",
     "react-webcam": "^7.1.1",
     "styled-components": "^6.0.3",
-    "typescript": "^4.9.5",
+    "uuid": "^9.0.0",
     "web-vitals": "^2.1.4"
   },
+  "overrides": {
+    "typescript": "^5.1.6"
+  },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
   },
   "eslintConfig": {
     "extends": [
@@ -46,6 +66,20 @@
     ]
   },
   "devDependencies": {
-    "@types/file-saver": "^2.0.5"
+    "@types/file-saver": "^2.0.5",
+    "@types/js-cookie": "^3.0.3",
+    "@types/uuid": "^9.0.2",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "eslint": "^8.45.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-standard-with-typescript": "^36.1.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^16.0.1",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.32.2",
+    "gh-pages": "^5.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.1.6"
   }
 }

@@ -1,61 +1,114 @@
-import { HomeContainer, LeftContent, RightContent } from './indexElements';
-import Webcam from 'react-webcam';
-import React , { useCallback } from 'react';
-import { saveAs } from 'file-saver';
-import FeedCapture from '../../components/body/feedcapture';
-import MicroscopeFeed from '../../components/body/microscopefeed';
-import FeedControl from '../../components/body/feedcontrol';
-import ClassificationTools from '../../components/body/classificationtools';
-import Results from '../../components/body/results';
+import {
+  RowContainer,
+  LeftContent,
+  RightContent,
+  ColumnContainer,
+  InfoContent,
+} from "./indexElements";
+import type Webcam from "react-webcam";
+import React from "react";
+import FeedCapture from "../../components/body/feed_capture";
+import MicroscopeFeed from "../../components/body/microscope_feed";
+import ClassificationResults from "../../components/body/classification_results";
+import ImageCache from "../../components/body/image_cache";
+import StorageDirectory from "../../components/body/directory_list";
 
-type params = {
-    captureEmpty: boolean;
-    setCaptureEmpty: React.Dispatch<React.SetStateAction<boolean>>;
-    imageSrc: string;
-    setImageSrc: React.Dispatch<React.SetStateAction<string>>;
-    webcamRef: React.RefObject<Webcam>;
-    imageFormat: string;
-    setImageFormat: React.Dispatch<React.SetStateAction<string>>;
-    imageLabel: string;
-    setImageLabel: React.Dispatch<React.SetStateAction<string>>;
+interface params {
+  imageSrc: string;
+  webcamRef: React.RefObject<Webcam>;
+  imageFormat: string;
+  setSaveOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  capture: () => void;
+  savedImages: any[];
+  clearImageCache: () => void;
+  setImageIndex: React.Dispatch<React.SetStateAction<number>>;
+  setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  canvasRef: React.RefObject<HTMLCanvasElement>;
+  handleInference: () => void;
+  removeImage: (string: any) => void;
+  setSwitchModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setSwitchDeviceOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  imageIndex: number;
+  activeDeviceId: string | undefined;
+  azureStorageDir: any;
+  curDir: string;
+  setCreateDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  handleDirChange: (dir: string) => void;
+  setDelDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setResultsTunerOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  scoreThreshold: number;
+  selectedLabel: string;
+  setSelectedLabel: React.Dispatch<React.SetStateAction<string>>;
+  labelOccurrences: any;
+  switchTable: boolean;
+  setSwitchTable: React.Dispatch<React.SetStateAction<boolean>>;
+  setCurDir: React.Dispatch<React.SetStateAction<string>>;
+  windowSize: {
+    width: number;
+    height: number;
+  };
 }
 
 const Classifier: React.FC<params> = (props) => {
-
-        
-    const capture = useCallback(() => {
-        const src = props.webcamRef.current!.getScreenshot();
-        props.setImageSrc(src!);
-        props.setCaptureEmpty(false);
-      }, [props.webcamRef]);
-
-    const clear = () => {
-        props.setImageSrc("https://roadmap-tech.com/wp-content/uploads/2019/04/placeholder-image.jpg");
-        props.setCaptureEmpty(true);
-        props.setImageLabel("");
-    }
-
-    const saveImage = () => {
-        saveAs(props.imageSrc, `${props.imageLabel} - ${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}.${props.imageFormat.split('/')[1]}`);
-    }
-
-    
-
-    return (
-        <HomeContainer>
-                <LeftContent>
-                    <FeedCapture imageSrc={props.imageSrc} imageFormat={props.imageFormat} setImageFormat={props.setImageFormat} imageLabel={props.imageLabel} setImageLabel={props.setImageLabel} captureEmpty={props.captureEmpty}/>
-                    <Results/>
-                </LeftContent>
-                <RightContent>
-                    <MicroscopeFeed webcamRef={props.webcamRef} imageFormat={props.imageFormat}/>
-                    <FeedControl captureEmpty={props.captureEmpty} setCaptureEmpty={props.setCaptureEmpty} imageSrc={props.imageSrc} setImageSrc={props.setImageSrc} webcamRef={props.webcamRef} capture={capture} clear={clear} />
-                    <ClassificationTools captureEmpty={props.captureEmpty} saveImage={saveImage}/>
-                </RightContent>
-        </HomeContainer>
-
-         
-    );
-}
+  return (
+    <ColumnContainer>
+      <RowContainer>
+        <LeftContent>
+          <MicroscopeFeed
+            capture={props.capture}
+            webcamRef={props.webcamRef}
+            windowSize={props.windowSize}
+            activeDeviceId={props.activeDeviceId}
+            setSwitchDeviceOpen={props.setSwitchDeviceOpen}
+          />
+        </LeftContent>
+        <RightContent>
+          <FeedCapture
+            canvasRef={props.canvasRef}
+            windowSize={props.windowSize}
+            setSaveOpen={props.setSaveOpen}
+            handleInference={props.handleInference}
+            setUploadOpen={props.setUploadOpen}
+            setSwitchModelOpen={props.setSwitchModelOpen}
+            imageCache={props.savedImages}
+            imageIndex={props.imageIndex}
+          />
+        </RightContent>
+        <InfoContent>
+          <StorageDirectory
+            azureStorageDir={props.azureStorageDir}
+            curDir={props.curDir}
+            handleDirChange={props.handleDirChange}
+            setCreateDirectoryOpen={props.setCreateDirectoryOpen}
+            setDelDirectoryOpen={props.setDelDirectoryOpen}
+            windowSize={props.windowSize}
+            setCurDir={props.setCurDir}
+          />
+          <ImageCache
+            removeImage={props.removeImage}
+            savedImages={props.savedImages}
+            setImageIndex={props.setImageIndex}
+            windowSize={props.windowSize}
+            clearImageCache={props.clearImageCache}
+            imageIndex={props.imageIndex}
+          />
+          <ClassificationResults
+            scoreThreshold={props.scoreThreshold}
+            setResultsTunerOpen={props.setResultsTunerOpen}
+            savedImages={props.savedImages}
+            imageSrc={props.imageSrc}
+            windowSize={props.windowSize}
+            imageIndex={props.imageIndex}
+            selectedLabel={props.selectedLabel}
+            setSelectedLabel={props.setSelectedLabel}
+            labelOccurrences={props.labelOccurrences}
+            switchTable={props.switchTable}
+            setSwitchTable={props.setSwitchTable}
+          />
+        </InfoContent>
+      </RowContainer>
+    </ColumnContainer>
+  );
+};
 
 export default Classifier;

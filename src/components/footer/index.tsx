@@ -1,15 +1,37 @@
-import React from 'react';
-import { FooterContainer, FooterWrap, FooterLogo, FooterText } from './indexElements'
+import versions from "../../../src/_versions";
+import {
+  FooterContainer,
+  FooterWrap,
+  FooterLogo,
+  FooterLink,
+} from "./indexElements";
 
-const Footer = () => {
-    return (
-        <FooterContainer>
-            <FooterWrap>
-                <FooterText>Terms and Conditions</FooterText>
-                <FooterLogo src={require('../../assets/Canada_logo.png')} />
-            </FooterWrap>
-        </FooterContainer>
-    )
+interface params {
+  windowSize: {
+    width: number;
+    height: number;
+  };
 }
 
-export default Footer
+const Footer: React.FC<params> = (props) => {
+  return (
+    <FooterContainer height={props.windowSize.height}>
+      <FooterWrap
+        width={props.windowSize.width}
+        height={props.windowSize.height}
+      >
+        <FooterLink href="https://github.com/ai-cfia">
+          Developed by AI Lab
+        </FooterLink>
+        <FooterLink>Version {versions.version}</FooterLink>
+        <FooterLogo
+          src={require("../../assets/Canada_logo.png")}
+          width={props.windowSize.width}
+          height={props.windowSize.height}
+        />
+      </FooterWrap>
+    </FooterContainer>
+  );
+};
+
+export default Footer;
