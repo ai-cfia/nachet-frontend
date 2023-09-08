@@ -203,25 +203,24 @@ const StorageDirectory: React.FC<params> = (props) => {
                       paddingRight: "0.8vh",
                     }}
                   >
-                    {folderKey !== "General" && (
-                      <IconButton
-                        onClick={() => {
-                          handleDelete(folderKey);
+                    <IconButton
+                      onClick={() => {
+                        handleDelete(folderKey);
+                      }}
+                      sx={{ padding: 0 }}
+                      disabled={folderKey === "General"}
+                    >
+                      <CloseIcon
+                        style={{
+                          color: colours.CFIA_Background_Blue,
+                          fontSize: "1.8vh",
+                          marginTop: 0,
+                          marginBottom: 0,
+                          paddingTop: 0,
+                          paddingBottom: 0,
                         }}
-                        sx={{ padding: 0 }}
-                      >
-                        <CloseIcon
-                          style={{
-                            color: colours.CFIA_Background_Blue,
-                            fontSize: "1.8vh",
-                            marginTop: 0,
-                            marginBottom: 0,
-                            paddingTop: 0,
-                            paddingBottom: 0,
-                          }}
-                        />
-                      </IconButton>
-                    )}
+                      />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               ),
