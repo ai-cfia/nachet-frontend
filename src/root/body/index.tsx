@@ -163,6 +163,7 @@ const Body: React.FC<params> = (props) => {
   const saveImage = (): void => {
     // saves image to local storage or compresses the entire cache into a zip file which is then saved to local storage
     (async () => {
+      // save individual image
       if (saveIndividualImage === "0" && imageCache.length > 0) {
         saveAs(
           imageSrc,
@@ -172,6 +173,7 @@ const Body: React.FC<params> = (props) => {
         );
         setSaveOpen(false);
       } else if (saveIndividualImage === "1" && imageCache.length > 0) {
+        // compress all images from cache to zip file and download
         const zip = new JSZip();
         imageCache.forEach((image) => {
           const base64Data = image.src.replace(/^data:image\/\w+;base64,/, "");
@@ -206,6 +208,7 @@ const Body: React.FC<params> = (props) => {
       object.boxes.forEach((params: any) => {
         setImageCache((prevCache) =>
           prevCache.map((item) => {
+            // check to see if the image index matches the current image index
             if (
               item.index === imageIndex &&
               object.boxes.length !== item.scores.length
@@ -228,6 +231,7 @@ const Body: React.FC<params> = (props) => {
         );
       });
     });
+    // redraw canvas (useEffect)
     setResultsRendered(!resultsRendered);
   };
 
@@ -413,6 +417,7 @@ const Body: React.FC<params> = (props) => {
       canvas.height = image.height;
       ctx.drawImage(image, 0, 0);
       imageCache.forEach((storedImage) => {
+        // find the current image in the image cache based on current index
         if (storedImage.index === imageIndex && storedImage.annotated) {
           storedImage.classifications.forEach((prediction, index) => {
             // !storedImage.overlapping[index]
@@ -453,6 +458,7 @@ const Body: React.FC<params> = (props) => {
                     }
                   }
                 } else {
+                  // draw label index and score percentage
                   if (prediction === key) {
                     if (switchTable) {
                       ctx.fillText(
@@ -464,6 +470,7 @@ const Body: React.FC<params> = (props) => {
                         storedImage.boxes[index].topY - 8,
                       );
                     } else {
+                      // only draw table if switchTable is false (result component switch button)
                       ctx.fillText(
                         `[${index + 1}]`,
                         ((storedImage.boxes[index].bottomX as number) -

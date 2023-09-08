@@ -224,6 +224,35 @@ const ClassificationResults: React.FC<params> = (props) => {
                       />
                     </div>
                   </TableCell>
+                  <TableCell
+                    align="right"
+                    sx={{
+                      cursor: "pointer",
+                      paddingLeft: 0,
+                      fontSize: "1.0vh",
+                      paddingTop: "0.5vh",
+                      paddingBottom: "0.5vh",
+                      paddingRight: "0.8vh",
+                    }}
+                  >
+                    <IconButton
+                      onClick={() => {
+                        console.log("more options");
+                      }}
+                      sx={{ padding: 0 }}
+                    >
+                      <MoreVertIcon
+                        style={{
+                          color: colours.CFIA_Background_Blue,
+                          fontSize: "1.8vh",
+                          marginTop: 0,
+                          marginBottom: 0,
+                          paddingTop: 0,
+                          paddingBottom: 0,
+                        }}
+                      />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
               ))}
 

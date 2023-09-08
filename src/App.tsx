@@ -21,6 +21,7 @@ function App(): JSX.Element {
   const [signUpOpen, setSignUpOpen] = useState<boolean>(false);
 
   const handleCreativeCommonsAgreement = (agree: boolean): void => {
+    // set a cookie to remember the users choice for 10 years (user choice should be stored in authentication database in the future)
     if (agree) {
       Cookies.set("creative-commons-agreement", "true", { expires: 365 * 10 });
       console.log(
@@ -34,6 +35,7 @@ function App(): JSX.Element {
   };
 
   const getCreativeCommonsAgreement = (): void => {
+    // check if the user has already agreed to the creative commons agreement (cookie)
     const existingAgreement = Cookies.get("creative-commons-agreement");
     if (existingAgreement === undefined || existingAgreement === "false") {
       setCreativeCommonsPopupOpen(true);
@@ -41,12 +43,14 @@ function App(): JSX.Element {
   };
 
   const createUuid = (): void => {
+    // create a new uuid for user and set a cookie to remember it for 10 years (it is used to identify user container in azure storage)
     const newUuid = uuidv4();
     setUuid(newUuid);
     Cookies.set("user-uuid", newUuid, { expires: 365 * 10 });
   };
 
   const getUuid = (): void => {
+    // check if the user has already a uuid (cookie)
     const existingUuid = Cookies.get("user-uuid") as string;
     if (existingUuid !== undefined) {
       setUuid(existingUuid);
@@ -63,6 +67,7 @@ function App(): JSX.Element {
   }, []);
 
   useEffect(() => {
+    // update window size on resize
     const handleResize = (): void => {
       setWindowSize({
         width: window.innerWidth,
