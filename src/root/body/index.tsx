@@ -117,6 +117,14 @@ const Body: React.FC<params> = (props) => {
     }
   };
 
+  const getBackendUrl = (): string => {
+    const backendURL = process.env.REACT_APP_BACKEND_URL;
+    if (backendURL === null || backendURL === undefined || backendURL === "") {
+      throw new Error("REACT_APP_BACKEND_URL·is·not·set·in·.env");
+    }
+    return backendURL;
+  };
+
   const captureFeed = (): void => {
     // takes screenshot of webcam feed and loads it to cache when capture button is pressed
     const src: string | null | undefined = webcamRef.current?.getScreenshot();
@@ -263,11 +271,12 @@ const Body: React.FC<params> = (props) => {
 
   const handleCreateDirectory = (): void => {
     // makes a post request to the backend to create a new directory in azure storage
+
     (async () => {
       try {
         await axios({
           method: "post",
-          url: `http://localhost:8080/create-dir`,
+          url: `${getBackendUrl()}/create-dir`,
           headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
@@ -299,7 +308,7 @@ const Body: React.FC<params> = (props) => {
       try {
         await axios({
           method: "post",
-          url: `http://localhost:8080/del`,
+          url: `${getBackendUrl()}/del`,
           headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
@@ -331,7 +340,7 @@ const Body: React.FC<params> = (props) => {
       try {
         await axios({
           method: "post",
-          url: `http://localhost:8080/dir`,
+          url: `${getBackendUrl()}/dir`,
           headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
@@ -364,7 +373,7 @@ const Body: React.FC<params> = (props) => {
         try {
           await axios({
             method: "post",
-            url: `http://localhost:8080/inf`,
+            url: `${getBackendUrl()}/inf`,
             headers: {
               "Content-Type": "application/json",
               "Access-Control-Allow-Origin": "*",
