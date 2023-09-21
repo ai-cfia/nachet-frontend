@@ -267,7 +267,7 @@ const Body: React.FC<params> = (props) => {
       try {
         await axios({
           method: "post",
-          url: `http://localhost:8080/create-dir`,
+          url: `https://nachet-backend-dopvo46l7q-nn.a.run.app/create-dir`,
           headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
@@ -299,7 +299,7 @@ const Body: React.FC<params> = (props) => {
       try {
         await axios({
           method: "post",
-          url: `http://localhost:8080/del`,
+          url: `https://nachet-backend-dopvo46l7q-nn.a.run.app/del`,
           headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
@@ -331,7 +331,7 @@ const Body: React.FC<params> = (props) => {
       try {
         await axios({
           method: "post",
-          url: `http://localhost:8080/dir`,
+          url: `https://nachet-backend-dopvo46l7q-nn.a.run.app/dir`,
           headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
@@ -364,7 +364,7 @@ const Body: React.FC<params> = (props) => {
         try {
           await axios({
             method: "post",
-            url: `http://localhost:8080/inf`,
+            url: `https://nachet-backend-dopvo46l7q-nn.a.run.app/inf`, // REPLACE LOCALHOST W/ g cloud url (POST req ing)
             headers: {
               "Content-Type": "application/json",
               "Access-Control-Allow-Origin": "*",
