@@ -120,7 +120,7 @@ const Body: React.FC<params> = (props) => {
   const getBackendUrl = (): string => {
     const backendURL = process.env.REACT_APP_BACKEND_URL;
     if (backendURL === null || backendURL === undefined || backendURL === "") {
-      throw new Error("REACT_APP_BACKEND_URL·is·not·set·in·.env");
+      throw new Error('REACT_APP_BACKEND_URL environment variable is not set.');
     }
     return backendURL;
   };
