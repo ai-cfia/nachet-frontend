@@ -117,6 +117,14 @@ const Body: React.FC<params> = (props) => {
     }
   };
 
+  const getBackendUrl = (): string => {
+    const backendURL = process.env.REACT_APP_BACKEND_URL;
+    if (backendURL === null || backendURL === undefined || backendURL === "") {
+      throw new Error('REACT_APP_BACKEND_URL environment variable is not set.');
+    }
+    return backendURL;
+  };
+
   const captureFeed = (): void => {
     // takes screenshot of webcam feed and loads it to cache when capture button is pressed
     const src: string | null | undefined = webcamRef.current?.getScreenshot();
@@ -263,11 +271,12 @@ const Body: React.FC<params> = (props) => {
 
   const handleCreateDirectory = (): void => {
     // makes a post request to the backend to create a new directory in azure storage
+
     (async () => {
       try {
         await axios({
           method: "post",
-          url: `https://nachet-backend-dopvo46l7q-nn.a.run.app/create-dir`,
+          url: `${getBackendUrl()}/create-dir`,
           headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
@@ -299,7 +308,7 @@ const Body: React.FC<params> = (props) => {
       try {
         await axios({
           method: "post",
-          url: `https://nachet-backend-dopvo46l7q-nn.a.run.app/del`,
+          url: `${getBackendUrl()}/del`,
           headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
@@ -331,7 +340,7 @@ const Body: React.FC<params> = (props) => {
       try {
         await axios({
           method: "post",
-          url: `https://nachet-backend-dopvo46l7q-nn.a.run.app/dir`,
+          url: `${getBackendUrl()}/dir`,
           headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
@@ -364,7 +373,7 @@ const Body: React.FC<params> = (props) => {
         try {
           await axios({
             method: "post",
-            url: `https://nachet-backend-dopvo46l7q-nn.a.run.app/inf`, // REPLACE LOCALHOST W/ g cloud url (POST req ing)
+            url: `${getBackendUrl()}/inf`,
             headers: {
               "Content-Type": "application/json",
               "Access-Control-Allow-Origin": "*",
