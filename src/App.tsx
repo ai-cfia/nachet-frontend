@@ -111,7 +111,7 @@ function App(): JSX.Element {
             }
           />
         </Routes>
-        <Footer windowSize={windowSize} />
+        <Footer uuid={uuid} windowSize={windowSize} />
       </Fragment>
     </Router>
   );
