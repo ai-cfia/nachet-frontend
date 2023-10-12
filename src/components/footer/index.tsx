@@ -11,6 +11,7 @@ interface params {
     width: number;
     height: number;
   };
+  uuid: string;
 }
 
 const Footer: React.FC<params> = (props) => {
@@ -23,7 +24,9 @@ const Footer: React.FC<params> = (props) => {
         <FooterLink href="https://github.com/ai-cfia">
           Developed by AI Lab
         </FooterLink>
-        <FooterLink>Version {versions.version}</FooterLink>
+        <FooterLink>
+          Version {versions.version} | UUID: {props.uuid}
+        </FooterLink>
         <FooterLogo
           src={require("../../assets/Canada_logo.png")}
           width={props.windowSize.width}

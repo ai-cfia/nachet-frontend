@@ -429,7 +429,7 @@ const Body: React.FC<params> = (props) => {
         // find the current image in the image cache based on current index
         if (storedImage.index === imageIndex && storedImage.annotated) {
           storedImage.classifications.forEach((prediction, index) => {
-            // !storedImage.overlapping[index]
+            // !storedImage.overlapping[index]     REMOVE THIS TO SHOW ONLY 1 BB
             if (
               storedImage.scores[index] >= scoreThreshold / 100 &&
               (prediction === selectedLabel || selectedLabel === "all")
