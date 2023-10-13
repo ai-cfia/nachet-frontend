@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import React, { useCallback } from 'react';
 import type Webcam from "react-webcam";
 import { saveAs } from "file-saver";
 import { BodyContainer } from "./indexElements";
