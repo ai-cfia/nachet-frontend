@@ -120,13 +120,13 @@ const Body: React.FC<params> = (props) => {
     [imageCache, imageSrc, imageSrcKey],
   );
 
-  const getBackendUrl = (): string => {
+  const getBackendUrl = useCallback((): string => {
     const backendURL = process.env.REACT_APP_BACKEND_URL;
     if (backendURL === null || backendURL === undefined || backendURL === "") {
       throw new Error("REACT_APP_BACKEND_URL environment variable is not set.");
     }
     return backendURL;
-  };
+  }, []);
 
   const captureFeed = (): void => {
     // takes screenshot of webcam feed and loads it to cache when capture button is pressed
@@ -524,7 +524,7 @@ const Body: React.FC<params> = (props) => {
         }
       });
     };
-  }, []);
+  }, [imageCache, imageIndex, imageSrc, labelOccurrences, scoreThreshold, selectedLabel, switchTable]);
 
   useEffect(() => {
     getCurrentImage(imageIndex);
