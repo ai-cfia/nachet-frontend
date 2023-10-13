@@ -42,12 +42,12 @@ function App(): JSX.Element {
     }
   }, []);
 
-  const createUuid = (): void => {
+  const createUuid = useCallback((): void => {
     // create a new uuid for user and set a cookie to remember it for 10 years (it is used to identify user container in azure storage)
     const newUuid = uuidv4();
     setUuid(newUuid);
     Cookies.set("user-uuid", newUuid, { expires: 365 * 10 });
-  };
+  }, []);
 
   const getUuid = useCallback((): void => {
     // check if the user has already a uuid (cookie)
