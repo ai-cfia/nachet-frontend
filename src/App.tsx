@@ -1,6 +1,6 @@
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
-import { useCallback,Fragment, useState, useEffect } from "react";
+import { useCallback, Fragment, useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Cookies from "js-cookie";
 import Navbar from "./components/header/navbar";
