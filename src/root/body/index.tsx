@@ -98,7 +98,7 @@ const Body: React.FC<params> = (props) => {
     );
   };
 
-  const getCurrentImage = (index: number): void => {
+  const getCurrentImage = useCallback((index: number): void => {
     // gets the current image from the image cache based on index value
     if (imageCache.length > 0) {
       imageCache.forEach((image) => {
@@ -115,7 +115,7 @@ const Body: React.FC<params> = (props) => {
         "https://ai-cfia.github.io/nachet-frontend/placeholder-image.jpg",
       );
     }
-  };
+  }, [imageCache, imageSrc, imageSrcKey]);
 
   const getBackendUrl = (): string => {
     const backendURL = process.env.REACT_APP_BACKEND_URL;
@@ -543,11 +543,14 @@ const Body: React.FC<params> = (props) => {
     switchTable,
     imageSrc,
     imageSrcKey,
+    imageIndex,
+    getCurrentImage,
+    loadToCanvas,
   ]);
 
   useEffect(() => {
     getLabelOccurrence();
-  }, [imageIndex, scoreThreshold, imageCache]);
+  }, [imageIndex, scoreThreshold, imageCache, getLabelOccurrence]);
 
   useEffect(() => {
     // retrieves the available devices and sets the active device to the first available device
@@ -587,7 +590,7 @@ const Body: React.FC<params> = (props) => {
 
   useEffect(() => {
     handleAzureStorageDir();
-  }, [props.uuid]);
+  }, [props.uuid, handleAzureStorageDir]);
 
   return (
     <BodyContainer width={props.windowSize.width}>
