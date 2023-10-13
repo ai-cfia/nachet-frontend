@@ -98,24 +98,27 @@ const Body: React.FC<params> = (props) => {
     );
   };
 
-  const getCurrentImage = useCallback((index: number): void => {
-    // gets the current image from the image cache based on index value
-    if (imageCache.length > 0) {
-      imageCache.forEach((image) => {
-        if (image.index === index) {
-          setImageSrc(image.src);
-          setSelectedLabel("all");
-          if (image.src === imageSrc) {
-            setImageSrcKey(!imageSrcKey);
+  const getCurrentImage = useCallback(
+    (index: number): void => {
+      // gets the current image from the image cache based on index value
+      if (imageCache.length > 0) {
+        imageCache.forEach((image) => {
+          if (image.index === index) {
+            setImageSrc(image.src);
+            setSelectedLabel("all");
+            if (image.src === imageSrc) {
+              setImageSrcKey(!imageSrcKey);
+            }
           }
-        }
-      });
-    } else {
-      setImageSrc(
-        "https://ai-cfia.github.io/nachet-frontend/placeholder-image.jpg",
-      );
-    }
-  }, [imageCache, imageSrc, imageSrcKey]);
+        });
+      } else {
+        setImageSrc(
+          "https://ai-cfia.github.io/nachet-frontend/placeholder-image.jpg",
+        );
+      }
+    },
+    [imageCache, imageSrc, imageSrcKey],
+  );
 
   const getBackendUrl = (): string => {
     const backendURL = process.env.REACT_APP_BACKEND_URL;
