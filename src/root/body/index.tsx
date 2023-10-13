@@ -525,7 +525,7 @@ const Body: React.FC<params> = (props) => {
 
   useEffect(() => {
     getCurrentImage(imageIndex);
-  }, [imageIndex]);
+  }, [imageIndex, getCurrentImage, loadToCanvas, getLabelOccurrence, handleAzureStorageDir]);
 
   useEffect(() => {
     loadToCanvas();
