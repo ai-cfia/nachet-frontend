@@ -524,7 +524,15 @@ const Body: React.FC<params> = (props) => {
         }
       });
     };
-  }, [imageCache, imageIndex, imageSrc, labelOccurrences, scoreThreshold, selectedLabel, switchTable]);
+  }, [
+    imageCache,
+    imageIndex,
+    imageSrc,
+    labelOccurrences,
+    scoreThreshold,
+    selectedLabel,
+    switchTable,
+  ]);
 
   useEffect(() => {
     getCurrentImage(imageIndex);
