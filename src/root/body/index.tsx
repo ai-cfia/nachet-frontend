@@ -265,7 +265,7 @@ const Body: React.FC<params> = (props) => {
       }
     });
     setLabelOccurrences(result);
-  });
+  }, [imageCache, imageIndex, scoreThreshold, setLabelOccurrences]);
 
   const handleDirChange = (dir: string): void => {
     // sets the current directory for azure storage
@@ -364,7 +364,7 @@ const Body: React.FC<params> = (props) => {
     })().catch((error) => {
       console.error(error);
     });
-  });
+  }, [props.uuid, setAzureStorageDir, getBackendUrl]);
 
   const handleInferenceRequest = (): void => {
     // makes a post request to the backend to get inference data for the current image
@@ -524,7 +524,7 @@ const Body: React.FC<params> = (props) => {
         }
       });
     };
-  });
+  }, []);
 
   useEffect(() => {
     getCurrentImage(imageIndex);
