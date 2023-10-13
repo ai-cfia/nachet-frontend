@@ -246,7 +246,7 @@ const Body: React.FC<params> = (props) => {
     setResultsRendered(!resultsRendered);
   };
 
-  const getLabelOccurrence = (): void => {
+  const getLabelOccurrence = useCallback((): void => {
     // gets the number of occurences of each label in the current
     // image based on score threshold and seed label selection in classification results
     const result: any = {};
@@ -265,7 +265,7 @@ const Body: React.FC<params> = (props) => {
       }
     });
     setLabelOccurrences(result);
-  };
+  });
 
   const handleDirChange = (dir: string): void => {
     // sets the current directory for azure storage
@@ -336,7 +336,7 @@ const Body: React.FC<params> = (props) => {
     });
   };
 
-  const handleAzureStorageDir = (): void => {
+  const handleAzureStorageDir = useCallback((): void => {
     // makes a post request to the backend to get the current directories in azure storage,
     // should be called whenever a directory is deleted, created and when page is rendered
     (async () => {
@@ -364,7 +364,7 @@ const Body: React.FC<params> = (props) => {
     })().catch((error) => {
       console.error(error);
     });
-  };
+  });
 
   const handleInferenceRequest = (): void => {
     // makes a post request to the backend to get inference data for the current image
@@ -411,7 +411,7 @@ const Body: React.FC<params> = (props) => {
     }
   };
 
-  const loadToCanvas = (): void => {
+  const loadToCanvas = useCallback((): void => {
     // loads the current image to the canvas and draws the bounding boxes and labels,
     // should update whenever a change is made to the image cache or the score threshold and the selected label is changed
     const image = new Image();
@@ -524,7 +524,7 @@ const Body: React.FC<params> = (props) => {
         }
       });
     };
-  };
+  });
 
   useEffect(() => {
     getCurrentImage(imageIndex);
