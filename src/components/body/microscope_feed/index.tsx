@@ -118,7 +118,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
           style={{ objectFit: "cover" }}
           videoConstraints={{
             width: width - 1,
-            height: height,
+            height,
             deviceId: props.activeDeviceId,
           }}
           screenshotFormat={"image/png"}

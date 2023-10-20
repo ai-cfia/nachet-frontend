@@ -1,6 +1,6 @@
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
-import { Fragment, useState, useEffect } from "react";
+import { useCallback, Fragment, useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Cookies from "js-cookie";
 import Navbar from "./components/header/navbar";
@@ -34,22 +34,22 @@ function App(): JSX.Element {
     setCreativeCommonsPopupOpen(false);
   };
 
-  const getCreativeCommonsAgreement = (): void => {
+  const getCreativeCommonsAgreement = useCallback((): void => {
     // check if the user has already agreed to the creative commons agreement (cookie)
     const existingAgreement = Cookies.get("creative-commons-agreement");
     if (existingAgreement === undefined || existingAgreement === "false") {
       setCreativeCommonsPopupOpen(true);
     }
-  };
+  }, []);
 
-  const createUuid = (): void => {
+  const createUuid = useCallback((): void => {
     // create a new uuid for user and set a cookie to remember it for 10 years (it is used to identify user container in azure storage)
     const newUuid = uuidv4();
     setUuid(newUuid);
     Cookies.set("user-uuid", newUuid, { expires: 365 * 10 });
-  };
+  }, []);
 
-  const getUuid = (): void => {
+  const getUuid = useCallback((): void => {
     // check if the user has already a uuid (cookie)
     const existingUuid = Cookies.get("user-uuid") as string;
     if (existingUuid !== undefined) {
@@ -59,12 +59,12 @@ function App(): JSX.Element {
       console.log("Creating new UUID");
       createUuid();
     }
-  };
+  }, [createUuid]);
 
   useEffect(() => {
     getUuid();
     getCreativeCommonsAgreement();
-  }, []);
+  }, [getUuid, getCreativeCommonsAgreement]);
 
   useEffect(() => {
     // update window size on resize
