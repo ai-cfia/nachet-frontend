@@ -34,8 +34,8 @@ interface params {
 }
 
 const MicroscopeFeed: React.FC<params> = (props) => {
-  const width = props.windowSize.width * 0.805;
-  const height = props.windowSize.height * 0.606;
+  const width = props.windowSize.width * 0.519;
+  const height = props.windowSize.height * 0.605;
   const buttonStyle = {
     marginRight: "0.9vh",
     marginLeft: 0,

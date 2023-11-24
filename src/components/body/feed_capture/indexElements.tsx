@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const Canvas = styled.canvas`
-  height: 60.6vh;
-  width: 80.45vw;
+  height: 29.2vw;
+  width: 51.9vw;
   object-fit: fit;
   object-cover: cover;
   cover: contain;

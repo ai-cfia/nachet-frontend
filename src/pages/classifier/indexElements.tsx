@@ -47,7 +47,7 @@ export const LeftContent = styled.div`
   padding-right: 0.5vw;
   z-index: 0;
   position: relative;
-  margin-left: 18vw;
+  margin-left: 17vw;
 `;
 
 export const InfoContent = styled.div`
@@ -62,7 +62,7 @@ export const InfoContent = styled.div`
   padding: 0vw 0vw 0vw 0.5vw;
   z-index: 0;
   position: relative;
-  margin-left: 18vw;
+  margin-left: 4vw;
 `;
 
 export const RightContent = styled.div`
