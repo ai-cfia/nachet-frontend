@@ -1,15 +1,32 @@
+// \components\body\microscope_feed\index.tsx
+// MicroscopeFeed
 import Webcam from "react-webcam";
 import React from "react";
 import { Box, CardHeader, Button } from "@mui/material";
 import { colours } from "../../../styles/colours";
+import { Canvas } from "../feed_capture/indexElements";
 import SwitchCameraIcon from "@mui/icons-material/SwitchCamera";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
+import DownloadIcon from "@mui/icons-material/Download";
+import CropFreeIcon from "@mui/icons-material/CropFree";
+import InfoIcon from "@mui/icons-material/Info";
+import ToggleButton from "../buttons/ToggleButton";
 
 interface params {
   webcamRef: React.RefObject<Webcam>;
   capture: () => void;
   activeDeviceId: string | undefined;
   setSwitchDeviceOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  canvasRef: React.RefObject<HTMLCanvasElement>;
+  setSaveOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setSwitchModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  imageCache: any[];
+  handleInference: () => void;
+  imageIndex: number;
+  isWebcamActive: boolean;
+  onCaptureClick: () => void;
   windowSize: {
     width: number;
     height: number;
@@ -17,8 +34,8 @@ interface params {
 }
 
 const MicroscopeFeed: React.FC<params> = (props) => {
-  const width = props.windowSize.width * 0.405;
-  const height = props.windowSize.height * 0.65;
+  const width = props.windowSize.width * 0.805;
+  const height = props.windowSize.height * 0.606;
   const buttonStyle = {
     marginRight: "0.9vh",
     marginLeft: 0,
@@ -71,6 +88,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
             <Button
               color="inherit"
               variant="outlined"
+              disabled={!props.isWebcamActive} // Disable when the webcam is active
               onClick={() => {
                 props.capture();
               }}
@@ -90,6 +108,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
             <Button
               color="inherit"
               variant="outlined"
+              disabled={!props.isWebcamActive} // Disable when the webcam is active
               onClick={() => {
                 props.setSwitchDeviceOpen(true);
               }}
@@ -106,23 +125,127 @@ const MicroscopeFeed: React.FC<params> = (props) => {
                 <span>SWITCH</span>
               </div>
             </Button>
+            <Button
+              color="inherit"
+              variant="outlined"
+              disabled={props.isWebcamActive} // Disable when the webcam is active
+              onClick={() => {
+                props.setUploadOpen(true);
+              }}
+              sx={buttonStyle}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                }}
+              >
+                <UploadFileIcon color="inherit" style={iconStyle} />
+                <span>LOAD</span>
+              </div>
+            </Button>
+            <Button
+              color="inherit"
+              variant="outlined"
+              disabled={props.isWebcamActive} // Disable when the webcam is active
+              onClick={() => {
+                props.setSaveOpen(true);
+              }}
+              sx={buttonStyle}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                }}
+              >
+                <DownloadIcon color="inherit" style={iconStyle} />
+                <span>SAVE</span>
+              </div>
+            </Button>
+            <Button
+              color="inherit"
+              variant="outlined"
+              disabled={props.isWebcamActive} // Disable when the webcam is active
+              onClick={() => {
+                props.handleInference();
+              }}
+              sx={buttonStyle}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                }}
+              >
+                <CropFreeIcon color="inherit" style={iconStyle} />
+                <span>CLASSIFY</span>
+              </div>
+            </Button>
+            <Button
+              color="inherit"
+              variant="outlined"
+              disabled={props.isWebcamActive} // Disable when the webcam is active
+              onClick={() => {
+                props.setSwitchModelOpen(true);
+              }}
+              sx={buttonStyle}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                }}
+              >
+                <InfoIcon color="inherit" style={iconStyle} />
+                <span>MODEL</span>
+              </div>
+            </Button>
           </>
         }
       />
       <div>
-        <Webcam
-          ref={props.webcamRef}
-          mirrored={false}
-          width={width - 1}
-          height={height}
-          style={{ objectFit: "cover" }}
-          videoConstraints={{
-            width: width - 1,
-            height,
-            deviceId: props.activeDeviceId,
+        {props.isWebcamActive ? (
+          <Webcam
+            ref={props.webcamRef}
+            mirrored={false}
+            width={width - 1}
+            height={height}
+            style={{ objectFit: "cover" }}
+            videoConstraints={{
+              width: width - 1,
+              height,
+              deviceId: props.activeDeviceId,
+            }}
+            screenshotFormat={"image/png"}
+            screenshotQuality={1}
+          />
+        ) : (
+          <Canvas ref={props.canvasRef} />
+        )}
+      </div>
+      <div style={{ display: "flex" }}>
+        <ToggleButton
+          isActive={!props.isWebcamActive}
+          onClick={() => {
+            if (!props.isWebcamActive) {
+              props.onCaptureClick();
+            }
           }}
-          screenshotFormat={"image/png"}
-          screenshotQuality={1}
+          text="Show Webcam"
+        />
+        <ToggleButton
+          isActive={props.isWebcamActive}
+          onClick={() => {
+            if (props.isWebcamActive) {
+              props.onCaptureClick();
+            }
+          }}
+          text="Cache"
         />
       </div>
     </Box>
