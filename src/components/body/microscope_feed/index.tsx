@@ -235,7 +235,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
               props.onCaptureClick();
             }
           }}
-          text="Show Feed"
+          text="Video Feed"
         />
         <ToggleButton
           isActive={props.isWebcamActive}
