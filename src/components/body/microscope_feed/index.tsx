@@ -74,7 +74,6 @@ const MicroscopeFeed: React.FC<params> = (props) => {
       boxShadow={0}
     >
       <CardHeader
-        title="MICROSCOPE FEED"
         titleTypographyProps={{
           variant: "h6",
           align: "left",
@@ -236,7 +235,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
               props.onCaptureClick();
             }
           }}
-          text="Show Webcam"
+          text="Show Feed"
         />
         <ToggleButton
           isActive={props.isWebcamActive}
@@ -245,7 +244,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
               props.onCaptureClick();
             }
           }}
-          text="Cache"
+          text="Capture"
         />
       </div>
     </Box>

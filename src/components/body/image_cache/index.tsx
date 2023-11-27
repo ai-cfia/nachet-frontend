@@ -40,7 +40,7 @@ const ImageCache: React.FC<params> = (props) => {
       boxShadow={0}
     >
       <CardHeader
-        title="CACHE"
+        title="CAPTURES"
         titleTypographyProps={{
           variant: "h6",
           align: "left",
