@@ -155,10 +155,9 @@ const StorageDirectory: React.FC<params> = (props) => {
                     </div>
                   </TableCell>
                   <TableCell
-                    align="left"
+                    align="right"
                     sx={{
                       cursor: "pointer",
-                      paddingRight: 0,
                       fontSize: "1.15vh",
                       paddingTop: "0.5vh",
                       paddingBottom: "0.5vh",
@@ -172,11 +171,13 @@ const StorageDirectory: React.FC<params> = (props) => {
                     <div
                       style={{
                         display: "flex",
-                        alignItems: "center",
-                        flexWrap: "wrap",
+                        width: "100%",
+                        justifyContent: "flex-end",
+                        alignContent: "center",
+                        marginLeft: "1vw",
                       }}
                     >
-                      <span style={{ width: "0.7vw", textAlign: "right" }}>
+                      <span style={{ marginRight: "0.1vw" }}>
                         {props.azureStorageDir[folderKey]}
                       </span>
                       <FilterIcon

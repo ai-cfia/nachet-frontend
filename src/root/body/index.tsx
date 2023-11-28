@@ -1,3 +1,4 @@
+// root\body\index.tsx
 import { useState, useRef, useEffect, useCallback } from "react";
 import type Webcam from "react-webcam";
 import { saveAs } from "file-saver";
@@ -70,6 +71,7 @@ const Body: React.FC<params> = (props) => {
   const [switchTable, setSwitchTable] = useState<boolean>(true);
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [isWebcamActive, setIsWebcamActive] = useState(true); // This state determines the visibility of the webcam
 
   const loadCaptureToCache = (src: string): void => {
     // appends new image to image cache and its corresponding details
@@ -603,6 +605,11 @@ const Body: React.FC<params> = (props) => {
     handleAzureStorageDir();
   }, [props.uuid, handleAzureStorageDir]);
 
+  const handleImageUpload = (): void => {
+    // Set the logic for handling image upload and then:
+    setIsWebcamActive(false); // Hide the webcam after the image is loaded
+  };
+
   return (
     <BodyContainer width={props.windowSize.width}>
       {saveOpen && (
@@ -663,6 +670,7 @@ const Body: React.FC<params> = (props) => {
           handleCreativeCommonsAgreement={props.handleCreativeCommonsAgreement}
         />
       )}
+
       <Classifier
         handleInference={handleInferenceRequest}
         imageIndex={imageIndex}
@@ -694,6 +702,11 @@ const Body: React.FC<params> = (props) => {
         switchTable={switchTable}
         setSwitchTable={setSwitchTable}
         setCurDir={setCurDir}
+        isWebcamActive={isWebcamActive}
+        onCaptureClick={() => {
+          setIsWebcamActive(!isWebcamActive);
+        }}
+        onImageUpload={handleImageUpload}
       />
     </BodyContainer>
   );
