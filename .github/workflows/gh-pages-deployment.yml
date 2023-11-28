@@ -2,10 +2,13 @@ name: Build and Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - redat97/issue62
+
 
 jobs:
+
+  lint-test:
+    uses: ai-cfia/github-workflows/.github/workflows/workflow-lint-test-node.yml@main
+
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
