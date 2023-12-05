@@ -1,3 +1,5 @@
+// Classification Results
+// \src\components\body\classification_results\index.tsx
 import React from "react";
 import {
   Table,
@@ -27,6 +29,7 @@ interface params {
   labelOccurrences: any;
   switchTable: boolean;
   setSwitchTable: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedModel: string;
   windowSize: {
     width: number;
     height: number;
@@ -53,7 +56,12 @@ const ClassificationResults: React.FC<params> = (props) => {
       boxShadow={0}
     >
       <CardHeader
-        title="RESULTS"
+        title={
+          <span>
+            {"RESULTS | "}
+            <strong>{props.selectedModel}</strong>
+          </span>
+        }
         titleTypographyProps={{
           variant: "h6",
           align: "left",

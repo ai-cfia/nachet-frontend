@@ -43,6 +43,7 @@ interface params {
   switchTable: boolean;
   setSwitchTable: React.Dispatch<React.SetStateAction<boolean>>;
   setCurDir: React.Dispatch<React.SetStateAction<string>>;
+  selectedModel: string;
   windowSize: {
     width: number;
     height: number;
@@ -104,6 +105,7 @@ const Classifier: React.FC<params> = (props) => {
             labelOccurrences={props.labelOccurrences}
             switchTable={props.switchTable}
             setSwitchTable={props.setSwitchTable}
+            selectedModel={props.selectedModel}
           />
         </InfoContent>
       </RowContainer>
