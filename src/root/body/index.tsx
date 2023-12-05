@@ -1,4 +1,5 @@
-// root\body\index.tsx
+// Root Functions
+// \src\root\body\index.tsx
 import { useState, useRef, useEffect, useCallback } from "react";
 import type Webcam from "react-webcam";
 import { saveAs } from "file-saver";
@@ -65,6 +66,7 @@ const Body: React.FC<params> = (props) => {
   const [delDirectoryOpen, setDelDirectoryOpen] = useState<boolean>(false);
   const [resultsTunerOpen, setResultsTunerOpen] = useState<boolean>(false);
   const [scoreThreshold, setScoreThreshold] = useState<number>(50);
+  const [selectedModel, setSelectedModel] = useState("Model 1"); // New state for selected model
   const [selectedLabel, setSelectedLabel] = useState<string>("all");
   const [labelOccurrences, setLabelOccurrences] = useState<any>({});
   const [saveIndividualImage, setSaveIndividualImage] = useState<string>("0");
@@ -72,7 +74,6 @@ const Body: React.FC<params> = (props) => {
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isWebcamActive, setIsWebcamActive] = useState(true); // This state determines the visibility of the webcam
-  const [backendURL, setBackendURL] = useState<string | null>(null);
 
   const loadCaptureToCache = (src: string): void => {
     // appends new image to image cache and its corresponding details
@@ -123,32 +124,11 @@ const Body: React.FC<params> = (props) => {
     [imageCache, imageSrc, imageSrcKey],
   );
 
-  const getBackendUrl = useCallback(async (): Promise<string> => {
+  const getBackendUrl = useCallback((): string => {
     const backendURL = process.env.REACT_APP_BACKEND_URL;
-
     if (backendURL === null || backendURL === undefined || backendURL === "") {
-      setBackendURL(null);
       throw new Error("REACT_APP_BACKEND_URL environment variable is not set.");
     }
-
-    try {
-      const healthCheckUrl = `${backendURL}/health`;
-      const response = await fetch(healthCheckUrl);
-      console.log("Trying Health");
-
-      if (response.status === 200) {
-        setBackendURL(backendURL);
-        console.log("STATUS 200");
-      } else {
-        setBackendURL(null);
-        console.log("STATUS 404");
-        throw new Error("Backend URL is not responding with a 200 status.");
-      }
-    } catch (error) {
-      setBackendURL(null);
-      throw new Error("Error connecting to backend URL.");
-    }
-
     return backendURL;
   }, []);
 
@@ -296,159 +276,140 @@ const Body: React.FC<params> = (props) => {
     setCurDir(dir.replace(/\s/g, "-"));
   };
 
-  const handleCreateDirectory = async (): Promise<void> => {
-    try {
-      const backendUrl = await getBackendUrl();
-      const response = await axios.post(
-        `${backendUrl}/create-dir`,
-        {
-          container_name: props.uuid,
-          folder_name: curDir,
-        },
-        {
+  const handleCreateDirectory = (): void => {
+    // makes a post request to the backend to create a new directory in azure storage
+
+    (async () => {
+      try {
+        await axios({
+          method: "post",
+          url: `${getBackendUrl()}/create-dir`,
           headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
           },
-        },
-      );
-
-      if (response.status === 200) {
-        setCreateDirectoryOpen(false);
-        setCurDir("General");
-        handleAzureStorageDir()
-          .then(() => {
-            // Successful completion of handleAzureStorageDir
-          })
-          .catch((error) => {
-            // Handle any errors from handleAzureStorageDir
-            console.error("Error in handleAzureStorageDir", error);
-          });
-      } else {
-        alert("Error creating directory, it may already exist");
+          data: {
+            container_name: props.uuid,
+            folder_name: curDir,
+          },
+        }).then((response) => {
+          if (response.status === 200) {
+            setCreateDirectoryOpen(false);
+            setCurDir("General");
+            handleAzureStorageDir();
+          } else {
+            alert("Error creating directory, it may already exist");
+          }
+        });
+      } catch (error) {
+        alert(error);
       }
-    } catch (error) {
-      if (error instanceof Error) {
-        // Now TypeScript knows 'error' is of type Error
-        alert("Error creating directory: " + error.message);
-      } else {
-        // Handle cases where 'error' is not an Error object
-        alert("An unknown error occurred");
-      }
-    }
+    })().catch((error) => {
+      alert(error);
+    });
   };
 
-  const handleDelFromDirectory = async (): Promise<void> => {
-    try {
-      const backendUrl = await getBackendUrl();
-      const response = await axios.post(
-        `${backendUrl}/del`,
-        {
-          container_name: props.uuid,
-          folder_name: curDir,
-        },
-        {
+  const handleDelFromDirectory = (): void => {
+    // makes a post request to the backend to delete a directory in azure storage
+    (async () => {
+      try {
+        await axios({
+          method: "post",
+          url: `${getBackendUrl()}/del`,
           headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
           },
-        },
-      );
-
-      if (response.status === 200) {
-        setCurDir("General");
-        handleAzureStorageDir()
-          .then(() => {
-            // Successful completion of handleAzureStorageDir
-          })
-          .catch((error) => {
-            // Handle any errors from handleAzureStorageDir
-            console.error("Error in handleAzureStorageDir", error);
-          });
-      } else {
-        alert(response.data);
+          data: {
+            container_name: props.uuid,
+            folder_name: curDir,
+          },
+        }).then((response) => {
+          if (response.status === 200) {
+            setCurDir("General");
+            handleAzureStorageDir();
+          } else {
+            alert(response.data);
+          }
+        });
+      } catch (error) {
+        alert(error);
       }
-    } catch (error) {
-      if (error instanceof Error) {
-        alert("Error deleting directory: " + error.message);
-      } else {
-        alert("An unknown error occurred");
-      }
-    }
+    })().catch((error) => {
+      alert(error);
+    });
   };
 
-  const handleAzureStorageDir = useCallback(async (): Promise<void> => {
-    try {
-      const backendUrl = await getBackendUrl();
-      const response = await axios.post(
-        `${backendUrl}/dir`,
-        {
-          container_name: props.uuid,
-        },
-        {
+  const handleAzureStorageDir = useCallback((): void => {
+    // makes a post request to the backend to get the current directories in azure storage,
+    // should be called whenever a directory is deleted, created and when page is rendered
+    (async () => {
+      try {
+        await axios({
+          method: "post",
+          url: `${getBackendUrl()}/dir`,
           headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
           },
-        },
-      );
-
-      if (response.status === 200) {
-        setAzureStorageDir(response.data);
-      } else {
-        alert("Error fetching directories: " + JSON.stringify(response.data));
+          data: {
+            container_name: props.uuid,
+          },
+        }).then((response) => {
+          if (response.status === 200) {
+            setAzureStorageDir(response.data);
+          } else {
+            alert(response.data[0]);
+          }
+        });
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error("Error in handleAzureStorageDir: " + error.message);
-      } else {
-        console.error("An unknown error occurred in handleAzureStorageDir");
-      }
-    }
+    })().catch((error) => {
+      console.error(error);
+    });
   }, [props.uuid, setAzureStorageDir, getBackendUrl]);
 
-  const handleInferenceRequest = async (): Promise<void> => {
+  const handleInferenceRequest = (): void => {
+    // makes a post request to the backend to get inference data for the current image
     if (curDir !== "") {
       const imageObject = imageCache.filter(
         (item) => item.index === imageIndex,
       );
-
-      try {
-        const backendUrl = await getBackendUrl();
-        const response = await axios.post(
-          `${backendUrl}/inf`,
-          {
-            image: imageSrc,
-            imageDims: [
-              imageObject[0].imageDims[0],
-              imageObject[0].imageDims[1],
-            ],
-            folder_name: curDir,
-            container_name: props.uuid,
-          },
-          {
+      (async () => {
+        try {
+          await axios({
+            method: "post",
+            url: `${getBackendUrl()}/inf`,
             headers: {
               "Content-Type": "application/json",
               "Access-Control-Allow-Origin": "*",
             },
-          },
-        );
-
-        if (response.status === 200) {
-          void handleAzureStorageDir();
-          loadResultsToCache(response.data);
-        } else {
-          alert("Error processing inference: " + JSON.stringify(response.data));
+            data: {
+              image: imageSrc,
+              imageDims: [
+                imageObject[0].imageDims[0],
+                imageObject[0].imageDims[1],
+              ],
+              folder_name: curDir,
+              container_name: props.uuid,
+            },
+          }).then((response) => {
+            if (response.status === 200) {
+              handleAzureStorageDir();
+              loadResultsToCache(response.data);
+            } else {
+              alert(response.data[0]);
+            }
+          });
+        } catch (error) {
+          console.log(error);
+          alert("Error fetching inference data");
         }
-      } catch (error) {
-        if (error instanceof Error) {
-          console.error("Error in handleInferenceRequest:", error.message);
-          alert("Error fetching inference data: " + error.message);
-        } else {
-          console.error("An unknown error occurred in handleInferenceRequest");
-          alert("Cannot connect to server");
-        }
-      }
+      })().catch((error) => {
+        console.error(error);
+        alert("Cannot connect to server");
+      });
     } else {
       alert("Please select a directory");
     }
@@ -643,7 +604,7 @@ const Body: React.FC<params> = (props) => {
   }, [activeDeviceId]);
 
   useEffect(() => {
-    void handleAzureStorageDir();
+    handleAzureStorageDir();
   }, [props.uuid, handleAzureStorageDir]);
 
   const handleImageUpload = (): void => {
@@ -685,11 +646,7 @@ const Body: React.FC<params> = (props) => {
       {delDirectoryOpen && (
         <DeleteDirectoryPopup
           setDelDirectoryOpen={setDelDirectoryOpen}
-          handleDelFromDirectory={() => {
-            handleDelFromDirectory().catch((error) => {
-              console.error("Error in handleDelFromDirectory", error);
-            });
-          }}
+          handleDelFromDirectory={handleDelFromDirectory}
           curDir={curDir}
         />
       )}
@@ -698,11 +655,7 @@ const Body: React.FC<params> = (props) => {
           setCreateDirectoryOpen={setCreateDirectoryOpen}
           handeDirChange={handleDirChange}
           curDir={curDir}
-          handleCreateDirectory={() => {
-            handleCreateDirectory().catch((error) => {
-              console.error("Error in handleCreateDirectory", error);
-            });
-          }}
+          handleCreateDirectory={handleCreateDirectory}
         />
       )}
       {resultsTunerOpen && (
@@ -710,6 +663,8 @@ const Body: React.FC<params> = (props) => {
           setResultsTunerOpen={setResultsTunerOpen}
           setScoreThreshold={setScoreThreshold}
           scoreThreshold={scoreThreshold}
+          selectedModel={selectedModel}
+          setSelectedModel={setSelectedModel}
         />
       )}
       {props.signUpOpen && <SignUp setSignUpOpen={props.setSignUpOpen} />}
@@ -721,11 +676,7 @@ const Body: React.FC<params> = (props) => {
       )}
 
       <Classifier
-        handleInference={() => {
-          handleInferenceRequest().catch((error) => {
-            console.error("Error in handleInferenceRequest", error);
-          });
-        }}
+        handleInference={handleInferenceRequest}
         imageIndex={imageIndex}
         setUploadOpen={setUploadOpen}
         imageSrc={imageSrc}
@@ -760,7 +711,7 @@ const Body: React.FC<params> = (props) => {
           setIsWebcamActive(!isWebcamActive);
         }}
         onImageUpload={handleImageUpload}
-        backendURL={backendURL}
+        selectedModel={selectedModel}
       />
     </BodyContainer>
   );
