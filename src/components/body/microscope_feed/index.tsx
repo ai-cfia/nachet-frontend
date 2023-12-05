@@ -10,7 +10,6 @@ import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import DownloadIcon from "@mui/icons-material/Download";
 import CropFreeIcon from "@mui/icons-material/CropFree";
-import InfoIcon from "@mui/icons-material/Info";
 import ToggleButton from "../buttons/ToggleButton";
 
 interface params {
@@ -182,26 +181,6 @@ const MicroscopeFeed: React.FC<params> = (props) => {
               >
                 <CropFreeIcon color="inherit" style={iconStyle} />
                 <span>CLASSIFY</span>
-              </div>
-            </Button>
-            <Button
-              color="inherit"
-              variant="outlined"
-              disabled={props.isWebcamActive} // Disable when the webcam is active
-              onClick={() => {
-                props.setSwitchModelOpen(true);
-              }}
-              sx={buttonStyle}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  flexWrap: "wrap",
-                }}
-              >
-                <InfoIcon color="inherit" style={iconStyle} />
-                <span>MODEL</span>
               </div>
             </Button>
           </>

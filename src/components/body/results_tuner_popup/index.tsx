@@ -1,16 +1,54 @@
-import React from "react";
+// Result Tuner Popup
+// \src\components\body\results_tuner_popup\index.tsx
+import React, { useState, useEffect, useCallback } from "react";
 import { Overlay, InfoContainer, Text } from "./indexElements";
 import { Box, CardHeader, IconButton, Slider } from "@mui/material";
+import Radio from "@mui/material/Radio";
+import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import { colours } from "../../../styles/colours";
+import testData from "../../../static_data/testData.json"; // Update the path to the actual location of your JSON file
+import BugReportIcon from "@mui/icons-material/BugReport";
 
 interface params {
   setResultsTunerOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setScoreThreshold: React.Dispatch<React.SetStateAction<number>>;
   scoreThreshold: number;
+  selectedModel: string;
+  setSelectedModel: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const ResultsTunerPopup: React.FC<params> = (props): JSX.Element => {
+  const [useTestData, setUseTestData] = useState(false);
+  const [realData, setRealData] = useState([]);
+  const endpoint = process.env.REACT_APP_BACKEND_URL;
+
+  // Use useCallback to memoize fetchRealData
+  const fetchRealData = useCallback(async (): Promise<void> => {
+    if (endpoint === undefined || endpoint === "") {
+      console.error("Endpoint URL is undefined or empty");
+      return;
+    }
+    try {
+      const response = await fetch(endpoint);
+      const data = await response.json();
+      setRealData(data);
+    } catch (error) {
+      console.error("Error fetching real data:", error);
+    }
+  }, [endpoint]); // Dependency array
+
+  useEffect(() => {
+    if (!useTestData) {
+      // Use void to explicitly ignore the promise
+      void fetchRealData();
+    }
+  }, [useTestData, fetchRealData]);
+
+  const toggleData = (): void => {
+    setUseTestData(!useTestData);
+  };
+
   const handleClose = (): void => {
     props.setResultsTunerOpen(false);
   };
@@ -19,12 +57,18 @@ const ResultsTunerPopup: React.FC<params> = (props): JSX.Element => {
     props.setScoreThreshold(value);
   };
 
+  const selectModel = (model: string): void => {
+    console.log("Model selected:", model);
+    props.setSelectedModel(model);
+  };
+
   return (
     <Overlay>
       <Box
         sx={{
-          width: "20vw",
-          height: "22vh",
+          position: "relative", // Ensuring this Box is the relative container for absolute positioning
+          width: "40vw",
+          height: "65vh",
           zIndex: 30,
           border: `0.01vh solid LightGrey`,
           borderRadius: 1,
@@ -63,6 +107,94 @@ const ResultsTunerPopup: React.FC<params> = (props): JSX.Element => {
             min={10}
             max={90}
           />
+          <Typography
+            variant="subtitle1"
+            sx={{ marginTop: 5, marginBottom: 2 }}
+          >
+            Model Selection:
+          </Typography>
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: "repeat(2, 1fr)",
+              gap: 1,
+            }}
+          >
+            {(useTestData ? testData : realData).map((data, index) => (
+              <Box
+                key={index}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  border: "1px solid lightgrey",
+                  borderRadius: "4px",
+                  padding: "1vh",
+                  cursor: "pointer",
+                  backgroundColor:
+                    props.selectedModel === data.model_name
+                      ? "#f0f0f0"
+                      : "#fff",
+                  "&:hover": {
+                    backgroundColor: "#e0e0e0",
+                  },
+                  width: "34vh", // Fixed width in pixels
+                  height: "16vh", // Fixed height in pixels
+                  maxWidth: "350px",
+                  maxHeight: "200px",
+                }}
+                onClick={() => {
+                  selectModel(data.model_name);
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                    width: "34vh", // Fixed width in pixels
+                    height: "16vh", // Fixed height in pixels
+                    maxWidth: "350px",
+                    maxHeight: "200px",
+                  }}
+                >
+                  <Typography fontSize={20} variant="h6">
+                    {data.model_name}
+                  </Typography>
+                  <Radio
+                    checked={props.selectedModel === data.model_name}
+                    onChange={() => {
+                      selectModel(data.model_name);
+                    }}
+                    value={data.model_name}
+                  />
+                </Box>
+                <Typography
+                  variant="body2"
+                  sx={{ fontWeight: "bold", marginTop: 1, marginBottom: 1 }}
+                >
+                  {data.description}
+                </Typography>
+                <Typography variant="body2" sx={{ marginBottom: 1 }}>
+                  Date: {data.creation_date}
+                </Typography>
+                <Typography variant="body2" sx={{ marginBottom: 1 }}>
+                  Version: {data.version}
+                </Typography>
+                {/* Add more details as needed */}
+              </Box>
+            ))}
+          </Box>
+          <IconButton
+            onClick={toggleData}
+            sx={{
+              position: "absolute",
+              bottom: 16, // Adjust as needed
+              right: 16, // Adjust as needed
+              zIndex: 40, // Ensuring it's above other elements
+            }}
+          >
+            <BugReportIcon />
+          </IconButton>
         </InfoContainer>
       </Box>
     </Overlay>

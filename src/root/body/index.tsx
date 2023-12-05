@@ -1,4 +1,5 @@
-// root\body\index.tsx
+// Root Functions
+// \src\root\body\index.tsx
 import { useState, useRef, useEffect, useCallback } from "react";
 import type Webcam from "react-webcam";
 import { saveAs } from "file-saver";
@@ -65,6 +66,7 @@ const Body: React.FC<params> = (props) => {
   const [delDirectoryOpen, setDelDirectoryOpen] = useState<boolean>(false);
   const [resultsTunerOpen, setResultsTunerOpen] = useState<boolean>(false);
   const [scoreThreshold, setScoreThreshold] = useState<number>(50);
+  const [selectedModel, setSelectedModel] = useState("Model 1"); // New state for selected model
   const [selectedLabel, setSelectedLabel] = useState<string>("all");
   const [labelOccurrences, setLabelOccurrences] = useState<any>({});
   const [saveIndividualImage, setSaveIndividualImage] = useState<string>("0");
@@ -661,6 +663,8 @@ const Body: React.FC<params> = (props) => {
           setResultsTunerOpen={setResultsTunerOpen}
           setScoreThreshold={setScoreThreshold}
           scoreThreshold={scoreThreshold}
+          selectedModel={selectedModel}
+          setSelectedModel={setSelectedModel}
         />
       )}
       {props.signUpOpen && <SignUp setSignUpOpen={props.setSignUpOpen} />}
@@ -707,6 +711,7 @@ const Body: React.FC<params> = (props) => {
           setIsWebcamActive(!isWebcamActive);
         }}
         onImageUpload={handleImageUpload}
+        selectedModel={selectedModel}
       />
     </BodyContainer>
   );
