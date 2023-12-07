@@ -21,12 +21,12 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
 
 /*!******************************!*\
-        !*** ./src/react-webcam.tsx ***!
-        \******************************/
+      !*** ./src/react-webcam.tsx ***!
+      \******************************/
 
 /*!**************************************************************************************!*\
-        !*** external {"root":"React","commonjs2":"react","commonjs":"react","amd":"react"} ***!
-        \**************************************************************************************/
+      !*** external {"root":"React","commonjs2":"react","commonjs":"react","amd":"react"} ***!
+      \**************************************************************************************/
 
 /**
  * @license React
