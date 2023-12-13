@@ -8,7 +8,13 @@ import Body from "./root/body";
 import Footer from "./components/footer";
 import Appbar from "./components/header/appbar";
 
-function App(): JSX.Element {
+interface AppProps {
+  basename?: string;
+}
+
+function App({
+  basename = process.env.REACT_APP_BASE_URL ?? "/",
+}: AppProps): JSX.Element {
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -19,8 +25,6 @@ function App(): JSX.Element {
   const [switchLanguage, setSwitchLanguage] = useState<boolean>(false);
   const [signedIn, setSignedIn] = useState<boolean>(false);
   const [signUpOpen, setSignUpOpen] = useState<boolean>(false);
-  const basename = process.env.REACT_APP_BASENAME || '';
-
 
   const handleCreativeCommonsAgreement = (agree: boolean): void => {
     // set a cookie to remember the users choice for 10 years (user choice should be stored in authentication database in the future)
