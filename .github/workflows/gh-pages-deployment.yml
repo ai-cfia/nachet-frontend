@@ -2,8 +2,6 @@ name: Build and Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - redat97/issue62
 
 jobs:
   build-and-deploy:
