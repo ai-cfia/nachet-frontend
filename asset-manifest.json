@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/static/css/main.03cd13f6.css",
-    "main.js": "/static/js/main.271449d7.js",
+    "main.js": "/static/js/main.dd84e1c9.js",
     "static/js/787.bb6ae436.chunk.js": "/static/js/787.bb6ae436.chunk.js",
     "static/media/CFIA_blackfont.png": "/static/media/CFIA_blackfont.65f37a4daa7549277afa.png",
     "index.html": "/index.html",
     "main.03cd13f6.css.map": "/static/css/main.03cd13f6.css.map",
-    "main.271449d7.js.map": "/static/js/main.271449d7.js.map",
+    "main.dd84e1c9.js.map": "/static/js/main.dd84e1c9.js.map",
     "787.bb6ae436.chunk.js.map": "/static/js/787.bb6ae436.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.03cd13f6.css",
-    "static/js/main.271449d7.js"
+    "static/js/main.dd84e1c9.js"
   ]
 }
