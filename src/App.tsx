@@ -19,6 +19,8 @@ function App(): JSX.Element {
   const [switchLanguage, setSwitchLanguage] = useState<boolean>(false);
   const [signedIn, setSignedIn] = useState<boolean>(false);
   const [signUpOpen, setSignUpOpen] = useState<boolean>(false);
+  const basename = process.env.REACT_APP_BASENAME || '';
+
 
   const handleCreativeCommonsAgreement = (agree: boolean): void => {
     // set a cookie to remember the users choice for 10 years (user choice should be stored in authentication database in the future)
@@ -81,7 +83,7 @@ function App(): JSX.Element {
   }, [windowSize]);
 
   return (
-    <Router>
+    <Router basename={basename}>
       <Fragment>
         <Navbar
           windowSize={windowSize}
