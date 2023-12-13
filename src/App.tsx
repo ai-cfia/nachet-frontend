@@ -15,6 +15,7 @@ interface AppProps {
 function App({
   basename = process.env.REACT_APP_BASE_URL ?? "/",
 }: AppProps): JSX.Element {
+  console.log("Basename value :", basename);
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
