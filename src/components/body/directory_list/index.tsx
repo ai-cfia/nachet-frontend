@@ -54,7 +54,7 @@ const StorageDirectory: React.FC<params> = (props) => {
       boxShadow={0}
     >
       <CardHeader
-        title="DIRECTORIES"
+        title="DIRECTORIESS"
         titleTypographyProps={{
           variant: "h6",
           align: "left",
