@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/nachet-frontend/static/css/main.03cd13f6.css",
-    "main.js": "/nachet-frontend/static/js/main.cf5a3d0d.js",
-    "static/js/787.bb6ae436.chunk.js": "/nachet-frontend/static/js/787.bb6ae436.chunk.js",
-    "static/media/CFIA_blackfont.png": "/nachet-frontend/static/media/CFIA_blackfont.65f37a4daa7549277afa.png",
-    "index.html": "/nachet-frontend/index.html",
-    "main.03cd13f6.css.map": "/nachet-frontend/static/css/main.03cd13f6.css.map",
-    "main.cf5a3d0d.js.map": "/nachet-frontend/static/js/main.cf5a3d0d.js.map",
-    "787.bb6ae436.chunk.js.map": "/nachet-frontend/static/js/787.bb6ae436.chunk.js.map"
+    "main.css": "/static/css/main.03cd13f6.css",
+    "main.js": "/static/js/main.d2fa45a5.js",
+    "static/js/787.bb6ae436.chunk.js": "/static/js/787.bb6ae436.chunk.js",
+    "static/media/CFIA_blackfont.png": "/static/media/CFIA_blackfont.65f37a4daa7549277afa.png",
+    "index.html": "/index.html",
+    "main.03cd13f6.css.map": "/static/css/main.03cd13f6.css.map",
+    "main.d2fa45a5.js.map": "/static/js/main.d2fa45a5.js.map",
+    "787.bb6ae436.chunk.js.map": "/static/js/787.bb6ae436.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.03cd13f6.css",
-    "static/js/main.cf5a3d0d.js"
+    "static/js/main.d2fa45a5.js"
   ]
 }
