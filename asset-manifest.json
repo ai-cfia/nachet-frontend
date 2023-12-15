@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/nachet-frontend/static/css/main.03cd13f6.css",
-    "main.js": "/nachet-frontend/static/js/main.3f829c92.js",
-    "static/js/787.bb6ae436.chunk.js": "/nachet-frontend/static/js/787.bb6ae436.chunk.js",
-    "static/media/CFIA_blackfont.png": "/nachet-frontend/static/media/CFIA_blackfont.65f37a4daa7549277afa.png",
-    "index.html": "/nachet-frontend/index.html",
-    "main.03cd13f6.css.map": "/nachet-frontend/static/css/main.03cd13f6.css.map",
-    "main.3f829c92.js.map": "/nachet-frontend/static/js/main.3f829c92.js.map",
-    "787.bb6ae436.chunk.js.map": "/nachet-frontend/static/js/787.bb6ae436.chunk.js.map"
+    "main.css": "https://ai-cfia.github.io/nachet-frontend/static/css/main.03cd13f6.css",
+    "main.js": "https://ai-cfia.github.io/nachet-frontend/static/js/main.bd2a1059.js",
+    "static/js/787.bb6ae436.chunk.js": "https://ai-cfia.github.io/nachet-frontend/static/js/787.bb6ae436.chunk.js",
+    "static/media/CFIA_blackfont.png": "https://ai-cfia.github.io/nachet-frontend/static/media/CFIA_blackfont.65f37a4daa7549277afa.png",
+    "index.html": "https://ai-cfia.github.io/nachet-frontend/index.html",
+    "main.03cd13f6.css.map": "https://ai-cfia.github.io/nachet-frontend/static/css/main.03cd13f6.css.map",
+    "main.bd2a1059.js.map": "https://ai-cfia.github.io/nachet-frontend/static/js/main.bd2a1059.js.map",
+    "787.bb6ae436.chunk.js.map": "https://ai-cfia.github.io/nachet-frontend/static/js/787.bb6ae436.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.03cd13f6.css",
-    "static/js/main.3f829c92.js"
+    "static/js/main.bd2a1059.js"
   ]
 }
