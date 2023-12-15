@@ -1,6 +1,6 @@
 {
   "name": "nachet-frontend",
-  "homepage": "https://ai-cfia.github.io/nachet-frontend",
+  "homepage": "/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -81,5 +81,9 @@
     "gh-pages": "^5.0.0",
     "prettier": "^3.0.0",
     "typescript": "^5.1.6"
+  },
+  "engines": {
+    "npm": "^9.8.1",
+    "node": "^18.16.0"
   }
 }
