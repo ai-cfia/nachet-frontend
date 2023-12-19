@@ -1,13 +1,13 @@
+// \pages\classifier\index.tsx
+// Classifier
 import {
   RowContainer,
   LeftContent,
-  RightContent,
   ColumnContainer,
   InfoContent,
 } from "./indexElements";
 import type Webcam from "react-webcam";
 import React from "react";
-import FeedCapture from "../../components/body/feed_capture";
 import MicroscopeFeed from "../../components/body/microscope_feed";
 import ClassificationResults from "../../components/body/classification_results";
 import ImageCache from "../../components/body/image_cache";
@@ -47,6 +47,9 @@ interface params {
     width: number;
     height: number;
   };
+  isWebcamActive: boolean;
+  onCaptureClick: () => void;
+  onImageUpload: (file: File) => void;
 }
 
 const Classifier: React.FC<params> = (props) => {
@@ -60,20 +63,17 @@ const Classifier: React.FC<params> = (props) => {
             windowSize={props.windowSize}
             activeDeviceId={props.activeDeviceId}
             setSwitchDeviceOpen={props.setSwitchDeviceOpen}
-          />
-        </LeftContent>
-        <RightContent>
-          <FeedCapture
             canvasRef={props.canvasRef}
-            windowSize={props.windowSize}
             setSaveOpen={props.setSaveOpen}
             handleInference={props.handleInference}
-            setUploadOpen={props.setUploadOpen}
             setSwitchModelOpen={props.setSwitchModelOpen}
             imageCache={props.savedImages}
             imageIndex={props.imageIndex}
+            setUploadOpen={props.setUploadOpen}
+            isWebcamActive={props.isWebcamActive}
+            onCaptureClick={props.onCaptureClick}
           />
-        </RightContent>
+        </LeftContent>
         <InfoContent>
           <StorageDirectory
             azureStorageDir={props.azureStorageDir}

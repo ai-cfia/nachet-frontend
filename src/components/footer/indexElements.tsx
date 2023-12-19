@@ -8,7 +8,7 @@ export const FooterContainer = styled.footer<{ height: number }>`
 `;
 
 export const FooterWrap = styled.div<{ width: number; height: number }>`
-  padding: 0.8vh 0vh 0.8vh 0vh;
+  padding: 0vh 0vh 0.8vh 0vh;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
