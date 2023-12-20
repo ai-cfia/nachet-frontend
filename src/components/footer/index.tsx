@@ -1,4 +1,4 @@
-import versions from "../../../src/_versions";
+import { environment } from "../../environments/environment";
 import {
   FooterContainer,
   FooterWrap,
@@ -25,7 +25,8 @@ const Footer: React.FC<params> = (props) => {
           Developed by AI Lab
         </FooterLink>
         <FooterLink>
-          Version {versions.version} | UUID: {props.uuid}
+          {environment.version !== "" ? "Version: " + environment.version : ""}{" "}
+          | UUID: {props.uuid}
         </FooterLink>
         <FooterLogo
           src={require("../../assets/Canada_logo.png")}
