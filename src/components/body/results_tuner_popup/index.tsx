@@ -7,7 +7,7 @@ import Radio from "@mui/material/Radio";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import { colours } from "../../../styles/colours";
-import testData from "../../../static_data/testData.json"; // Update the path to the actual location of your JSON file
+import testData from "../../../static_data/static_model_data.json"; // Update the path to the actual location of your JSON file
 import BugReportIcon from "@mui/icons-material/BugReport";
 
 interface params {
@@ -67,7 +67,7 @@ const ResultsTunerPopup: React.FC<params> = (props): JSX.Element => {
       <Box
         sx={{
           position: "relative", // Ensuring this Box is the relative container for absolute positioning
-          width: "40vw",
+          width: "50vw",
           height: "65vh",
           zIndex: 30,
           border: `0.01vh solid LightGrey`,
