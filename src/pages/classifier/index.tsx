@@ -59,17 +59,27 @@ const Classifier: React.FC<params> = (props) => {
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    // Explicitly check for null, undefined, or empty string
-    if (
-      props.backendURL === null ||
-      props.backendURL === undefined ||
-      props.backendURL === ""
-    ) {
-      setIsError(true);
-      setAlertMessage("Backend URL is not set or is not working.");
-    } else {
-      setIsError(false);
-    }
+    // Set a delay before checking the backend URL
+    const delay = 3000; // Delay in milliseconds (3000ms = 3 seconds)
+
+    const timer = setTimeout(() => {
+      // Explicitly check for null, undefined, or empty string
+      if (
+        props.backendURL === null ||
+        props.backendURL === undefined ||
+        props.backendURL === ""
+      ) {
+        setIsError(true);
+        setAlertMessage("Backend URL is not set or is not working.");
+      } else {
+        setIsError(false);
+      }
+    }, delay);
+
+    // Clear the timer when the component unmounts or when the backendURL changes
+    return () => {
+      clearTimeout(timer);
+    };
   }, [props.backendURL]);
 
   return (
