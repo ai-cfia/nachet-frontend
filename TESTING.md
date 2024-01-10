@@ -2,6 +2,33 @@
 
 This document provides detailed instructions and procedures for manually testing the various functionalities of Nachet, ensuring that all features operate correctly and as expected before deployment or release.
 
+## Test Case: Backend URL Warning Functionality
+
+**Objective:** Verify the application correctly displays a warning if the backend URL is not set or is non-responsive.
+
+**Preconditions:**
+- [ ] The application is open.
+- [ ] Nachet Backend is set up and running locally. The Nachet Backend can be found at [Nachet Backend GitHub Repository](https://github.com/ai-cfia/nachet-backend). To run the application locally, use the command `hypercorn -b :8080 app:app` in the terminal.
+- [ ] The backend URL environment variable is either not set, empty, or pointing to a non-responsive server.
+
+**Test Steps:**
+1. Start the application.
+2. Observe the application's behavior during initialization.
+
+**Expected Results:**
+- [ ] If the backend URL is not correctly configured or the server is non-responsive, a warning message should appear at the top of the screen.
+- [ ] The warning message should correctly indicate the issue with the backend URL.
+- [ ] If the backend URL is correctly configured and the server is responsive, no warning message should be displayed.
+
+**Actual Results:**
+- [ ] Describe the actual outcome of the test.
+
+**Pass/Fail Criteria:**
+- [ ] Pass if the warning message accurately reflects the state of the backend URL.
+- [ ] Fail if no warning is displayed in the case of a misconfigured or non-responsive backend, or if a false warning is displayed when the backend is correctly configured and responsive.
+
+---
+
 ## Testing Capture Button Functionality
 
 ### Test 1: Capture Snapshot from Microscope/Camera Device
