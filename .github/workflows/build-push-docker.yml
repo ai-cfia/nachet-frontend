@@ -1,5 +1,12 @@
 name: Docker build and push to ghcr.io/ai-cfia
 
+on: 
+  pull_request:
+    types:
+      - opened
+      - closed
+      - synchronize
+
 jobs:
   deploy:
     uses: ai-cfia/github-workflows/.github/workflows/workflow-build-push-container-github-registry.yml@63-as-a-devops-i-would-like-to-create-a-workflow-to-push-images-to-this-organisation-docker-registry
