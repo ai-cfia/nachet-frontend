@@ -13,7 +13,7 @@ COPY . .
 ENV PUBLIC_URL=.
 
 # Change this to your backend endpoint
-ENV REACT_APP_BACKEND_URL=https://nachir.ninebasetwo.xyz 
+ENV REACT_APP_BACKEND_URL=https://nachet.ninebasetwo.xyz/api
 
 RUN npm run build
 
