@@ -10,6 +10,9 @@ RUN npm install --include=dev
 
 COPY . .
 
+ENV PUBLIC_URL=.
+ENV REACT_APP_BACKEND_URL=https://nachir.ninebasetwo.xyz
+
 RUN npm run build
 
 FROM node:18
