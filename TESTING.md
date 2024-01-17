@@ -12,8 +12,9 @@ correctly and as expected before deployment or release.
 **Preconditions:**
 - [ ] The application is open.
 - [ ] Nachet Backend is set up and running locally. The Nachet Backend can be
-  found at [Nachet Backend GitHub Repository](https://github.com/ai-cfia/nachet-
-  backend). To run the application locally, use the command `hypercorn -b :8080
+  found at:
+  [Nachet Backend GitHub Repository](https://github.com/ai-cfia/nachet-backend).
+  To run the application locally, use the command `hypercorn -b :8080
   app:app` in the terminal.
 - [ ] The backend URL environment variable is either not set, empty, or pointing
   to a non-responsive server.
