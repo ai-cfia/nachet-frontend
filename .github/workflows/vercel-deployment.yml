@@ -1,0 +1,22 @@
+name: Vercel Preview Deployment
+
+on:
+  push:
+  pull_request:
+
+jobs:
+
+  vercel-deployment-dev:
+    uses: ai-cfia/github-workflows/.github/workflows/workflow-vercel-deployment.yml@main
+    with:
+        project-name: 'nachet-frontend'
+        deployment-environment: 'dev'
+    secrets: inherit
+
+  vercel-deployment-uat:
+    if: github.ref == 'refs/heads/main'
+    uses: ai-cfia/github-workflows/.github/workflows/workflow-vercel-deployment.yml@main
+    with:
+        project-name: 'nachet-frontend'
+        deployment-environment: 'uat'
+    secrets: inherit

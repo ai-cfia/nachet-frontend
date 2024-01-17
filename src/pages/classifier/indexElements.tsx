@@ -77,3 +77,15 @@ export const RightContent = styled.div`
   z-index: 0;
   position: relative;
 `;
+
+export const WarningLabel = styled.div`
+  background: #ffd700; // Corrected to camelCase
+  width: 110%;
+  height: 2.5vh;
+  color: #ff4500;
+  margin-bottom: 10px; // Corrected to camelCase
+  margin-top: -6.4vh; // Corrected to camelCase
+  text-align: center; // Corrected to camelCase
+  font-size: 2vh; // Corrected to camelCase
+  padding: 0 1.9vw;
+`;

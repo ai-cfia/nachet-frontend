@@ -8,7 +8,13 @@ import Body from "./root/body";
 import Footer from "./components/footer";
 import Appbar from "./components/header/appbar";
 
-function App(): JSX.Element {
+interface AppProps {
+  basename?: string;
+}
+
+function App({
+  basename = process.env.REACT_APP_BASENAME ?? "/",
+}: AppProps): JSX.Element {
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -81,7 +87,7 @@ function App(): JSX.Element {
   }, [windowSize]);
 
   return (
-    <Router>
+    <Router basename={basename}>
       <Fragment>
         <Navbar
           windowSize={windowSize}
