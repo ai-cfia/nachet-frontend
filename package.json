@@ -1,7 +1,7 @@
 {
   "name": "nachet-frontend",
   "homepage": "https://ai-cfia.github.io/nachet-frontend",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.16.7",
