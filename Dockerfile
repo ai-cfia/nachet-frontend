@@ -10,7 +10,7 @@ RUN npm install --include=dev
 
 COPY . .
 
-# Keeping this as ENV since it's the only value needed for the build package (.)
+# Keeping this as ENV since it's the only value needed for the build package
 ENV PUBLIC_URL=. 
 
 ARG REACT_APP_BACKEND_URL
