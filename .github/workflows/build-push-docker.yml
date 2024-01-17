@@ -8,7 +8,7 @@ on:
       - synchronize
 
 jobs:
-  deploy:
+  build-and-push:
     uses: ai-cfia/github-workflows/.github/workflows/workflow-build-push-container-github-registry.yml@63-as-a-devops-i-would-like-to-create-a-workflow-to-push-images-to-this-organisation-docker-registry
     with:
       container-name: ${{ github.event.repository.name }}
