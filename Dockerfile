@@ -12,8 +12,7 @@ COPY . .
 
 # Keeping this as ENV since it's the only value needed for the build package
 ENV PUBLIC_URL=. 
-
-ARG REACT_APP_BACKEND_URL
+ENV REACT_APP_BACKEND_URL=https://nachet.ninebasetwo.xyz/api
 
 RUN npm run build
 
