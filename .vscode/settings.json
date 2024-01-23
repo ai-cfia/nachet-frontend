@@ -1,0 +1,6 @@
+{
+    "editor.rulers": [80], // used for .md files
+    "files.trimTrailingWhitespace": true,
+    "files.trimFinalNewlines": true,
+    "files.insertFinalNewline": true
+}
