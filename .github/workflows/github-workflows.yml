@@ -1,4 +1,4 @@
-name: Docker build and push to ghcr.io/ai-cfia
+name: Workflows
 
 on: 
   pull_request:
@@ -8,6 +8,16 @@ on:
       - synchronize
 
 jobs:
+  markdown-check:
+    uses: ai-cfia/github-workflows/.github/workflows/workflow-markdown-check.yml@main
+    with:
+      config-file-path: '.mlc_config.json'
+    secrets: inherit
+
+  repo-standard:
+    uses: ai-cfia/github-workflows/.github/workflows/workflow-repo-standards-validation.yml@main
+    secrets: inherit
+
   build-and-push-gcr:
     uses: ai-cfia/github-workflows/.github/workflows/workflow-build-push-container-github-registry.yml@63-as-a-devops-i-would-like-to-create-a-workflow-to-push-images-to-this-organisation-docker-registry
     with:
