@@ -10,9 +10,11 @@ RUN npm install --include=dev
 
 COPY . .
 
-# Keeping this as ENV since it's the only value needed for the build package
-ENV PUBLIC_URL=. 
-ENV REACT_APP_BACKEND_URL=https://nachet.ninebasetwo.xyz/api
+ARG ARG_PUBLIC_URL
+ARG ARG_REACT_APP_BACKEND_URL
+
+ENV PUBLIC_URL=${ARG_PUBLIC_URL:-.}
+ENV REACT_APP_BACKEND_URL=${ARG_REACT_APP_BACKEND_URL:-https://nachet.ninebasetwo.xyz/api} 
 
 RUN npm run build
 
