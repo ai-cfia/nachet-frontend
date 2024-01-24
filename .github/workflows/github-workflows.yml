@@ -1,6 +1,6 @@
 name: Workflows
 
-on: 
+on:
   pull_request:
     types:
       - opened
@@ -8,6 +8,9 @@ on:
       - synchronize
 
 jobs:
+  lint-test:
+    uses: ai-cfia/github-workflows/.github/workflows/workflow-lint-test-node.yml@main
+
   markdown-check:
     uses: ai-cfia/github-workflows/.github/workflows/workflow-markdown-check.yml@main
     with:
