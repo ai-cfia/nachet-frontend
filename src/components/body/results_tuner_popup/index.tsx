@@ -1,7 +1,7 @@
 // Result Tuner Popup
 // \src\components\body\results_tuner_popup\index.tsx
 import React, { useState, useEffect, useCallback } from "react";
-import { Overlay, InfoContainer, Text } from "./indexElements";
+import { Overlay, InfoContainer } from "./indexElements";
 import { Box, CardHeader, IconButton, Slider } from "@mui/material";
 import Radio from "@mui/material/Radio";
 import Typography from "@mui/material/Typography";
@@ -94,19 +94,24 @@ const ResultsTunerPopup: React.FC<params> = (props): JSX.Element => {
           sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
         />
         <InfoContainer>
-          <Text> Minimum Confidence Threshhold ({props.scoreThreshold}%) </Text>
-          <Slider
-            sx={{ color: colours.CFIA_Background_Blue }}
-            key={`slider-${props.scoreThreshold}`}
-            aria-label="Confidence Threshold"
-            defaultValue={props.scoreThreshold}
-            valueLabelDisplay="auto"
-            onChangeCommitted={handleSliderChange}
-            step={10}
-            marks
-            min={10}
-            max={90}
-          />
+          <Typography
+            variant="subtitle1" // Ensure the same variant is used for both
+            sx={{ marginTop: 5, marginBottom: 2 }}
+          >
+            Minimum Confidence Threshold ({props.scoreThreshold}%)
+            <Slider
+              sx={{ color: colours.CFIA_Background_Blue }}
+              key={`slider-${props.scoreThreshold}`}
+              aria-label="Confidence Threshold"
+              defaultValue={props.scoreThreshold}
+              valueLabelDisplay="auto"
+              onChangeCommitted={handleSliderChange}
+              step={10}
+              marks
+              min={10}
+              max={90}
+            />
+          </Typography>
           <Typography
             variant="subtitle1"
             sx={{ marginTop: 5, marginBottom: 2 }}
@@ -118,6 +123,8 @@ const ResultsTunerPopup: React.FC<params> = (props): JSX.Element => {
               display: "grid",
               gridTemplateColumns: "repeat(2, 1fr)",
               gap: 1,
+              maxHeight: "30vh",
+              overflowY: "auto",
             }}
           >
             {(useTestData ? testData : realData).map((data, index) => (

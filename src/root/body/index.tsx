@@ -66,7 +66,7 @@ const Body: React.FC<params> = (props) => {
   const [delDirectoryOpen, setDelDirectoryOpen] = useState<boolean>(false);
   const [resultsTunerOpen, setResultsTunerOpen] = useState<boolean>(false);
   const [scoreThreshold, setScoreThreshold] = useState<number>(50);
-  const [selectedModel, setSelectedModel] = useState("Model 1"); // New state for selected model
+  const [selectedModel, setSelectedModel] = useState("Seed Classification");
   const [selectedLabel, setSelectedLabel] = useState<string>("all");
   const [labelOccurrences, setLabelOccurrences] = useState<any>({});
   const [saveIndividualImage, setSaveIndividualImage] = useState<string>("0");
@@ -386,6 +386,7 @@ const Body: React.FC<params> = (props) => {
               "Access-Control-Allow-Origin": "*",
             },
             data: {
+              model_name: selectedModel,
               image: imageSrc,
               imageDims: [
                 imageObject[0].imageDims[0],
