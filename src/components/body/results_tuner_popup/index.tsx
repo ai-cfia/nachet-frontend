@@ -96,7 +96,7 @@ const ResultsTunerPopup: React.FC<params> = (props): JSX.Element => {
         <InfoContainer>
           <Typography
             variant="subtitle1" // Ensure the same variant is used for both
-            sx={{ marginTop: 5, marginBottom: 2 }}
+            sx={{ marginTop: 3 }}
           >
             Minimum Confidence Threshold ({props.scoreThreshold}%)
             <Slider
@@ -114,7 +114,7 @@ const ResultsTunerPopup: React.FC<params> = (props): JSX.Element => {
           </Typography>
           <Typography
             variant="subtitle1"
-            sx={{ marginTop: 5, marginBottom: 2 }}
+            sx={{ marginTop: 1, marginBottom: 2 }}
           >
             Model Selection:
           </Typography>
