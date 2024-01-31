@@ -1,6 +1,6 @@
-name: Workflows
+name: React frontend workflows
 
-on: 
+on:
   pull_request:
     types:
       - opened
