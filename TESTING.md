@@ -539,3 +539,37 @@ table.
 **Pass/Fail:**
 - [ ] Pass if the RESULTS table updates correctly based on the selected model.
 - [ ] Fail if the table does not update or reflects incorrect data.
+
+## Test Case: Populating Model List Based on Environment Setting
+
+**Objective:** Ensure the Results Tuner Popup correctly populates the model
+list with either real data or test data, based on the `REACT_APP_MODE`
+environment variable.
+
+**Preconditions:**
+- [ ] The application is open and running.
+- [ ] The backend server is operational if testing with real data.
+- [ ] The `REACT_APP_MODE` environment variable is set appropriately (`"test"`
+for test data, any other value for real data).
+
+**Test Steps:**
+1. **For Testing with Real Data:**
+- Set `REACT_APP_MODE` to any value other than `"test"`.
+- Start the application.
+- Navigate to the Results Tuner Popup.
+- Observe the populated model list.
+- Verify that the list corresponds to the data fetched from the backend.
+
+2. **For Testing with Test Data:**
+- Set `REACT_APP_MODE` to `"test"`.
+- Start the application.
+- Navigate to the Results Tuner Popup.
+- Observe the populated model list.
+- Verify that the list corresponds to the static test data defined in the
+application.
+
+**Expected Results:**
+- [ ] When `REACT_APP_MODE` is set to `"test"`, the model list in the Results
+Tuner Popup is populated with test data.
+- [ ] When `REACT_APP_MODE` is set to any other value, the model list is
+populated with real data fetched from the backend server.

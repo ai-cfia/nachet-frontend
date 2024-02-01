@@ -74,6 +74,7 @@ const Body: React.FC<params> = (props) => {
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isWebcamActive, setIsWebcamActive] = useState(true); // This state determines the visibility of the webcam
+  const [metadata, setMetadata] = useState([]);
 
   const loadCaptureToCache = (src: string): void => {
     // appends new image to image cache and its corresponding details
@@ -613,6 +614,35 @@ const Body: React.FC<params> = (props) => {
     setIsWebcamActive(false); // Hide the webcam after the image is loaded
   };
 
+  useEffect(() => {
+    const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
+    // Explicitly check for undefined, null, and empty string
+    if (
+      backendUrl === undefined ||
+      backendUrl === null ||
+      backendUrl.trim() === ""
+    ) {
+      console.error("Backend URL is undefined, null or empty.");
+      return;
+    }
+
+    const fetchMetadata = async (): Promise<void> => {
+      try {
+        const response = await axios.get(
+          `${backendUrl}/model-endpoints-metadata`,
+        );
+        setMetadata(response.data);
+      } catch (error) {
+        console.error("Error fetching metadata:", error);
+      }
+    };
+
+    if (process.env.REACT_APP_MODE !== "test") {
+      void fetchMetadata();
+    }
+  }, []);
+
   return (
     <BodyContainer width={props.windowSize.width}>
       {saveOpen && (
@@ -666,6 +696,7 @@ const Body: React.FC<params> = (props) => {
           scoreThreshold={scoreThreshold}
           selectedModel={selectedModel}
           setSelectedModel={setSelectedModel}
+          realData={metadata}
         />
       )}
       {props.signUpOpen && <SignUp setSignUpOpen={props.setSignUpOpen} />}

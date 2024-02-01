@@ -1,14 +1,13 @@
 // Result Tuner Popup
 // \src\components\body\results_tuner_popup\index.tsx
-import React, { useState, useEffect, useCallback } from "react";
+import React from "react";
 import { Overlay, InfoContainer } from "./indexElements";
 import { Box, CardHeader, IconButton, Slider } from "@mui/material";
 import Radio from "@mui/material/Radio";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import { colours } from "../../../styles/colours";
-import testData from "../../../static_data/static_model_data.json"; // Update the path to the actual location of your JSON file
-import BugReportIcon from "@mui/icons-material/BugReport";
+import testData from "../../../static_data/static_model_data.json";
 
 interface params {
   setResultsTunerOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,39 +15,10 @@ interface params {
   scoreThreshold: number;
   selectedModel: string;
   setSelectedModel: React.Dispatch<React.SetStateAction<string>>;
+  realData: any[]; // Type should be adjusted to match the actual data structure
 }
 
 const ResultsTunerPopup: React.FC<params> = (props): JSX.Element => {
-  const [useTestData, setUseTestData] = useState(false);
-  const [realData, setRealData] = useState([]);
-  const endpoint = process.env.REACT_APP_BACKEND_URL;
-
-  // Use useCallback to memoize fetchRealData
-  const fetchRealData = useCallback(async (): Promise<void> => {
-    if (endpoint === undefined || endpoint === "") {
-      console.error("Endpoint URL is undefined or empty");
-      return;
-    }
-    try {
-      const response = await fetch(endpoint);
-      const data = await response.json();
-      setRealData(data);
-    } catch (error) {
-      console.error("Error fetching real data:", error);
-    }
-  }, [endpoint]); // Dependency array
-
-  useEffect(() => {
-    if (!useTestData) {
-      // Use void to explicitly ignore the promise
-      void fetchRealData();
-    }
-  }, [useTestData, fetchRealData]);
-
-  const toggleData = (): void => {
-    setUseTestData(!useTestData);
-  };
-
   const handleClose = (): void => {
     props.setResultsTunerOpen(false);
   };
@@ -62,11 +32,14 @@ const ResultsTunerPopup: React.FC<params> = (props): JSX.Element => {
     props.setSelectedModel(model);
   };
 
+  const dataToDisplay =
+    process.env.REACT_APP_MODE === "test" ? testData : props.realData;
+
   return (
     <Overlay>
       <Box
         sx={{
-          position: "relative", // Ensuring this Box is the relative container for absolute positioning
+          position: "relative",
           width: "50vw",
           height: "65vh",
           zIndex: 30,
@@ -94,24 +67,21 @@ const ResultsTunerPopup: React.FC<params> = (props): JSX.Element => {
           sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
         />
         <InfoContainer>
-          <Typography
-            variant="subtitle1" // Ensure the same variant is used for both
-            sx={{ marginTop: 3 }}
-          >
+          <Typography variant="subtitle1" sx={{ marginTop: 3 }}>
             Minimum Confidence Threshold ({props.scoreThreshold}%)
-            <Slider
-              sx={{ color: colours.CFIA_Background_Blue }}
-              key={`slider-${props.scoreThreshold}`}
-              aria-label="Confidence Threshold"
-              defaultValue={props.scoreThreshold}
-              valueLabelDisplay="auto"
-              onChangeCommitted={handleSliderChange}
-              step={10}
-              marks
-              min={10}
-              max={90}
-            />
           </Typography>
+          <Slider
+            sx={{ color: colours.CFIA_Background_Blue, marginBottom: 2 }}
+            key={`slider-${props.scoreThreshold}`}
+            aria-label="Confidence Threshold"
+            defaultValue={props.scoreThreshold}
+            valueLabelDisplay="auto"
+            onChangeCommitted={handleSliderChange}
+            step={10}
+            marks
+            min={10}
+            max={90}
+          />
           <Typography
             variant="subtitle1"
             sx={{ marginTop: 1, marginBottom: 2 }}
@@ -127,7 +97,7 @@ const ResultsTunerPopup: React.FC<params> = (props): JSX.Element => {
               overflowY: "auto",
             }}
           >
-            {(useTestData ? testData : realData).map((data, index) => (
+            {dataToDisplay.map((data, index) => (
               <Box
                 key={index}
                 sx={{
@@ -144,8 +114,8 @@ const ResultsTunerPopup: React.FC<params> = (props): JSX.Element => {
                   "&:hover": {
                     backgroundColor: "#e0e0e0",
                   },
-                  width: "34vh", // Fixed width in pixels
-                  height: "16vh", // Fixed height in pixels
+                  width: "34vh",
+                  height: "16vh",
                   maxWidth: "350px",
                   maxHeight: "200px",
                 }}
@@ -158,8 +128,8 @@ const ResultsTunerPopup: React.FC<params> = (props): JSX.Element => {
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "flex-start",
-                    width: "34vh", // Fixed width in pixels
-                    height: "16vh", // Fixed height in pixels
+                    width: "34vh",
+                    height: "16vh",
                     maxWidth: "350px",
                     maxHeight: "200px",
                   }}
@@ -191,17 +161,6 @@ const ResultsTunerPopup: React.FC<params> = (props): JSX.Element => {
               </Box>
             ))}
           </Box>
-          <IconButton
-            onClick={toggleData}
-            sx={{
-              position: "absolute",
-              bottom: 16, // Adjust as needed
-              right: 16, // Adjust as needed
-              zIndex: 40, // Ensuring it's above other elements
-            }}
-          >
-            <BugReportIcon />
-          </IconButton>
         </InfoContainer>
       </Box>
     </Overlay>
