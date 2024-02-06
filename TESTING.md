@@ -554,3 +554,64 @@ the
 slider.
 - [ ] Fail if the slider does not function, or the threshold value does not
 update.
+
+## Test Case: Populating Model List Based on Environment Setting
+
+**Objective:** Verify that the Results Tuner Popup correctly populates the
+model list with real data or test data based on the `REACT_APP_MODE`
+environment variable.
+
+### Test 1: Populating with Real Data
+
+**Preconditions:**
+- [ ] The application is open and running.
+- [ ] The backend server is operational.
+- [ ] The `REACT_APP_MODE` environment variable is set to any value other than
+`"test"`.
+
+**Test Steps:**
+1. Start the application.
+2. Navigate to the Results Tuner Popup.
+3. Observe the model list to verify that it is populated.
+4. Check that the models in the list correspond to data fetched from the
+backend server.
+
+**Expected Results:**
+- [ ] The model list in the Results Tuner Popup is populated with real data
+fetched from the backend server.
+
+**Actual Results:**
+- [ ] Describe the actual outcome of the test.
+
+**Pass/Fail Criteria:**
+- [ ] Pass if the model list displays real data as expected.
+- [ ] Fail if the model list does not populate, populates incorrectly, or
+displays test data.
+
+### Test 2: Populating with Test Data
+
+**Preconditions:**
+- [ ] The application is open and running.
+- [ ] The `REACT_APP_MODE` environment variable is set to `"test"`.
+
+**Test Steps:**
+1. Start the application.
+2. Navigate to the Results Tuner Popup.
+3. Observe the model list to verify that it is populated.
+4. Check that the models in the list correspond to the static test data defined
+in the application.
+
+**Expected Results:**
+- [ ] The model list in the Results Tuner Popup is populated with static test
+data.
+
+**Actual Results:**
+- [ ] Describe the actual outcome of the test.
+
+**Pass/Fail Criteria:**
+- [ ] Pass if the model list displays test data as expected.
+- [ ] Fail if the model list does not populate, populates incorrectly, or
+displays real data.
+
+---
+
