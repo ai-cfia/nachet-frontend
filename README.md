@@ -102,7 +102,7 @@ backend.
 You can set these variables in a `.env` file in the root of your project.
 Here's an example of what your `.env` file might look like:
 
-```
+```env
 REACT_APP_BACKEND_URL=
 REACT_APP_MODE=
 ```
