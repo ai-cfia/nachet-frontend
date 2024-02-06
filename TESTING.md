@@ -1,23 +1,27 @@
 # Testing Documentation
 
-This document provides detailed instructions and procedures for manually testing
+This document provides detailed instructions and procedures for manually
+testing
 the various functionalities of Nachet, ensuring that all features operate
 correctly and as expected before deployment or release.
 
 ## Test Case: Backend URL Warning Functionality
 
-**Objective:** Verify the application correctly displays a warning if the
-               backend URL is not set or is non-responsive.
+**Objective:** Verify the application correctly displays a warning if
+the
+backend URL is not set or is non-responsive.
 
 **Preconditions:**
 - [ ] The application is open.
 - [ ] Nachet Backend is set up and running locally. The Nachet Backend can be
-  found at:
-  [Nachet Backend GitHub Repository](https://github.com/ai-cfia/nachet-backend).
-  To run the application locally, use the command `hypercorn -b :8080
-  app:app` in the terminal.
-- [ ] The backend URL environment variable is either not set, empty, or pointing
-  to a non-responsive server.
+found at:
+[Nachet Backend GitHub
+Repository](https://github.com/ai-cfia/nachet-backend).
+To run the application locally, use the command `hypercorn -b :8080
+app:app` in the terminal.
+- [ ] The backend URL environment variable is either not set, empty, or
+pointing
+to a non-responsive server.
 
 **Test Steps:**
 1. Start the application.
@@ -25,21 +29,24 @@ correctly and as expected before deployment or release.
 
 **Expected Results:**
 - [ ] If the backend URL is not correctly configured or the server is non-
-  responsive, a warning message should appear at the top of the screen.
-- [ ] The warning message should correctly indicate the issue with the backend
-  URL.
-- [ ] If the backend URL is correctly configured and the server is responsive,
-  no warning message should be displayed.
+responsive, a warning message should appear at the top of the screen.
+- [ ] The warning message should correctly indicate the issue with the
+backend
+URL.
+- [ ] If the backend URL is correctly configured and the server is
+responsive,
+no warning message should be displayed.
 
 **Actual Results:**
 - [ ] Describe the actual outcome of the test.
 
 **Pass/Fail Criteria:**
-- [ ] Pass if the warning message accurately reflects the state of the backend
-  URL.
+- [ ] Pass if the warning message accurately reflects the state of the
+backend
+URL.
 - [ ] Fail if no warning is displayed in the case of a misconfigured or non-
-  responsive backend, or if a false warning is displayed when the backend is
-  correctly configured and responsive.
+responsive backend, or if a false warning is displayed when the backend is
+correctly configured and responsive.
 
 ---
 
@@ -47,51 +54,58 @@ correctly and as expected before deployment or release.
 
 ### Test 1: Capture Snapshot from Microscope/Camera Device
 
-**Objective:** Ensure that the capture button takes a snapshot of the current
-               view from the microscope/camera device.
+**Objective:** Ensure that the capture button takes a snapshot of the
+current
+view from the microscope/camera device.
 
 **Preconditions:**
 - [ ] The application is open and the user is logged in (if required).
-- [ ] The microscope/camera device is connected and streaming live feed to the
-  application.
+- [ ] The microscope/camera device is connected and streaming live feed to
+the
+application.
 
 **Test Steps:**
-1. Navigate to the view where the live feed from the microscope/camera device is
+1. Navigate to the view where the live feed from the microscope/camera device
+is
 displayed.
 2. Click on the 'Capture' button to take a snapshot of the current view.
 
 **Expected Results:**
 - [ ] Upon clicking 'Capture', a snapshot of the live feed is taken and
-  displayed to the user.
-- [ ] The 'Capture' button should become inactive or show a visual cue that the
-  snapshot has been taken.
+displayed to the user.
+- [ ] The 'Capture' button should become inactive or show a visual cue that
+the
+snapshot has been taken.
 
 **Actual Results:**
 - [ ] Describe what actually happened when the test was executed.
 
 **Pass/Fail:**
 - [ ] Pass if the snapshot is successfully taken and displayed.
-- [ ] Fail if the snapshot is not taken, not displayed, or the button does not
-  react as expected.
+- [ ] Fail if the snapshot is not taken, not displayed, or the button does
+not
+react as expected.
 
 ---
 
 ### Test 2: Capture Button Disabled on Capture Component View
 
-**Objective:** Validate that the capture button is disabled when the user is
-               viewing the captured snapshot.
+**Objective:** Validate that the capture button is disabled when the user
+is
+viewing the captured snapshot.
 
 **Preconditions:**
 - [ ] A snapshot has been taken and the user is on the Capture component view
-  where the snapshot is displayed.
+where the snapshot is displayed.
 
 **Test Steps:**
 1. Observe the 'Capture' button while on the Capture component view.
 
 **Expected Results:**
 - [ ] The 'Capture' button should be visibly disabled or inactive.
-- [ ] The user should not be able to click the 'Capture' button again until they
-  toggle back to the live feed view.
+- [ ] The user should not be able to click the 'Capture' button again until
+they
+toggle back to the live feed view.
 
 **Actual Results:**
 - [ ] Describe what actually happened when the test was executed.
@@ -104,8 +118,9 @@ displayed.
 
 ### Test 1: Switching Between Webcam Devices
 
-**Objective:** Ensure that the switch button allows the user to change between
-               different webcam devices.
+**Objective:** Ensure that the switch button allows the user to change
+between
+different webcam devices.
 
 **Preconditions:**
 - [ ] The application is open and the user is logged in (if required).
@@ -119,8 +134,9 @@ displayed.
 5. Confirm the selection and observe the change in the webcam feed.
 
 **Expected Results:**
-- [ ] On clicking 'Switch', a popup window appears listing the available webcam
-  devices.
+- [ ] On clicking 'Switch', a popup window appears listing the available
+webcam
+devices.
 - [ ] The webcam feed updates to show the feed from the selected device.
 
 **Actual Results:**
@@ -128,27 +144,31 @@ displayed.
 
 **Pass/Fail:**
 - [ ] Pass if the webcam feed switches correctly to the selected device.
-- [ ] Fail if the feed does not switch, the popup does not appear, or the wrong
-  feed is displayed.
+- [ ] Fail if the feed does not switch, the popup does not appear, or the
+wrong
+feed is displayed.
 
 ---
 
 ### Test 2: Switch Button Disabled on Capture Component View
 
-**Objective:** Validate that the switch button is disabled when the user is
-               viewing the captured snapshot.
+**Objective:** Validate that the switch button is disabled when the user
+is
+viewing the captured snapshot.
 
 **Preconditions:**
-- [ ] The user has navigated to the Capture component view, where a previously
-  captured snapshot is displayed.
+- [ ] The user has navigated to the Capture component view, where a
+previously
+captured snapshot is displayed.
 
 **Test Steps:**
 1. Observe the 'Switch' button while on the Capture component view.
 
 **Expected Results:**
 - [ ] The 'Switch' button should be visibly disabled or inactive.
-- [ ] The user should not be able to interact with the 'Switch' button while in
-  the Capture view.
+- [ ] The user should not be able to interact with the 'Switch' button while
+in
+the Capture view.
 
 **Actual Results:**
 - [ ] Describe what actually happened when the test was executed.
@@ -161,9 +181,10 @@ displayed.
 
 ### Test 1: Classification and Result Population
 
-**Objective:** Ensure that the classify button correctly triggers the
-               classification process and populates the results in the results
-               table.
+**Objective:** Ensure that the classify button correctly triggers
+the
+classification process and populates the results in the results
+table.
 
 **Preconditions:**
 - [ ] The application is open and the user is logged in (if required).
@@ -177,52 +198,57 @@ displayed.
 
 **Expected Results:**
 - [ ] Classification results appear in the results table within a few seconds
-  after clicking 'Classify'.
+after clicking 'Classify'.
 - [ ] Each classified seed in the image is overlaid with a red box.
-- [ ] Each red box has an associated number that correlates with an entry in the
-  results table.
+- [ ] Each red box has an associated number that correlates with an entry in
+the
+results table.
 
 **Actual Results:**
 - [ ] Describe what actually happened when the test was executed.
 
 **Pass/Fail:**
 - [ ] Pass if the results are correctly populated and red boxes appear as
-  expected.
+expected.
 - [ ] Fail if the classification takes too long, results do not appear, or
-  overlays are incorrect.
+overlays are incorrect.
 
 ---
 
 ### Test 2: Classify Button Disabled in Webcam Feed View
 
-**Objective:** Verify that the classify button is disabled when the user is
-               viewing the webcam feed.
+**Objective:** Verify that the classify button is disabled when the user
+is
+viewing the webcam feed.
 
 **Preconditions:**
-- [ ] The user is on the webcam feed view, displaying live feed from the camera.
+- [ ] The user is on the webcam feed view, displaying live feed from the
+camera.
 
 **Test Steps:**
 1. Observe the 'Classify' button while in the webcam feed view.
 
 **Expected Results:**
 - [ ] The 'Classify' button should be visibly disabled or inactive.
-- [ ] The user should not be able to interact with the 'Classify' button in this
-  view.
+- [ ] The user should not be able to interact with the 'Classify' button in
+this
+view.
 
 **Actual Results:**
 - [ ] Describe what actually happened when the test was executed.
 
 **Pass/Fail:**
 - [ ] Pass if the 'Classify' button is disabled and non-interactive in the
-  webcam feed view.
+webcam feed view.
 - [ ] Fail if the button remains active or can be interacted with.
 
 ## Testing Load Button Functionality
 
 ### Test 1: Loading an Image for Classification
 
-**Objective:** Ensure that the load button allows users to select and load an
-               image for classification.
+**Objective:** Ensure that the load button allows users to select and load
+an
+image for classification.
 
 **Preconditions:**
 - [ ] The application is open and the user is logged in (if required).
@@ -244,15 +270,17 @@ added to the Captures table.
 
 **Pass/Fail:**
 - [ ] Pass if the image is loaded and displayed correctly.
-- [ ] Fail if the file explorer does not open, the image is not displayed, or is
-  not added to the Captures table.
+- [ ] Fail if the file explorer does not open, the image is not displayed, or
+is
+not added to the Captures table.
 
 ---
 
 ### Test 2: Load Button Disabled in Webcam Feed View
 
-**Objective:** Verify that the load button is disabled when viewing the webcam
-               feed.
+**Objective:** Verify that the load button is disabled when viewing the
+webcam
+feed.
 
 **Preconditions:**
 - [ ] The user is on the webcam feed view.
@@ -263,22 +291,23 @@ added to the Captures table.
 **Expected Results:**
 - [ ] The 'Load' button should be visibly disabled or inactive.
 - [ ] The user should not be able to interact with the 'Load' button in this
-  view.
+view.
 
 **Actual Results:**
 - [ ] Describe what actually happened when the test was executed.
 
 **Pass/Fail:**
 - [ ] Pass if the 'Load' button is disabled and non-interactive in the webcam
-  feed view.
+feed view.
 - [ ] Fail if the button remains active or can be interacted with.
 
 ## Testing Save Button Functionality
 
 ### Test 1: Saving Images and Captures
 
-**Objective:** Ensure that the save button allows users to save images and
-               captures locally.
+**Objective:** Ensure that the save button allows users to save images
+and
+captures locally.
 
 **Preconditions:**
 - [ ] The application is open and the user is logged in (if required).
@@ -295,8 +324,9 @@ JPEG).
 computer.
 
 **Expected Results:**
-- [ ] The 'Save Capture' pop-out window appears with options to save the capture
-  and cache.
+- [ ] The 'Save Capture' pop-out window appears with options to save the
+capture
+and cache.
 - [ ] The image(s) are saved in the selected format to the local storage.
 
 **Actual Results:**
@@ -304,15 +334,17 @@ computer.
 
 **Pass/Fail:**
 - [ ] Pass if the images are saved successfully in the chosen format.
-- [ ] Fail if the save functionality does not work or the saved images are not
-  as expected.
+- [ ] Fail if the save functionality does not work or the saved images are
+not
+as expected.
 
 ---
 
 ### Test 2: Save Button Disabled in Webcam Feed View
 
-**Objective:** Verify that the save button is disabled when viewing the webcam
-               feed.
+**Objective:** Verify that the save button is disabled when viewing the
+webcam
+feed.
 
 **Preconditions:**
 - [ ] The user is on the webcam feed view.
@@ -323,14 +355,14 @@ computer.
 **Expected Results:**
 - [ ] The 'Save' button should be visibly disabled or inactive.
 - [ ] The user should not be able to interact with the 'Save' button in this
-  view.
+view.
 
 **Actual Results:**
 - [ ] Describe what actually happened when the test was executed.
 
 **Pass/Fail:**
 - [ ] Pass if the 'Save' button is disabled and non-interactive in the webcam
-  feed view.
+feed view.
 - [ ] Fail if the button remains active or can be interacted with.
 
 ## Testing Directories Component
@@ -359,8 +391,9 @@ computer.
 
 **Pass/Fail:**
 - [ ] Pass if a new directory is created and listed correctly.
-- [ ] Fail if the directory is not created, does not appear, or the pop-up does
-  not function correctly.
+- [ ] Fail if the directory is not created, does not appear, or the pop-up
+does
+not function correctly.
 
 ---
 
@@ -382,7 +415,7 @@ computer.
 **Expected Results:**
 - [ ] The 'Delete Directory' pop-up appears upon clicking the 'X' button.
 - [ ] The selected directory is removed from the DIRECTORIES table upon
-  confirmation.
+confirmation.
 - [ ] The user can cancel the deletion process by clicking 'Cancel'.
 
 **Actual Results:**
@@ -390,15 +423,17 @@ computer.
 
 **Pass/Fail:**
 - [ ] Pass if the directory is deleted successfully.
-- [ ] Fail if the directory is not deleted, or if the pop-up does not function
-  correctly.
+- [ ] Fail if the directory is not deleted, or if the pop-up does not
+function
+correctly.
 
 ## Testing Directory Selection and Upload Functionality
 
 ### Test 1: Selecting a Directory for Uploads
 
-**Objective:** Ensure that users can select a directory to save new captures or
-               uploaded images.
+**Objective:** Ensure that users can select a directory to save new captures
+or
+uploaded images.
 
 **Preconditions:**
 - [ ] The application is open, and the user is logged in (if required).
@@ -419,14 +454,15 @@ computer.
 **Pass/Fail:**
 - [ ] Pass if new images are correctly added to the selected directory.
 - [ ] Fail if images are not added to the selected directory or if directory
-  selection does not work.
+selection does not work.
 
 ---
 
 ### Test 2: Emptying the Captures Table
 
-**Objective:** Verify that users can remove all captures from the Captures
-               table.
+**Objective:** Verify that users can remove all captures from the
+Captures
+table.
 
 **Preconditions:**
 - [ ] The application is open, and the user is logged in (if required).
@@ -438,25 +474,29 @@ computer.
 3. Observe if all captures are removed from the table.
 
 **Expected Results:**
-- [ ] All captures are removed from the Captures table upon clicking the trash
-  icon.
-- [ ] The user is potentially prompted for confirmation before the captures are
-  emptied.
+- [ ] All captures are removed from the Captures table upon clicking the
+trash
+icon.
+- [ ] The user is potentially prompted for confirmation before the captures
+are
+emptied.
 
 **Actual Results:**
 - [ ] Describe what actually happened when the test was executed.
 
 **Pass/Fail:**
 - [ ] Pass if all captures are successfully removed from the table.
-- [ ] Fail if captures remain in the table or the trash icon does not function
-  as expected.
+- [ ] Fail if captures remain in the table or the trash icon does not
+function
+as expected.
 
 ## Testing Results Component Functionality
 
 ### Test 1: Toggling Between Grouped or Individual Reporting
 
-**Objective:** Ensure that users can toggle between grouped and individual
-               reporting in the RESULTS table.
+**Objective:** Ensure that users can toggle between grouped and
+individual
+reporting in the RESULTS table.
 
 **Preconditions:**
 - [ ] The application is open, and the user is logged in (if required).
@@ -468,9 +508,10 @@ computer.
 3. Toggle between grouped and individual reporting to test both views.
 
 **Expected Results:**
-- [ ] Clicking the icon toggles between grouped and individual reporting styles.
+- [ ] Clicking the icon toggles between grouped and individual reporting
+styles.
 - [ ] The RESULTS table correctly displays the data according to the selected
-  reporting style.
+reporting style.
 
 **Actual Results:**
 - [ ] Describe what actually happened when the test was executed.
@@ -483,8 +524,9 @@ computer.
 
 ### Test 2: Setting Minimum Confidence Threshold via Configuration Widget
 
-**Objective:** Verify that the minimum confidence threshold can be set through a
-               Configuration widget.
+**Objective:** Verify that the minimum confidence threshold can be set through
+a
+Configuration widget.
 
 **Preconditions:**
 - [ ] The application is open, and the user is logged in (if required).
@@ -494,29 +536,32 @@ computer.
 1. Click on the configuration icon in the RESULTS table header.
 2. In the Configuration widget popup, adjust the slider to set a new minimum
 confidence threshold.
-3. Observe if the threshold value is updated in real-time in the RESULTS table.
+3. Observe if the threshold value is updated in real-time in the RESULTS
+table.
 
 **Expected Results:**
 - [ ] The Configuration widget opens with a slider for the minimum confidence
-  threshold.
+threshold.
 - [ ] Adjusting the slider updates the minimum confidence threshold value in
-  real-time.
+real-time.
 
 **Actual Results:**
 - [ ] Describe what actually happened when the test was executed.
 
 **Pass/Fail:**
-- [ ] Pass if the confidence threshold updates as expected when adjusted via the
-  slider.
+- [ ] Pass if the confidence threshold updates as expected when adjusted via
+the
+slider.
 - [ ] Fail if the slider does not function, or the threshold value does not
-  update.
+update.
 
 ---
 
 ### Future Implementation: Test 3: Selecting Classification Model for Results
 
-**Objective:** (For future implementation) Ensure that users can select a
-               classification model and see updated results.
+**Objective:** (For future implementation) Ensure that users can select
+a
+classification model and see updated results.
 
 **Preconditions:**
 - [ ] The application is open, and the user is logged in (if required).
@@ -530,8 +575,9 @@ table.
 
 **Expected Results:**
 - [ ] User can select a model from the available options.
-- [ ] The RESULTS table updates to reflect the classification results from the
-  chosen model.
+- [ ] The RESULTS table updates to reflect the classification results from
+the
+chosen model.
 
 **Actual Results:**
 - [ ] Describe what actually happened when the test was executed.
@@ -553,14 +599,13 @@ environment variable.
 for test data, any other value for real data).
 
 **Test Steps:**
-1. **For Testing with Real Data:**
+1. For Testing with Real Data:
 - Set `REACT_APP_MODE` to any value other than `"test"`.
 - Start the application.
 - Navigate to the Results Tuner Popup.
 - Observe the populated model list.
 - Verify that the list corresponds to the data fetched from the backend.
-
-2. **For Testing with Test Data:**
+2. For Testing with Test Data:
 - Set `REACT_APP_MODE` to `"test"`.
 - Start the application.
 - Navigate to the Results Tuner Popup.
@@ -573,3 +618,12 @@ application.
 Tuner Popup is populated with test data.
 - [ ] When `REACT_APP_MODE` is set to any other value, the model list is
 populated with real data fetched from the backend server.
+
+**Actual Results:**
+- [ ] Describe the actual outcome of the test.
+
+**Pass/Fail Criteria:**
+- [ ] Pass if the model list correctly displays based on the `REACT_APP_MODE`
+setting.
+- [ ] Fail if the model list does not populate, or the wrong data set is
+displayed.
