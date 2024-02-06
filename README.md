@@ -60,6 +60,7 @@ For managing and configuring different deployment environments (development,
 staging, production), we follow a structured approach to ensure consistency and
 reliability across all stages of deployment. Detailed guidelines and practices
 can be found in our [Deployment Environment Configuration Management
+
 documentation](https://github.com/ai-cfia/dev-rel-docs/blob/103-documentation-request-environment-configuration-guidelines/TypeScript-AppVersion/DEPLOYMENT_ENV_CONFIG_MANAGEMENT.md).
 
 This documentation covers:
@@ -77,6 +78,46 @@ environment configurations in your project.
 ## Learn More
 
 You can learn more in the [Create React App
+
 documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+## Environment Variable Setup
+
+To run the application correctly, certain environment variables need to be set.
+These variables control various aspects of how the application behaves in
+different environments (development, staging, production).
+
+### Required Variables
+
+1. `REACT_APP_BACKEND_URL`: URL of the backend server. This is used to make API
+calls from the frontend.
+2. `REACT_APP_MODE`: Determines the mode in which the application runs. Set to
+`"test"` for using test data, any other value will use real data from the
+backend.
+
+### Setting Up Environment Variables
+
+You can set these variables in a `.env` file in the root of your project.
+Here's an example of what your `.env` file might look like:
+
+```
+REACT_APP_BACKEND_URL=
+REACT_APP_MODE=
+```
+Remember to replace the values with the appropriate URLs and modes for your
+specific environment. Also, ensure that you do not commit sensitive information
+like production URLs or credentials in the `.env` file to your version control
+system.
+
+### Accessing Environment Variables in the Application
+
+In your React application, you can access these variables using `process.env`.
+For example:
+
+- `process.env.REACT_APP_BACKEND_URL` to get the backend URL.
+- `process.env.REACT_APP_MODE` to check the current mode of the application.
+
+Note: After changing the values in your `.env` file, you will need to restart
+your development server for the changes to take effect.
