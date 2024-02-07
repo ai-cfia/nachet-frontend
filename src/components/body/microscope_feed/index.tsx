@@ -168,7 +168,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
               variant="outlined"
               disabled={props.isWebcamActive} // Disable when the webcam is active
               onClick={() => {
-                props.handleInference();
+                props.setSwitchModelOpen(true);
               }}
               sx={buttonStyle}
             >
@@ -180,7 +180,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
                 }}
               >
                 <CropFreeIcon color="inherit" style={iconStyle} />
-                <span>CLASSIFY</span>
+                <span>CLASSIFY</span>{" "}
               </div>
             </Button>
           </>

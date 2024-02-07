@@ -66,7 +66,8 @@ const Body: React.FC<params> = (props) => {
   const [delDirectoryOpen, setDelDirectoryOpen] = useState<boolean>(false);
   const [resultsTunerOpen, setResultsTunerOpen] = useState<boolean>(false);
   const [scoreThreshold, setScoreThreshold] = useState<number>(50);
-  const [selectedModel, setSelectedModel] = useState("Seed Classification");
+  const [selectedModel, setSelectedModel] = useState("");
+  const [modelDisplayName, setModelDisplayName] = useState("");
   const [selectedLabel, setSelectedLabel] = useState<string>("all");
   const [labelOccurrences, setLabelOccurrences] = useState<any>({});
   const [saveIndividualImage, setSaveIndividualImage] = useState<string>("0");
@@ -400,6 +401,7 @@ const Body: React.FC<params> = (props) => {
             if (response.status === 200) {
               handleAzureStorageDir();
               loadResultsToCache(response.data);
+              setModelDisplayName(selectedModel);
             } else {
               alert(response.data[0]);
             }
@@ -664,6 +666,10 @@ const Body: React.FC<params> = (props) => {
         <ModelInfoPopup
           setSwitchModelOpen={setModelInfoPopupOpen}
           switchModelOpen={modelInfoPopupOpen}
+          selectedModel={selectedModel}
+          setSelectedModel={setSelectedModel}
+          realData={metadata}
+          handleInference={handleInferenceRequest}
         />
       )}
       {switchDeviceOpen && (
@@ -694,9 +700,6 @@ const Body: React.FC<params> = (props) => {
           setResultsTunerOpen={setResultsTunerOpen}
           setScoreThreshold={setScoreThreshold}
           scoreThreshold={scoreThreshold}
-          selectedModel={selectedModel}
-          setSelectedModel={setSelectedModel}
-          realData={metadata}
         />
       )}
       {props.signUpOpen && <SignUp setSignUpOpen={props.setSignUpOpen} />}
@@ -743,7 +746,7 @@ const Body: React.FC<params> = (props) => {
           setIsWebcamActive(!isWebcamActive);
         }}
         onImageUpload={handleImageUpload}
-        selectedModel={selectedModel}
+        modelDisplayName={modelDisplayName}
       />
     </BodyContainer>
   );
