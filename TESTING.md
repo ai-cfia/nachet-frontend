@@ -613,5 +613,44 @@ data.
 - [ ] Fail if the model list does not populate, populates incorrectly, or
 displays real data.
 
----
+## Test Case: Model Selection and Classification Process
 
+**Objective:** Verify the enhanced process where users select an image
+classification model through a new popup after clicking the CLASSIFY button,
+ensuring the model label is populated in the results only after successful
+classification (indicated by a 200 status code from the backend), and that the
+user's selection is retained for subsequent uses.
+
+### Test 1: Successful Model Selection and Classification
+
+**Preconditions:**
+- [ ] The application is open and running.
+- [ ] The backend server is operational.
+
+**Test Steps:**
+1. Click on the CLASSIFY button.
+2. A model selection popup appears prompting the user to select which model to
+use for image classification.
+3. Select a model from the popup and initiate the classification.
+4. Observe the results panel to verify that it is populated with the model
+label only after receiving a 200 status code from the backend.
+5. Re-click on the CLASSIFY button to confirm that the previous model selection
+is retained and observe the results panel for updated classification.
+
+**Expected Results:**
+- [ ] The model selection popup appears upon clicking CLASSIFY.
+- [ ] The results panel is populated with the model label after successful
+classification, following a 200 status code response from the backend.
+- [ ] The user's model selection is retained for subsequent classification
+attempts.
+
+**Actual Results:**
+- [ ] Describe the actual outcome of the test.
+
+**Pass/Fail Criteria:**
+- [ ] Pass if the model selection popup functions correctly, the results are
+populated as expected after classification, and the user's choice is retained.
+- [ ] Fail if the popup does not appear, the results are not populated
+correctly, or the user's selection is not retained.
+
+---

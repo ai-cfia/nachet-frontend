@@ -29,7 +29,7 @@ interface params {
   labelOccurrences: any;
   switchTable: boolean;
   setSwitchTable: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedModel: string;
+  modelDisplayName: string;
   windowSize: {
     width: number;
     height: number;
@@ -59,7 +59,7 @@ const ClassificationResults: React.FC<params> = (props) => {
         title={
           <span>
             {"RESULTS | "}
-            <strong>{props.selectedModel}</strong>
+            <strong>{props.modelDisplayName}</strong>
           </span>
         }
         titleTypographyProps={{
