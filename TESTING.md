@@ -621,36 +621,67 @@ ensuring the model label is populated in the results only after successful
 classification (indicated by a 200 status code from the backend), and that the
 user's selection is retained for subsequent uses.
 
-### Test 1: Successful Model Selection and Classification
+## Test Case: Enhanced Model Selection and Classification Process
+
+### Objective
+Verify that the application allows users to select a classification model via a
+dedicated "Model Selection" button, which opens a popup for model choice.
+Ensure that the "CLASSIFY" button triggers an inference request using the
+selected model. Additionally, confirm that a loading icon appears during the
+inference request and disappears once the request is completed.
+
+### Test 1: Model Selection via Dedicated Button
 
 **Preconditions:**
 - [ ] The application is open and running.
 - [ ] The backend server is operational.
 
 **Test Steps:**
-1. Click on the CLASSIFY button.
-2. A model selection popup appears prompting the user to select which model to
-use for image classification.
-3. Select a model from the popup and initiate the classification.
-4. Observe the results panel to verify that it is populated with the model
-label only after receiving a 200 status code from the backend.
-5. Re-click on the CLASSIFY button to confirm that the previous model selection
-is retained and observe the results panel for updated classification.
+1. Click on the "Model Selection" button.
+2. Observe the popup to ensure it displays a list of available models.
+3. Select a model from the list and close the popup.
+4. Verify the selected model is displayed or indicated outside the popup.
 
 **Expected Results:**
-- [ ] The model selection popup appears upon clicking CLASSIFY.
-- [ ] The results panel is populated with the model label after successful
-classification, following a 200 status code response from the backend.
-- [ ] The user's model selection is retained for subsequent classification
-attempts.
+- [ ] The popup with the list of models appears upon clicking the "Model
+Selection" button.
+- [ ] The user can successfully select a model, and the selection is visibly
+confirmed.
 
 **Actual Results:**
 - [ ] Describe the actual outcome of the test.
 
 **Pass/Fail Criteria:**
-- [ ] Pass if the model selection popup functions correctly, the results are
-populated as expected after classification, and the user's choice is retained.
-- [ ] Fail if the popup does not appear, the results are not populated
-correctly, or the user's selection is not retained.
+- [ ] Pass if the model selection popup functions correctly and the user's
+selection is clearly indicated.
+- [ ] Fail if the popup does not appear, model selection does not work, or the
+selected model is not indicated.
+
+### Test 2: Inference Request and Loading Icon Display
+
+**Preconditions:**
+- [ ] A model has been selected using the "Model Selection" button.
+- [ ] The "CLASSIFY" button is enabled.
+
+**Test Steps:**
+1. Click on the "CLASSIFY" button to start the inference process.
+2. Observe the interface for a loading icon indicating the process is in
+progress.
+3. Wait for the inference request to complete.
+
+**Expected Results:**
+- [ ] A loading icon appears immediately after the "CLASSIFY" button is
+clicked, signaling that the inference request is in progress.
+- [ ] The loading icon disappears, and the results of the inference are
+displayed once the request completes successfully.
+
+**Actual Results:**
+- [ ] Describe the actual outcome of the test.
+
+**Pass/Fail Criteria:**
+- [ ] Pass if the loading icon appears during the inference process and
+disappears upon completion, followed by the display of inference results.
+- [ ] Fail if the loading icon does not appear, remains visible after
+completion, or if the inference results are not displayed.
 
 ---
