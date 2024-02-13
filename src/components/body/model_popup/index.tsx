@@ -26,8 +26,7 @@ const SwitchModel: React.FC<params> = (props): JSX.Element => {
     props.setSelectedModel(model);
   };
 
-  const handleInferenceAndClose = (): void => {
-    props.handleInference();
+  const close = (): void => {
     handleClose(); // Call handleClose to close the popup
   };
 
@@ -152,7 +151,7 @@ const SwitchModel: React.FC<params> = (props): JSX.Element => {
           color="inherit"
           variant="outlined"
           onClick={() => {
-            handleInferenceAndClose();
+            close();
           }}
           style={{
             marginTop: "30px",
@@ -168,7 +167,7 @@ const SwitchModel: React.FC<params> = (props): JSX.Element => {
               flexWrap: "wrap",
             }}
           >
-            <span>CLASSIFY</span>
+            <span>Done</span>
           </div>
         </Button>
       </Box>

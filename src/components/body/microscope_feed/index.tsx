@@ -5,12 +5,17 @@ import React from "react";
 import { Box, CardHeader, Button } from "@mui/material";
 import { colours } from "../../../styles/colours";
 import { Canvas } from "../feed_capture/indexElements";
+// Import icons
 import SwitchCameraIcon from "@mui/icons-material/SwitchCamera";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import DownloadIcon from "@mui/icons-material/Download";
 import CropFreeIcon from "@mui/icons-material/CropFree";
 import ToggleButton from "../buttons/ToggleButton";
+import DonutSmallIcon from "@mui/icons-material/DonutSmall";
+
+// Import a loading icon component (ensure you have this)
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface params {
   webcamRef: React.RefObject<Webcam>;
@@ -25,6 +30,7 @@ interface params {
   handleInference: () => void;
   imageIndex: number;
   isWebcamActive: boolean;
+  isLoading: boolean;
   onCaptureClick: () => void;
   windowSize: {
     width: number;
@@ -179,14 +185,33 @@ const MicroscopeFeed: React.FC<params> = (props) => {
                   flexWrap: "wrap",
                 }}
               >
+                <DonutSmallIcon color="inherit" style={iconStyle} />
+                <span>MODEL SELECTION</span>{" "}
+              </div>
+            </Button>
+            <Button
+              color="inherit"
+              variant="outlined"
+              onClick={() => {
+                props.handleInference();
+              }}
+              sx={buttonStyle}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                }}
+              >
                 <CropFreeIcon color="inherit" style={iconStyle} />
-                <span>CLASSIFY</span>{" "}
+                <span>CLASSIFY</span>
               </div>
             </Button>
           </>
         }
       />
-      <div>
+      <div style={{ position: "relative", width: width - 1, height }}>
         {props.isWebcamActive ? (
           <Webcam
             ref={props.webcamRef}
@@ -199,13 +224,34 @@ const MicroscopeFeed: React.FC<params> = (props) => {
               height,
               deviceId: props.activeDeviceId,
             }}
-            screenshotFormat={"image/png"}
+            screenshotFormat="image/png"
             screenshotQuality={1}
           />
         ) : (
-          <Canvas ref={props.canvasRef} />
+          <>
+            <Canvas ref={props.canvasRef} />
+            {props.isLoading && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  background: "rgba(0, 0, 0, 0.5)", // Darkens the canvas area to make the loader visible
+                }}
+              >
+                <CircularProgress style={{ color: "#FFFFFF" }} />{" "}
+                {/* Adjust the color as needed */}
+              </div>
+            )}
+          </>
         )}
       </div>
+
       <div style={{ display: "flex" }}>
         <ToggleButton
           isActive={!props.isWebcamActive}

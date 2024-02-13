@@ -51,6 +51,7 @@ interface params {
   isWebcamActive: boolean;
   onCaptureClick: () => void;
   onImageUpload: (file: File) => void;
+  isLoading: boolean; // Add this line
 }
 
 const Classifier: React.FC<params> = (props) => {
@@ -64,6 +65,7 @@ const Classifier: React.FC<params> = (props) => {
             windowSize={props.windowSize}
             activeDeviceId={props.activeDeviceId}
             setSwitchDeviceOpen={props.setSwitchDeviceOpen}
+            isLoading={props.isLoading}
             canvasRef={props.canvasRef}
             setSaveOpen={props.setSaveOpen}
             handleInference={props.handleInference}

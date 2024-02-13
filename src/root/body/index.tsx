@@ -66,7 +66,7 @@ const Body: React.FC<params> = (props) => {
   const [delDirectoryOpen, setDelDirectoryOpen] = useState<boolean>(false);
   const [resultsTunerOpen, setResultsTunerOpen] = useState<boolean>(false);
   const [scoreThreshold, setScoreThreshold] = useState<number>(50);
-  const [selectedModel, setSelectedModel] = useState("");
+  const [selectedModel, setSelectedModel] = useState("Seed Classification");
   const [modelDisplayName, setModelDisplayName] = useState("");
   const [selectedLabel, setSelectedLabel] = useState<string>("all");
   const [labelOccurrences, setLabelOccurrences] = useState<any>({});
@@ -76,6 +76,7 @@ const Body: React.FC<params> = (props) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isWebcamActive, setIsWebcamActive] = useState(true); // This state determines the visibility of the webcam
   const [metadata, setMetadata] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const loadCaptureToCache = (src: string): void => {
     // appends new image to image cache and its corresponding details
@@ -380,6 +381,7 @@ const Body: React.FC<params> = (props) => {
       );
       (async () => {
         try {
+          setIsLoading(true);
           await axios({
             method: "post",
             url: `${getBackendUrl()}/inf`,
@@ -402,17 +404,21 @@ const Body: React.FC<params> = (props) => {
               handleAzureStorageDir();
               loadResultsToCache(response.data);
               setModelDisplayName(selectedModel);
+              setIsLoading(false);
             } else {
               alert(response.data[0]);
+              setIsLoading(false);
             }
           });
         } catch (error) {
           console.log(error);
           alert("Error fetching inference data");
+          setIsLoading(false);
         }
       })().catch((error) => {
         console.error(error);
         alert("Cannot connect to server");
+        setIsLoading(false);
       });
     } else {
       alert("Please select a directory");
@@ -747,6 +753,7 @@ const Body: React.FC<params> = (props) => {
         }}
         onImageUpload={handleImageUpload}
         modelDisplayName={modelDisplayName}
+        isLoading={isLoading}
       />
     </BodyContainer>
   );
