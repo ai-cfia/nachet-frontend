@@ -18,30 +18,30 @@ You will also see any lint errors in the console.
 ### `npm test`
 
 Launches the test runner in the interactive watch mode.\
-See the section about
-[running tests](https://facebook.github.io/create-react-app/docs/running-tests)
-for more information.
+See the section about [running
+tests](https://facebook.github.io/create-react-app/docs/running-tests) for more
+information.
 
 ### `npm run build`
 
 Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for
-the best performance.
+It correctly bundles React in production mode and optimizes the build for the
+best performance.
 
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
 See the section about
-[deployment](https://facebook.github.io/create-react-app/docs/deployment)
-for more information.
+[deployment](https://facebook.github.io/create-react-app/docs/deployment) for
+more information.
 
 ### `npm run eject`
 
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
 If you aren’t satisfied with the build tool and configuration choices, you can
-`eject` at any time.
-This command will remove the single build dependency from your project.
+`eject` at any time. This command will remove the single build dependency from
+your project.
 
 Instead, it will copy all the configuration files and the transitive
 dependencies (webpack, Babel, ESLint, etc) right into your project so you have
@@ -51,12 +51,32 @@ you’re on your own.
 
 You don’t have to ever use `eject`. The curated feature set is suitable for
 small and middle deployments, and you shouldn’t feel obligated to use this
-feature. However we understand that this tool wouldn’t be useful if you couldn’t
-customize it when you are ready for it.
+feature. However we understand that this tool wouldn’t be useful if you
+couldn’t customize it when you are ready for it.
+
+## Deployment Environment Configuration Management
+
+For managing and configuring different deployment environments (development,
+staging, production), we follow a structured approach to ensure consistency and
+reliability across all stages of deployment. Detailed guidelines and practices
+can be found in our [Deployment Environment Configuration Management
+documentation](https://github.com/ai-cfia/dev-rel-docs/blob/103-documentation-request-environment-configuration-guidelines/TypeScript-AppVersion/DEPLOYMENT_ENV_CONFIG_MANAGEMENT.md).
+
+This documentation covers:
+
+- Overview and purpose of different environment files (`environment.ts`,
+`environment.staging.ts`, `environment.prod.ts`).
+- The process for selecting and applying the correct environment configuration
+during the build and deployment.
+- Best practices for maintaining clear, consistent, and secure configuration
+management across all frontend components.
+
+Refer to this documentation to understand how to effectively manage and utilize
+environment configurations in your project.
 
 ## Learn More
 
-You can learn more in the
-[Create React App documentation](https://bit.ly/47NY4Rc).
+You can learn more in the [Create React App
+documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).

@@ -1,7 +1,7 @@
 {
   "name": "nachet-frontend",
-  "homepage": "/",
-  "version": "0.1.0",
+  "homepage": "https://ai-cfia.github.io/nachet-frontend",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.16.7",
@@ -39,6 +39,8 @@
   },
   "scripts": {
     "predeploy": "npm run build",
+    "prestart": "ts-appversion",
+    "prebuild": "ts-appversion",
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",

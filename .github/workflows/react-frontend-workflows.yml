@@ -1,4 +1,4 @@
-name: Workflows
+name: React frontend workflows
 
 on:
   pull_request:
