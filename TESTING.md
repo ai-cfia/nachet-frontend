@@ -522,39 +522,6 @@ reporting style.
 
 ---
 
-### Test 2: Setting Minimum Confidence Threshold via Configuration Widget
-
-**Objective:** Verify that the minimum confidence threshold can be set through
-a
-Configuration widget.
-
-**Preconditions:**
-- [ ] The application is open, and the user is logged in (if required).
-- [ ] The RESULTS table is visible with classification results.
-
-**Test Steps:**
-1. Click on the configuration icon in the RESULTS table header.
-2. In the Configuration widget popup, adjust the slider to set a new minimum
-confidence threshold.
-3. Observe if the threshold value is updated in real-time in the RESULTS
-table.
-
-**Expected Results:**
-- [ ] The Configuration widget opens with a slider for the minimum confidence
-threshold.
-- [ ] Adjusting the slider updates the minimum confidence threshold value in
-real-time.
-
-**Actual Results:**
-- [ ] Describe what actually happened when the test was executed.
-
-**Pass/Fail:**
-- [ ] Pass if the confidence threshold updates as expected when adjusted via
-the
-slider.
-- [ ] Fail if the slider does not function, or the threshold value does not
-update.
-
 ## Test Case: Populating Model List Based on Environment Setting
 
 **Objective:** Verify that the Results Tuner Popup correctly populates the
