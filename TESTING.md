@@ -684,4 +684,98 @@ disappears upon completion, followed by the display of inference results.
 - [ ] Fail if the loading icon does not appear, remains visible after
 completion, or if the inference results are not displayed.
 
+## Test Case: Viewing Top 5 Results for Each Image Classification
+
+### Objective
+Verify that users can view the top 5 classification results by expanding a
+single table row at a time in the RESULTS panel.
+
+### Test 1: Expand Functionality of Classification Rows
+
+**Preconditions:**
+- [ ] The application is open, and the user is logged in (if required).
+- [ ] The RESULTS table is populated with classification results.
+
+**Test Steps:**
+1. Locate a row in the RESULTS table that represents an image classification.
+2. Click on the row to trigger the expand functionality.
+3. Observe the behavior and check if only the clicked row expands to show
+additional information.
+4. Click on another row and observe that the previously expanded row collapses
+and the new one expands.
+
+**Expected Results:**
+- [ ] Only the clicked row expands upon selection, revealing the top 5
+classification results.
+- [ ] Upon selecting another row, the previously expanded row collapses
+automatically, and the new one expands to show its top 5 results.
+
+**Actual Results:**
+- [ ] Describe the actual behavior observed when performing the test steps.
+
+**Pass/Fail:**
+- [ ] Pass if only one row expands at a time and the expansion toggles between
+rows correctly.
+- [ ] Fail if multiple rows can be expanded simultaneously or if the toggling
+does not work as expected.
+
+### Test 2: Accuracy and Display of Top 5 Results
+
+**Preconditions:**
+- [ ] A row in the RESULTS table is expanded to show the top 5 classification
+results.
+
+**Test Steps:**
+1. Compare the displayed top 5 results with the expected results based on the
+data from the backend.
+2. Ensure that the labels and scores are correctly displayed.
+3. Verify that scores are formatted correctly (e.g., no scientific notation for
+small numbers) and match the backend data.
+
+**Expected Results:**
+- [ ] The labels and scores of the top 5 results are correctly displayed as per
+the backend data.
+- [ ] Scores are presented in a readable percentage format.
+
+**Actual Results:**
+- [ ] Describe the actual scores and labels displayed and any discrepancies
+from expected data.
+
+**Pass/Fail:**
+- [ ] Pass if the top 5 results are displayed accurately and match the backend
+data.
+- [ ] Fail if there are inaccuracies in the labels, scores, or formatting
+issues.
+
+### Test 3: UI/UX Consistency and Responsiveness
+
+**Preconditions:**
+- [ ] At least one row in the RESULTS table can be expanded to view the top 5
+classification results.
+
+**Test Steps:**
+1. Expand a row and then expand another row to ensure that the application only
+allows one expanded row at a time.
+2. Resize the browser window to test responsiveness and ensure that the
+expanded content adjusts appropriately.
+3. Navigate away from and back to the RESULTS table to ensure that the expanded
+state is not preserved when navigating away.
+
+**Expected Results:**
+- [ ] Only one row can be expanded at any given time, and expanding another row
+collapses the previously expanded one.
+- [ ] The UI layout and expanded content adjust correctly to browser window
+resizing.
+- [ ] The expanded state of a row does not persist when navigating away from
+the RESULTS table.
+
+**Actual Results:**
+- [ ] Note any UI glitches, performance issues, or state inconsistencies
+observed.
+
+**Pass/Fail:**
+- [ ] Pass if the UI maintains quality and functionality throughout the tests,
+allowing only one expanded row at a time.
+- [ ] Fail if the application allows multiple rows to be expanded
+simultaneously or if there are issues with the UI layout or state management.
 ---
