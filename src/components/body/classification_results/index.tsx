@@ -1,6 +1,6 @@
 // Classification Results
 // \src\components\body\classification_results\index.tsx
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -12,11 +12,11 @@ import {
   IconButton,
 } from "@mui/material";
 import { colours } from "../../../styles/colours";
-import TuneIcon from "@mui/icons-material/Tune";
 import SwitchLeftIcon from "@mui/icons-material/SwitchLeft";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CropFreeIcon from "@mui/icons-material/CropFree";
 import LabelIcon from "@mui/icons-material/Label";
+import Typography from "@mui/material/Typography";
 
 interface params {
   savedImages: any[];
@@ -37,12 +37,71 @@ interface params {
 }
 
 const ClassificationResults: React.FC<params> = (props) => {
+  const [expandedRow, setExpandedRow] = useState<string | null>(null);
+
   const handleSelect = (key: string): void => {
     if (key === props.selectedLabel) {
       props.setSelectedLabel("all");
     } else {
       props.setSelectedLabel(key);
     }
+  };
+
+  const handleRowClick = (rowId: string): void => {
+    // Toggle expanded row. Collapse if the same row is clicked again.
+    if (expandedRow === rowId) {
+      setExpandedRow(null);
+    } else {
+      setExpandedRow(rowId);
+    }
+  };
+
+  const renderTopResults = (
+    topResults: Array<{ score: number | string; label: string }>,
+  ): JSX.Element => {
+    return (
+      <>
+        <Typography
+          variant="subtitle2"
+          style={{
+            fontWeight: "bold",
+            marginTop: "-15px",
+            paddingTop: "0px",
+            paddingBottom: "4px",
+            fontSize: "0.75em",
+          }}
+        >
+          Top Results
+        </Typography>
+        {topResults.map((result, index) => {
+          // Parse the score to a float if it's a string, then immediately declare it as a const.
+          const score =
+            typeof result.score === "number"
+              ? result.score
+              : parseFloat(result.score);
+
+          // Convert the score to a percentage string, handling very small numbers.
+          const percentageString =
+            score > 0 && score < 0.0001
+              ? "< 0.01%" // If the score is greater than 0 but less than 0.01%, show '< 0.01%'
+              : `${(score * 100).toFixed(2)}%`; // Otherwise, convert to percentage and format
+
+          return (
+            <Typography
+              key={index}
+              variant="body2"
+              style={{
+                fontSize: "0.75em",
+                paddingTop: "1px",
+                paddingBottom: "1px",
+              }}
+            >
+              {`${index + 1}. ${result.label}: ${percentageString}`}
+            </Typography>
+          );
+        })}
+      </>
+    );
   };
 
   return (
@@ -72,24 +131,6 @@ const ClassificationResults: React.FC<params> = (props) => {
         sx={{ padding: "0.8vh 1vh 0.8vh 0.8vh" }}
         action={
           <>
-            <IconButton
-              sx={{ padding: 0, marginTop: "0.27vh", marginRight: "0.4vh" }}
-              onClick={() => {
-                props.setResultsTunerOpen(true);
-              }}
-            >
-              <TuneIcon
-                style={{
-                  color: colours.CFIA_Background_Blue,
-                  fontSize: "2vh",
-                  marginTop: "0.1vh",
-                  marginBottom: "0.1vh",
-                  marginRight: "0.1vh",
-                  paddingTop: 0,
-                  paddingBottom: 0,
-                }}
-              />
-            </IconButton>
             <IconButton
               sx={{ padding: 0, marginTop: "0.27vh", marginRight: "0.4vh" }}
               onClick={() => {
@@ -265,120 +306,158 @@ const ClassificationResults: React.FC<params> = (props) => {
               ))}
 
             {!props.switchTable &&
-              props.savedImages.map((object: any) => {
+              props.savedImages.map((object: any, objectIndex: number) => {
                 if (
                   object.index === props.imageIndex &&
                   object.annotated === true
                 ) {
                   return object.classifications.map(
-                    (prediction: any, index: number) => {
-                      if (
-                        object.scores[index] >= props.scoreThreshold / 100 &&
-                        (props.selectedLabel === "all" ||
-                          props.selectedLabel === prediction)
-                      ) {
+                    (prediction: any, classificationIndex: number) => {
+                      const score = object.scores[classificationIndex];
+                      const rowId = `${objectIndex}-${classificationIndex}`;
+                      const topResults = object.topResults[classificationIndex];
+                      const isExpanded = expandedRow === rowId;
+                      const scoreMeetsThreshold =
+                        score >= props.scoreThreshold / 100;
+                      const labelMatchesSelection =
+                        props.selectedLabel === "all" ||
+                        props.selectedLabel === prediction;
+
+                      if (scoreMeetsThreshold && labelMatchesSelection) {
                         return (
-                          <TableRow
-                            key={index}
-                            sx={{
-                              "&:hover": {
-                                backgroundColor: "#F5F5F5",
-                                transition: "0.1s ease-in-out all",
-                              },
-                            }}
-                          >
-                            <TableCell
-                              align="left"
+                          <React.Fragment key={rowId}>
+                            <TableRow
+                              key={rowId}
                               sx={{
-                                cursor: "pointer",
-                                paddingRight: 0,
-                                fontSize: "1.0vh",
-                                paddingTop: "0.5vh",
-                                paddingBottom: "0.5vh",
-                                paddingLeft: "0.8vh",
+                                "&:hover": {
+                                  backgroundColor: "#F5F5F5",
+                                  transition: "0.1s ease-in-out all",
+                                },
+                              }}
+                              onClick={() => {
+                                handleRowClick(rowId);
                               }}
                             >
-                              <div
-                                style={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  flexWrap: "wrap",
+                              <TableCell
+                                align="left"
+                                sx={{
+                                  cursor: "pointer",
+                                  paddingRight: 0,
+                                  fontSize: "1.0vh",
+                                  paddingTop: "0.5vh",
+                                  paddingBottom: "0.5vh",
+                                  paddingLeft: "0.8vh",
                                 }}
                               >
-                                <LabelIcon
+                                <div
                                   style={{
-                                    color: colours.CFIA_Background_Blue,
-                                    fontSize: "1.8vh",
-                                    marginTop: 0,
-                                    marginBottom: 0,
-                                    paddingTop: 0,
-                                    paddingBottom: 0,
-                                    paddingRight: "0.3vw",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    flexWrap: "wrap",
                                   }}
-                                />
-                                <span
-                                  style={{ width: "0.7vw", textAlign: "left" }}
                                 >
-                                  {index + 1}
-                                </span>
-                              </div>
-                            </TableCell>
-                            <TableCell
-                              align="center"
-                              sx={{
-                                cursor: "pointer",
-                                paddingRight: 0,
-                                fontSize: "1.0vh",
-                                paddingLeft: 0,
-                                paddingTop: "0.5vh",
-                                paddingBottom: "0.5vh",
-                              }}
-                            >
-                              {prediction.split(" ").slice(1).join(" ")}
-                            </TableCell>
-                            <TableCell
-                              align="right"
-                              sx={{
-                                cursor: "pointer",
-                                paddingLeft: 0,
-                                fontSize: "1.0vh",
-                                paddingTop: "0.5vh",
-                                paddingBottom: "0.5vh",
-                                paddingRight: "0.8vh",
-                              }}
-                            >
-                              {(object.scores[index] * 100).toFixed(0)}%
-                            </TableCell>
-                            <TableCell
-                              align="right"
-                              sx={{
-                                cursor: "pointer",
-                                paddingLeft: 0,
-                                fontSize: "1.0vh",
-                                paddingTop: "0.5vh",
-                                paddingBottom: "0.5vh",
-                                paddingRight: "0.8vh",
-                              }}
-                            >
-                              <IconButton
-                                onClick={() => {
-                                  console.log("more options");
+                                  <LabelIcon
+                                    style={{
+                                      color: colours.CFIA_Background_Blue,
+                                      fontSize: "1.8vh",
+                                      marginTop: 0,
+                                      marginBottom: 0,
+                                      paddingTop: 0,
+                                      paddingBottom: 0,
+                                      paddingRight: "0.3vw",
+                                    }}
+                                  />
+                                  <span
+                                    style={{
+                                      width: "0.7vw",
+                                      textAlign: "left",
+                                    }}
+                                  >
+                                    {classificationIndex + 1}
+                                  </span>
+                                </div>
+                              </TableCell>
+                              <TableCell
+                                align="center"
+                                sx={{
+                                  cursor: "pointer",
+                                  paddingRight: 0,
+                                  fontSize: "1.0vh",
+                                  paddingLeft: 0,
+                                  paddingTop: "0.5vh",
+                                  paddingBottom: "0.5vh",
                                 }}
-                                sx={{ padding: 0 }}
                               >
-                                <MoreVertIcon
-                                  style={{
-                                    color: colours.CFIA_Background_Blue,
-                                    fontSize: "1.8vh",
-                                    marginTop: 0,
-                                    marginBottom: 0,
-                                    paddingTop: 0,
-                                    paddingBottom: 0,
+                                {prediction.split(" ").slice(1).join(" ")}
+                              </TableCell>
+                              <TableCell
+                                align="right"
+                                sx={{
+                                  cursor: "pointer",
+                                  paddingLeft: 0,
+                                  fontSize: "1.0vh",
+                                  paddingTop: "0.5vh",
+                                  paddingBottom: "0.5vh",
+                                  paddingRight: "0.8vh",
+                                }}
+                              >
+                                {(
+                                  object.scores[classificationIndex] * 100
+                                ).toFixed(0)}
+                                %
+                              </TableCell>
+                              <TableCell
+                                align="left"
+                                sx={{
+                                  fontSize: "1.0vh",
+                                  paddingTop: "0.5vh",
+                                  paddingBottom: "0.5vh",
+                                  paddingRight: "0.8vh",
+                                }}
+                              >
+                                {/* Content or modifications for this cell */}
+                              </TableCell>
+                              <TableCell
+                                align="right"
+                                sx={{
+                                  cursor: "pointer",
+                                  paddingLeft: 0,
+                                  fontSize: "1.0vh",
+                                  paddingTop: "0.5vh",
+                                  paddingBottom: "0.5vh",
+                                  paddingRight: "0.8vh",
+                                }}
+                              >
+                                <IconButton
+                                  onClick={() => {
+                                    // logic to handle more options
                                   }}
-                                />
-                              </IconButton>
-                            </TableCell>
-                          </TableRow>
+                                  sx={{ padding: 0 }}
+                                >
+                                  <MoreVertIcon
+                                    style={{
+                                      color: colours.CFIA_Background_Blue,
+                                      fontSize: "1.8vh",
+                                      marginTop: 0,
+                                      marginBottom: 0,
+                                      paddingTop: 0,
+                                      paddingBottom: 0,
+                                    }}
+                                  />
+                                </IconButton>
+                              </TableCell>
+                            </TableRow>
+                            {isExpanded && (
+                              <TableRow>
+                                <TableCell colSpan={6}>
+                                  <Box p={2}>
+                                    {topResults?.length > 0 &&
+                                      renderTopResults(topResults)}
+                                  </Box>
+                                </TableCell>
+                              </TableRow>
+                            )}
+                          </React.Fragment>
                         );
                       }
                       return null;

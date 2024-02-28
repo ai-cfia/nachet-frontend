@@ -27,6 +27,7 @@ interface ImageCache {
   imageDims: number[];
   overlapping: boolean[];
   overlappingIndices: number[];
+  topResults: Array<Array<{ score: number; label: string }>>;
 }
 
 interface params {
@@ -95,6 +96,7 @@ const Body: React.FC<params> = (props) => {
         imageDims: [],
         overlapping: [],
         overlappingIndices: [],
+        topResults: [],
       },
     ]);
     // sets the current image index to the new image
@@ -221,33 +223,30 @@ const Body: React.FC<params> = (props) => {
 
   const loadResultsToCache = (inferenceData: any): void => {
     // amends the image cache given an image index, with the inference data
-    // which is recieved from the server
+    // which is received from the server
     inferenceData.forEach((object: any) => {
-      object.boxes.forEach((params: any) => {
-        setImageCache((prevCache) =>
-          prevCache.map((item) => {
-            // check to see if the image index matches the current image index
-            if (
-              item.index === imageIndex &&
-              object.boxes.length !== item.scores.length
-            ) {
-              return {
-                ...item,
-                scores: [...item.scores, params.score.toFixed(2)],
-                classifications: [...item.classifications, params.label],
-                boxes: [...item.boxes, params.box],
-                overlapping: [...item.overlapping, params.overlapping],
-                overlappingIndices: [
-                  ...item.overlappingIndices,
-                  params.overlappingIndices,
-                ],
-                annotated: [...item.scores, params.score.toFixed(2)].length > 0,
-              };
-            }
-            return item;
-          }),
-        );
-      });
+      const topResults = object.boxes.map((box: any) => box.topResult);
+
+      setImageCache((prevCache) =>
+        prevCache.map((item) => {
+          // check to see if the image index matches the current image index
+          if (item.index === imageIndex) {
+            return {
+              ...item,
+              scores: object.boxes.map((box: any) => box.score.toFixed(2)),
+              classifications: object.boxes.map((box: any) => box.label),
+              boxes: object.boxes.map((box: any) => box.box),
+              overlapping: object.boxes.map((box: any) => box.overlapping),
+              overlappingIndices: object.boxes.map(
+                (box: any) => box.overlappingIndices,
+              ),
+              topResults, // Assign the topResults array here
+              annotated: true,
+            };
+          }
+          return item;
+        }),
+      );
     });
     // redraw canvas (useEffect)
     setResultsRendered(!resultsRendered);
@@ -401,6 +400,10 @@ const Body: React.FC<params> = (props) => {
             },
           }).then((response) => {
             if (response.status === 200) {
+              console.log(
+                "First box topResult:",
+                response.data[0].boxes[0].topResult,
+              );
               handleAzureStorageDir();
               loadResultsToCache(response.data);
               setModelDisplayName(selectedModel);
