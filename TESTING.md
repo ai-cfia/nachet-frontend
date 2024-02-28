@@ -684,17 +684,20 @@ disappears upon completion, followed by the display of inference results.
 - [ ] Fail if the loading icon does not appear, remains visible after
 completion, or if the inference results are not displayed.
 
-## Test Case: Viewing Top 5 Results for Each Image Classification
+## Test Case: Viewing Top 5 Classification Results
 
-### Objective
+### Objective: Single Row Expansion
 Verify that users can view the top 5 classification results by expanding a
 single table row at a time in the RESULTS panel.
 
-### Test 1: Expand Functionality of Classification Rows
+### Test 1: Single Row Expansion Functionality
+
+**Objective:** Validate the functionality that allows users to expand a single
+row at a time to view detailed classification results.
 
 **Preconditions:**
-- [ ] The application is open, and the user is logged in (if required).
-- [ ] The RESULTS table is populated with classification results.
+- The application is open, and the user is logged in (if required).
+- The RESULTS table is populated with classification results.
 
 **Test Steps:**
 1. Locate a row in the RESULTS table that represents an image classification.
@@ -705,24 +708,27 @@ additional information.
 and the new one expands.
 
 **Expected Results:**
-- [ ] Only the clicked row expands upon selection, revealing the top 5
+- Only the clicked row expands upon selection, revealing the top 5
 classification results.
-- [ ] Upon selecting another row, the previously expanded row collapses
+- Upon selecting another row, the previously expanded row collapses
 automatically, and the new one expands to show its top 5 results.
 
 **Actual Results:**
-- [ ] Describe the actual behavior observed when performing the test steps.
+- Describe the actual behavior observed when performing the test steps.
 
 **Pass/Fail:**
-- [ ] Pass if only one row expands at a time and the expansion toggles between
-rows correctly.
-- [ ] Fail if multiple rows can be expanded simultaneously or if the toggling
-does not work as expected.
+- Pass if only one row expands at a time and the expansion toggles between rows
+correctly.
+- Fail if multiple rows can be expanded simultaneously or if the toggling does
+not work as expected.
 
-### Test 2: Accuracy and Display of Top 5 Results
+### Test 2: Display Accuracy of Top 5 Results
+
+**Objective:** Verify the accuracy and correct display of the top 5
+classification results in an expanded row.
 
 **Preconditions:**
-- [ ] A row in the RESULTS table is expanded to show the top 5 classification
+- A row in the RESULTS table is expanded to show the top 5 classification
 results.
 
 **Test Steps:**
@@ -733,24 +739,26 @@ data from the backend.
 small numbers) and match the backend data.
 
 **Expected Results:**
-- [ ] The labels and scores of the top 5 results are correctly displayed as per
-the backend data.
-- [ ] Scores are presented in a readable percentage format.
+- The labels and scores of the top 5 results are correctly displayed as per the
+backend data.
+- Scores are presented in a readable percentage format.
 
 **Actual Results:**
-- [ ] Describe the actual scores and labels displayed and any discrepancies
-from expected data.
+- Describe the actual scores and labels displayed and any discrepancies from
+expected data.
 
 **Pass/Fail:**
-- [ ] Pass if the top 5 results are displayed accurately and match the backend
+- Pass if the top 5 results are displayed accurately and match the backend
 data.
-- [ ] Fail if there are inaccuracies in the labels, scores, or formatting
-issues.
+- Fail if there are inaccuracies in the labels, scores, or formatting issues.
 
-### Test 3: UI/UX Consistency and Responsiveness
+### Test 3: Consistency and Responsiveness of UI/UX
+
+**Objective:** Assess the UI/UX consistency and responsiveness when expanding
+and collapsing rows in the RESULTS table.
 
 **Preconditions:**
-- [ ] At least one row in the RESULTS table can be expanded to view the top 5
+- At least one row in the RESULTS table can be expanded to view the top 5
 classification results.
 
 **Test Steps:**
@@ -762,20 +770,20 @@ expanded content adjusts appropriately.
 state is not preserved when navigating away.
 
 **Expected Results:**
-- [ ] Only one row can be expanded at any given time, and expanding another row
+- Only one row can be expanded at any given time, and expanding another row
 collapses the previously expanded one.
-- [ ] The UI layout and expanded content adjust correctly to browser window
+- The UI layout and expanded content adjust correctly to browser window
 resizing.
-- [ ] The expanded state of a row does not persist when navigating away from
-the RESULTS table.
+- The expanded state of a row does not persist when navigating away from the
+RESULTS table.
 
 **Actual Results:**
-- [ ] Note any UI glitches, performance issues, or state inconsistencies
-observed.
+- Note any UI glitches, performance issues, or state inconsistencies observed.
 
 **Pass/Fail:**
-- [ ] Pass if the UI maintains quality and functionality throughout the tests,
+- Pass if the UI maintains quality and functionality throughout the tests,
 allowing only one expanded row at a time.
-- [ ] Fail if the application allows multiple rows to be expanded
-simultaneously or if there are issues with the UI layout or state management.
+- Fail if the application allows multiple rows to be expanded simultaneously or
+if there are issues with the UI layout or state management.
+
 ---
