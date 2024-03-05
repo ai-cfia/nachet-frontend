@@ -1,2 +1,23 @@
-html{-ms-overflow-style:none;font-family:Arial;scrollbar-width:none}#container_with_scrolls::-webkit-scrollbar,html::-webkit-scrollbar{display:none}#container_with_scrolls{-ms-overflow-style:none;scrollbar-width:none}body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;margin:0}body,code{font-family:Arial}
+html {
+  -ms-overflow-style: none;
+  font-family: Arial;
+  scrollbar-width: none;
+}
+#container_with_scrolls::-webkit-scrollbar,
+html::-webkit-scrollbar {
+  display: none;
+}
+#container_with_scrolls {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+}
+body,
+code {
+  font-family: Arial;
+}
 /*# sourceMappingURL=main.03cd13f6.css.map*/
