@@ -27,7 +27,7 @@ interface ImageCache {
   imageDims: number[];
   overlapping: boolean[];
   overlappingIndices: number[];
-  topResults: Array<Array<{ score: number; label: string }>>;
+  topN: Array<Array<{ score: number; label: string }>>;
 }
 
 interface params {
@@ -96,7 +96,7 @@ const Body: React.FC<params> = (props) => {
         imageDims: [],
         overlapping: [],
         overlappingIndices: [],
-        topResults: [],
+        topN: [],
       },
     ]);
     // sets the current image index to the new image
@@ -225,7 +225,7 @@ const Body: React.FC<params> = (props) => {
     // amends the image cache given an image index, with the inference data
     // which is received from the server
     inferenceData.forEach((object: any) => {
-      const topResults = object.boxes.map((box: any) => box.topResult);
+      const topN = object.boxes.map((box: any) => box.topN);
 
       setImageCache((prevCache) =>
         prevCache.map((item) => {
@@ -240,7 +240,7 @@ const Body: React.FC<params> = (props) => {
               overlappingIndices: object.boxes.map(
                 (box: any) => box.overlappingIndices,
               ),
-              topResults, // Assign the topResults array here
+              topN,
               annotated: true,
             };
           }
@@ -402,7 +402,7 @@ const Body: React.FC<params> = (props) => {
             if (response.status === 200) {
               console.log(
                 "First box topResult:",
-                response.data[0].boxes[0].topResult,
+                response.data[0].boxes[0].topN,
               );
               handleAzureStorageDir();
               loadResultsToCache(response.data);

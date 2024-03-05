@@ -57,7 +57,7 @@ const ClassificationResults: React.FC<params> = (props) => {
   };
 
   const renderTopResults = (
-    topResults: Array<{ score: number | string; label: string }>,
+    topN: Array<{ score: number | string; label: string }>,
   ): JSX.Element => {
     return (
       <>
@@ -73,7 +73,7 @@ const ClassificationResults: React.FC<params> = (props) => {
         >
           Top Results
         </Typography>
-        {topResults.map((result, index) => {
+        {topN.map((result, index) => {
           // Parse the score to a float if it's a string, then immediately declare it as a const.
           const score =
             typeof result.score === "number"
@@ -315,7 +315,7 @@ const ClassificationResults: React.FC<params> = (props) => {
                     (prediction: any, classificationIndex: number) => {
                       const score = object.scores[classificationIndex];
                       const rowId = `${objectIndex}-${classificationIndex}`;
-                      const topResults = object.topResults[classificationIndex];
+                      const topN = object.topN[classificationIndex];
                       const isExpanded = expandedRow === rowId;
                       const scoreMeetsThreshold =
                         score >= props.scoreThreshold / 100;
@@ -451,8 +451,7 @@ const ClassificationResults: React.FC<params> = (props) => {
                               <TableRow>
                                 <TableCell colSpan={6}>
                                   <Box p={2}>
-                                    {topResults?.length > 0 &&
-                                      renderTopResults(topResults)}
+                                    {topN?.length > 0 && renderTopResults(topN)}
                                   </Box>
                                 </TableCell>
                               </TableRow>
