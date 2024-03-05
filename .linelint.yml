@@ -1,0 +1,14 @@
+# .linelint.yml
+include:
+  - "**/*.js"
+  - "**/*.jsx"
+  - "**/*.ts"
+  - "**/*.tsx"
+exclude:
+  - node_modules/
+  - build/
+rules:
+  eof-newline:
+    enabled: true
+  trim-trailing-whitespace:
+    enabled: true
