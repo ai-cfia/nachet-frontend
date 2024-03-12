@@ -4,9 +4,11 @@ include:
   - "**/*.jsx"
   - "**/*.ts"
   - "**/*.tsx"
-exclude:
+ignore:
   - node_modules/
   - build/
+  - src/logo.svg
+  - README.md
 rules:
   # checks if file ends in a newline character
   end-of-file:
@@ -15,10 +17,6 @@ rules:
 
     # set to true to disable autofix (if enabled globally)
     disable-autofix: false
-
-    # will be ignored only by this rule
-    ignore:
-      - README.md
 
     # if true also checks if file ends in a single newline character
     single-new-line: true
