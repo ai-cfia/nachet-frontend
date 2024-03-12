@@ -5,10 +5,9 @@ import {
   LeftContent,
   ColumnContainer,
   InfoContent,
-  WarningLabel,
 } from "./indexElements";
 import type Webcam from "react-webcam";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import MicroscopeFeed from "../../components/body/microscope_feed";
 import ClassificationResults from "../../components/body/classification_results";
 import ImageCache from "../../components/body/image_cache";
@@ -44,7 +43,7 @@ interface params {
   switchTable: boolean;
   setSwitchTable: React.Dispatch<React.SetStateAction<boolean>>;
   setCurDir: React.Dispatch<React.SetStateAction<string>>;
-  backendURL: string | null;
+  modelDisplayName: string;
   windowSize: {
     width: number;
     height: number;
@@ -52,43 +51,12 @@ interface params {
   isWebcamActive: boolean;
   onCaptureClick: () => void;
   onImageUpload: (file: File) => void;
+  isLoading: boolean; // Add this line
 }
 
 const Classifier: React.FC<params> = (props) => {
-  const [alertMessage, setAlertMessage] = useState("");
-  const [isError, setIsError] = useState(false);
-
-  useEffect(() => {
-    // Set a delay before checking the backend URL
-    const delay = 3000; // Delay in milliseconds (3000ms = 3 seconds)
-
-    const timer = setTimeout(() => {
-      // Explicitly check for null, undefined, or empty string
-      if (
-        props.backendURL === null ||
-        props.backendURL === undefined ||
-        props.backendURL === ""
-      ) {
-        setIsError(true);
-        setAlertMessage("Backend URL is not set or is not working.");
-      } else {
-        setIsError(false);
-      }
-    }, delay);
-
-    // Clear the timer when the component unmounts or when the backendURL changes
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [props.backendURL]);
-
   return (
     <ColumnContainer>
-      <>
-        {isError && (
-          <>{isError && <WarningLabel>{alertMessage}</WarningLabel>}</>
-        )}
-      </>
       <RowContainer>
         <LeftContent>
           <MicroscopeFeed
@@ -97,6 +65,7 @@ const Classifier: React.FC<params> = (props) => {
             windowSize={props.windowSize}
             activeDeviceId={props.activeDeviceId}
             setSwitchDeviceOpen={props.setSwitchDeviceOpen}
+            isLoading={props.isLoading}
             canvasRef={props.canvasRef}
             setSaveOpen={props.setSaveOpen}
             handleInference={props.handleInference}
@@ -138,6 +107,7 @@ const Classifier: React.FC<params> = (props) => {
             labelOccurrences={props.labelOccurrences}
             switchTable={props.switchTable}
             setSwitchTable={props.setSwitchTable}
+            modelDisplayName={props.modelDisplayName}
           />
         </InfoContent>
       </RowContainer>

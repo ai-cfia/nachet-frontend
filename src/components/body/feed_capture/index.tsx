@@ -114,25 +114,6 @@ const FeedCapture: React.FC<params> = (props) => {
               color="inherit"
               variant="outlined"
               onClick={() => {
-                props.handleInference();
-              }}
-              sx={buttonStyle}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  flexWrap: "wrap",
-                }}
-              >
-                <CropFreeIcon color="inherit" style={iconStyle} />
-                <span>CLASSIFY</span>
-              </div>
-            </Button>
-            <Button
-              color="inherit"
-              variant="outlined"
-              onClick={() => {
                 props.setSwitchModelOpen(true);
               }}
               sx={buttonStyle}
@@ -146,6 +127,25 @@ const FeedCapture: React.FC<params> = (props) => {
               >
                 <InfoIcon color="inherit" style={iconStyle} />
                 <span>MODEL</span>
+              </div>
+            </Button>
+            <Button
+              color="inherit"
+              variant="outlined"
+              onClick={() => {
+                props.handleInference();
+              }}
+              sx={buttonStyle}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                }}
+              >
+                <CropFreeIcon color="inherit" style={iconStyle} />
+                <span>CLASSIFY</span>
               </div>
             </Button>
           </>
