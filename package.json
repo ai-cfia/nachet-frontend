@@ -1,7 +1,7 @@
 {
   "name": "nachet-frontend",
   "homepage": "https://ai-cfia.github.io/nachet-frontend",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.16.7",
@@ -9,7 +9,6 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.1",
     "@mui/material": "^5.14.1",
-    "@saithodev/ts-appversion": "^2.2.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -46,8 +45,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint .",
-    "lint:fix": "eslint --fix ."
+    "lint": "eslint src/",
+    "lint:fix": "eslint --fix src/"
   },
   "eslintConfig": {
     "extends": [
@@ -68,6 +67,10 @@
     ]
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.24.0",
+    "@babel/preset-react": "^7.23.3",
+    "@babel/preset-typescript": "^7.23.3",
+    "@saithodev/ts-appversion": "^2.2.0",
     "@types/file-saver": "^2.0.5",
     "@types/js-cookie": "^3.0.3",
     "@types/uuid": "^9.0.2",
