@@ -7,7 +7,7 @@ include:
 ignore:
   - node_modules/
   - build/
-  - src/logo.svg
+  - public/vite.svg
   - README.md
 rules:
   # checks if file ends in a newline character
