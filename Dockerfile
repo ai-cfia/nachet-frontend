@@ -22,7 +22,7 @@ FROM node:18
 
 WORKDIR /nachet-frontend
 
-COPY --from=build /nachet-frontend/build ./build
+COPY --from=build /nachet-frontend/dist ./build
 
 RUN npm install -g serve
 
