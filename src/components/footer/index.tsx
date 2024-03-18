@@ -5,6 +5,7 @@ import {
   FooterLogo,
   FooterLink,
 } from "./indexElements";
+import CanadaLogo from "../../assets/Canada_logo.png";
 
 interface params {
   windowSize: {
@@ -29,7 +30,7 @@ const Footer: React.FC<params> = (props) => {
           | UUID: {props.uuid}
         </FooterLink>
         <FooterLogo
-          src={require("../../assets/Canada_logo.png")}
+          src={CanadaLogo}
           width={props.windowSize.width}
           height={props.windowSize.height}
         />

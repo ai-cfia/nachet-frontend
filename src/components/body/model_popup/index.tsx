@@ -31,7 +31,7 @@ const SwitchModel: React.FC<params> = (props): JSX.Element => {
   };
 
   const dataToDisplay =
-    process.env.REACT_APP_MODE === "test" ? testData : props.realData;
+    import.meta.env.VITE_APP_MODE === "test" ? testData : props.realData;
 
   return (
     <Overlay>

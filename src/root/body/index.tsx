@@ -130,9 +130,9 @@ const Body: React.FC<params> = (props) => {
   );
 
   const getBackendUrl = useCallback((): string => {
-    const backendURL = process.env.REACT_APP_BACKEND_URL;
+    const backendURL = import.meta.env.VITE_BACKEND_URL;
     if (backendURL === null || backendURL === undefined || backendURL === "") {
-      throw new Error("REACT_APP_BACKEND_URL environment variable is not set.");
+      throw new Error("VITE_BACKEND_URL environment variable is not set.");
     }
     return backendURL;
   }, []);
@@ -626,7 +626,7 @@ const Body: React.FC<params> = (props) => {
   };
 
   useEffect(() => {
-    const backendUrl = process.env.REACT_APP_BACKEND_URL;
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
     // Explicitly check for undefined, null, and empty string
     if (
@@ -649,7 +649,7 @@ const Body: React.FC<params> = (props) => {
       }
     };
 
-    if (process.env.REACT_APP_MODE !== "test") {
+    if (import.meta.env.REACT_APP_MODE !== "test") {
       void fetchMetadata();
     }
   }, []);

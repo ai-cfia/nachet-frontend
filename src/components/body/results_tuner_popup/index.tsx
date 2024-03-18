@@ -2,8 +2,7 @@
 // \src\components\body\results_tuner_popup\index.tsx
 import React from "react";
 import { Overlay, InfoContainer } from "./indexElements";
-import { Box, CardHeader, IconButton, Slider } from "@mui/material";
-import Typography from "@mui/material/Typography";
+import { Box, CardHeader, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { colours } from "../../../styles/colours";
 
@@ -16,10 +15,6 @@ interface params {
 const ResultsTunerPopup: React.FC<params> = (props): JSX.Element => {
   const handleClose = (): void => {
     props.setResultsTunerOpen(false);
-  };
-
-  const handleSliderChange = (event: any, value: any): void => {
-    props.setScoreThreshold(value);
   };
 
   return (
@@ -53,23 +48,7 @@ const ResultsTunerPopup: React.FC<params> = (props): JSX.Element => {
           }
           sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
         />
-        <InfoContainer>
-          <Typography variant="subtitle1" sx={{ marginTop: 3 }}>
-            Minimum Confidence Threshold ({props.scoreThreshold}%)
-          </Typography>
-          <Slider
-            sx={{ color: colours.CFIA_Background_Blue, marginBottom: 2 }}
-            key={`slider-${props.scoreThreshold}`}
-            aria-label="Confidence Threshold"
-            defaultValue={props.scoreThreshold}
-            valueLabelDisplay="auto"
-            onChangeCommitted={handleSliderChange}
-            step={10}
-            marks
-            min={10}
-            max={90}
-          />
-        </InfoContainer>
+        <InfoContainer></InfoContainer>
       </Box>
     </Overlay>
   );

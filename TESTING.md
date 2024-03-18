@@ -525,7 +525,7 @@ reporting style.
 ## Test Case: Populating Model List Based on Environment Setting
 
 **Objective:** Verify that the Results Tuner Popup correctly populates the
-model list with real data or test data based on the `REACT_APP_MODE`
+model list with real data or test data based on the `VITE_APP_MODE`
 environment variable.
 
 ### Test 1: Populating with Real Data
@@ -533,7 +533,7 @@ environment variable.
 **Preconditions:**
 - [ ] The application is open and running.
 - [ ] The backend server is operational.
-- [ ] The `REACT_APP_MODE` environment variable is set to any value other than
+- [ ] The `VITE_APP_MODE` environment variable is set to any value other than
 `"test"`.
 
 **Test Steps:**
@@ -559,7 +559,7 @@ displays test data.
 
 **Preconditions:**
 - [ ] The application is open and running.
-- [ ] The `REACT_APP_MODE` environment variable is set to `"test"`.
+- [ ] The `VITE_APP_MODE` environment variable is set to `"test"`.
 
 **Test Steps:**
 1. Start the application.

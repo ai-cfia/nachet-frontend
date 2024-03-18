@@ -91,9 +91,9 @@ different environments (development, staging, production).
 
 ### Required Variables
 
-1. `REACT_APP_BACKEND_URL`: URL of the backend server. This is used to make API
+1. `VITE_BACKEND_URL`: URL of the backend server. This is used to make API
 calls from the frontend.
-2. `REACT_APP_MODE`: Determines the mode in which the application runs. Set to
+2. `VITE_APP_MODE`: Determines the mode in which the application runs. Set to
 `"test"` for using test data, any other value will use real data from the
 backend.
 
@@ -103,8 +103,8 @@ You can set these variables in a `.env` file in the root of your project.
 Here's an example of what your `.env` file might look like:
 
 ```env
-REACT_APP_BACKEND_URL=
-REACT_APP_MODE=
+VITE_BACKEND_URL=
+VITE_APP_MODE=
 ```
 Remember to replace the values with the appropriate URLs and modes for your
 specific environment. Also, ensure that you do not commit sensitive information
@@ -113,11 +113,11 @@ system.
 
 ### Accessing Environment Variables in the Application
 
-In your React application, you can access these variables using `process.env`.
+In your React application, you can access these variables using `import.meta.env`.
 For example:
 
-- `process.env.REACT_APP_BACKEND_URL` to get the backend URL.
-- `process.env.REACT_APP_MODE` to check the current mode of the application.
+- `import.meta.env.VITE_BACKEND_URL` to get the backend URL.
+- `import.meta.env.REACT_APP_MODE` to check the current mode of the application.
 
 Note: After changing the values in your `.env` file, you will need to restart
 your development server for the changes to take effect.
