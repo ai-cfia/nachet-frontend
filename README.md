@@ -29,7 +29,7 @@ your project.
 npm run dev
 ```
 
-This will serve your application on http://localhost:5173/, where you can view
+This will serve your application on localhost:5173, where you can view
 it in your preferred browser. The server is configured to automatically reload
 upon any changes to your code, providing instant feedback on your development
 progress. Additionally, build errors and lint warnings will be prominently
@@ -46,7 +46,7 @@ In the project directory, you can run:
 
 ### `npm run dev`
 
-Starts the development server. Open http://localhost:5173/ to view it in your
+Starts the development server. Open localhost:5173 to view it in your
 browser.
 
 The app will automatically reload if you make changes to the code. You will see
