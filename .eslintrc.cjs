@@ -29,6 +29,17 @@ module.exports = {
     "prettier",
     "react-refresh",
   ],
+  overrides: [
+    {
+      files: ["__mocks__/**/*.js"],
+      rules: {
+        "no-undef": "off", // Turn off the 'no-undef' rule
+      },
+      env: {
+        commonjs: true, // Set environment to CommonJS
+      },
+    },
+  ],
   rules: {
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off", // React 17+ doesn't require React to be in scope when using JSX
@@ -45,5 +56,11 @@ module.exports = {
       version: "detect", // Automatically detect the React version
     },
   },
-  ignorePatterns: ["dist", "node_modules"],
+  ignorePatterns: [
+    "dist",
+    "node_modules",
+    "jest.config.cjs", // Add this line
+    ".eslintrc.cjs", // And this line
+    "__mocks__", // Ensure this is correct according to your project structure
+  ],
 };

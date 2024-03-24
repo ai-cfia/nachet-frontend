@@ -11,7 +11,7 @@ import ModelInfoPopup from "../../components/body/model_popup";
 import SwitchDevice from "../../components/body/switch_device_popup";
 import CreateDirectory from "../../components/body/create_directory_popup";
 import DeleteDirectoryPopup from "../../components/body/del_directory_popup";
-import ResultsTunerPopup from "../../components/body/results_tuner_popup";
+import { ResultsTunerPopup } from "../../components/body/results_tuner_popup";
 import SignUp from "../../components/body/authentication/signup";
 import CreativeCommonsPopup from "../../components/body/creative_commons_popup";
 import JSZip from "jszip";
@@ -67,7 +67,7 @@ const Body: React.FC<params> = (props) => {
   const [delDirectoryOpen, setDelDirectoryOpen] = useState<boolean>(false);
   const [resultsTunerOpen, setResultsTunerOpen] = useState<boolean>(false);
   const [scoreThreshold, setScoreThreshold] = useState<number>(50);
-  const [selectedModel, setSelectedModel] = useState("Seed Classification");
+  const [selectedModel, setSelectedModel] = useState("Swin transformer");
   const [modelDisplayName, setModelDisplayName] = useState("");
   const [selectedLabel, setSelectedLabel] = useState<string>("all");
   const [labelOccurrences, setLabelOccurrences] = useState<any>({});
@@ -130,7 +130,7 @@ const Body: React.FC<params> = (props) => {
   );
 
   const getBackendUrl = useCallback((): string => {
-    const backendURL = import.meta.env.VITE_BACKEND_URL;
+    const backendURL = process.env.VITE_BACKEND_URL;
     if (backendURL === null || backendURL === undefined || backendURL === "") {
       throw new Error("VITE_BACKEND_URL environment variable is not set.");
     }
@@ -626,7 +626,7 @@ const Body: React.FC<params> = (props) => {
   };
 
   useEffect(() => {
-    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+    const backendUrl = process.env.VITE_BACKEND_URL;
 
     // Explicitly check for undefined, null, and empty string
     if (
@@ -649,7 +649,7 @@ const Body: React.FC<params> = (props) => {
       }
     };
 
-    if (import.meta.env.REACT_APP_MODE !== "test") {
+    if (process.env.REACT_APP_MODE !== "test") {
       void fetchMetadata();
     }
   }, []);
