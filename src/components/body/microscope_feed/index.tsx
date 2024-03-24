@@ -192,6 +192,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
             <Button
               color="inherit"
               variant="outlined"
+              disabled={props.isWebcamActive} // Disable when the webcam is active
               onClick={() => {
                 props.handleInference();
               }}
