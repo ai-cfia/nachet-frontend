@@ -11,21 +11,21 @@ application versioning right from the start. We use @saithodev/ts-appversion
 for this purpose. Please install it by executing the command below before
 moving forward with the development or build process:
 
-```
+```bash
 npm install @saithodev/ts-appversion
 ```
 
 After installing @saithodev/ts-appversion, run the prestart script to ensure
 your application version is correctly set based on the latest git tag:
 
-```
+```bash
 npm run prestart
 ```
 
 After installing, you can proceed with the development or build processes of
 your project.
 
-```
+```bash
 npm run dev
 ```
 
@@ -82,7 +82,7 @@ To ensure your codebase remains clean and consistent, we use
 committing your changes, you can format your code by running the following
 command:
 
-```
+```bash
 npx prettier --write .
 ```
 
