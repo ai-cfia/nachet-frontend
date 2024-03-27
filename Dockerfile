@@ -11,10 +11,10 @@ RUN npm install --include=dev
 COPY . .
 
 ARG ARG_PUBLIC_URL
-ARG ARG_REACT_APP_BACKEND_URL
+ARG ARG_VITE_BACKEND_URL
 
 ENV PUBLIC_URL=${ARG_PUBLIC_URL:-.}
-ENV REACT_APP_BACKEND_URL=${ARG_REACT_APP_BACKEND_URL:-/api}
+ENV VITE_BACKEND_URL=${ARG_VITE_BACKEND_URL:-/api}
 
 RUN npm run build
 
@@ -22,7 +22,7 @@ FROM node:18
 
 WORKDIR /nachet-frontend
 
-COPY --from=build /nachet-frontend/build ./build
+COPY --from=build /nachet-frontend/dist ./build
 
 RUN npm install -g serve
 

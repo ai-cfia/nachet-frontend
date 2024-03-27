@@ -1,6 +1,8 @@
+// Result Tuner Popup
+// \src\components\body\results_tuner_popup\index.tsx
 import React from "react";
-import { Overlay, InfoContainer, Text } from "./indexElements";
-import { Box, CardHeader, IconButton, Slider } from "@mui/material";
+import { Overlay, InfoContainer } from "./indexElements";
+import { Box, CardHeader, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { colours } from "../../../styles/colours";
 
@@ -15,16 +17,13 @@ const ResultsTunerPopup: React.FC<params> = (props): JSX.Element => {
     props.setResultsTunerOpen(false);
   };
 
-  const handleSliderChange = (event: any, value: any): void => {
-    props.setScoreThreshold(value);
-  };
-
   return (
     <Overlay>
       <Box
         sx={{
-          width: "20vw",
-          height: "22vh",
+          position: "relative",
+          width: "50vw",
+          height: "65vh",
           zIndex: 30,
           border: `0.01vh solid LightGrey`,
           borderRadius: 1,
@@ -49,21 +48,7 @@ const ResultsTunerPopup: React.FC<params> = (props): JSX.Element => {
           }
           sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
         />
-        <InfoContainer>
-          <Text> Minimum Confidence Threshhold ({props.scoreThreshold}%) </Text>
-          <Slider
-            sx={{ color: colours.CFIA_Background_Blue }}
-            key={`slider-${props.scoreThreshold}`}
-            aria-label="Confidence Threshold"
-            defaultValue={props.scoreThreshold}
-            valueLabelDisplay="auto"
-            onChangeCommitted={handleSliderChange}
-            step={10}
-            marks
-            min={10}
-            max={90}
-          />
-        </InfoContainer>
+        <InfoContainer></InfoContainer>
       </Box>
     </Overlay>
   );

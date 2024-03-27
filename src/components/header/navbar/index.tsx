@@ -1,8 +1,9 @@
+import React from "react";
+import CFIALogo from "../../../assets/CFIA_blackfont.png";
 import { Nav, NavbarContainer, NavLogo, NavMenu } from "./indexElements";
 import { Button, IconButton } from "@mui/material";
 import { colours } from "../../../styles/colours";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import React from "react";
 
 interface params {
   windowSize: {
@@ -41,10 +42,11 @@ const Navbar: React.FC<params> = (props) => {
         height={props.windowSize.height}
       >
         <NavLogo
-          src={require("../../../assets/CFIA_blackfont.png")}
+          src={CFIALogo}
           alt="CFIA Logo"
           width={props.windowSize.width}
         />
+
         <NavMenu>
           {!props.signedIn && (
             <Button
