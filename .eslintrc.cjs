@@ -59,8 +59,9 @@ module.exports = {
   ignorePatterns: [
     "dist",
     "node_modules",
-    "jest.config.cjs", // Add this line
-    ".eslintrc.cjs", // And this line
-    "__mocks__", // Ensure this is correct according to your project structure
+    "jest.config.cjs",
+    ".eslintrc.cjs",
+    "__mocks__",
+    "vitest.config.ts",
   ],
 };
