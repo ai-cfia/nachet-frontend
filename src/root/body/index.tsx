@@ -23,7 +23,12 @@ interface ImageCache {
   src: string;
   scores: number[];
   classifications: string[];
-  boxes: any[];
+  boxes: Array<{
+    topX: number;
+    topY: number;
+    bottomX: number;
+    bottomY: number;
+  }>;
   annotated: boolean;
   imageDims: number[];
   overlapping: boolean[];
@@ -468,7 +473,7 @@ const Body: React.FC<params> = (props) => {
         imgHeight = ifd.height;
         canvas.width = imgWidth;
         canvas.height = imgHeight;
-        const imgd = ctx.createImageData(ifd.width, ifd.height);
+        const imgd = ctx.createImageData(imgWidth, imgHeight);
         for (let i = 0; i < rgba.length; i += 1) {
           imgd.data[i] = rgba[i];
         }
@@ -494,6 +499,10 @@ const Body: React.FC<params> = (props) => {
             storedImage.scores[index] >= scoreThreshold / 100 &&
             (prediction === selectedLabel || selectedLabel === "all")
           ) {
+            const bottomY = storedImage.boxes[index].bottomY;
+            const topY = storedImage.boxes[index].topY;
+            const bottomX = storedImage.boxes[index].bottomX;
+            const topX = storedImage.boxes[index].topX;
             ctx.beginPath();
             // draw label index
             ctx.font = "bold 0.9vw Arial";
@@ -504,63 +513,27 @@ const Body: React.FC<params> = (props) => {
                 0,
               );
               // check to see if label is cut off by the canvas edge, if so, move it to the bottom of the bounding box
-              if (storedImage.boxes[index].topY <= 40) {
-                if (prediction === key) {
-                  if (switchTable) {
-                    ctx.fillText(
-                      `[${labelIndex + 1}] - ${scorePercentage}%`,
-                      ((storedImage.boxes[index].bottomX as number) -
-                        (storedImage.boxes[index].topX as number)) /
-                        2 +
-                        (storedImage.boxes[index].topX as number),
-                      (storedImage.boxes[index].bottomY as number) + 23,
-                    );
-                  } else {
-                    ctx.fillText(
-                      `[${index + 1}]`,
-                      ((storedImage.boxes[index].bottomX as number) -
-                        (storedImage.boxes[index].topX as number)) /
-                        2 +
-                        (storedImage.boxes[index].topX as number),
-                      (storedImage.boxes[index].bottomY as number) + 23,
-                    );
-                  }
-                }
-              } else {
-                // draw label index and score percentage
-                if (prediction === key) {
-                  if (switchTable) {
-                    ctx.fillText(
-                      `[${labelIndex + 1}] - ${scorePercentage}%`,
-                      ((storedImage.boxes[index].bottomX as number) -
-                        (storedImage.boxes[index].topX as number)) /
-                        2 +
-                        (storedImage.boxes[index].topX as number),
-                      storedImage.boxes[index].topY - 8,
-                    );
-                  } else {
-                    // only draw table if switchTable is false (result component switch button)
-                    ctx.fillText(
-                      `[${index + 1}]`,
-                      ((storedImage.boxes[index].bottomX as number) -
-                        (storedImage.boxes[index].topX as number)) /
-                        2 +
-                        (storedImage.boxes[index].topX as number),
-                      storedImage.boxes[index].topY - 8,
-                    );
-                  }
+              const xValue = (bottomX - topX) / 2 + topX;
+              let yValue = topY - 8;
+              if (topY <= 40) {
+                yValue = bottomY + 23;
+              }
+              if (prediction === key) {
+                if (switchTable) {
+                  ctx.fillText(
+                    `[${labelIndex + 1}] - ${scorePercentage}%`,
+                    xValue,
+                    yValue,
+                  );
+                } else {
+                  ctx.fillText(`[${index + 1}]`, xValue, yValue);
                 }
               }
             });
             // draw bounding box
             ctx.lineWidth = 2;
             ctx.strokeStyle = "red";
-            ctx.rect(
-              storedImage.boxes[index].topX,
-              storedImage.boxes[index].topY,
-              storedImage.boxes[index].bottomX - storedImage.boxes[index].topX,
-              storedImage.boxes[index].bottomY - storedImage.boxes[index].topY,
-            );
+            ctx.rect(topX, topY, bottomX - topX, bottomY - topY);
             ctx.stroke();
             ctx.closePath();
           }
