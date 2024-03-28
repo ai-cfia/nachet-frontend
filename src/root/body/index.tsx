@@ -15,6 +15,8 @@ import SignUp from "../../components/body/authentication/signup";
 import CreativeCommonsPopup from "../../components/body/creative_commons_popup";
 import JSZip from "jszip";
 import axios from "axios";
+import UTIF from "utif";
+// import { PNG } from "pngjs";
 
 interface ImageCache {
   index: number;
@@ -454,11 +456,73 @@ const Body: React.FC<params> = (props) => {
     }
   };
 
-  const loadToCanvas = useCallback((): void => {
+  // const base64TiffToPng = useMemo(() => {
+  //   // converts a base64 tiff image to a base64 png image
+  //   return (): string => {
+  //     const base64Tiff = imageSrc;
+  //     const arrayBuffer = new Uint8Array(
+  //       atob(base64Tiff.split(",")[1])
+  //         .split("")
+  //         .map((char) => char.charCodeAt(0)),
+  //     );
+  //     const tiff = UTIF.decode(arrayBuffer);
+  //     const rgba = UTIF.toRGBA8(tiff[0]);
+  //     // const arrayBuffer = UTIF.encodeImage(rgba, tiff[0].width, tiff[0].height);
+  //     const buffer = Buffer.from(rgba);
+  //     const png = PNG.sync.read(buffer);
+  //     return `data:image/png;base64,${png.data.toString("base64")}`;
+  //   };
+  // }, [imageSrc]);
+
+  const convertTiffToPng = async (b64Tiff: string): Promise<string> => {
+    // Convert base64 to bytes
+    const file = await fetch(b64Tiff)
+      .then(async (r) => await r.blob())
+      .then(async (b) => {
+        return new File([b], "file", { type: "image/tiff" });
+      });
+    const bytes = await file.arrayBuffer();
+
+    // Decode image
+    const ifds = UTIF.decode(bytes);
+    UTIF.decodeImage(bytes, ifds[0]);
+    const rgba = UTIF.toRGBA8(ifds[0]);
+
+    // Render image
+    const cnv = document.createElement("canvas");
+    cnv.width = ifds[0].width;
+    cnv.height = ifds[0].height;
+
+    const ctx = cnv.getContext("2d");
+    if (ctx === null) {
+      return "";
+    }
+    const imgd = ctx.createImageData(ifds[0].width, ifds[0].height);
+
+    for (let i = 0; i < rgba.length; i += 1) {
+      imgd.data[i] = rgba[i];
+    }
+
+    ctx.putImageData(imgd, 0, 0);
+
+    // Get PNG base64
+    return cnv.toDataURL();
+  };
+
+  const loadToCanvas = useCallback(async (): Promise<void> => {
     // loads the current image to the canvas and draws the bounding boxes and labels,
     // should update whenever a change is made to the image cache or the score threshold and the selected label is changed
+    let base64Image = imageSrc;
+
+    // if Tiff image, convert to PNG
+    if (base64Image.includes("image/tiff")) {
+      // base64Image = base64TiffToPng();
+      await convertTiffToPng(base64Image).then((res) => {
+        base64Image = res;
+      });
+    }
     const image = new Image();
-    image.src = imageSrc;
+    image.src = base64Image;
     const canvas: HTMLCanvasElement | null = canvasRef.current;
     if (canvas === null) {
       return;
@@ -575,6 +639,7 @@ const Body: React.FC<params> = (props) => {
     scoreThreshold,
     selectedLabel,
     switchTable,
+    // base64TiffToPng,
   ]);
 
   useEffect(() => {
@@ -588,7 +653,7 @@ const Body: React.FC<params> = (props) => {
   ]);
 
   useEffect(() => {
-    loadToCanvas();
+    void loadToCanvas();
   }, [
     scoreThreshold,
     selectedLabel,
