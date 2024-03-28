@@ -16,7 +16,6 @@ import CreativeCommonsPopup from "../../components/body/creative_commons_popup";
 import JSZip from "jszip";
 import axios from "axios";
 import UTIF from "utif";
-// import { PNG } from "pngjs";
 
 interface ImageCache {
   index: number;
