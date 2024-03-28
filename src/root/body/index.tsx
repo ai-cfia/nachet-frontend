@@ -1,5 +1,5 @@
 // root\body\index.tsx
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import type Webcam from "react-webcam";
 import { saveAs } from "file-saver";
 import { BodyContainer } from "./indexElements";
@@ -456,73 +456,28 @@ const Body: React.FC<params> = (props) => {
     }
   };
 
-  // const base64TiffToPng = useMemo(() => {
-  //   // converts a base64 tiff image to a base64 png image
-  //   return (): string => {
-  //     const base64Tiff = imageSrc;
-  //     const arrayBuffer = new Uint8Array(
-  //       atob(base64Tiff.split(",")[1])
-  //         .split("")
-  //         .map((char) => char.charCodeAt(0)),
-  //     );
-  //     const tiff = UTIF.decode(arrayBuffer);
-  //     const rgba = UTIF.toRGBA8(tiff[0]);
-  //     // const arrayBuffer = UTIF.encodeImage(rgba, tiff[0].width, tiff[0].height);
-  //     const buffer = Buffer.from(rgba);
-  //     const png = PNG.sync.read(buffer);
-  //     return `data:image/png;base64,${png.data.toString("base64")}`;
-  //   };
-  // }, [imageSrc]);
+  const decodeTiff = useMemo(() => {
+    return async (): Promise<UTIF.IFD> => {
+      // Convert base64 to bytes
+      const file = await fetch(imageSrc)
+        .then(async (res) => await res.blob())
+        .then(async (blob) => {
+          return new File([blob], "file", { type: "image/tiff" });
+        });
+      const bytes = await file.arrayBuffer();
 
-  const convertTiffToPng = async (b64Tiff: string): Promise<string> => {
-    // Convert base64 to bytes
-    const file = await fetch(b64Tiff)
-      .then(async (r) => await r.blob())
-      .then(async (b) => {
-        return new File([b], "file", { type: "image/tiff" });
-      });
-    const bytes = await file.arrayBuffer();
-
-    // Decode image
-    const ifds = UTIF.decode(bytes);
-    UTIF.decodeImage(bytes, ifds[0]);
-    const rgba = UTIF.toRGBA8(ifds[0]);
-
-    // Render image
-    const cnv = document.createElement("canvas");
-    cnv.width = ifds[0].width;
-    cnv.height = ifds[0].height;
-
-    const ctx = cnv.getContext("2d");
-    if (ctx === null) {
-      return "";
-    }
-    const imgd = ctx.createImageData(ifds[0].width, ifds[0].height);
-
-    for (let i = 0; i < rgba.length; i += 1) {
-      imgd.data[i] = rgba[i];
-    }
-
-    ctx.putImageData(imgd, 0, 0);
-
-    // Get PNG base64
-    return cnv.toDataURL();
-  };
+      // Decode image
+      const ifds = UTIF.decode(bytes);
+      UTIF.decodeImage(bytes, ifds[0]);
+      return ifds[0];
+    };
+  }, [imageSrc]);
 
   const loadToCanvas = useCallback(async (): Promise<void> => {
     // loads the current image to the canvas and draws the bounding boxes and labels,
     // should update whenever a change is made to the image cache or the score threshold and the selected label is changed
-    let base64Image = imageSrc;
-
-    // if Tiff image, convert to PNG
-    if (base64Image.includes("image/tiff")) {
-      // base64Image = base64TiffToPng();
-      await convertTiffToPng(base64Image).then((res) => {
-        base64Image = res;
-      });
-    }
-    const image = new Image();
-    image.src = base64Image;
+    let imgWidth = 0;
+    let imgHeight = 0;
     const canvas: HTMLCanvasElement | null = canvasRef.current;
     if (canvas === null) {
       return;
@@ -531,106 +486,125 @@ const Body: React.FC<params> = (props) => {
     if (ctx === null) {
       return;
     }
-    image.onload = () => {
-      canvas.width = image.width;
-      canvas.height = image.height;
-      ctx.drawImage(image, 0, 0);
-      imageCache.forEach((storedImage) => {
-        // find the current image in the image cache based on current index
-        if (storedImage.index === imageIndex && storedImage.annotated) {
-          storedImage.classifications.forEach((prediction, index) => {
-            // !storedImage.overlapping[index]     REMOVE THIS TO SHOW ONLY 1 BB
-            if (
-              storedImage.scores[index] >= scoreThreshold / 100 &&
-              (prediction === selectedLabel || selectedLabel === "all")
-            ) {
-              ctx.beginPath();
-              // draw label index
-              ctx.font = "bold 0.9vw Arial";
-              ctx.fillStyle = "black";
-              ctx.textAlign = "center";
-              Object.keys(labelOccurrences).forEach((key, labelIndex) => {
-                const scorePercentage = (
-                  storedImage.scores[index] * 100
-                ).toFixed(0);
-                // check to see if label is cut off by the canvas edge, if so, move it to the bottom of the bounding box
-                if (storedImage.boxes[index].topY <= 40) {
-                  if (prediction === key) {
-                    if (switchTable) {
-                      ctx.fillText(
-                        `[${labelIndex + 1}] - ${scorePercentage}%`,
-                        ((storedImage.boxes[index].bottomX as number) -
-                          (storedImage.boxes[index].topX as number)) /
-                          2 +
-                          (storedImage.boxes[index].topX as number),
-                        (storedImage.boxes[index].bottomY as number) + 23,
-                      );
-                    } else {
-                      ctx.fillText(
-                        `[${index + 1}]`,
-                        ((storedImage.boxes[index].bottomX as number) -
-                          (storedImage.boxes[index].topX as number)) /
-                          2 +
-                          (storedImage.boxes[index].topX as number),
-                        (storedImage.boxes[index].bottomY as number) + 23,
-                      );
-                    }
-                  }
-                } else {
-                  // draw label index and score percentage
-                  if (prediction === key) {
-                    if (switchTable) {
-                      ctx.fillText(
-                        `[${labelIndex + 1}] - ${scorePercentage}%`,
-                        ((storedImage.boxes[index].bottomX as number) -
-                          (storedImage.boxes[index].topX as number)) /
-                          2 +
-                          (storedImage.boxes[index].topX as number),
-                        storedImage.boxes[index].topY - 8,
-                      );
-                    } else {
-                      // only draw table if switchTable is false (result component switch button)
-                      ctx.fillText(
-                        `[${index + 1}]`,
-                        ((storedImage.boxes[index].bottomX as number) -
-                          (storedImage.boxes[index].topX as number)) /
-                          2 +
-                          (storedImage.boxes[index].topX as number),
-                        storedImage.boxes[index].topY - 8,
-                      );
-                    }
+
+    // if Tiff image, convert to PNG
+    if (imageSrc.includes("image/tiff")) {
+      await decodeTiff().then((ifd) => {
+        const rgba = UTIF.toRGBA8(ifd);
+        imgWidth = ifd.width;
+        imgHeight = ifd.height;
+        canvas.width = imgWidth;
+        canvas.height = imgHeight;
+        const imgd = ctx.createImageData(ifd.width, ifd.height);
+        for (let i = 0; i < rgba.length; i += 1) {
+          imgd.data[i] = rgba[i];
+        }
+        ctx.putImageData(imgd, 0, 0);
+      });
+    } else {
+      const image = new Image();
+      image.src = imageSrc;
+      image.onload = () => {
+        imgWidth = image.width;
+        imgHeight = image.height;
+        canvas.width = imgWidth;
+        canvas.height = imgHeight;
+        ctx.drawImage(image, 0, 0);
+      };
+    }
+    imageCache.forEach((storedImage) => {
+      // find the current image in the image cache based on current index
+      if (storedImage.index === imageIndex && storedImage.annotated) {
+        storedImage.classifications.forEach((prediction, index) => {
+          // !storedImage.overlapping[index]     REMOVE THIS TO SHOW ONLY 1 BB
+          if (
+            storedImage.scores[index] >= scoreThreshold / 100 &&
+            (prediction === selectedLabel || selectedLabel === "all")
+          ) {
+            ctx.beginPath();
+            // draw label index
+            ctx.font = "bold 0.9vw Arial";
+            ctx.fillStyle = "black";
+            ctx.textAlign = "center";
+            Object.keys(labelOccurrences).forEach((key, labelIndex) => {
+              const scorePercentage = (storedImage.scores[index] * 100).toFixed(
+                0,
+              );
+              // check to see if label is cut off by the canvas edge, if so, move it to the bottom of the bounding box
+              if (storedImage.boxes[index].topY <= 40) {
+                if (prediction === key) {
+                  if (switchTable) {
+                    ctx.fillText(
+                      `[${labelIndex + 1}] - ${scorePercentage}%`,
+                      ((storedImage.boxes[index].bottomX as number) -
+                        (storedImage.boxes[index].topX as number)) /
+                        2 +
+                        (storedImage.boxes[index].topX as number),
+                      (storedImage.boxes[index].bottomY as number) + 23,
+                    );
+                  } else {
+                    ctx.fillText(
+                      `[${index + 1}]`,
+                      ((storedImage.boxes[index].bottomX as number) -
+                        (storedImage.boxes[index].topX as number)) /
+                        2 +
+                        (storedImage.boxes[index].topX as number),
+                      (storedImage.boxes[index].bottomY as number) + 23,
+                    );
                   }
                 }
-              });
-              // draw bounding box
-              ctx.lineWidth = 2;
-              ctx.strokeStyle = "red";
-              ctx.rect(
-                storedImage.boxes[index].topX,
-                storedImage.boxes[index].topY,
-                storedImage.boxes[index].bottomX -
-                  storedImage.boxes[index].topX,
-                storedImage.boxes[index].bottomY -
-                  storedImage.boxes[index].topY,
-              );
-              ctx.stroke();
-              ctx.closePath();
-            }
-          });
-        }
-        // capture label in bottom left
-        if (storedImage.index === imageIndex) {
-          storedImage.imageDims = [image.width, image.height];
-          ctx.beginPath();
-          ctx.font = "bold 0.9vw Arial";
-          ctx.textAlign = "left";
-          ctx.fillStyle = "#4ee44e";
-          ctx.fillText(`Capture ${storedImage.index}`, 10, canvas.height - 15);
-          ctx.stroke();
-          ctx.closePath();
-        }
-      });
-    };
+              } else {
+                // draw label index and score percentage
+                if (prediction === key) {
+                  if (switchTable) {
+                    ctx.fillText(
+                      `[${labelIndex + 1}] - ${scorePercentage}%`,
+                      ((storedImage.boxes[index].bottomX as number) -
+                        (storedImage.boxes[index].topX as number)) /
+                        2 +
+                        (storedImage.boxes[index].topX as number),
+                      storedImage.boxes[index].topY - 8,
+                    );
+                  } else {
+                    // only draw table if switchTable is false (result component switch button)
+                    ctx.fillText(
+                      `[${index + 1}]`,
+                      ((storedImage.boxes[index].bottomX as number) -
+                        (storedImage.boxes[index].topX as number)) /
+                        2 +
+                        (storedImage.boxes[index].topX as number),
+                      storedImage.boxes[index].topY - 8,
+                    );
+                  }
+                }
+              }
+            });
+            // draw bounding box
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = "red";
+            ctx.rect(
+              storedImage.boxes[index].topX,
+              storedImage.boxes[index].topY,
+              storedImage.boxes[index].bottomX - storedImage.boxes[index].topX,
+              storedImage.boxes[index].bottomY - storedImage.boxes[index].topY,
+            );
+            ctx.stroke();
+            ctx.closePath();
+          }
+        });
+      }
+      // capture label in bottom left
+      if (storedImage.index === imageIndex) {
+        storedImage.imageDims = [imgWidth, imgHeight];
+        ctx.beginPath();
+        ctx.font = "bold 0.9vw Arial";
+        ctx.textAlign = "left";
+        ctx.fillStyle = "#4ee44e";
+        ctx.fillText(`Capture ${storedImage.index}`, 10, canvas.height - 15);
+        ctx.stroke();
+        ctx.closePath();
+      }
+    });
   }, [
     imageCache,
     imageIndex,
@@ -639,7 +613,7 @@ const Body: React.FC<params> = (props) => {
     scoreThreshold,
     selectedLabel,
     switchTable,
-    // base64TiffToPng,
+    decodeTiff,
   ]);
 
   useEffect(() => {
