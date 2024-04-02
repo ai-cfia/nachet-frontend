@@ -33,6 +33,12 @@ export interface Images {
   topN: Array<Array<{ score: number; label: string }>>;
 }
 
+interface DecodedTiff {
+  rgba: Uint8Array;
+  width: number;
+  height: number;
+}
+
 interface params {
   windowSize: {
     width: number;
