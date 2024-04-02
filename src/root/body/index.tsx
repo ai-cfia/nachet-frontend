@@ -443,16 +443,30 @@ const Body: React.FC<params> = (props) => {
     return async (): Promise<DecodedTiff> => {
       // Convert base64 to bytes
       const file = await fetch(imageSrc)
-        .then(async (res) => await res.blob())
+        .then(async (res) => {
+          if (!res.ok) {
+            throw new Error("decodeTiff - Failed to fetch TIFF file");
+          }
+          return await res.blob();
+        })
         .then(async (blob) => {
+          if (blob.size === 0) {
+            throw new Error("decodeTiff - Invalid blob size");
+          }
           return new File([blob], "file", { type: "image/tiff" });
         });
       const bytes = await file.arrayBuffer();
 
       // Decode image
       const ifds = UTIF.decode(bytes);
+      if (ifds.length === 0) {
+        throw new Error("decodeTiff - Failed to decode TIFF file");
+      }
       UTIF.decodeImage(bytes, ifds[0]);
       const rgba = UTIF.toRGBA8(ifds[0]);
+      if (rgba.length === 0) {
+        throw new Error("decodeTiff - Failed to convert TIFF to RGBA");
+      }
       return {
         rgba,
         width: ifds[0].width,
@@ -477,18 +491,32 @@ const Body: React.FC<params> = (props) => {
 
     // if Tiff image, convert to PNG
     if (imageSrc.includes("image/tiff")) {
-      await decodeTiff().then((dTiff: DecodedTiff) => {
-        const { rgba, width, height } = dTiff;
-        imgWidth = width;
-        imgHeight = height;
-        canvas.width = imgWidth;
-        canvas.height = imgHeight;
-        const imgd = ctx.createImageData(imgWidth, imgHeight);
-        for (let i = 0; i < rgba.length; i += 1) {
-          imgd.data[i] = rgba[i];
-        }
-        ctx.putImageData(imgd, 0, 0);
-      });
+      await decodeTiff()
+        .then((dTiff: DecodedTiff) => {
+          const { rgba, width, height } = dTiff;
+          imgWidth = width;
+          imgHeight = height;
+          canvas.width = imgWidth;
+          canvas.height = imgHeight;
+          const imgd = ctx.createImageData(imgWidth, imgHeight);
+          for (let i = 0; i < rgba.length; i += 1) {
+            imgd.data[i] = rgba[i];
+          }
+          ctx.putImageData(imgd, 0, 0);
+        })
+        .catch((error) => {
+          if (error instanceof Error) {
+            console.error("Error in loadToCanvas - ", error.message);
+          } else {
+            console.error(
+              "Error in loadToCanvas - unknown error while handling TIFF",
+            );
+          }
+          alert("An error occured while processing TIFF image");
+          setImageSrc(
+            "https://ai-cfia.github.io/nachet-frontend/placeholder-image.jpg",
+          );
+        });
     } else {
       const image = new Image();
       image.src = imageSrc;
