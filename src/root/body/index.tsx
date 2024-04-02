@@ -35,6 +35,12 @@ interface ImageCache {
   topN: Array<Array<{ score: number; label: string }>>;
 }
 
+interface DecodedTiff {
+  rgba: Uint8Array;
+  width: number;
+  height: number;
+}
+
 interface params {
   windowSize: {
     width: number;
@@ -434,7 +440,7 @@ const Body: React.FC<params> = (props) => {
   };
 
   const decodeTiff = useMemo(() => {
-    return async (): Promise<UTIF.IFD> => {
+    return async (): Promise<DecodedTiff> => {
       // Convert base64 to bytes
       const file = await fetch(imageSrc)
         .then(async (res) => await res.blob())
@@ -446,7 +452,12 @@ const Body: React.FC<params> = (props) => {
       // Decode image
       const ifds = UTIF.decode(bytes);
       UTIF.decodeImage(bytes, ifds[0]);
-      return ifds[0];
+      const rgba = UTIF.toRGBA8(ifds[0]);
+      return {
+        rgba,
+        width: ifds[0].width,
+        height: ifds[0].height,
+      };
     };
   }, [imageSrc]);
 
@@ -466,10 +477,10 @@ const Body: React.FC<params> = (props) => {
 
     // if Tiff image, convert to PNG
     if (imageSrc.includes("image/tiff")) {
-      await decodeTiff().then((ifd) => {
-        const rgba = UTIF.toRGBA8(ifd);
-        imgWidth = ifd.width;
-        imgHeight = ifd.height;
+      await decodeTiff().then((dTiff: DecodedTiff) => {
+        const { rgba, width, height } = dTiff;
+        imgWidth = width;
+        imgHeight = height;
         canvas.width = imgWidth;
         canvas.height = imgHeight;
         const imgd = ctx.createImageData(imgWidth, imgHeight);
