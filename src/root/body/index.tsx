@@ -1,5 +1,5 @@
 // root\body\index.tsx
-import { useState, useRef, useEffect, useCallback, useMemo } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import type Webcam from "react-webcam";
 import { saveAs } from "file-saver";
 import { BodyContainer } from "./indexElements";
