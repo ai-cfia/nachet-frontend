@@ -54,11 +54,73 @@ interface params {
   signUpOpen: boolean;
 }
 
+const useDecoderTiff = (imageSrc: string) => {
+  const [decodedTiff, setDecodedTiff] = useState<DecodedTiff>({
+    rgba: new Uint8Array(0),
+    width: 0,
+    height: 0,
+  });
+  useEffect(() => {
+    const decodeTiff = async (): Promise<DecodedTiff> => {
+      let decodedTiff = {
+        rgba: new Uint8Array(0),
+        width: 0,
+        height: 0,
+      };
+      if (!imageSrc.includes("image/tiff")) {
+        return decodedTiff;
+      }
+      try {
+        // Convert base64 to bytes
+        const file = await fetch(imageSrc)
+          .then(async (res) => {
+            if (!res.ok) {
+              throw new Error("decodeTiff - Failed to fetch TIFF file");
+            }
+            return await res.blob();
+          })
+          .then(async (blob) => {
+            if (blob.size === 0) {
+              throw new Error("decodeTiff - Invalid blob size");
+            }
+            return new File([blob], "file", { type: "image/tiff" });
+          });
+        const bytes = await file.arrayBuffer();
+
+        // Decode image
+        const ifds = UTIF.decode(bytes);
+        if (ifds.length === 0) {
+          throw new Error("decodeTiff - Failed to decode TIFF file");
+        }
+        UTIF.decodeImage(bytes, ifds[0]);
+        const rgba = UTIF.toRGBA8(ifds[0]);
+        if (rgba.length === 0) {
+          throw new Error("decodeTiff - Failed to convert TIFF to RGBA");
+        }
+        decodedTiff = {
+          rgba,
+          width: ifds[0].width,
+          height: ifds[0].height,
+        };
+      } catch (error) {
+        console.error("Error in decodeTiff - ", error);
+        return decodedTiff;
+      }
+      return decodedTiff;
+    };
+    void decodeTiff().then((dTiff: DecodedTiff) => {
+      setDecodedTiff(dTiff);
+    });
+  }, [imageSrc]);
+
+  return decodedTiff;
+};
+
 const Body: React.FC<params> = (props) => {
-  const [imageSrc, setImageSrc] = useState<string>(
-    "https://ai-cfia.github.io/nachet-frontend/placeholder-image.jpg",
-  );
-  const [imageSrcKey, setImageSrcKey] = useState<boolean>(false);
+  const defaultImageSrc =
+    "https://ai-cfia.github.io/nachet-frontend/placeholder-image.jpg";
+  const [imageSrc, setImageSrc] = useState<string>(defaultImageSrc);
+  const [imageTiff, setImageTiff] = useState<string>("");
   const [resultsRendered, setResultsRendered] = useState<boolean>(false);
   const [imageIndex, setImageIndex] = useState<number>(0);
   const [imageFormat, setImageFormat] = useState<string>("image/png");
@@ -89,6 +151,7 @@ const Body: React.FC<params> = (props) => {
   const [isWebcamActive, setIsWebcamActive] = useState(true); // This state determines the visibility of the webcam
   const [metadata, setMetadata] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const decodedTiff = useDecoderTiff(imageTiff);
 
   const loadCaptureToCache = (src: string): void => {
     // appends new image to image cache and its corresponding details
@@ -117,28 +180,6 @@ const Body: React.FC<params> = (props) => {
         : imageIndex + 1,
     );
   };
-
-  const getCurrentImage = useCallback(
-    (index: number): void => {
-      // gets the current image from the image cache based on index value
-      if (imageCache.length > 0) {
-        imageCache.forEach((image) => {
-          if (image.index === index) {
-            setImageSrc(image.src);
-            setSelectedLabel("all");
-            if (image.src === imageSrc) {
-              setImageSrcKey(!imageSrcKey);
-            }
-          }
-        });
-      } else {
-        setImageSrc(
-          "https://ai-cfia.github.io/nachet-frontend/placeholder-image.jpg",
-        );
-      }
-    },
-    [imageCache, imageSrc, imageSrcKey],
-  );
 
   const getBackendUrl = useCallback((): string => {
     const backendURL = process.env.VITE_BACKEND_URL;
@@ -439,42 +480,6 @@ const Body: React.FC<params> = (props) => {
     }
   };
 
-  const decodeTiff = useMemo(() => {
-    return async (): Promise<DecodedTiff> => {
-      // Convert base64 to bytes
-      const file = await fetch(imageSrc)
-        .then(async (res) => {
-          if (!res.ok) {
-            throw new Error("decodeTiff - Failed to fetch TIFF file");
-          }
-          return await res.blob();
-        })
-        .then(async (blob) => {
-          if (blob.size === 0) {
-            throw new Error("decodeTiff - Invalid blob size");
-          }
-          return new File([blob], "file", { type: "image/tiff" });
-        });
-      const bytes = await file.arrayBuffer();
-
-      // Decode image
-      const ifds = UTIF.decode(bytes);
-      if (ifds.length === 0) {
-        throw new Error("decodeTiff - Failed to decode TIFF file");
-      }
-      UTIF.decodeImage(bytes, ifds[0]);
-      const rgba = UTIF.toRGBA8(ifds[0]);
-      if (rgba.length === 0) {
-        throw new Error("decodeTiff - Failed to convert TIFF to RGBA");
-      }
-      return {
-        rgba,
-        width: ifds[0].width,
-        height: ifds[0].height,
-      };
-    };
-  }, [imageSrc]);
-
   const loadToCanvas = useCallback(async (): Promise<void> => {
     // loads the current image to the canvas and draws the bounding boxes and labels,
     // should update whenever a change is made to the image cache or the score threshold and the selected label is changed
@@ -489,34 +494,20 @@ const Body: React.FC<params> = (props) => {
       return;
     }
 
-    // if Tiff image, convert to PNG
     if (imageSrc.includes("image/tiff")) {
-      await decodeTiff()
-        .then((dTiff: DecodedTiff) => {
-          const { rgba, width, height } = dTiff;
-          imgWidth = width;
-          imgHeight = height;
-          canvas.width = imgWidth;
-          canvas.height = imgHeight;
-          const imgd = ctx.createImageData(imgWidth, imgHeight);
-          for (let i = 0; i < rgba.length; i += 1) {
-            imgd.data[i] = rgba[i];
-          }
-          ctx.putImageData(imgd, 0, 0);
-        })
-        .catch((error) => {
-          if (error instanceof Error) {
-            console.error("Error in loadToCanvas - ", error.message);
-          } else {
-            console.error(
-              "Error in loadToCanvas - unknown error while handling TIFF",
-            );
-          }
-          alert("An error occured while processing TIFF image");
-          setImageSrc(
-            "https://ai-cfia.github.io/nachet-frontend/placeholder-image.jpg",
-          );
-        });
+      const { rgba, width, height } = decodedTiff;
+      if (width === 0 || height === 0) {
+        return;
+      }
+      imgWidth = width;
+      imgHeight = height;
+      canvas.width = imgWidth;
+      canvas.height = imgHeight;
+      const imgd = ctx.createImageData(imgWidth, imgHeight);
+      for (let i = 0; i < rgba.length; i += 1) {
+        imgd.data[i] = rgba[i];
+      }
+      ctx.putImageData(imgd, 0, 0);
     } else {
       const image = new Image();
       image.src = imageSrc;
@@ -597,17 +588,7 @@ const Body: React.FC<params> = (props) => {
     scoreThreshold,
     selectedLabel,
     switchTable,
-    decodeTiff,
-  ]);
-
-  useEffect(() => {
-    getCurrentImage(imageIndex);
-  }, [
-    imageIndex,
-    getCurrentImage,
-    loadToCanvas,
-    getLabelOccurrence,
-    handleAzureStorageDir,
+    decodedTiff,
   ]);
 
   useEffect(() => {
@@ -619,9 +600,6 @@ const Body: React.FC<params> = (props) => {
     labelOccurrences,
     switchTable,
     imageSrc,
-    imageSrcKey,
-    imageIndex,
-    getCurrentImage,
     loadToCanvas,
   ]);
 
@@ -702,6 +680,25 @@ const Body: React.FC<params> = (props) => {
       void fetchMetadata();
     }
   }, []);
+
+  useEffect(() => {
+    const getCurrentImage = (index: number): void => {
+      if (imageCache.length > 0) {
+        imageCache.forEach((image) => {
+          if (image.index === index) {
+            setImageSrc(image.src.slice());
+            if (image.src.includes("image/tiff")) {
+              setImageTiff(image.src);
+            }
+          }
+        });
+      } else {
+        setImageSrc(defaultImageSrc);
+      }
+    };
+
+    getCurrentImage(imageIndex);
+  }, [imageIndex, imageCache]);
 
   return (
     <BodyContainer width={props.windowSize.width}>
