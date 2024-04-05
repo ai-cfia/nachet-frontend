@@ -1,7 +1,6 @@
 // root\body\index.tsx
 import { useState, useRef, useEffect, useCallback } from "react";
 import type Webcam from "react-webcam";
-import { saveAs } from "file-saver";
 import { BodyContainer } from "./indexElements";
 import Classifier from "../../pages/classifier";
 import SavePopup from "../../components/body/save_capture_popup";
@@ -13,11 +12,10 @@ import DeleteDirectoryPopup from "../../components/body/del_directory_popup";
 import ResultsTunerPopup from "../../components/body/results_tuner_popup";
 import SignUp from "../../components/body/authentication/signup";
 import CreativeCommonsPopup from "../../components/body/creative_commons_popup";
-import JSZip from "jszip";
 import axios from "axios";
-import { useDecoderTiff } from "../../hooks";
+import { useBackendUrl, useDecoderTiff } from "../../hooks";
 
-interface ImageCache {
+export interface Images {
   index: number;
   src: string;
   scores: number[];
@@ -62,7 +60,7 @@ const Body: React.FC<params> = (props) => {
   const [modelInfoPopupOpen, setModelInfoPopupOpen] = useState(false);
   const [switchDeviceOpen, setSwitchDeviceOpen] = useState(false);
   const [createDirectoryOpen, setCreateDirectoryOpen] = useState(false);
-  const [imageCache, setImageCache] = useState<ImageCache[]>([]);
+  const [imageCache, setImageCache] = useState<Images[]>([]);
   const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
   const [activeDeviceId, setActiveDeviceId] = useState<string | undefined>(
     undefined,
@@ -84,6 +82,7 @@ const Body: React.FC<params> = (props) => {
   const [metadata, setMetadata] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const decodedTiff = useDecoderTiff(imageTiff);
+  const backendUrl = useBackendUrl();
 
   const loadCaptureToCache = (src: string): void => {
     // appends new image to image cache and its corresponding details
@@ -113,14 +112,6 @@ const Body: React.FC<params> = (props) => {
     );
   };
 
-  const getBackendUrl = useCallback((): string => {
-    const backendURL = process.env.VITE_BACKEND_URL;
-    if (backendURL === null || backendURL === undefined || backendURL === "") {
-      throw new Error("VITE_BACKEND_URL environment variable is not set.");
-    }
-    return backendURL;
-  }, []);
-
   const captureFeed = (): void => {
     // takes screenshot of webcam feed and loads it to cache when capture button is pressed
     const src: string | null | undefined = webcamRef.current?.getScreenshot();
@@ -128,23 +119,6 @@ const Body: React.FC<params> = (props) => {
       return;
     }
     loadCaptureToCache(src);
-  };
-
-  const uploadImage = (event: any): void => {
-    // loads image from local storage to cache when upload button is pressed
-    event.preventDefault();
-    const file = event.target.files[0];
-    if (file !== undefined) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        if (typeof reader.result !== "string") {
-          return;
-        }
-        loadCaptureToCache(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-    setUploadOpen(false);
   };
 
   const removeFromCache = (index: number): void => {
@@ -162,47 +136,6 @@ const Body: React.FC<params> = (props) => {
     // clears image cache when clear button is pressed
     setImageCache([]);
     setImageIndex(0);
-  };
-
-  const saveImage = (): void => {
-    // saves image to local storage or compresses the entire cache into a zip file which is then saved to local storage
-    (async () => {
-      // save individual image
-      if (saveIndividualImage === "0" && imageCache.length > 0) {
-        saveAs(
-          imageSrc,
-          `${imageLabel}-${new Date().getFullYear()}-${
-            new Date().getMonth() + 1
-          }-${new Date().getDate()}.${imageFormat.split("/")[1]}`,
-        );
-        setSaveOpen(false);
-      } else if (saveIndividualImage === "1" && imageCache.length > 0) {
-        // compress all images from cache to zip file and download
-        const zip = new JSZip();
-        imageCache.forEach((image) => {
-          const base64Data = image.src.replace(/^data:image\/\w+;base64,/, "");
-          zip.file(
-            `Capture-${image.index}-${new Date().getFullYear()}-${
-              new Date().getMonth() + 1
-            }-${new Date().getDate()}.${imageFormat.split("/")[1]}`,
-            base64Data,
-            {
-              base64: true,
-            },
-          );
-        });
-        const content = await zip.generateAsync({ type: "blob" });
-        saveAs(
-          content,
-          `${new Date().getFullYear()}-${
-            new Date().getMonth() + 1
-          }-${new Date().getDate()}.${imageFormat.split("/")[1]}.zip`,
-        );
-        setSaveOpen(false);
-      }
-    })().catch((error) => {
-      alert(error);
-    });
   };
 
   const loadResultsToCache = (inferenceData: any): void => {
@@ -262,70 +195,6 @@ const Body: React.FC<params> = (props) => {
     setCurDir(dir.replace(/\s/g, "-"));
   };
 
-  const handleCreateDirectory = (): void => {
-    // makes a post request to the backend to create a new directory in azure storage
-
-    (async () => {
-      try {
-        await axios({
-          method: "post",
-          url: `${getBackendUrl()}/create-dir`,
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-          data: {
-            container_name: props.uuid,
-            folder_name: curDir,
-          },
-        }).then((response) => {
-          if (response.status === 200) {
-            setCreateDirectoryOpen(false);
-            setCurDir("General");
-            handleAzureStorageDir();
-          } else {
-            alert("Error creating directory, it may already exist");
-          }
-        });
-      } catch (error) {
-        alert(error);
-      }
-    })().catch((error) => {
-      alert(error);
-    });
-  };
-
-  const handleDelFromDirectory = (): void => {
-    // makes a post request to the backend to delete a directory in azure storage
-    (async () => {
-      try {
-        await axios({
-          method: "post",
-          url: `${getBackendUrl()}/del`,
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-          data: {
-            container_name: props.uuid,
-            folder_name: curDir,
-          },
-        }).then((response) => {
-          if (response.status === 200) {
-            setCurDir("General");
-            handleAzureStorageDir();
-          } else {
-            alert(response.data);
-          }
-        });
-      } catch (error) {
-        alert(error);
-      }
-    })().catch((error) => {
-      alert(error);
-    });
-  };
-
   const handleAzureStorageDir = useCallback((): void => {
     // makes a post request to the backend to get the current directories in azure storage,
     // should be called whenever a directory is deleted, created and when page is rendered
@@ -333,7 +202,7 @@ const Body: React.FC<params> = (props) => {
       try {
         await axios({
           method: "post",
-          url: `${getBackendUrl()}/dir`,
+          url: `${backendUrl}/dir`,
           headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
@@ -354,7 +223,7 @@ const Body: React.FC<params> = (props) => {
     })().catch((error) => {
       console.error(error);
     });
-  }, [props.uuid, setAzureStorageDir, getBackendUrl]);
+  }, [props.uuid, setAzureStorageDir, backendUrl]);
 
   const handleInferenceRequest = (): void => {
     // makes a post request to the backend to get inference data for the current image
@@ -367,7 +236,7 @@ const Body: React.FC<params> = (props) => {
           setIsLoading(true);
           await axios({
             method: "post",
-            url: `${getBackendUrl()}/inf`,
+            url: `${backendUrl}/inf`,
             headers: {
               "Content-Type": "application/json",
               "Access-Control-Allow-Origin": "*",
@@ -636,8 +505,9 @@ const Body: React.FC<params> = (props) => {
     <BodyContainer width={props.windowSize.width}>
       {saveOpen && (
         <SavePopup
+          imageCache={imageCache}
+          imageSrc={imageSrc}
           setSaveOpen={setSaveOpen}
-          saveImage={saveImage}
           imageFormat={imageFormat}
           imageLabel={imageLabel}
           setImageFormat={setImageFormat}
@@ -647,7 +517,10 @@ const Body: React.FC<params> = (props) => {
         />
       )}
       {uploadOpen && (
-        <UploadPopup setUploadOpen={setUploadOpen} uploadImage={uploadImage} />
+        <UploadPopup
+          setUploadOpen={setUploadOpen}
+          loadCaptureToCache={loadCaptureToCache}
+        />
       )}
       {modelInfoPopupOpen && (
         <ModelInfoPopup
@@ -670,8 +543,10 @@ const Body: React.FC<params> = (props) => {
       {delDirectoryOpen && (
         <DeleteDirectoryPopup
           setDelDirectoryOpen={setDelDirectoryOpen}
-          handleDelFromDirectory={handleDelFromDirectory}
+          handleAzureStorageDir={handleAzureStorageDir}
+          uuid={props.uuid}
           curDir={curDir}
+          setCurDir={setCurDir}
         />
       )}
       {createDirectoryOpen && (
@@ -679,7 +554,9 @@ const Body: React.FC<params> = (props) => {
           setCreateDirectoryOpen={setCreateDirectoryOpen}
           handeDirChange={handleDirChange}
           curDir={curDir}
-          handleCreateDirectory={handleCreateDirectory}
+          setCurDir={setCurDir}
+          handleAzureStorageDir={handleAzureStorageDir}
+          uuid={props.uuid}
         />
       )}
       {resultsTunerOpen && (

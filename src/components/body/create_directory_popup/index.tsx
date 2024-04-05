@@ -3,18 +3,65 @@ import { Overlay, InfoContainer, ButtonWrap } from "./indexElements";
 import { Box, CardHeader, IconButton, TextField, Button } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { colours } from "../../../styles/colours";
+import axios from "axios";
+import { useBackendUrl } from "../../../hooks";
 
 interface params {
   setCreateDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handeDirChange: (dir: string) => void;
   curDir: string;
-  handleCreateDirectory: () => void;
+  setCurDir: React.Dispatch<React.SetStateAction<string>>;
+  handleAzureStorageDir: () => void;
+  uuid: string;
 }
 
 const CreateFolder: React.FC<params> = (props): JSX.Element => {
+  const {
+    setCreateDirectoryOpen,
+    curDir,
+    handeDirChange,
+    setCurDir,
+    handleAzureStorageDir,
+    uuid,
+  } = props;
+  const backendURL = useBackendUrl();
+
+  const handleCreateDirectory = (): void => {
+    // makes a post request to the backend to create a new directory in azure storage
+
+    (async () => {
+      try {
+        await axios({
+          method: "post",
+          url: `${backendURL}/create-dir`,
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          data: {
+            container_name: uuid,
+            folder_name: curDir,
+          },
+        }).then((response) => {
+          if (response.status === 200) {
+            setCreateDirectoryOpen(false);
+            setCurDir("General");
+            handleAzureStorageDir();
+          } else {
+            alert("Error creating directory, it may already exist");
+          }
+        });
+      } catch (error) {
+        alert(error);
+      }
+    })().catch((error) => {
+      alert(error);
+    });
+  };
+
   const handleClose = (): void => {
-    props.setCreateDirectoryOpen(false);
-    props.handeDirChange("General");
+    setCreateDirectoryOpen(false);
+    handeDirChange("General");
   };
 
   return (
@@ -55,9 +102,9 @@ const CreateFolder: React.FC<params> = (props): JSX.Element => {
             fullWidth
             InputLabelProps={{ shrink: true }}
             onChange={(event) => {
-              props.handeDirChange(event.target.value);
+              handeDirChange(event.target.value);
             }}
-            value={props.curDir}
+            value={curDir}
             sx={{ fontSize: "1.2vh" }}
             size="small"
           />
@@ -84,7 +131,7 @@ const CreateFolder: React.FC<params> = (props): JSX.Element => {
                 },
               }}
               onClick={() => {
-                props.handleCreateDirectory();
+                handleCreateDirectory();
               }}
             >
               Create
