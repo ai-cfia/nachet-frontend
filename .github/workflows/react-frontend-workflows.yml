@@ -14,7 +14,7 @@ jobs:
   markdown-check:
     uses: ai-cfia/github-workflows/.github/workflows/workflow-markdown-check.yml@main
     with:
-      config-file-path: '.mlc_config.json'
+      md-link-config-file-path: ".mlc_config.json"
     secrets: inherit
 
   repo-standard:
