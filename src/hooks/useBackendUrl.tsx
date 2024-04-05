@@ -1,7 +1,7 @@
 const useBackendUrl = (): string => {
-  const backendURL = process.env.VITE_BACKEND_URL;
+  const backendURL = process.env.VITE_BACKEND_URL ?? "";
   if (backendURL === null || backendURL === undefined || backendURL === "") {
-    throw new Error("VITE_BACKEND_URL environment variable is not set.");
+    console.error("VITE_BACKEND_URL environment variable is not set.");
   }
   return backendURL;
 };
