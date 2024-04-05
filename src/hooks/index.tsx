@@ -1,3 +1,4 @@
 import useDecoderTiff from "./useDecoderTiff";
+import useBackendUrl from "./useBackendUrl";
 
-export { useDecoderTiff };
+export { useDecoderTiff, useBackendUrl };

@@ -6,12 +6,31 @@ import { colours } from "../../../styles/colours";
 
 interface params {
   setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  uploadImage: (event: any) => void;
+  loadCaptureToCache: (imageUrl: string) => void;
 }
 
 const UploadPopup: React.FC<params> = (props): JSX.Element => {
+  const { setUploadOpen, loadCaptureToCache } = props;
+
+  const uploadImage = (event: any): void => {
+    // loads image from local storage to cache when upload button is pressed
+    event.preventDefault();
+    const file = event.target.files[0];
+    if (file !== undefined) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result !== "string") {
+          return;
+        }
+        loadCaptureToCache(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+    setUploadOpen(false);
+  };
+
   const handleClose = (): void => {
-    props.setUploadOpen(false);
+    setUploadOpen(false);
   };
 
   return (
@@ -48,7 +67,7 @@ const UploadPopup: React.FC<params> = (props): JSX.Element => {
           <Input
             type="file"
             fullWidth
-            onChange={props.uploadImage}
+            onChange={uploadImage}
             sx={{
               fontSize: "0.7vw",
             }}

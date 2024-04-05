@@ -14,10 +14,14 @@ import {
 import type { SelectChangeEvent } from "@mui/material/Select";
 import CloseIcon from "@mui/icons-material/Close";
 import { colours } from "../../../styles/colours";
+import { saveAs } from "file-saver";
+import JSZip from "jszip";
+import { Images } from "../../../root/body";
 
 interface params {
+  imageSrc: string;
+  imageCache: Images[];
   setSaveOpen?: React.Dispatch<React.SetStateAction<boolean>>;
-  saveImage?: () => void;
   imageFormat?: string;
   imageLabel?: string;
   setImageFormat?: React.Dispatch<React.SetStateAction<string>>;
@@ -27,6 +31,50 @@ interface params {
 }
 
 const SavePopup: React.FC<params> = (props): JSX.Element => {
+  const saveImage = (): void => {
+    // saves image to local storage or compresses the entire cache into a zip file which is then saved to local storage
+    (async () => {
+      // save individual image
+      if (props.saveIndividualImage === "0" && props.imageCache.length > 0) {
+        saveAs(
+          props.imageSrc,
+          `${props.imageLabel}-${new Date().getFullYear()}-${
+            new Date().getMonth() + 1
+          }-${new Date().getDate()}.${props.imageFormat?.split("/")[1]}`,
+        );
+        props.setSaveOpen?.(false);
+      } else if (
+        props.saveIndividualImage === "1" &&
+        props.imageCache.length > 0
+      ) {
+        // compress all images from cache to zip file and download
+        const zip = new JSZip();
+        props.imageCache.forEach((image) => {
+          const base64Data = image.src.replace(/^data:image\/\w+;base64,/, "");
+          zip.file(
+            `Capture-${image.index}-${new Date().getFullYear()}-${
+              new Date().getMonth() + 1
+            }-${new Date().getDate()}.${props.imageFormat?.split("/")[1]}`,
+            base64Data,
+            {
+              base64: true,
+            },
+          );
+        });
+        const content = await zip.generateAsync({ type: "blob" });
+        saveAs(
+          content,
+          `${new Date().getFullYear()}-${
+            new Date().getMonth() + 1
+          }-${new Date().getDate()}.${props.imageFormat?.split("/")[1]}.zip`,
+        );
+        props.setSaveOpen?.(false);
+      }
+    })().catch((error) => {
+      alert(error);
+    });
+  };
+
   const handleClose = (): void => {
     if (props.setSaveOpen === undefined) {
       return;
@@ -184,7 +232,7 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
                   border: `0.01vh solid LightGrey`,
                 },
               }}
-              onClick={props.saveImage}
+              onClick={saveImage}
             >
               SAVE
             </Button>
