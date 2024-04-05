@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import UTIF from "utif";
+import { BlobError, DecodeError, FetchError } from "../common";
 
 export interface DecodedTiff {
   rgba: Uint8Array;
@@ -28,13 +29,13 @@ const useDecoderTiff = (imageSrc: string) => {
         const file = await fetch(imageSrc)
           .then(async (res) => {
             if (!res.ok) {
-              throw new Error("decodeTiff - Failed to fetch TIFF file");
+              throw new FetchError("decodeTiff - Failed to fetch TIFF file");
             }
             return await res.blob();
           })
           .then(async (blob) => {
             if (blob.size === 0) {
-              throw new Error("decodeTiff - Invalid blob size");
+              throw new BlobError("decodeTiff - Invalid blob size from api");
             }
             return new File([blob], "file", { type: "image/tiff" });
           });
@@ -43,12 +44,19 @@ const useDecoderTiff = (imageSrc: string) => {
         // Decode image
         const ifds = UTIF.decode(bytes);
         if (ifds.length === 0) {
-          throw new Error("decodeTiff - Failed to decode TIFF file");
+          throw new DecodeError("decodeTiff - Failed to decode TIFF array");
         }
         UTIF.decodeImage(bytes, ifds[0]);
+        if (
+          ifds[0].width < 1 ||
+          ifds[0].height < 1 ||
+          ifds[0].data.length === 0
+        ) {
+          throw new DecodeError("decodeTiff - Invalid image size or data");
+        }
         const rgba = UTIF.toRGBA8(ifds[0]);
         if (rgba.length === 0) {
-          throw new Error("decodeTiff - Failed to convert TIFF to RGBA");
+          throw new DecodeError("decodeTiff - Failed to convert TIFF to RGBA");
         }
         decodedTiff = {
           rgba,
@@ -57,7 +65,6 @@ const useDecoderTiff = (imageSrc: string) => {
         };
       } catch (error) {
         console.error("Error in decodeTiff - ", error);
-        return decodedTiff;
       }
       return decodedTiff;
     };
