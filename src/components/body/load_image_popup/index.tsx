@@ -6,11 +6,11 @@ import { colours } from "../../../styles/colours";
 
 interface params {
   setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  loadCaptureToCache: (imageUrl: string) => void;
+  pushImageToCache: (imageUrl: string) => void;
 }
 
 const UploadPopup: React.FC<params> = (props): JSX.Element => {
-  const { setUploadOpen, loadCaptureToCache } = props;
+  const { setUploadOpen, pushImageToCache } = props;
 
   const uploadImage = (event: any): void => {
     // loads image from local storage to cache when upload button is pressed
@@ -22,7 +22,7 @@ const UploadPopup: React.FC<params> = (props): JSX.Element => {
         if (typeof reader.result !== "string") {
           return;
         }
-        loadCaptureToCache(reader.result);
+        pushImageToCache(reader.result);
       };
       reader.readAsDataURL(file);
     }
