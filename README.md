@@ -1,58 +1,94 @@
-# Getting Started with Create React App
+# Vite React Project
 
-This project was bootstrapped with
-[Create React App](https://github.com/facebook/create-react-app).
+This project was initialized with [Vite](https://vitejs.dev/), a build tool
+that aims to provide a faster and leaner development experience for modern web
+projects.
+
+## Setting up @saithodev/ts-appversion
+
+To ensure a smooth development experience, it's crucial to manage the
+application versioning right from the start. We use @saithodev/ts-appversion
+for this purpose. Please install it by executing the command below before
+moving forward with the development or build process:
+
+```bash
+npm install @saithodev/ts-appversion
+```
+
+After installing @saithodev/ts-appversion, run the prestart script to ensure
+your application version is correctly set based on the latest git tag:
+
+```bash
+npm run prestart
+```
+
+After installing, you can proceed with the development or build processes of
+your project.
+
+```bash
+npm run dev
+```
+
+This will serve your application on localhost:5173, where you can view
+it in your preferred browser. The server is configured to automatically reload
+upon any changes to your code, providing instant feedback on your development
+progress. Additionally, build errors and lint warnings will be prominently
+displayed in the console, helping you maintain a clean and efficient
+codebase.
+
+The app will automatically reload if you make changes to the code. You will see
+the build errors and lint warnings in the console.
 
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+### `npm run dev`
 
-Runs the app in the development mode.\
-Open 127.0.0.1:3000 or localhost:3000 to view it in the browser.
+Starts the development server. Open localhost:5173 to view it in your
+browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+The app will automatically reload if you make changes to the code. You will see
+the build errors and lint warnings in the console.
 
-### `npm test`
+### `npm run prebuild`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running
-tests](https://facebook.github.io/create-react-app/docs/running-tests) for more
-information.
+Prepares the application versioning before building. It's an essential step to
+ensure that the build includes the correct version of your application.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the
-best performance.
+Builds the app for production to the `dist` folder. It correctly bundles React
+in production mode and optimizes the build for the best performance. Your app
+is ready to be deployed!
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### `npm run preview`
 
-See the section about
-[deployment](https://facebook.github.io/create-react-app/docs/deployment) for
-more information.
+Locally preview production build.
 
-### `npm run eject`
+### `npm run lint`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Runs eslint to find and fix problems in your JavaScript code.
 
-If you aren’t satisfied with the build tool and configuration choices, you can
-`eject` at any time. This command will remove the single build dependency from
-your project.
+### `npm run test`
 
-Instead, it will copy all the configuration files and the transitive
-dependencies (webpack, Babel, ESLint, etc) right into your project so you have
-full control over them. All of the commands except `eject` will still work, but
-they will point to the copied scripts so you can tweak them. At this point
-you’re on your own.
+Launches the test runner in the interactive watch mode.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for
-small and middle deployments, and you shouldn’t feel obligated to use this
-feature. However we understand that this tool wouldn’t be useful if you
-couldn’t customize it when you are ready for it.
+## Code Formatting with Prettier
+
+To ensure your codebase remains clean and consistent, we use
+[Prettier](https://prettier.io/) for automatic code formatting. Before
+committing your changes, you can format your code by running the following
+command:
+
+```bash
+npx prettier --write .
+```
+
+Executing this command automatically formats the specified files. You can
+replace `.` with the relative path of any specific file or directory you wish
+to format. This allows for targeted formatting, ensuring that only the desired
+sections of your codebase are adjusted.
 
 ## Deployment Environment Configuration Management
 
@@ -74,9 +110,43 @@ management across all frontend components.
 Refer to this documentation to understand how to effectively manage and utilize
 environment configurations in your project.
 
+## Environment Variable Setup
+
+To run the application correctly, certain environment variables need to be set.
+These variables control various aspects of how the application behaves in
+different environments (development, staging, production).
+
+### Required Variables
+
+1. `VITE_BACKEND_URL`: URL of the backend server. This is used to make API
+calls from the frontend.
+2. `VITE_APP_MODE`: Determines the mode in which the application runs. Set to
+`"test"` for using test data, any other value will use real data from the
+backend.
+
+### Setting Up Environment Variables
+
+You can set these variables in a `.env` file in the root of your project.
+
+Remember to replace the values with the appropriate URLs and modes for your
+specific environment. Also, ensure that you do not commit sensitive information
+like production URLs or credentials in the `.env` file to your version control
+system.
+
+### Accessing Environment Variables in the Application
+
+In your React application, you can access these variables using `process.env`.
+For example:
+
+- `process.env.VITE_BACKEND_URL` to get the backend URL.
+- `process.env.VITE_APP_MODE` to check the current mode of the application.
+
+Note: After changing the values in your `.env` file, you will need to restart
+your development server for the changes to take effect.
+
 ## Learn More
 
-You can learn more in the [Create React App
-documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+To learn more about Vite, check out the [Vite
+documentation](https://vitejs.dev/guide/).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
