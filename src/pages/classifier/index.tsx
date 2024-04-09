@@ -35,8 +35,6 @@ interface params {
   setCreateDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleDirChange: (dir: string) => void;
   setDelDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setResultsTunerOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  scoreThreshold: number;
   selectedLabel: string;
   setSelectedLabel: React.Dispatch<React.SetStateAction<string>>;
   labelOccurrences: any;
@@ -96,8 +94,6 @@ const Classifier: React.FC<params> = (props) => {
             imageIndex={props.imageIndex}
           />
           <ClassificationResults
-            scoreThreshold={props.scoreThreshold}
-            setResultsTunerOpen={props.setResultsTunerOpen}
             savedImages={props.savedImages}
             imageSrc={props.imageSrc}
             windowSize={props.windowSize}

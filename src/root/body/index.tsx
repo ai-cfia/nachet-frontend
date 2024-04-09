@@ -11,7 +11,6 @@ import ModelInfoPopup from "../../components/body/model_popup";
 import SwitchDevice from "../../components/body/switch_device_popup";
 import CreateDirectory from "../../components/body/create_directory_popup";
 import DeleteDirectoryPopup from "../../components/body/del_directory_popup";
-import ResultsTunerPopup from "../../components/body/results_tuner_popup";
 import SignUp from "../../components/body/authentication/signup";
 import CreativeCommonsPopup from "../../components/body/creative_commons_popup";
 import JSZip from "jszip";
@@ -65,8 +64,6 @@ const Body: React.FC<params> = (props) => {
   const [curDir, setCurDir] = useState<string>("General");
   const [azureStorageDir, setAzureStorageDir] = useState<any>({});
   const [delDirectoryOpen, setDelDirectoryOpen] = useState<boolean>(false);
-  const [resultsTunerOpen, setResultsTunerOpen] = useState<boolean>(false);
-  const [scoreThreshold, setScoreThreshold] = useState<number>(50);
   const [selectedModel, setSelectedModel] = useState("Swin transformer");
   const [modelDisplayName, setModelDisplayName] = useState("");
   const [selectedLabel, setSelectedLabel] = useState<string>("all");
@@ -259,7 +256,7 @@ const Body: React.FC<params> = (props) => {
     imageCache.forEach((object: any) => {
       if (object.index === imageIndex && object.annotated === true) {
         object.scores.forEach((score: number, index: number) => {
-          if (score * 100 >= scoreThreshold) {
+          if (score) {
             const label: string = object.classifications[index];
             if (result[label] !== undefined) {
               result[label] = (result[label] as number) + 1;
@@ -271,7 +268,7 @@ const Body: React.FC<params> = (props) => {
       }
     });
     setLabelOccurrences(result);
-  }, [imageCache, imageIndex, scoreThreshold, setLabelOccurrences]);
+  }, [imageCache, imageIndex, setLabelOccurrences]);
 
   const handleDirChange = (dir: string): void => {
     // sets the current directory for azure storage
@@ -450,10 +447,7 @@ const Body: React.FC<params> = (props) => {
         if (storedImage.index === imageIndex && storedImage.annotated) {
           storedImage.classifications.forEach((prediction, index) => {
             // !storedImage.overlapping[index]     REMOVE THIS TO SHOW ONLY 1 BB
-            if (
-              storedImage.scores[index] >= scoreThreshold / 100 &&
-              (prediction === selectedLabel || selectedLabel === "all")
-            ) {
+            if (prediction === selectedLabel || selectedLabel === "all") {
               ctx.beginPath();
               // draw label index
               ctx.font = "bold 0.9vw Arial";
@@ -546,7 +540,6 @@ const Body: React.FC<params> = (props) => {
     imageIndex,
     imageSrc,
     labelOccurrences,
-    scoreThreshold,
     selectedLabel,
     switchTable,
   ]);
@@ -564,7 +557,6 @@ const Body: React.FC<params> = (props) => {
   useEffect(() => {
     loadToCanvas();
   }, [
-    scoreThreshold,
     selectedLabel,
     resultsRendered,
     labelOccurrences,
@@ -578,7 +570,7 @@ const Body: React.FC<params> = (props) => {
 
   useEffect(() => {
     getLabelOccurrence();
-  }, [imageIndex, scoreThreshold, imageCache, getLabelOccurrence]);
+  }, [imageIndex, imageCache, getLabelOccurrence]);
 
   useEffect(() => {
     // retrieves the available devices and sets the active device to the first available device
@@ -704,13 +696,7 @@ const Body: React.FC<params> = (props) => {
           handleCreateDirectory={handleCreateDirectory}
         />
       )}
-      {resultsTunerOpen && (
-        <ResultsTunerPopup
-          setResultsTunerOpen={setResultsTunerOpen}
-          setScoreThreshold={setScoreThreshold}
-          scoreThreshold={scoreThreshold}
-        />
-      )}
+
       {props.signUpOpen && <SignUp setSignUpOpen={props.setSignUpOpen} />}
       {props.creativeCommonsPopupOpen && (
         <CreativeCommonsPopup
@@ -742,8 +728,6 @@ const Body: React.FC<params> = (props) => {
         handleDirChange={handleDirChange}
         setCreateDirectoryOpen={setCreateDirectoryOpen}
         setDelDirectoryOpen={setDelDirectoryOpen}
-        setResultsTunerOpen={setResultsTunerOpen}
-        scoreThreshold={scoreThreshold}
         selectedLabel={selectedLabel}
         setSelectedLabel={setSelectedLabel}
         labelOccurrences={labelOccurrences}
