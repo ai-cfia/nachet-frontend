@@ -16,7 +16,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { colours } from "../../../styles/colours";
 import { saveAs } from "file-saver";
 import JSZip from "jszip";
-import { Images } from "../../../root/body";
+import { Images } from "../../../common/types";
 
 interface params {
   imageSrc: string;
