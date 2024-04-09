@@ -218,6 +218,13 @@ const Body: React.FC<params> = (props) => {
   }, [activeDeviceId]);
 
   useEffect(() => {
+    if (backendUrl == null || backendUrl === "") {
+      console.error("Backend URL is undefined, null or empty.");
+      return;
+    }
+    if (props.uuid == null || props.uuid === "") {
+      return;
+    }
     readAzureStorageDir(backendUrl, props.uuid)
       .then((response) => {
         setAzureStorageDir(response);
