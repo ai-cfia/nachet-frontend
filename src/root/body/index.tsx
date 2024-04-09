@@ -1,5 +1,5 @@
 // root\body\index.tsx
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import type Webcam from "react-webcam";
 import { BodyContainer } from "./indexElements";
 import Classifier from "../../pages/classifier";
@@ -14,24 +14,15 @@ import SignUp from "../../components/body/authentication/signup";
 import CreativeCommonsPopup from "../../components/body/creative_commons_popup";
 import axios from "axios";
 import { useBackendUrl, useDecoderTiff } from "../../hooks";
-
-export interface Images {
-  index: number;
-  src: string;
-  scores: number[];
-  classifications: string[];
-  boxes: Array<{
-    topX: number;
-    topY: number;
-    bottomX: number;
-    bottomY: number;
-  }>;
-  annotated: boolean;
-  imageDims: number[];
-  overlapping: boolean[];
-  overlappingIndices: number[];
-  topN: Array<Array<{ score: number; label: string }>>;
-}
+import {
+  getLabelOccurrence,
+  loadCaptureToCache,
+  loadResultsToCache,
+  loadToCanvas,
+  nextCacheIndex,
+} from "../../common/cacheutils";
+import { Images, LabelOccurrences } from "../../common/types";
+import { inferenceRequest, readAzureStorageDir } from "../../common/api";
 
 interface params {
   windowSize: {
@@ -66,6 +57,7 @@ const Body: React.FC<params> = (props) => {
     undefined,
   );
   const [curDir, setCurDir] = useState<string>("General");
+  const [readAzureStorage, setReadAzureStorage] = useState<boolean>(false);
   const [azureStorageDir, setAzureStorageDir] = useState<any>({});
   const [delDirectoryOpen, setDelDirectoryOpen] = useState<boolean>(false);
   const [resultsTunerOpen, setResultsTunerOpen] = useState<boolean>(false);
@@ -73,7 +65,9 @@ const Body: React.FC<params> = (props) => {
   const [selectedModel, setSelectedModel] = useState("Swin transformer");
   const [modelDisplayName, setModelDisplayName] = useState("");
   const [selectedLabel, setSelectedLabel] = useState<string>("all");
-  const [labelOccurrences, setLabelOccurrences] = useState<any>({});
+  const [labelOccurrences, setLabelOccurrences] = useState<LabelOccurrences>(
+    {},
+  );
   const [saveIndividualImage, setSaveIndividualImage] = useState<string>("0");
   const [switchTable, setSwitchTable] = useState<boolean>(true);
   const webcamRef = useRef<Webcam>(null);
@@ -84,52 +78,28 @@ const Body: React.FC<params> = (props) => {
   const decodedTiff = useDecoderTiff(imageTiff);
   const backendUrl = useBackendUrl();
 
-  const loadCaptureToCache = (src: string): void => {
-    // appends new image to image cache and its corresponding details
-    setImageCache((prevCache) => [
-      ...prevCache,
-      {
-        index:
-          imageCache.length > 0
-            ? imageCache[imageCache.length - 1].index + 1
-            : imageIndex + 1,
-        src,
-        scores: [],
-        classifications: [],
-        boxes: [],
-        annotated: false,
-        imageDims: [],
-        overlapping: [],
-        overlappingIndices: [],
-        topN: [],
-      },
-    ]);
-    // sets the current image index to the new image
-    setImageIndex(
-      imageCache.length > 0
-        ? imageCache[imageCache.length - 1].index + 1
-        : imageIndex + 1,
-    );
-  };
-
   const captureFeed = (): void => {
     // takes screenshot of webcam feed and loads it to cache when capture button is pressed
     const src: string | null | undefined = webcamRef.current?.getScreenshot();
     if (src === null || src === undefined) {
       return;
     }
-    loadCaptureToCache(src);
+    pushImageToCache(src);
+  };
+
+  const pushImageToCache = (src: string): void => {
+    // loads image to cache when image is uploaded
+    const nextIndex = nextCacheIndex(imageIndex, imageCache);
+    const newCache = loadCaptureToCache(src, imageCache, nextIndex);
+    setImageCache(newCache);
+    setImageIndex(nextIndex);
   };
 
   const removeFromCache = (index: number): void => {
     // removes image from cache based on given index value when delete button is pressed
     const newCache = imageCache.filter((item) => item.index !== index);
     setImageCache(newCache);
-    if (newCache.length >= 1) {
-      setImageIndex(newCache[newCache.length - 1].index);
-    } else {
-      setImageIndex(0);
-    }
+    setImageIndex(nextCacheIndex(imageIndex, newCache));
   };
 
   const clearCache = (): void => {
@@ -138,92 +108,10 @@ const Body: React.FC<params> = (props) => {
     setImageIndex(0);
   };
 
-  const loadResultsToCache = (inferenceData: any): void => {
-    // amends the image cache given an image index, with the inference data
-    // which is received from the server
-    inferenceData.forEach((object: any) => {
-      const topN = object.boxes.map((box: any) => box.topN);
-
-      setImageCache((prevCache) =>
-        prevCache.map((item) => {
-          // check to see if the image index matches the current image index
-          if (item.index === imageIndex) {
-            return {
-              ...item,
-              scores: object.boxes.map((box: any) => box.score.toFixed(2)),
-              classifications: object.boxes.map((box: any) => box.label),
-              boxes: object.boxes.map((box: any) => box.box),
-              overlapping: object.boxes.map((box: any) => box.overlapping),
-              overlappingIndices: object.boxes.map(
-                (box: any) => box.overlappingIndices,
-              ),
-              topN,
-              annotated: true,
-            };
-          }
-          return item;
-        }),
-      );
-    });
-    // redraw canvas (useEffect)
-    setResultsRendered(!resultsRendered);
-  };
-
-  const getLabelOccurrence = useCallback((): void => {
-    // gets the number of occurences of each label in the current
-    // image based on score threshold and seed label selection in classification results
-    const result: any = {};
-    imageCache.forEach((object: any) => {
-      if (object.index === imageIndex && object.annotated === true) {
-        object.scores.forEach((score: number, index: number) => {
-          if (score * 100 >= scoreThreshold) {
-            const label: string = object.classifications[index];
-            if (result[label] !== undefined) {
-              result[label] = (result[label] as number) + 1;
-            } else {
-              result[label] = 1;
-            }
-          }
-        });
-      }
-    });
-    setLabelOccurrences(result);
-  }, [imageCache, imageIndex, scoreThreshold, setLabelOccurrences]);
-
   const handleDirChange = (dir: string): void => {
     // sets the current directory for azure storage
     setCurDir(dir.replace(/\s/g, "-"));
   };
-
-  const handleAzureStorageDir = useCallback((): void => {
-    // makes a post request to the backend to get the current directories in azure storage,
-    // should be called whenever a directory is deleted, created and when page is rendered
-    (async () => {
-      try {
-        await axios({
-          method: "post",
-          url: `${backendUrl}/dir`,
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-          data: {
-            container_name: props.uuid,
-          },
-        }).then((response) => {
-          if (response.status === 200) {
-            setAzureStorageDir(response.data);
-          } else {
-            alert(response.data[0]);
-          }
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    })().catch((error) => {
-      console.error(error);
-    });
-  }, [props.uuid, setAzureStorageDir, backendUrl]);
 
   const handleInferenceRequest = (): void => {
     // makes a post request to the backend to get inference data for the current image
@@ -231,171 +119,45 @@ const Body: React.FC<params> = (props) => {
       const imageObject = imageCache.filter(
         (item) => item.index === imageIndex,
       );
-      (async () => {
-        try {
-          setIsLoading(true);
-          await axios({
-            method: "post",
-            url: `${backendUrl}/inf`,
-            headers: {
-              "Content-Type": "application/json",
-              "Access-Control-Allow-Origin": "*",
-            },
-            data: {
-              model_name: selectedModel,
-              image: imageSrc,
-              imageDims: [
-                imageObject[0].imageDims[0],
-                imageObject[0].imageDims[1],
-              ],
-              folder_name: curDir,
-              container_name: props.uuid,
-            },
-          }).then((response) => {
-            if (response.status === 200) {
-              console.log(
-                "First box topResult:",
-                response.data[0].boxes[0].topN,
-              );
-              handleAzureStorageDir();
-              loadResultsToCache(response.data);
-              setModelDisplayName(selectedModel);
-              setIsLoading(false);
-            } else {
-              alert(response.data[0]);
-              setIsLoading(false);
-            }
-          });
-        } catch (error) {
-          console.log(error);
-          alert("Error fetching inference data");
+      setIsLoading(true);
+      inferenceRequest(
+        backendUrl,
+        selectedModel,
+        imageSrc,
+        imageObject,
+        curDir,
+        props.uuid,
+      )
+        .then((response) => {
+          setReadAzureStorage(!readAzureStorage);
+          setImageCache(loadResultsToCache(response, imageCache, imageIndex));
+          setResultsRendered(!resultsRendered);
+          setModelDisplayName(selectedModel);
+        })
+        .catch((error) => {
+          alert("Error fetching inference data, see console for details");
+          console.error(error);
+        })
+        .finally(() => {
           setIsLoading(false);
-        }
-      })().catch((error) => {
-        console.error(error);
-        alert("Cannot connect to server");
-        setIsLoading(false);
-      });
+        });
     } else {
       alert("Please select a directory");
     }
   };
 
-  const loadToCanvas = useCallback(async (): Promise<void> => {
-    // loads the current image to the canvas and draws the bounding boxes and labels,
-    // should update whenever a change is made to the image cache or the score threshold and the selected label is changed
-    let imgWidth = 0;
-    let imgHeight = 0;
-    const canvas: HTMLCanvasElement | null = canvasRef.current;
-    if (canvas === null) {
-      return;
-    }
-    const ctx: CanvasRenderingContext2D | null = canvas.getContext("2d");
-    if (ctx === null) {
-      return;
-    }
-
-    if (imageSrc.includes("image/tiff")) {
-      const { rgba, width, height } = decodedTiff;
-      if (width === 0 || height === 0) {
-        return;
-      }
-      imgWidth = width;
-      imgHeight = height;
-      canvas.width = imgWidth;
-      canvas.height = imgHeight;
-      const imgd = ctx.createImageData(imgWidth, imgHeight);
-      for (let i = 0; i < rgba.length; i += 1) {
-        imgd.data[i] = rgba[i];
-      }
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.putImageData(imgd, 0, 0);
-    } else {
-      const image = new Image();
-      image.src = imageSrc;
-      image.onload = () => {
-        imgWidth = image.width;
-        imgHeight = image.height;
-        canvas.width = imgWidth;
-        canvas.height = imgHeight;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(image, 0, 0);
-      };
-    }
-    imageCache.forEach((storedImage) => {
-      // find the current image in the image cache based on current index
-      if (storedImage.index === imageIndex && storedImage.annotated) {
-        storedImage.classifications.forEach((prediction, index) => {
-          // !storedImage.overlapping[index]     REMOVE THIS TO SHOW ONLY 1 BB
-          if (
-            storedImage.scores[index] >= scoreThreshold / 100 &&
-            (prediction === selectedLabel || selectedLabel === "all")
-          ) {
-            const bottomY = storedImage.boxes[index].bottomY;
-            const topY = storedImage.boxes[index].topY;
-            const bottomX = storedImage.boxes[index].bottomX;
-            const topX = storedImage.boxes[index].topX;
-            ctx.beginPath();
-            // draw label index
-            ctx.font = "bold 0.9vw Arial";
-            ctx.fillStyle = "black";
-            ctx.textAlign = "center";
-            Object.keys(labelOccurrences).forEach((key, labelIndex) => {
-              const scorePercentage = (storedImage.scores[index] * 100).toFixed(
-                0,
-              );
-              // check to see if label is cut off by the canvas edge, if so, move it to the bottom of the bounding box
-              const xValue = (bottomX - topX) / 2 + topX;
-              let yValue = topY - 8;
-              if (topY <= 40) {
-                yValue = bottomY + 23;
-              }
-              if (prediction === key) {
-                if (switchTable) {
-                  ctx.fillText(
-                    `[${labelIndex + 1}] - ${scorePercentage}%`,
-                    xValue,
-                    yValue,
-                  );
-                } else {
-                  ctx.fillText(`[${index + 1}]`, xValue, yValue);
-                }
-              }
-            });
-            // draw bounding box
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = "red";
-            ctx.rect(topX, topY, bottomX - topX, bottomY - topY);
-            ctx.stroke();
-            ctx.closePath();
-          }
-        });
-      }
-      // capture label in bottom left
-      if (storedImage.index === imageIndex) {
-        storedImage.imageDims = [imgWidth, imgHeight];
-        ctx.beginPath();
-        ctx.font = "bold 0.9vw Arial";
-        ctx.textAlign = "left";
-        ctx.fillStyle = "#4ee44e";
-        ctx.fillText(`Capture ${storedImage.index}`, 10, canvas.height - 15);
-        ctx.stroke();
-        ctx.closePath();
-      }
-    });
-  }, [
-    imageCache,
-    imageIndex,
-    imageSrc,
-    labelOccurrences,
-    scoreThreshold,
-    selectedLabel,
-    switchTable,
-    decodedTiff,
-  ]);
-
   useEffect(() => {
-    void loadToCanvas();
+    void loadToCanvas(
+      canvasRef,
+      imageSrc,
+      decodedTiff,
+      imageCache,
+      imageIndex,
+      scoreThreshold,
+      selectedLabel,
+      labelOccurrences,
+      switchTable,
+    );
   }, [
     scoreThreshold,
     selectedLabel,
@@ -403,12 +165,19 @@ const Body: React.FC<params> = (props) => {
     labelOccurrences,
     switchTable,
     imageSrc,
-    loadToCanvas,
+    decodedTiff,
+    imageCache,
+    imageIndex,
   ]);
 
   useEffect(() => {
-    getLabelOccurrence();
-  }, [imageIndex, scoreThreshold, imageCache, getLabelOccurrence]);
+    const labelOccurrences = getLabelOccurrence(
+      imageCache,
+      imageIndex,
+      scoreThreshold,
+    );
+    setLabelOccurrences(labelOccurrences);
+  }, [imageIndex, scoreThreshold, imageCache]);
 
   useEffect(() => {
     // retrieves the available devices and sets the active device to the first available device
@@ -447,8 +216,15 @@ const Body: React.FC<params> = (props) => {
   }, [activeDeviceId]);
 
   useEffect(() => {
-    handleAzureStorageDir();
-  }, [props.uuid, handleAzureStorageDir]);
+    readAzureStorageDir(backendUrl, props.uuid)
+      .then((response) => {
+        setAzureStorageDir(response);
+      })
+      .catch((error) => {
+        console.error(error);
+        alert("Error reading Azure storage directory, see console for details");
+      });
+  }, [props.uuid, readAzureStorage, backendUrl]);
 
   const handleImageUpload = (): void => {
     // Set the logic for handling image upload and then:
@@ -521,7 +297,7 @@ const Body: React.FC<params> = (props) => {
       {uploadOpen && (
         <UploadPopup
           setUploadOpen={setUploadOpen}
-          loadCaptureToCache={loadCaptureToCache}
+          pushImageToCache={pushImageToCache}
         />
       )}
       {modelInfoPopupOpen && (
@@ -545,10 +321,10 @@ const Body: React.FC<params> = (props) => {
       {delDirectoryOpen && (
         <DeleteDirectoryPopup
           setDelDirectoryOpen={setDelDirectoryOpen}
-          handleAzureStorageDir={handleAzureStorageDir}
           uuid={props.uuid}
           curDir={curDir}
           setCurDir={setCurDir}
+          setReadAzureStorage={setReadAzureStorage}
         />
       )}
       {createDirectoryOpen && (
@@ -557,8 +333,8 @@ const Body: React.FC<params> = (props) => {
           handeDirChange={handleDirChange}
           curDir={curDir}
           setCurDir={setCurDir}
-          handleAzureStorageDir={handleAzureStorageDir}
           uuid={props.uuid}
+          setReadAzureStorage={setReadAzureStorage}
         />
       )}
       {resultsTunerOpen && (

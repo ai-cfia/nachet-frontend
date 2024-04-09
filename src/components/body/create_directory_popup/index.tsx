@@ -3,15 +3,15 @@ import { Overlay, InfoContainer, ButtonWrap } from "./indexElements";
 import { Box, CardHeader, IconButton, TextField, Button } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { colours } from "../../../styles/colours";
-import axios from "axios";
 import { useBackendUrl } from "../../../hooks";
+import { createAzureStorageDir } from "../../../common/api";
 
 interface params {
   setCreateDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handeDirChange: (dir: string) => void;
   curDir: string;
   setCurDir: React.Dispatch<React.SetStateAction<string>>;
-  handleAzureStorageDir: () => void;
+  setReadAzureStorage: React.Dispatch<React.SetStateAction<boolean>>;
   uuid: string;
 }
 
@@ -21,7 +21,7 @@ const CreateFolder: React.FC<params> = (props): JSX.Element => {
     curDir,
     handeDirChange,
     setCurDir,
-    handleAzureStorageDir,
+    setReadAzureStorage,
     uuid,
   } = props;
   const backendURL = useBackendUrl();
@@ -29,34 +29,16 @@ const CreateFolder: React.FC<params> = (props): JSX.Element => {
   const handleCreateDirectory = (): void => {
     // makes a post request to the backend to create a new directory in azure storage
 
-    (async () => {
-      try {
-        await axios({
-          method: "post",
-          url: `${backendURL}/create-dir`,
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-          data: {
-            container_name: uuid,
-            folder_name: curDir,
-          },
-        }).then((response) => {
-          if (response.status === 200) {
-            setCreateDirectoryOpen(false);
-            setCurDir("General");
-            handleAzureStorageDir();
-          } else {
-            alert("Error creating directory, it may already exist");
-          }
-        });
-      } catch (error) {
-        alert(error);
-      }
-    })().catch((error) => {
-      alert(error);
-    });
+    createAzureStorageDir(backendURL, uuid, curDir)
+      .then(() => {
+        setCreateDirectoryOpen(false);
+        setCurDir("General");
+        setReadAzureStorage((prev) => !prev);
+      })
+      .catch((error) => {
+        alert("Error creating directory, see console for more details");
+        console.error(error);
+      });
   };
 
   const handleClose = (): void => {
