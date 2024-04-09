@@ -14,66 +14,63 @@ const drawBoxes = (
   imgWidth: number,
   imgHeight: number,
 ): void => {
-  imageCache.forEach((storedImage) => {
-    // find the current image in the image cache based on current index
-    if (storedImage.index === imageIndex && storedImage.annotated) {
-      storedImage.classifications.forEach((prediction, index) => {
-        // !storedImage.overlapping[index]     REMOVE THIS TO SHOW ONLY 1 BB
-        if (
-          storedImage.scores[index] >= scoreThreshold / 100 &&
-          (prediction === selectedLabel || selectedLabel === "all")
-        ) {
-          const bottomY = storedImage.boxes[index].bottomY;
-          const topY = storedImage.boxes[index].topY;
-          const bottomX = storedImage.boxes[index].bottomX;
-          const topX = storedImage.boxes[index].topX;
-          ctx.beginPath();
-          // draw label index
-          ctx.font = "bold 0.9vw Arial";
-          ctx.fillStyle = "black";
-          ctx.textAlign = "center";
-          Object.keys(labelOccurrences).forEach((key, labelIndex) => {
-            const scorePercentage = (storedImage.scores[index] * 100).toFixed(
-              0,
+  const image = imageCache.find((img) => img.index === imageIndex);
+  if (image === undefined) {
+    return;
+  }
+  if (image.annotated === false) {
+    return;
+  }
+  image.classifications.forEach((prediction, index) => {
+    if (
+      image.scores[index] >= scoreThreshold / 100 &&
+      (prediction === selectedLabel || selectedLabel === "all")
+    ) {
+      const bottomY = image.boxes[index].bottomY;
+      const topY = image.boxes[index].topY;
+      const bottomX = image.boxes[index].bottomX;
+      const topX = image.boxes[index].topX;
+      ctx.beginPath();
+      // draw label index
+      ctx.font = "bold 0.9vw Arial";
+      ctx.fillStyle = "black";
+      ctx.textAlign = "center";
+      Object.keys(labelOccurrences).forEach((key, labelIndex) => {
+        const scorePercentage = (image.scores[index] * 100).toFixed(0);
+        // check to see if label is cut off by the canvas edge, if so, move it to the bottom of the bounding box
+        const xValue = (bottomX - topX) / 2 + topX;
+        let yValue = topY - 8;
+        if (topY <= 40) {
+          yValue = bottomY + 23;
+        }
+        if (prediction === key) {
+          if (switchTable) {
+            ctx.fillText(
+              `[${labelIndex + 1}] - ${scorePercentage}%`,
+              xValue,
+              yValue,
             );
-            // check to see if label is cut off by the canvas edge, if so, move it to the bottom of the bounding box
-            const xValue = (bottomX - topX) / 2 + topX;
-            let yValue = topY - 8;
-            if (topY <= 40) {
-              yValue = bottomY + 23;
-            }
-            if (prediction === key) {
-              if (switchTable) {
-                ctx.fillText(
-                  `[${labelIndex + 1}] - ${scorePercentage}%`,
-                  xValue,
-                  yValue,
-                );
-              } else {
-                ctx.fillText(`[${index + 1}]`, xValue, yValue);
-              }
-            }
-          });
-          // draw bounding box
-          ctx.lineWidth = 2;
-          ctx.strokeStyle = "red";
-          ctx.rect(topX, topY, bottomX - topX, bottomY - topY);
-          ctx.stroke();
-          ctx.closePath();
+          } else {
+            ctx.fillText(`[${index + 1}]`, xValue, yValue);
+          }
         }
       });
-    }
-    // capture label in bottom left
-    if (storedImage.index === imageIndex) {
-      storedImage.imageDims = [imgWidth, imgHeight];
-      ctx.beginPath();
-      ctx.font = "bold 0.9vw Arial";
-      ctx.textAlign = "left";
-      ctx.fillStyle = "#4ee44e";
-      ctx.fillText(`Capture ${storedImage.index}`, 10, canvas.height - 15);
+      // draw bounding box
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "red";
+      ctx.rect(topX, topY, bottomX - topX, bottomY - topY);
       ctx.stroke();
       ctx.closePath();
     }
+    // capture label in bottom left
+    image.imageDims = [imgWidth, imgHeight];
+    ctx.beginPath();
+    ctx.font = "bold 0.9vw Arial";
+    ctx.textAlign = "left";
+    ctx.fillStyle = "#4ee44e";
+    ctx.fillText(`Capture ${image.index}`, 10, canvas.height - 15);
+    ctx.stroke();
+    ctx.closePath();
   });
 };
 
