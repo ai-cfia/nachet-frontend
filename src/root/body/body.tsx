@@ -90,9 +90,10 @@ const Body: React.FC<params> = (props) => {
   const pushImageToCache = (src: string): void => {
     // loads image to cache when image is uploaded
     const nextIndex = nextCacheIndex(imageIndex, imageCache);
-    const newCache = loadCaptureToCache(src, imageCache, nextIndex);
-    setImageCache(newCache);
-    setImageIndex(nextIndex);
+    loadCaptureToCache(src, imageCache, nextIndex).then((newCache) => {
+      setImageCache(newCache);
+      setImageIndex(nextIndex);
+    });
   };
 
   const removeFromCache = (index: number): void => {

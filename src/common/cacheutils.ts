@@ -1,42 +1,37 @@
 import React from "react";
+import UTIF from "utif";
+import { BlobError, DecodeError, FetchError } from "../common";
 import { DecodedTiff } from "../hooks/useDecoderTiff";
 import { ApiModelData, Images, LabelOccurrences } from "./types";
 
 const drawBoxes = (
-  imageCache: Images[],
-  imageIndex: number,
+  imageData: Images,
   selectedLabel: string,
   scoreThreshold: number,
   labelOccurrences: LabelOccurrences,
   switchTable: boolean,
   canvas: HTMLCanvasElement,
   ctx: CanvasRenderingContext2D,
-  imgWidth: number,
-  imgHeight: number,
 ): void => {
-  const image = imageCache.find((img) => img.index === imageIndex);
-  if (image === undefined) {
+  if (imageData.annotated === false) {
     return;
   }
-  if (image.annotated === false) {
-    return;
-  }
-  image.classifications.forEach((prediction, index) => {
+  imageData.classifications.forEach((prediction, index) => {
     if (
-      image.scores[index] >= scoreThreshold / 100 &&
+      imageData.scores[index] >= scoreThreshold / 100 &&
       (prediction === selectedLabel || selectedLabel === "all")
     ) {
-      const bottomY = image.boxes[index].bottomY;
-      const topY = image.boxes[index].topY;
-      const bottomX = image.boxes[index].bottomX;
-      const topX = image.boxes[index].topX;
+      const bottomY = imageData.boxes[index].bottomY;
+      const topY = imageData.boxes[index].topY;
+      const bottomX = imageData.boxes[index].bottomX;
+      const topX = imageData.boxes[index].topX;
       ctx.beginPath();
       // draw label index
       ctx.font = "bold 0.9vw Arial";
       ctx.fillStyle = "black";
       ctx.textAlign = "center";
       Object.keys(labelOccurrences).forEach((key, labelIndex) => {
-        const scorePercentage = (image.scores[index] * 100).toFixed(0);
+        const scorePercentage = (imageData.scores[index] * 100).toFixed(0);
         // check to see if label is cut off by the canvas edge, if so, move it to the bottom of the bounding box
         const xValue = (bottomX - topX) / 2 + topX;
         let yValue = topY - 8;
@@ -63,12 +58,12 @@ const drawBoxes = (
       ctx.closePath();
     }
     // capture label in bottom left
-    image.imageDims = [imgWidth, imgHeight];
+    imageData.imageDims = [canvas.width, canvas.height];
     ctx.beginPath();
     ctx.font = "bold 0.9vw Arial";
     ctx.textAlign = "left";
     ctx.fillStyle = "#4ee44e";
-    ctx.fillText(`Capture ${image.index}`, 10, canvas.height - 15);
+    ctx.fillText(`Capture ${imageData.index}`, 10, canvas.height - 15);
     ctx.stroke();
     ctx.closePath();
   });
@@ -87,8 +82,6 @@ export const loadToCanvas = async (
 ): Promise<void> => {
   // loads the current image to the canvas and draws the bounding boxes and labels,
   // should update whenever a change is made to the image cache or the score threshold and the selected label is changed
-  let imgWidth = 0;
-  let imgHeight = 0;
   const canvas: HTMLCanvasElement | null = canvasRef.current;
   if (canvas === null) {
     return;
@@ -97,57 +90,117 @@ export const loadToCanvas = async (
   if (ctx === null) {
     return;
   }
+  const imageData = imageCache.find((img) => img.index === imageIndex);
+  if (imageData === undefined) {
+    return;
+  }
 
   if (imageSrc.includes("image/tiff")) {
     const { rgba, width, height } = decodedTiff;
     if (width === 0 || height === 0) {
       return;
     }
-    imgWidth = width;
-    imgHeight = height;
-    canvas.width = imgWidth;
-    canvas.height = imgHeight;
-    const imgd = ctx.createImageData(imgWidth, imgHeight);
+    canvas.width = width;
+    canvas.height = height;
+    const imgd = ctx.createImageData(width, height);
     for (let i = 0; i < rgba.length; i += 1) {
       imgd.data[i] = rgba[i];
     }
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.putImageData(imgd, 0, 0);
     drawBoxes(
-      imageCache,
-      imageIndex,
+      imageData,
       selectedLabel,
       scoreThreshold,
       labelOccurrences,
       switchTable,
       canvas,
       ctx,
-      imgWidth,
-      imgHeight,
     );
   } else {
     const image = new Image();
     image.src = imageSrc;
     image.onload = () => {
-      imgWidth = image.width;
-      imgHeight = image.height;
-      canvas.width = imgWidth;
-      canvas.height = imgHeight;
+      canvas.width = image.width;
+      canvas.height = image.height;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(image, 0, 0);
       drawBoxes(
-        imageCache,
-        imageIndex,
+        imageData,
         selectedLabel,
         scoreThreshold,
         labelOccurrences,
         switchTable,
         canvas,
         ctx,
-        imgWidth,
-        imgHeight,
       );
     };
+  }
+};
+
+export const decodeTiff = async (imageSrc: string): Promise<DecodedTiff> => {
+  let decodedTiff = {
+    rgba: new Uint8Array(0),
+    width: 0,
+    height: 0,
+  };
+  if (!imageSrc.includes("image/tiff")) {
+    return decodedTiff;
+  }
+  try {
+    // Convert base64 to bytes
+    const file = await fetch(imageSrc)
+      .then(async (res) => {
+        if (!res.ok) {
+          throw new FetchError("decodeTiff - Failed to fetch TIFF file");
+        }
+        return await res.blob();
+      })
+      .then(async (blob) => {
+        if (blob.size === 0) {
+          throw new BlobError("decodeTiff - Invalid blob size from api");
+        }
+        return new File([blob], "file", { type: "image/tiff" });
+      });
+    const bytes = await file.arrayBuffer();
+
+    // Decode image
+    const ifds = UTIF.decode(bytes);
+    if (ifds.length === 0) {
+      throw new DecodeError("decodeTiff - Failed to decode TIFF array");
+    }
+    UTIF.decodeImage(bytes, ifds[0]);
+    if (ifds[0].width < 1 || ifds[0].height < 1 || ifds[0].data.length === 0) {
+      throw new DecodeError("decodeTiff - Invalid image size or data");
+    }
+    const rgba = UTIF.toRGBA8(ifds[0]);
+    if (rgba.length === 0) {
+      throw new DecodeError("decodeTiff - Failed to convert TIFF to RGBA");
+    }
+    decodedTiff = {
+      rgba,
+      width: ifds[0].width,
+      height: ifds[0].height,
+    };
+  } catch (error) {
+    console.error("Error in decodeTiff - ", error);
+  }
+  return decodedTiff;
+};
+
+export const getImageDims = async (src: string): Promise<number[]> => {
+  if (src.includes("image/tiff")) {
+    return decodeTiff(src).then((decodedTiff) => {
+      return [decodedTiff.width, decodedTiff.height];
+    });
+  } else {
+    const image = new Image();
+    image.src = src;
+    return new Promise((resolve) => {
+      image.onload = () => {
+        resolve([image.width, image.height]);
+      };
+    });
   }
 };
 
@@ -160,28 +213,30 @@ export const nextCacheIndex = (
     : imageIndex + 1;
 };
 
-export const loadCaptureToCache = (
+export const loadCaptureToCache = async (
   src: string,
   imageCache: Images[],
   index: number,
-): Images[] => {
-  const newCache = [
-    ...imageCache,
-    {
-      index: index,
-      src,
-      scores: [],
-      classifications: [],
-      boxes: [],
-      annotated: false,
-      imageDims: [],
-      overlapping: [],
-      overlappingIndices: [],
-      topN: [],
-    },
-  ];
+): Promise<Images[]> => {
+  return getImageDims(src).then((dims) => {
+    const newCache = [
+      ...imageCache,
+      {
+        index: index,
+        src,
+        scores: [],
+        classifications: [],
+        boxes: [],
+        annotated: false,
+        imageDims: dims,
+        overlapping: [],
+        overlappingIndices: [],
+        topN: [],
+      },
+    ];
 
-  return newCache;
+    return newCache;
+  });
 };
 
 export const loadResultsToCache = (
