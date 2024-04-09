@@ -308,6 +308,7 @@ const Body: React.FC<params> = (props) => {
       for (let i = 0; i < rgba.length; i += 1) {
         imgd.data[i] = rgba[i];
       }
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.putImageData(imgd, 0, 0);
     } else {
       const image = new Image();
@@ -317,6 +318,7 @@ const Body: React.FC<params> = (props) => {
         imgHeight = image.height;
         canvas.width = imgWidth;
         canvas.height = imgHeight;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(image, 0, 0);
       };
     }
