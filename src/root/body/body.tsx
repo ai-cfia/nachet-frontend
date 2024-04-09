@@ -61,7 +61,7 @@ const Body: React.FC<params> = (props) => {
   const [azureStorageDir, setAzureStorageDir] = useState<any>({});
   const [delDirectoryOpen, setDelDirectoryOpen] = useState<boolean>(false);
   const [resultsTunerOpen, setResultsTunerOpen] = useState<boolean>(false);
-  const [scoreThreshold, setScoreThreshold] = useState<number>(50);
+  const [scoreThreshold, setScoreThreshold] = useState<number>(0);
   const [selectedModel, setSelectedModel] = useState("Swin transformer");
   const [modelDisplayName, setModelDisplayName] = useState("");
   const [selectedLabel, setSelectedLabel] = useState<string>("all");
@@ -150,37 +150,40 @@ const Body: React.FC<params> = (props) => {
   };
 
   useEffect(() => {
-    void loadToCanvas(
+    const imageData = imageCache.find((img) => img.index === imageIndex);
+    if (imageData === undefined) {
+      setImageSrc(defaultImageSrc);
+      return;
+    }
+    const labelOccurrences = getLabelOccurrence(imageData, scoreThreshold);
+    setLabelOccurrences(labelOccurrences);
+    setImageSrc(imageData.src);
+    if (imageData.src.includes("image/tiff")) {
+      setImageTiff(imageData.src);
+    }
+  }, [imageIndex, imageCache, scoreThreshold]);
+
+  useEffect(() => {
+    const imageData = imageCache.find((img) => img.index === imageIndex);
+    if (imageData === undefined) {
+      return;
+    }
+    loadToCanvas(
       canvasRef,
-      imageSrc,
       decodedTiff,
-      imageCache,
-      imageIndex,
-      scoreThreshold,
+      imageData,
       selectedLabel,
       labelOccurrences,
       switchTable,
     );
   }, [
-    scoreThreshold,
     selectedLabel,
-    resultsRendered,
     labelOccurrences,
     switchTable,
-    imageSrc,
     decodedTiff,
     imageCache,
     imageIndex,
   ]);
-
-  useEffect(() => {
-    const labelOccurrences = getLabelOccurrence(
-      imageCache,
-      imageIndex,
-      scoreThreshold,
-    );
-    setLabelOccurrences(labelOccurrences);
-  }, [imageIndex, scoreThreshold, imageCache]);
 
   useEffect(() => {
     // retrieves the available devices and sets the active device to the first available device
@@ -269,25 +272,6 @@ const Body: React.FC<params> = (props) => {
       void fetchMetadata();
     }
   }, []);
-
-  useEffect(() => {
-    const getCurrentImage = (index: number): void => {
-      if (imageCache.length > 0) {
-        imageCache.forEach((image) => {
-          if (image.index === index) {
-            setImageSrc(image.src.slice());
-            if (image.src.includes("image/tiff")) {
-              setImageTiff(image.src);
-            }
-          }
-        });
-      } else {
-        setImageSrc(defaultImageSrc);
-      }
-    };
-
-    getCurrentImage(imageIndex);
-  }, [imageIndex, imageCache]);
 
   return (
     <BodyContainer width={props.windowSize.width}>

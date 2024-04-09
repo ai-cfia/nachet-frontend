@@ -7,7 +7,6 @@ import { ApiModelData, Images, LabelOccurrences } from "./types";
 const drawBoxes = (
   imageData: Images,
   selectedLabel: string,
-  scoreThreshold: number,
   labelOccurrences: LabelOccurrences,
   switchTable: boolean,
   canvas: HTMLCanvasElement,
@@ -17,10 +16,7 @@ const drawBoxes = (
     return;
   }
   imageData.classifications.forEach((prediction, index) => {
-    if (
-      imageData.scores[index] >= scoreThreshold / 100 &&
-      (prediction === selectedLabel || selectedLabel === "all")
-    ) {
+    if (prediction === selectedLabel || selectedLabel === "all") {
       const bottomY = imageData.boxes[index].bottomY;
       const topY = imageData.boxes[index].topY;
       const bottomX = imageData.boxes[index].bottomX;
@@ -71,11 +67,8 @@ const drawBoxes = (
 
 export const loadToCanvas = async (
   canvasRef: React.MutableRefObject<HTMLCanvasElement | null>,
-  imageSrc: string,
   decodedTiff: DecodedTiff,
-  imageCache: Images[],
-  imageIndex: number,
-  scoreThreshold: number,
+  imageData: Images,
   selectedLabel: string,
   labelOccurrences: any,
   switchTable: boolean,
@@ -90,12 +83,8 @@ export const loadToCanvas = async (
   if (ctx === null) {
     return;
   }
-  const imageData = imageCache.find((img) => img.index === imageIndex);
-  if (imageData === undefined) {
-    return;
-  }
 
-  if (imageSrc.includes("image/tiff")) {
+  if (imageData.src.includes("image/tiff")) {
     const { rgba, width, height } = decodedTiff;
     if (width === 0 || height === 0) {
       return;
@@ -111,7 +100,6 @@ export const loadToCanvas = async (
     drawBoxes(
       imageData,
       selectedLabel,
-      scoreThreshold,
       labelOccurrences,
       switchTable,
       canvas,
@@ -119,7 +107,7 @@ export const loadToCanvas = async (
     );
   } else {
     const image = new Image();
-    image.src = imageSrc;
+    image.src = imageData.src;
     image.onload = () => {
       canvas.width = image.width;
       canvas.height = image.height;
@@ -128,7 +116,6 @@ export const loadToCanvas = async (
       drawBoxes(
         imageData,
         selectedLabel,
-        scoreThreshold,
         labelOccurrences,
         switchTable,
         canvas,
@@ -268,26 +255,25 @@ export const loadResultsToCache = (
 };
 
 export const getLabelOccurrence = (
-  imageCache: Images[],
-  imageIndex: number,
+  image: Images,
   scoreThreshold: number,
 ): LabelOccurrences => {
   // gets the number of occurences of each label in the current
   // image based on score threshold and seed label selection in classification results
   const result: LabelOccurrences = {};
-  imageCache.forEach((object) => {
-    if (object.index === imageIndex && object.annotated === true) {
-      object.scores.forEach((score: number, index: number) => {
-        if (score * 100 >= scoreThreshold) {
-          const label: string = object.classifications[index];
-          if (result[label] !== undefined) {
-            result[label] = result[label] + 1;
-          } else {
-            result[label] = 1;
-          }
+
+  if (image.annotated === true) {
+    image.scores.forEach((score: number, index: number) => {
+      if (score * 100 >= scoreThreshold) {
+        const label: string = image.classifications[index];
+        if (result[label] !== undefined) {
+          result[label] = result[label] + 1;
+        } else {
+          result[label] = 1;
         }
-      });
-    }
-  });
+      }
+    });
+  }
+
   return result;
 };
