@@ -36,7 +36,6 @@ progress. Additionally, build errors and lint warnings will be prominently
 displayed in the console, helping you maintain a clean and efficient
 codebase.
 
-
 The app will automatically reload if you make changes to the code. You will see
 the build errors and lint warnings in the console.
 
