@@ -2,57 +2,18 @@ import React from "react";
 import { DecodedTiff } from "../hooks/useDecoderTiff";
 import { ApiModelData, Images, LabelOccurrences } from "./types";
 
-export const loadToCanvas = async (
-  canvasRef: React.MutableRefObject<HTMLCanvasElement | null>,
-  imageSrc: string,
-  decodedTiff: DecodedTiff,
+const drawBoxes = (
   imageCache: Images[],
   imageIndex: number,
-  scoreThreshold: number,
   selectedLabel: string,
-  labelOccurrences: any,
+  scoreThreshold: number,
+  labelOccurrences: LabelOccurrences,
   switchTable: boolean,
-): Promise<void> => {
-  // loads the current image to the canvas and draws the bounding boxes and labels,
-  // should update whenever a change is made to the image cache or the score threshold and the selected label is changed
-  let imgWidth = 0;
-  let imgHeight = 0;
-  const canvas: HTMLCanvasElement | null = canvasRef.current;
-  if (canvas === null) {
-    return;
-  }
-  const ctx: CanvasRenderingContext2D | null = canvas.getContext("2d");
-  if (ctx === null) {
-    return;
-  }
-
-  if (imageSrc.includes("image/tiff")) {
-    const { rgba, width, height } = decodedTiff;
-    if (width === 0 || height === 0) {
-      return;
-    }
-    imgWidth = width;
-    imgHeight = height;
-    canvas.width = imgWidth;
-    canvas.height = imgHeight;
-    const imgd = ctx.createImageData(imgWidth, imgHeight);
-    for (let i = 0; i < rgba.length; i += 1) {
-      imgd.data[i] = rgba[i];
-    }
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.putImageData(imgd, 0, 0);
-  } else {
-    const image = new Image();
-    image.src = imageSrc;
-    image.onload = () => {
-      imgWidth = image.width;
-      imgHeight = image.height;
-      canvas.width = imgWidth;
-      canvas.height = imgHeight;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(image, 0, 0);
-    };
-  }
+  canvas: HTMLCanvasElement,
+  ctx: CanvasRenderingContext2D,
+  imgWidth: number,
+  imgHeight: number,
+): void => {
   imageCache.forEach((storedImage) => {
     // find the current image in the image cache based on current index
     if (storedImage.index === imageIndex && storedImage.annotated) {
@@ -114,6 +75,83 @@ export const loadToCanvas = async (
       ctx.closePath();
     }
   });
+};
+
+export const loadToCanvas = async (
+  canvasRef: React.MutableRefObject<HTMLCanvasElement | null>,
+  imageSrc: string,
+  decodedTiff: DecodedTiff,
+  imageCache: Images[],
+  imageIndex: number,
+  scoreThreshold: number,
+  selectedLabel: string,
+  labelOccurrences: any,
+  switchTable: boolean,
+): Promise<void> => {
+  // loads the current image to the canvas and draws the bounding boxes and labels,
+  // should update whenever a change is made to the image cache or the score threshold and the selected label is changed
+  let imgWidth = 0;
+  let imgHeight = 0;
+  const canvas: HTMLCanvasElement | null = canvasRef.current;
+  if (canvas === null) {
+    return;
+  }
+  const ctx: CanvasRenderingContext2D | null = canvas.getContext("2d");
+  if (ctx === null) {
+    return;
+  }
+
+  if (imageSrc.includes("image/tiff")) {
+    const { rgba, width, height } = decodedTiff;
+    if (width === 0 || height === 0) {
+      return;
+    }
+    imgWidth = width;
+    imgHeight = height;
+    canvas.width = imgWidth;
+    canvas.height = imgHeight;
+    const imgd = ctx.createImageData(imgWidth, imgHeight);
+    for (let i = 0; i < rgba.length; i += 1) {
+      imgd.data[i] = rgba[i];
+    }
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.putImageData(imgd, 0, 0);
+    drawBoxes(
+      imageCache,
+      imageIndex,
+      selectedLabel,
+      scoreThreshold,
+      labelOccurrences,
+      switchTable,
+      canvas,
+      ctx,
+      imgWidth,
+      imgHeight,
+    );
+  } else {
+    const image = new Image();
+    image.src = imageSrc;
+    image.onload = () => {
+      imgWidth = image.width;
+      imgHeight = image.height;
+      canvas.width = imgWidth;
+      canvas.height = imgHeight;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(image, 0, 0);
+      drawBoxes(
+        imageCache,
+        imageIndex,
+        selectedLabel,
+        scoreThreshold,
+        labelOccurrences,
+        switchTable,
+        canvas,
+        ctx,
+        imgWidth,
+        imgHeight,
+      );
+    };
+  }
 };
 
 export const nextCacheIndex = (
