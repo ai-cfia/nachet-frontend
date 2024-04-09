@@ -130,7 +130,9 @@ const Body: React.FC<params> = (props) => {
       )
         .then((response) => {
           setReadAzureStorage(!readAzureStorage);
-          setImageCache(loadResultsToCache(response, imageCache, imageIndex));
+          setImageCache(
+            loadResultsToCache(response[0], imageCache, imageIndex),
+          );
           setResultsRendered(!resultsRendered);
           setModelDisplayName(selectedModel);
         })

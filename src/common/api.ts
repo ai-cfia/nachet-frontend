@@ -151,7 +151,7 @@ export const inferenceRequest = async (
   imageObject: Array<{ imageDims: number[] }>,
   curDir: string,
   uuid: string,
-): Promise<ApiModelData> => {
+): Promise<ApiModelData[]> => {
   const data = await axios({
     method: "post",
     url: `${backendUrl}/inf`,
