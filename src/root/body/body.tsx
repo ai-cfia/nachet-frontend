@@ -19,13 +19,11 @@ import {
   loadResultsToCache,
   loadToCanvas,
   nextCacheIndex,
-} from "../../common/cacheutils";
-import { Images, LabelOccurrences } from "../../common/types";
-import {
   fetchModelMetadata,
   inferenceRequest,
   readAzureStorageDir,
-} from "../../common/api";
+} from "../../common";
+import { Images, LabelOccurrences } from "../../common/types";
 
 interface params {
   windowSize: {
