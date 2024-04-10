@@ -84,7 +84,6 @@ const Classifier: React.FC<params> = (props) => {
             handleDirChange={props.handleDirChange}
             setCreateDirectoryOpen={props.setCreateDirectoryOpen}
             setDelDirectoryOpen={props.setDelDirectoryOpen}
-            windowSize={props.windowSize}
             setCurDir={props.setCurDir}
           />
           <ImageCache
