@@ -54,7 +54,11 @@ const StorageDirectoryView: React.FC<params> = (props) => {
         action={
           <div>
             <IconButton
-              sx={{ padding: 0, marginTop: "0.27vh", marginRight: "0.4vh" }}
+              sx={{
+                padding: 0,
+                marginTop: "0.27vh",
+                marginRight: "0.4vh",
+              }}
               onClick={handleCreateDirectory}
             >
               <CreateNewFolderIcon
@@ -120,6 +124,7 @@ const StorageDirectoryView: React.FC<params> = (props) => {
                     onClick={() => {
                       handleSelect(folderKey);
                     }}
+                    data-testid={"folder-icon" + (index + 1)}
                   >
                     <div
                       style={{
@@ -198,6 +203,7 @@ const StorageDirectoryView: React.FC<params> = (props) => {
                       }}
                       sx={{ padding: 0 }}
                       disabled={folderKey === "General"}
+                      data-testid={"delete-icon" + (index + 1)}
                     >
                       <CloseIcon
                         style={{
