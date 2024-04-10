@@ -43,7 +43,7 @@ const Body: React.FC<params> = (props) => {
     "https://ai-cfia.github.io/nachet-frontend/placeholder-image.jpg";
   const [imageSrc, setImageSrc] = useState<string>(defaultImageSrc);
   const [imageTiff, setImageTiff] = useState<string>("");
-  const [resultsRendered, setResultsRendered] = useState<boolean>(false);
+  // const [resultsRendered, setResultsRendered] = useState<boolean>(false);
   const [imageIndex, setImageIndex] = useState<number>(0);
   const [imageFormat, setImageFormat] = useState<string>("image/png");
   const [imageLabel, setImageLabel] = useState<string>("");
@@ -135,7 +135,6 @@ const Body: React.FC<params> = (props) => {
           setImageCache(
             loadResultsToCache(response[0], imageCache, imageIndex),
           );
-          setResultsRendered(!resultsRendered);
           setModelDisplayName(selectedModel);
         })
         .catch((error) => {
@@ -268,7 +267,7 @@ const Body: React.FC<params> = (props) => {
   }, [backendUrl]);
 
   return (
-    <BodyContainer width={props.windowSize.width}>
+    <BodyContainer width={props.windowSize.width} data-testid="body-component">
       {saveOpen && (
         <SavePopup
           imageCache={imageCache}
@@ -295,7 +294,6 @@ const Body: React.FC<params> = (props) => {
           selectedModel={selectedModel}
           setSelectedModel={setSelectedModel}
           realData={metadata}
-          handleInference={handleInferenceRequest}
         />
       )}
       {switchDeviceOpen && (

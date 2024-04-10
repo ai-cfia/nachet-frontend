@@ -1,6 +1,6 @@
 import React from "react";
 import UTIF from "utif";
-import { BlobError, DecodeError, FetchError } from "../common";
+import { BlobError, DecodeError, FetchError, ValueError } from "../common";
 import { DecodedTiff } from "../hooks/useDecoderTiff";
 import { ApiModelData, Images, LabelOccurrences } from "./types";
 
@@ -12,7 +12,7 @@ const drawBoxes = (
   canvas: HTMLCanvasElement,
   ctx: CanvasRenderingContext2D,
 ): void => {
-  if (imageData.annotated === false) {
+  if (!imageData.annotated) {
     return;
   }
   imageData.classifications.forEach((prediction, index) => {
@@ -54,7 +54,6 @@ const drawBoxes = (
       ctx.closePath();
     }
     // capture label in bottom left
-    imageData.imageDims = [canvas.width, canvas.height];
     ctx.beginPath();
     ctx.font = "bold 0.9vw Arial";
     ctx.textAlign = "left";
@@ -63,6 +62,39 @@ const drawBoxes = (
     ctx.stroke();
     ctx.closePath();
   });
+};
+
+export const drawImage = async (
+  canvas: HTMLCanvasElement,
+  ctx: CanvasRenderingContext2D,
+  imageSrc: string,
+): Promise<void> => {
+  const image = new Image();
+  image.src = imageSrc;
+  await image.decode();
+  canvas.width = image.width;
+  canvas.height = image.height;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(image, 0, 0);
+};
+
+export const drawTiff = (
+  canvas: HTMLCanvasElement,
+  ctx: CanvasRenderingContext2D,
+  decodedTiff: DecodedTiff,
+): void => {
+  const { rgba, width, height } = decodedTiff;
+  if (width === 0 || height === 0) {
+    return;
+  }
+  canvas.width = width;
+  canvas.height = height;
+  const imgd = ctx.createImageData(width, height);
+  for (let i = 0; i < rgba.length; i += 1) {
+    imgd.data[i] = rgba[i];
+  }
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.putImageData(imgd, 0, 0);
 };
 
 export const loadToCanvas = async (
@@ -85,44 +117,58 @@ export const loadToCanvas = async (
   }
 
   if (imageData.src.includes("image/tiff")) {
-    const { rgba, width, height } = decodedTiff;
-    if (width === 0 || height === 0) {
-      return;
-    }
-    canvas.width = width;
-    canvas.height = height;
-    const imgd = ctx.createImageData(width, height);
-    for (let i = 0; i < rgba.length; i += 1) {
-      imgd.data[i] = rgba[i];
-    }
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.putImageData(imgd, 0, 0);
-    drawBoxes(
-      imageData,
-      selectedLabel,
-      labelOccurrences,
-      switchTable,
-      canvas,
-      ctx,
-    );
+    drawTiff(canvas, ctx, decodedTiff);
   } else {
-    const image = new Image();
-    image.src = imageData.src;
-    image.onload = () => {
-      canvas.width = image.width;
-      canvas.height = image.height;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(image, 0, 0);
-      drawBoxes(
-        imageData,
-        selectedLabel,
-        labelOccurrences,
-        switchTable,
-        canvas,
-        ctx,
-      );
-    };
+    await drawImage(canvas, ctx, imageData.src);
   }
+  drawBoxes(
+    imageData,
+    selectedLabel,
+    labelOccurrences,
+    switchTable,
+    canvas,
+    ctx,
+  );
+};
+
+export const fetchArrayBuffer = async (
+  imageSrc: string,
+): Promise<ArrayBuffer> => {
+  const file = await fetch(imageSrc)
+    .then(async (res) => {
+      if (!res.ok) {
+        throw new FetchError("decodeTiff - Failed to fetch TIFF file");
+      }
+      return await res.blob();
+    })
+    .then(async (blob) => {
+      if (blob.size === 0) {
+        throw new BlobError("decodeTiff - Invalid blob size from api");
+      }
+      return new File([blob], "file", { type: "image/tiff" });
+    });
+  return await file.arrayBuffer();
+};
+
+export const utifToRGBA = (bytes: ArrayBuffer): DecodedTiff => {
+  // Decode image
+  const ifds = UTIF.decode(bytes);
+  if (ifds.length === 0) {
+    throw new DecodeError("decodeTiff - Failed to decode TIFF array");
+  }
+  UTIF.decodeImage(bytes, ifds[0]);
+  if (ifds[0].width < 1 || ifds[0].height < 1 || ifds[0].data.length === 0) {
+    throw new DecodeError("decodeTiff - Invalid image size or data");
+  }
+  const rgba = UTIF.toRGBA8(ifds[0]);
+  if (rgba.length === 0) {
+    throw new DecodeError("decodeTiff - Failed to convert TIFF to RGBA");
+  }
+  return {
+    rgba,
+    width: ifds[0].width,
+    height: ifds[0].height,
+  };
 };
 
 export const decodeTiff = async (imageSrc: string): Promise<DecodedTiff> => {
@@ -131,43 +177,18 @@ export const decodeTiff = async (imageSrc: string): Promise<DecodedTiff> => {
     width: 0,
     height: 0,
   };
-  if (!imageSrc.includes("image/tiff")) {
+  if (imageSrc === "" || imageSrc == null || !imageSrc.includes("image/tiff")) {
     return decodedTiff;
   }
   try {
     // Convert base64 to bytes
-    const file = await fetch(imageSrc)
-      .then(async (res) => {
-        if (!res.ok) {
-          throw new FetchError("decodeTiff - Failed to fetch TIFF file");
-        }
-        return await res.blob();
-      })
-      .then(async (blob) => {
-        if (blob.size === 0) {
-          throw new BlobError("decodeTiff - Invalid blob size from api");
-        }
-        return new File([blob], "file", { type: "image/tiff" });
-      });
-    const bytes = await file.arrayBuffer();
+    const bytes = await fetchArrayBuffer(imageSrc);
+    const { rgba, width, height } = utifToRGBA(bytes);
 
-    // Decode image
-    const ifds = UTIF.decode(bytes);
-    if (ifds.length === 0) {
-      throw new DecodeError("decodeTiff - Failed to decode TIFF array");
-    }
-    UTIF.decodeImage(bytes, ifds[0]);
-    if (ifds[0].width < 1 || ifds[0].height < 1 || ifds[0].data.length === 0) {
-      throw new DecodeError("decodeTiff - Invalid image size or data");
-    }
-    const rgba = UTIF.toRGBA8(ifds[0]);
-    if (rgba.length === 0) {
-      throw new DecodeError("decodeTiff - Failed to convert TIFF to RGBA");
-    }
     decodedTiff = {
       rgba,
-      width: ifds[0].width,
-      height: ifds[0].height,
+      width,
+      height,
     };
   } catch (error) {
     console.error("Error in decodeTiff - ", error);
@@ -195,6 +216,9 @@ export const nextCacheIndex = (
   imageIndex: number,
   imageCache: Images[],
 ): number => {
+  if (imageIndex < 0) {
+    throw new ValueError("Image index is less than 0");
+  }
   return imageCache.length > 0
     ? imageCache[imageCache.length - 1].index + 1
     : imageIndex + 1;
@@ -205,6 +229,9 @@ export const loadCaptureToCache = async (
   imageCache: Images[],
   index: number,
 ): Promise<Images[]> => {
+  if (src === "") {
+    throw new ValueError("Image source is empty");
+  }
   return getImageDims(src).then((dims) => {
     const newCache = [
       ...imageCache,
@@ -258,11 +285,20 @@ export const getLabelOccurrence = (
   image: Images,
   scoreThreshold: number,
 ): LabelOccurrences => {
+  if (image == null) {
+    throw new ValueError("Image object is null");
+  }
+  if (
+    image.annotated &&
+    (image.scores == null || image.classifications == null)
+  ) {
+    throw new ValueError("Image object is missing scores and classifications");
+  }
   // gets the number of occurences of each label in the current
   // image based on score threshold and seed label selection in classification results
   const result: LabelOccurrences = {};
 
-  if (image.annotated === true) {
+  if (image.annotated) {
     image.scores.forEach((score: number, index: number) => {
       if (score * 100 >= scoreThreshold) {
         const label: string = image.classifications[index];

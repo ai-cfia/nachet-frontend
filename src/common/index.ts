@@ -1,4 +1,10 @@
-import { DecodeError, FetchError, BlobError, AzureAPIError } from "./error";
+import {
+  DecodeError,
+  FetchError,
+  BlobError,
+  AzureAPIError,
+  ValueError,
+} from "./error";
 import {
   readAzureStorageDir,
   createAzureStorageDir,
@@ -21,6 +27,7 @@ export {
   DecodeError,
   FetchError,
   BlobError,
+  ValueError,
   readAzureStorageDir,
   createAzureStorageDir,
   deleteAzureStorageDir,

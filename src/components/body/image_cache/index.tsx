@@ -38,6 +38,7 @@ const ImageCache: React.FC<params> = (props) => {
         marginBottom: "0.95vh",
       }}
       boxShadow={0}
+      data-testid="image-cache-component"
     >
       <CardHeader
         title="CAPTURES"

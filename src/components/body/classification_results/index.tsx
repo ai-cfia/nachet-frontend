@@ -113,6 +113,7 @@ const ClassificationResults: React.FC<params> = (props) => {
         borderRadius: "0.4vh",
       }}
       boxShadow={0}
+      data-testid="classification-results-component"
     >
       <CardHeader
         title={

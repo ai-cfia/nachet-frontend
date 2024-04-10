@@ -40,6 +40,7 @@ const StorageDirectoryView: React.FC<params> = (props) => {
         borderRadius: "0.4vh",
       }}
       boxShadow={0}
+      data-testid="storage-directory-component"
     >
       <CardHeader
         title="DIRECTORIES"

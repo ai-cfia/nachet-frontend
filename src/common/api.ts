@@ -1,5 +1,5 @@
 import axios from "axios";
-import { AzureAPIError } from "./error";
+import { AzureAPIError, ValueError } from "./error";
 import { ApiModelData, Images } from "./types";
 import { SetStateAction } from "react";
 
@@ -19,17 +19,17 @@ const handleAxios = async <T>(request: {
     })
     .catch((error) => {
       if (error.response) {
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
+        console.error(error.response.data);
+        console.error(error.response.status);
+        console.error(error.response.headers);
         throw new AzureAPIError(error.response.data);
       } else if (error.request) {
-        console.log(error.request);
+        console.error(error.request);
         throw new AzureAPIError(error.request);
       } else {
-        console.log("Error", error.message);
+        console.error("Error", error.message);
       }
-      console.log(error.config);
+      console.error(error.config);
       throw new AzureAPIError(error.config);
     });
   return data;
@@ -39,6 +39,12 @@ export const readAzureStorageDir = async (
   backendUrl: string,
   uuid: string,
 ): Promise<void> => {
+  if (backendUrl === "" || backendUrl == null) {
+    throw new ValueError("Backend URL is null or empty");
+  }
+  if (uuid === "" || uuid == null) {
+    throw new ValueError("UUID is null or empty");
+  }
   const request = {
     method: "post",
     url: `${backendUrl}/dir`,
@@ -58,6 +64,15 @@ export const createAzureStorageDir = async (
   uuid: string,
   folderName: string,
 ): Promise<void> => {
+  if (backendUrl === "" || backendUrl == null) {
+    throw new ValueError("Backend URL is null or empty");
+  }
+  if (uuid === "" || uuid == null) {
+    throw new ValueError("UUID is null or empty");
+  }
+  if (folderName === "" || folderName == null) {
+    throw new ValueError("Folder name is null or empty");
+  }
   const request = {
     method: "post",
     url: `${backendUrl}/create-dir`,
@@ -78,6 +93,15 @@ export const deleteAzureStorageDir = async (
   uuid: string,
   folderName: string,
 ): Promise<void> => {
+  if (backendUrl === "" || backendUrl == null) {
+    throw new ValueError("Backend URL is null or empty");
+  }
+  if (uuid === "" || uuid == null) {
+    throw new ValueError("UUID is null or empty");
+  }
+  if (folderName === "" || folderName == null) {
+    throw new ValueError("Folder name is null or empty");
+  }
   const request = {
     method: "post",
     url: `${backendUrl}/del`,
@@ -100,6 +124,21 @@ export const inferenceRequest = async (
   curDir: string,
   uuid: string,
 ): Promise<ApiModelData[]> => {
+  if (backendUrl === "" || backendUrl == null) {
+    throw new ValueError("Backend URL is null or empty");
+  }
+  if (selectedModel === "" || selectedModel == null) {
+    throw new ValueError("Model is null or empty");
+  }
+  if (imageObject.src === "" || imageObject.src == null) {
+    throw new ValueError("Image is null or empty");
+  }
+  if (curDir === "" || curDir == null) {
+    throw new ValueError("Directory is null or empty");
+  }
+  if (uuid === "" || uuid == null) {
+    throw new ValueError("UUID is null or empty");
+  }
   const request = {
     method: "post",
     url: `${backendUrl}/inf`,
@@ -121,6 +160,9 @@ export const inferenceRequest = async (
 export const fetchModelMetadata = async (
   backendUrl: string,
 ): Promise<SetStateAction<never[]>> => {
+  if (backendUrl === "" || backendUrl == null) {
+    throw new ValueError("Backend URL is null or empty");
+  }
   const request = {
     method: "get",
     url: `${backendUrl}/model-endpoints-metadata`,

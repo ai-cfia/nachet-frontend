@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { decodeTiff } from "../common/cacheutils";
+import { decodeTiff } from "../common";
 
 export interface DecodedTiff {
   rgba: Uint8Array;
