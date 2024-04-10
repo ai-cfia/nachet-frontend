@@ -1,6 +1,7 @@
 import axios from "axios";
 import { AzureAPIError } from "./error";
-import { ApiModelData } from "./types";
+import { ApiModelData, Images } from "./types";
+import { SetStateAction } from "react";
 
 const handleAxios = async <T>(request: {
   method: string;
@@ -95,8 +96,7 @@ export const deleteAzureStorageDir = async (
 export const inferenceRequest = async (
   backendUrl: string,
   selectedModel: string,
-  imageSrc: string,
-  imageObject: Array<{ imageDims: number[] }>,
+  imageObject: Images,
   curDir: string,
   uuid: string,
 ): Promise<ApiModelData[]> => {
@@ -109,11 +109,26 @@ export const inferenceRequest = async (
     },
     data: {
       model_name: selectedModel,
-      image: imageSrc,
-      imageDims: [imageObject[0].imageDims[0], imageObject[0].imageDims[1]],
+      image: imageObject.src,
+      imageDims: imageObject.imageDims,
       folder_name: curDir,
       container_name: uuid,
     },
   };
   return handleAxios<ApiModelData[]>(request);
+};
+
+export const fetchModelMetadata = async (
+  backendUrl: string,
+): Promise<SetStateAction<never[]>> => {
+  const request = {
+    method: "get",
+    url: `${backendUrl}/model-endpoints-metadata`,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    data: {},
+  };
+  return handleAxios<SetStateAction<never[]>>(request);
 };

@@ -12,7 +12,6 @@ import DeleteDirectoryPopup from "../../components/body/del_directory_popup";
 import ResultsTunerPopup from "../../components/body/results_tuner_popup";
 import SignUp from "../../components/body/authentication/signup";
 import CreativeCommonsPopup from "../../components/body/creative_commons_popup";
-import axios from "axios";
 import { useBackendUrl, useDecoderTiff } from "../../hooks";
 import {
   getLabelOccurrence,
@@ -22,7 +21,11 @@ import {
   nextCacheIndex,
 } from "../../common/cacheutils";
 import { Images, LabelOccurrences } from "../../common/types";
-import { inferenceRequest, readAzureStorageDir } from "../../common/api";
+import {
+  fetchModelMetadata,
+  inferenceRequest,
+  readAzureStorageDir,
+} from "../../common/api";
 
 interface params {
   windowSize: {
@@ -117,14 +120,14 @@ const Body: React.FC<params> = (props) => {
   const handleInferenceRequest = (): void => {
     // makes a post request to the backend to get inference data for the current image
     if (curDir !== "") {
-      const imageObject = imageCache.filter(
-        (item) => item.index === imageIndex,
-      );
+      const imageObject = imageCache.find((item) => item.index === imageIndex);
+      if (imageObject === undefined) {
+        return;
+      }
       setIsLoading(true);
       inferenceRequest(
         backendUrl,
         selectedModel,
-        imageSrc,
         imageObject,
         curDir,
         props.uuid,
@@ -245,33 +248,26 @@ const Body: React.FC<params> = (props) => {
   };
 
   useEffect(() => {
-    const backendUrl = process.env.VITE_BACKEND_URL;
-
     // Explicitly check for undefined, null, and empty string
     if (
       backendUrl === undefined ||
       backendUrl === null ||
       backendUrl.trim() === ""
     ) {
-      console.error("Backend URL is undefined, null or empty.");
       return;
     }
 
-    const fetchMetadata = async (): Promise<void> => {
-      try {
-        const response = await axios.get(
-          `${backendUrl}/model-endpoints-metadata`,
-        );
-        setMetadata(response.data);
-      } catch (error) {
-        console.error("Error fetching metadata:", error);
-      }
-    };
-
     if (process.env.REACT_APP_MODE !== "test") {
-      void fetchMetadata();
+      fetchModelMetadata(backendUrl)
+        .then((data) => {
+          setMetadata(data);
+        })
+        .catch((error) => {
+          console.error(error);
+          alert("Error fetching model metadata, see console for details");
+        });
     }
-  }, []);
+  }, [backendUrl]);
 
   return (
     <BodyContainer width={props.windowSize.width}>
