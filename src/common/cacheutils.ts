@@ -15,6 +15,15 @@ const drawBoxes = (
   if (!imageData.annotated) {
     return;
   }
+  if (imageData.classifications == null) {
+    throw new ValueError("Image object is missing classifications");
+  }
+  if (imageData.boxes == null) {
+    throw new ValueError("Image object is missing boxes");
+  }
+  if (imageData.scores == null) {
+    throw new ValueError("Image object is missing scores");
+  }
   imageData.classifications.forEach((prediction, index) => {
     if (prediction === selectedLabel || selectedLabel === "all") {
       const bottomY = imageData.boxes[index].bottomY;
@@ -108,11 +117,11 @@ export const loadToCanvas = async (
   // loads the current image to the canvas and draws the bounding boxes and labels,
   // should update whenever a change is made to the image cache or the score threshold and the selected label is changed
   const canvas: HTMLCanvasElement | null = canvasRef.current;
-  if (canvas === null) {
+  if (canvas == null) {
     return;
   }
   const ctx: CanvasRenderingContext2D | null = canvas.getContext("2d");
-  if (ctx === null) {
+  if (ctx == null) {
     return;
   }
 
@@ -177,7 +186,7 @@ export const decodeTiff = async (imageSrc: string): Promise<DecodedTiff> => {
     width: 0,
     height: 0,
   };
-  if (imageSrc === "" || imageSrc == null || !imageSrc.includes("image/tiff")) {
+  if (imageSrc == null || imageSrc === "" || !imageSrc.includes("image/tiff")) {
     return decodedTiff;
   }
   try {
@@ -197,6 +206,9 @@ export const decodeTiff = async (imageSrc: string): Promise<DecodedTiff> => {
 };
 
 export const getImageDims = async (src: string): Promise<number[]> => {
+  if (typeof src !== "string") {
+    throw new TypeError("Image source is not a string");
+  }
   if (src.includes("image/tiff")) {
     return decodeTiff(src).then((decodedTiff) => {
       return [decodedTiff.width, decodedTiff.height];
@@ -219,6 +231,9 @@ export const nextCacheIndex = (
   if (imageIndex < 0) {
     throw new ValueError("Image index is less than 0");
   }
+  if (imageCache == null) {
+    throw new ValueError("Image cache is null");
+  }
   return imageCache.length > 0
     ? imageCache[imageCache.length - 1].index + 1
     : imageIndex + 1;
@@ -229,8 +244,14 @@ export const loadCaptureToCache = async (
   imageCache: Images[],
   index: number,
 ): Promise<Images[]> => {
-  if (src === "") {
-    throw new ValueError("Image source is empty");
+  if (src == null || src === "") {
+    throw new ValueError("Image source is null or empty");
+  }
+  if (index < 0) {
+    throw new ValueError("Image index is less than 0");
+  }
+  if (imageCache == null) {
+    throw new ValueError("Image cache is null");
   }
   return getImageDims(src).then((dims) => {
     const newCache = [
@@ -258,25 +279,39 @@ export const loadResultsToCache = (
   imageCache: Images[],
   imageIndex: number,
 ): Images[] => {
+  if (inferenceData == null) {
+    throw new ValueError("Inference data is null");
+  }
+  if (inferenceData.boxes == null) {
+    throw new ValueError("Inference data boxes are null");
+  }
+  if (imageIndex == null || imageIndex < 0) {
+    throw new ValueError("Image index is invalid");
+  }
+  if (imageCache == null) {
+    throw new ValueError("Image cache is null");
+  }
   // amends the image cache given an image index, with the inference data
   // which is received from the server
   const newCache = [...imageCache];
   const topN = inferenceData.boxes.map((box) => box.topN);
   const index = newCache.findIndex((item) => item.index === imageIndex);
-  if (index !== -1) {
-    newCache[index] = {
-      ...newCache[index],
-      scores: inferenceData.boxes.map((box) => box.score),
-      classifications: inferenceData.boxes.map((box) => box.label),
-      boxes: inferenceData.boxes.map((box) => box.box),
-      overlapping: inferenceData.boxes.map((box) => box.overlapping),
-      overlappingIndices: inferenceData.boxes.map(
-        (box) => box.overlappingIndices,
-      ),
-      topN,
-      annotated: true,
-    };
+  if (index === -1) {
+    throw new ValueError("Image index not found in cache");
   }
+
+  newCache[index] = {
+    ...newCache[index],
+    scores: inferenceData.boxes.map((box) => box.score),
+    classifications: inferenceData.boxes.map((box) => box.label),
+    boxes: inferenceData.boxes.map((box) => box.box),
+    overlapping: inferenceData.boxes.map((box) => box.overlapping),
+    overlappingIndices: inferenceData.boxes.map(
+      (box) => box.overlappingIndices,
+    ),
+    topN,
+    annotated: true,
+  };
 
   return newCache;
 };

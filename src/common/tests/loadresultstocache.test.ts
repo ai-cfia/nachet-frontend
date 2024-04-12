@@ -238,9 +238,9 @@ describe("loadResultsToCache", () => {
   it("should not load results to cache with 0 images", () => {
     imageCache = [];
 
-    const newCache: Images[] = [];
-    const result = loadResultsToCache(inferenceData, imageCache, 0);
-    expect(result).toEqual(newCache);
+    expect(() => loadResultsToCache(inferenceData, imageCache, 0)).toThrow(
+      "Image index not found in cache",
+    );
   });
 
   it("should not load results to cache if index is not found", () => {
@@ -259,21 +259,8 @@ describe("loadResultsToCache", () => {
       },
     ];
 
-    const newCache = [
-      {
-        index: 0,
-        src: "test",
-        scores: [],
-        classifications: [],
-        boxes: [],
-        annotated: false,
-        imageDims: [0, 0],
-        overlapping: [],
-        overlappingIndices: [],
-        topN: [],
-      },
-    ];
-    const result = loadResultsToCache(inferenceData, imageCache, 1);
-    expect(result).toEqual(newCache);
+    expect(() => loadResultsToCache(inferenceData, imageCache, 1)).toThrow(
+      "Image index not found in cache",
+    );
   });
 });

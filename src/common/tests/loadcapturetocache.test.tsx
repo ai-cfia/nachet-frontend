@@ -170,7 +170,7 @@ describe("loadCaptureToCache", () => {
   // should load empty string
   it("should not load a capture to an empty cache with an empty string", async () => {
     await expect(loadCaptureToCache("", [], 0)).rejects.toThrow(
-      "Image source is empty",
+      "Image source is null or empty",
     );
   });
 });
