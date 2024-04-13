@@ -168,6 +168,9 @@ const Body: React.FC<params> = (props) => {
     if (imageData === undefined) {
       return;
     }
+    if (isWebcamActive) {
+      return;
+    }
     loadToCanvas(
       canvasRef,
       decodedTiff,
@@ -183,6 +186,7 @@ const Body: React.FC<params> = (props) => {
     decodedTiff,
     imageCache,
     imageIndex,
+    isWebcamActive,
   ]);
 
   useEffect(() => {
