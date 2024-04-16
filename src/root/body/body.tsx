@@ -9,7 +9,6 @@ import ModelInfoPopup from "../../components/body/model_popup";
 import SwitchDevice from "../../components/body/switch_device_popup";
 import CreateDirectory from "../../components/body/create_directory_popup";
 import DeleteDirectoryPopup from "../../components/body/del_directory_popup";
-import ResultsTunerPopup from "../../components/body/results_tuner_popup";
 import SignUp from "../../components/body/authentication/signup";
 import CreativeCommonsPopup from "../../components/body/creative_commons_popup";
 import { useBackendUrl, useDecoderTiff } from "../../hooks";
@@ -61,8 +60,6 @@ const Body: React.FC<params> = (props) => {
   const [readAzureStorage, setReadAzureStorage] = useState<boolean>(false);
   const [azureStorageDir, setAzureStorageDir] = useState<any>({});
   const [delDirectoryOpen, setDelDirectoryOpen] = useState<boolean>(false);
-  const [resultsTunerOpen, setResultsTunerOpen] = useState<boolean>(false);
-  const [scoreThreshold, setScoreThreshold] = useState<number>(0);
   const [selectedModel, setSelectedModel] = useState("Swin transformer");
   const [modelDisplayName, setModelDisplayName] = useState("");
   const [selectedLabel, setSelectedLabel] = useState<string>("all");
@@ -155,13 +152,13 @@ const Body: React.FC<params> = (props) => {
       setImageSrc(defaultImageSrc);
       return;
     }
-    const labelOccurrences = getLabelOccurrence(imageData, scoreThreshold);
+    const labelOccurrences = getLabelOccurrence(imageData);
     setLabelOccurrences(labelOccurrences);
     setImageSrc(imageData.src);
     if (imageData.src.includes("image/tiff")) {
       setImageTiff(imageData.src);
     }
-  }, [imageIndex, imageCache, scoreThreshold]);
+  }, [imageIndex, imageCache]);
 
   useEffect(() => {
     const imageData = imageCache.find((img) => img.index === imageIndex);
@@ -327,13 +324,6 @@ const Body: React.FC<params> = (props) => {
           setReadAzureStorage={setReadAzureStorage}
         />
       )}
-      {resultsTunerOpen && (
-        <ResultsTunerPopup
-          setResultsTunerOpen={setResultsTunerOpen}
-          setScoreThreshold={setScoreThreshold}
-          scoreThreshold={scoreThreshold}
-        />
-      )}
       {props.signUpOpen && <SignUp setSignUpOpen={props.setSignUpOpen} />}
       {props.creativeCommonsPopupOpen && (
         <CreativeCommonsPopup
@@ -365,8 +355,6 @@ const Body: React.FC<params> = (props) => {
         handleDirChange={handleDirChange}
         setCreateDirectoryOpen={setCreateDirectoryOpen}
         setDelDirectoryOpen={setDelDirectoryOpen}
-        setResultsTunerOpen={setResultsTunerOpen}
-        scoreThreshold={scoreThreshold}
         selectedLabel={selectedLabel}
         setSelectedLabel={setSelectedLabel}
         labelOccurrences={labelOccurrences}

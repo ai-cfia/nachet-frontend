@@ -66,10 +66,9 @@ describe("getLabelOccurrence", () => {
       { a: 3 },
     ],
   ])(`%s`, (_, input, expected) => {
-    const scoreThreshold = 0;
     image.classifications = input.cla;
     image.scores = input.sco;
-    const labelOccurrence = getLabelOccurrence(image, scoreThreshold);
+    const labelOccurrence = getLabelOccurrence(image);
     expect(labelOccurrence).toEqual(expected);
   });
 });
