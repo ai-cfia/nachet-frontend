@@ -3,20 +3,64 @@ import { Overlay, InfoContainer, ButtonWrap, Text } from "./indexElements";
 import { Box, CardHeader, IconButton, Button } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { colours } from "../../../styles/colours";
+import axios from "axios";
+import { useBackendUrl } from "../../../hooks";
 
 interface params {
   setDelDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  handleDelFromDirectory: () => void;
   curDir: string;
+  setCurDir: React.Dispatch<React.SetStateAction<string>>;
+  handleAzureStorageDir: () => void;
+  uuid: string;
 }
 
 const DeleteDirectoryPopup: React.FC<params> = (props): JSX.Element => {
+  const {
+    uuid,
+    setDelDirectoryOpen,
+    curDir,
+    setCurDir,
+    handleAzureStorageDir,
+  } = props;
+  const backendURL = useBackendUrl();
+
+  const handleDelFromDirectory = (): void => {
+    // makes a post request to the backend to delete a directory in azure storage
+    (async () => {
+      try {
+        await axios({
+          method: "post",
+          url: `${backendURL}/del`,
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          data: {
+            container_name: uuid,
+            folder_name: curDir,
+          },
+        }).then((response) => {
+          if (response.status === 200) {
+            setCurDir("General");
+            handleAzureStorageDir();
+          } else {
+            alert(response.data);
+          }
+        });
+      } catch (error) {
+        alert(error);
+      }
+    })().catch((error) => {
+      alert(error);
+    });
+  };
+
   const handleClose = (): void => {
-    props.setDelDirectoryOpen(false);
+    setDelDirectoryOpen(false);
   };
   const handleYes = (): void => {
-    props.handleDelFromDirectory();
-    props.setDelDirectoryOpen(false);
+    handleDelFromDirectory();
+    setDelDirectoryOpen(false);
   };
 
   return (
@@ -50,7 +94,7 @@ const DeleteDirectoryPopup: React.FC<params> = (props): JSX.Element => {
           sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
         />
         <InfoContainer>
-          <Text>Are you sure you want to delete {props.curDir}?</Text>
+          <Text>Are you sure you want to delete {curDir}?</Text>
           <ButtonWrap>
             <Button
               variant="outlined"
