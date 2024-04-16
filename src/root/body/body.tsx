@@ -257,8 +257,14 @@ const Body: React.FC<params> = (props) => {
 
     if (process.env.REACT_APP_MODE !== "test") {
       fetchModelMetadata(backendUrl)
-        .then((data) => {
-          setMetadata(data);
+        .then((metadata) => {
+          setMetadata(metadata);
+
+          // Find the default model from the metadata
+          const defaultModel = metadata.find((model: any) => model.default);
+          if (defaultModel) {
+            setSelectedModel(defaultModel.model_name);
+          }
         })
         .catch((error) => {
           console.error(error);

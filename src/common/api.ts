@@ -157,9 +157,7 @@ export const inferenceRequest = async (
   return handleAxios<ApiModelData[]>(request);
 };
 
-export const fetchModelMetadata = async (
-  backendUrl: string,
-): Promise<SetStateAction<never[]>> => {
+export const fetchModelMetadata = async (backendUrl: string): Promise<any> => {
   if (backendUrl === "" || backendUrl == null) {
     throw new ValueError("Backend URL is null or empty");
   }
