@@ -22,8 +22,6 @@ interface params {
   savedImages: any[];
   imageSrc: string;
   imageIndex: number;
-  setResultsTunerOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  scoreThreshold: number;
   selectedLabel: string;
   setSelectedLabel: React.Dispatch<React.SetStateAction<string>>;
   labelOccurrences: any;
@@ -314,17 +312,14 @@ const ClassificationResults: React.FC<params> = (props) => {
                 ) {
                   return object.classifications.map(
                     (prediction: any, classificationIndex: number) => {
-                      const score = object.scores[classificationIndex];
                       const rowId = `${objectIndex}-${classificationIndex}`;
                       const topN = object.topN[classificationIndex];
                       const isExpanded = expandedRow === rowId;
-                      const scoreMeetsThreshold =
-                        score >= props.scoreThreshold / 100;
                       const labelMatchesSelection =
                         props.selectedLabel === "all" ||
                         props.selectedLabel === prediction;
 
-                      if (scoreMeetsThreshold && labelMatchesSelection) {
+                      if (labelMatchesSelection) {
                         return (
                           <React.Fragment key={rowId}>
                             <TableRow

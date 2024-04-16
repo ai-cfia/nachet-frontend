@@ -316,10 +316,7 @@ export const loadResultsToCache = (
   return newCache;
 };
 
-export const getLabelOccurrence = (
-  image: Images,
-  scoreThreshold: number,
-): LabelOccurrences => {
+export const getLabelOccurrence = (image: Images): LabelOccurrences => {
   if (image == null) {
     throw new ValueError("Image object is null");
   }
@@ -335,7 +332,7 @@ export const getLabelOccurrence = (
 
   if (image.annotated) {
     image.scores.forEach((score: number, index: number) => {
-      if (score * 100 >= scoreThreshold) {
+      if (score) {
         const label: string = image.classifications[index];
         if (result[label] !== undefined) {
           result[label] = result[label] + 1;
