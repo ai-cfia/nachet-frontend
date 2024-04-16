@@ -10,7 +10,6 @@ describe("SwitchModel Component", () => {
     // Mock the props
     const mockSetSwitchModelOpen = vi.fn();
     const mockSetSelectedModel = vi.fn();
-    const mockHandleInference = vi.fn();
 
     // Render the component with test data
     render(
@@ -19,7 +18,6 @@ describe("SwitchModel Component", () => {
         switchModelOpen={true}
         selectedModel=""
         setSelectedModel={mockSetSelectedModel}
-        handleInference={mockHandleInference}
         realData={[]} // Since we're testing, realData will not be used
       />,
     );

@@ -12,7 +12,6 @@ interface params {
   switchModelOpen: boolean;
   selectedModel: string;
   setSelectedModel: React.Dispatch<React.SetStateAction<string>>;
-  handleInference: () => void;
   realData: any[]; // Type should be adjusted to match the actual data structure
 }
 

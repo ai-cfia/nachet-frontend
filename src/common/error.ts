@@ -19,4 +19,18 @@ class BlobError extends Error {
   }
 }
 
-export { DecodeError, FetchError, BlobError };
+class AzureAPIError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "AzureAPIError";
+  }
+}
+
+class ValueError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ValueError";
+  }
+}
+
+export { DecodeError, FetchError, BlobError, AzureAPIError, ValueError };

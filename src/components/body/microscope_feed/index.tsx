@@ -77,6 +77,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
         borderRadius: "0.4vh",
       }}
       boxShadow={0}
+      data-testid="microscope-component"
     >
       <CardHeader
         titleTypographyProps={{
