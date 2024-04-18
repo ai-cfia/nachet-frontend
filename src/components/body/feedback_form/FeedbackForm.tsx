@@ -40,18 +40,26 @@ const FeedbackForm = (props: { children?: ReactNode }) => {
   const [selectedSpecies, setSelectedSpecies] = useState<string | SpeciesData>(
     "",
   );
-  const [speciesListKnown, setSpeciesListKnown] = useState<SpeciesData[]>([
+  const speciesListKnown = [
     {
       id: 1,
-      label: "Species 1",
+      label: "Species stub 1",
     },
-  ]);
-  const [speciesListUnknown, setSpeciesListUnknown] = useState<SpeciesData[]>([
+    {
+      id: 2,
+      label: "Species stub 2",
+    },
+  ];
+  const speciesListUnknown = [
     {
       id: 1000,
-      label: "Species 1000",
+      label: "Species stub 1000",
     },
-  ]);
+    {
+      id: 1001,
+      label: "Species stub 1001",
+    },
+  ];
   const [feedbackType, setFeedbackType] = useState<number>(0);
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -154,6 +162,7 @@ const FeedbackForm = (props: { children?: ReactNode }) => {
                 }
                 value={selectedSpecies}
                 onChange={(event, newValue) => {
+                  event.preventDefault();
                   if (typeof newValue === "string") {
                     setSelectedSpecies(newValue);
                   } else {

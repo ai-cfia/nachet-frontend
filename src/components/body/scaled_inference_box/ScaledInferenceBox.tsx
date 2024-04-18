@@ -9,14 +9,12 @@ const ScaledInferenceBox = (props: {
   canvasWidth: number;
   canvasHeight: number;
   label: string;
-  color: string;
   visible: boolean;
   children?: React.ReactNode;
 }): JSX.Element => {
   const {
     box,
     visible,
-    color,
     imageWidth,
     imageHeight,
     canvasWidth,
@@ -54,7 +52,7 @@ const ScaledInferenceBox = (props: {
           maxHeight: scaledHeight + 1,
           left: scaledTopX,
           top: scaledTopY,
-          border: `0.3vh solid ${color}`,
+          border: "none",
           borderRadius: 0,
           display: visible ? "block" : "none",
           zIndex: 10,

@@ -247,7 +247,6 @@ const MicroscopeFeed: React.FC<params> = (props) => {
                         imageHeight={imageData.imageDims[1]}
                         canvasWidth={width}
                         canvasHeight={height}
-                        color={"green"}
                         visible={true}
                       >
                         <FeedbackForm />
