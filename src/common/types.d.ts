@@ -40,3 +40,8 @@ export interface ApiModelData {
   };
   totalBoxes: number;
 }
+
+interface SpeciesData {
+  id: number;
+  label: string;
+}
