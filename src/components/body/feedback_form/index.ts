@@ -1,3 +1,3 @@
-import FeedbackForm from "./FeedbackForm";
+import { SimpleFeedbackForm, NegativeFeedbackForm } from "./FeedbackForm";
 
-export default FeedbackForm;
+export { SimpleFeedbackForm, NegativeFeedbackForm };

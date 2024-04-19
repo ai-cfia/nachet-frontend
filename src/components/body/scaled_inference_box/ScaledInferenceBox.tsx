@@ -1,6 +1,10 @@
-import { Button, Popover } from "@mui/material";
-import React from "react";
+import { Button } from "@mui/material";
+import { MouseEvent, useState } from "react";
 import { Images } from "../../../common/types";
+import { SimpleFeedbackForm } from "../feedback_form";
+import { getScaledBounds } from "../../../common";
+
+const FEATURE_FLAG = true;
 
 const ScaledInferenceBox = (props: {
   imageWidth: number;
@@ -10,46 +14,36 @@ const ScaledInferenceBox = (props: {
   canvasHeight: number;
   label: string;
   visible: boolean;
-  children?: React.ReactNode;
 }): JSX.Element => {
-  const {
-    box,
-    visible,
-    imageWidth,
-    imageHeight,
-    canvasWidth,
-    canvasHeight,
-    children,
-  } = props;
-  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null,
-  );
+  const { box, visible, imageWidth, imageHeight, canvasWidth, canvasHeight } =
+    props;
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+    if (FEATURE_FLAG) {
+      return;
+    }
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const { scaledHeight, scaledWidth, scaledTopX, scaledTopY } = getScaledBounds(
+    canvasWidth,
+    canvasHeight,
+    imageWidth,
+    imageHeight,
+    box,
+  );
 
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
-  const scaleFactorWidth = canvasWidth / imageWidth;
-  const scaleFactorHeight = canvasHeight / imageHeight;
-  const scaledWidth = (box.bottomX - box.topX) * scaleFactorWidth;
-  const scaledHeight = (box.bottomY - box.topY) * scaleFactorHeight;
-  const scaledTopX = box.topX * scaleFactorWidth;
-  const scaledTopY = box.topY * scaleFactorHeight;
+  const OFFSET = 1; // arbitrary until canvas is fixed
   return (
     <>
       <Button
         sx={{
           position: "absolute",
-          minWidth: scaledWidth + 1,
-          minHeight: scaledHeight + 1,
-          maxWidth: scaledWidth + 1,
-          maxHeight: scaledHeight + 1,
+          minWidth: scaledWidth + OFFSET,
+          minHeight: scaledHeight + OFFSET,
+          maxWidth: scaledWidth + OFFSET,
+          maxHeight: scaledHeight + OFFSET,
           left: scaledTopX,
           top: scaledTopY,
           border: "none",
@@ -62,23 +56,10 @@ const ScaledInferenceBox = (props: {
         }}
         onClick={handleClick}
       />
-      <Popover
-        id={id}
-        open={open}
+      <SimpleFeedbackForm
         anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "center",
-        }}
-        transformOrigin={{
-          vertical: "bottom",
-          horizontal: "center",
-        }}
-        sx={{ backgroundColor: "transparent", boxShadow: "none", zIndex: "30" }}
-      >
-        {children}
-      </Popover>
+        onClose={() => setAnchorEl(null)}
+      />
     </>
   );
 };

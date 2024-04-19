@@ -1,7 +1,7 @@
 // \components\body\microscope_feed\index.tsx
 // MicroscopeFeed
 import Webcam from "react-webcam";
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Box, CardHeader, Button } from "@mui/material";
 import { colours } from "../../../styles/colours";
 import { Canvas } from "../feed_capture/indexElements";
@@ -19,8 +19,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { Images } from "../../../common/types";
 
 import ScaledInferenceBox from "../scaled_inference_box";
-import FeedbackForm from "../feedback_form";
-interface params {
+interface MicroscopeFeedProps {
   webcamRef: React.RefObject<Webcam>;
   capture: () => void;
   activeDeviceId: string | undefined;
@@ -86,12 +85,27 @@ const ButtonMicroscopeFeed = (props: {
   );
 };
 
-const MicroscopeFeed: React.FC<params> = (props) => {
-  const { imageIndex, imageCache, isLoading } = props;
-  const [imageData, setImageData] = React.useState<Images | null>(null);
-  const [drawBoxes, setDrawBoxes] = React.useState<boolean>(false);
-  const width = props.windowSize.width * 0.519;
-  const height = props.windowSize.height * 0.605;
+const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
+  const {
+    webcamRef,
+    capture,
+    activeDeviceId,
+    setSwitchDeviceOpen,
+    canvasRef,
+    setSaveOpen,
+    setUploadOpen,
+    setSwitchModelOpen,
+    imageCache,
+    handleInference,
+    imageIndex,
+    isWebcamActive,
+    isLoading,
+    onCaptureClick,
+    windowSize,
+  } = props;
+  const [imageData, setImageData] = useState<Images | null>(null);
+  const width = windowSize.width * 0.519;
+  const height = windowSize.height * 0.605;
   const iconStyle = {
     fontSize: "1.7vh",
     paddingRight: "0.4vh",
@@ -115,10 +129,8 @@ const MicroscopeFeed: React.FC<params> = (props) => {
         image.imageDims[0] > 0
       ) {
         setImageData(image);
-        setDrawBoxes(true);
       } else {
         setImageData(null);
-        setDrawBoxes(false);
       }
     }
   }, [imageIndex, imageCache]);
@@ -154,58 +166,58 @@ const MicroscopeFeed: React.FC<params> = (props) => {
             <ButtonMicroscopeFeed
               label="CAPTURE"
               icon={<AddAPhotoIcon color="inherit" style={iconStyle} />}
-              disabled={!props.isWebcamActive} // Disable when the webcam is active
+              disabled={!isWebcamActive} // Disable when the webcam is active
               onClick={() => {
-                props.capture();
+                capture();
               }}
             />
             <ButtonMicroscopeFeed
               label="SWITCH"
               icon={<SwitchCameraIcon color="inherit" style={iconStyle} />}
-              disabled={!props.isWebcamActive} // Disable when the webcam is active
+              disabled={!isWebcamActive} // Disable when the webcam is active
               onClick={() => {
-                props.setSwitchDeviceOpen(true);
+                setSwitchDeviceOpen(true);
               }}
             />
             <ButtonMicroscopeFeed
               label="LOAD"
               icon={<UploadFileIcon color="inherit" style={iconStyle} />}
-              disabled={props.isWebcamActive} // Disable when the webcam is active
+              disabled={isWebcamActive} // Disable when the webcam is active
               onClick={() => {
-                props.setUploadOpen(true);
+                setUploadOpen(true);
               }}
             />
             <ButtonMicroscopeFeed
               label="SAVE"
               icon={<DownloadIcon color="inherit" style={iconStyle} />}
-              disabled={props.isWebcamActive} // Disable when the webcam is active
+              disabled={isWebcamActive} // Disable when the webcam is active
               onClick={() => {
-                props.setSaveOpen(true);
+                setSaveOpen(true);
               }}
             />
             <ButtonMicroscopeFeed
               label="MODEL SELECTION"
               icon={<DonutSmallIcon color="inherit" style={iconStyle} />}
-              disabled={props.isWebcamActive} // Disable when the webcam is active
+              disabled={isWebcamActive} // Disable when the webcam is active
               onClick={() => {
-                props.setSwitchModelOpen(true);
+                setSwitchModelOpen(true);
               }}
             />
             <ButtonMicroscopeFeed
               label="CLASSIFY"
               icon={<CropFreeIcon color="inherit" style={iconStyle} />}
-              disabled={props.isWebcamActive} // Disable when the webcam is active
+              disabled={isWebcamActive} // Disable when the webcam is active
               onClick={() => {
-                props.handleInference();
+                handleInference();
               }}
             />
           </Box>
         }
       />
       <div style={{ position: "relative", width: width - 1, height }}>
-        {props.isWebcamActive ? (
+        {isWebcamActive ? (
           <Webcam
-            ref={props.webcamRef}
+            ref={webcamRef}
             mirrored={false}
             width={width - 1}
             height={height}
@@ -213,14 +225,14 @@ const MicroscopeFeed: React.FC<params> = (props) => {
             videoConstraints={{
               width: width - 1,
               height,
-              deviceId: props.activeDeviceId,
+              deviceId: activeDeviceId,
             }}
             screenshotFormat="image/png"
             screenshotQuality={1}
           />
         ) : (
           <>
-            <Canvas ref={props.canvasRef} />
+            <Canvas ref={canvasRef} />
             {!isLoading && (
               <Box
                 sx={{
@@ -232,8 +244,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
                 }}
               >
                 {!isLoading &&
-                  imageData &&
-                  drawBoxes &&
+                  imageData !== null &&
                   imageData.boxes.map((box, index) => {
                     return (
                       <ScaledInferenceBox
@@ -248,9 +259,7 @@ const MicroscopeFeed: React.FC<params> = (props) => {
                         canvasWidth={width}
                         canvasHeight={height}
                         visible={true}
-                      >
-                        <FeedbackForm />
-                      </ScaledInferenceBox>
+                      />
                     );
                   })}
               </Box>
@@ -279,19 +288,19 @@ const MicroscopeFeed: React.FC<params> = (props) => {
 
       <div style={{ display: "flex" }}>
         <ToggleButton
-          isActive={!props.isWebcamActive}
+          isActive={!isWebcamActive}
           onClick={() => {
-            if (!props.isWebcamActive) {
-              props.onCaptureClick();
+            if (!isWebcamActive) {
+              onCaptureClick();
             }
           }}
           text="Video Feed"
         />
         <ToggleButton
-          isActive={props.isWebcamActive}
+          isActive={isWebcamActive}
           onClick={() => {
-            if (props.isWebcamActive) {
-              props.onCaptureClick();
+            if (isWebcamActive) {
+              onCaptureClick();
             }
           }}
           text="Capture"
