@@ -187,21 +187,27 @@ export const NegativeFeedbackForm = (
             control={<Radio />}
             label="Multi Seed"
             disabled
-            hidden
+            sx={{
+              visibility: "collapse",
+            }}
           />
           <FormControlLabel
             value="3"
             control={<Radio />}
             label={"Wrong Seed in Model"}
             disabled
-            hidden
+            sx={{
+              visibility: "collapse",
+            }}
           />
           <FormControlLabel
             value="4"
             control={<Radio />}
             label={"Wrong Seed not in Model"}
             disabled
-            hidden
+            sx={{
+              visibility: "collapse",
+            }}
           ></FormControlLabel>
         </RadioGroup>
         {showInput && (
