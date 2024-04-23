@@ -21,6 +21,7 @@ import {
   loadResultsToCache,
   getLabelOccurrence,
 } from "./cacheutils";
+import { getScaledBounds } from "./imageutils";
 
 export {
   AzureAPIError,
@@ -40,4 +41,5 @@ export {
   loadCaptureToCache,
   loadResultsToCache,
   getLabelOccurrence,
+  getScaledBounds,
 };

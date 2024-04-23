@@ -41,6 +41,12 @@ export interface ApiModelData {
   totalBoxes: number;
 }
 
+// TODO: Redefine when the backend is updated
+interface SpeciesData {
+  id: number;
+  label: string;
+}
+
 export interface ModelMetadata {
   model_name: string;
   default?: boolean;
