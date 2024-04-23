@@ -22,7 +22,7 @@ import {
   inferenceRequest,
   readAzureStorageDir,
 } from "../../common";
-import { Images, LabelOccurrences } from "../../common/types";
+import { Images, LabelOccurrences, ModelMetadata } from "../../common/types";
 
 interface params {
   windowSize: {
@@ -71,10 +71,10 @@ const Body: React.FC<params> = (props) => {
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isWebcamActive, setIsWebcamActive] = useState(true); // This state determines the visibility of the webcam
-  const [metadata, setMetadata] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const decodedTiff = useDecoderTiff(imageTiff);
   const backendUrl = useBackendUrl();
+  const [metadata, setMetadata] = useState<ModelMetadata[]>([]);
 
   const captureFeed = (): void => {
     // takes screenshot of webcam feed and loads it to cache when capture button is pressed
@@ -246,31 +246,24 @@ const Body: React.FC<params> = (props) => {
   };
 
   useEffect(() => {
-    // Explicitly check for undefined, null, and empty string
-    if (
-      backendUrl === undefined ||
-      backendUrl === null ||
-      backendUrl.trim() === ""
-    ) {
+    if (!backendUrl || process.env.REACT_APP_MODE === "test") {
       return;
     }
 
-    if (process.env.REACT_APP_MODE !== "test") {
-      fetchModelMetadata(backendUrl)
-        .then((metadata) => {
-          setMetadata(metadata);
+    fetchModelMetadata(backendUrl)
+      .then((metadata: ModelMetadata[]) => {
+        setMetadata(metadata);
 
-          // Find the default model from the metadata
-          const defaultModel = metadata.find((model: any) => model.default);
-          if (defaultModel) {
-            setSelectedModel(defaultModel.model_name);
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-          alert("Error fetching model metadata, see console for details");
-        });
-    }
+        // Find the default model from the metadata
+        const defaultModel = metadata.find((model) => model.default);
+        if (defaultModel) {
+          setSelectedModel(defaultModel.model_name);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        alert("Error fetching model metadata, see console for details");
+      });
   }, [backendUrl]);
 
   return (

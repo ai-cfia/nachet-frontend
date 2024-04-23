@@ -1,7 +1,6 @@
 import axios from "axios";
 import { AzureAPIError, ValueError } from "./error";
-import { ApiModelData, Images } from "./types";
-import { SetStateAction } from "react";
+import { ApiModelData, Images, ModelMetadata } from "./types";
 
 const handleAxios = async <T>(request: {
   method: string;
@@ -157,7 +156,9 @@ export const inferenceRequest = async (
   return handleAxios<ApiModelData[]>(request);
 };
 
-export const fetchModelMetadata = async (backendUrl: string): Promise<any> => {
+export const fetchModelMetadata = async (
+  backendUrl: string,
+): Promise<ModelMetadata[]> => {
   if (backendUrl === "" || backendUrl == null) {
     throw new ValueError("Backend URL is null or empty");
   }
@@ -170,5 +171,5 @@ export const fetchModelMetadata = async (backendUrl: string): Promise<any> => {
     },
     data: {},
   };
-  return handleAxios<SetStateAction<never[]>>(request);
+  return handleAxios<ModelMetadata[]>(request);
 };

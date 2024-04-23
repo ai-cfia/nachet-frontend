@@ -40,3 +40,8 @@ export interface ApiModelData {
   };
   totalBoxes: number;
 }
+
+export interface ModelMetadata {
+  model_name: string;
+  default?: boolean;
+}
