@@ -219,11 +219,11 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
           <Webcam
             ref={webcamRef}
             mirrored={false}
-            width={width - 1}
+            width={width}
             height={height}
             style={{ objectFit: "cover" }}
             videoConstraints={{
-              width: width - 1,
+              width: width,
               height,
               deviceId: activeDeviceId,
             }}
