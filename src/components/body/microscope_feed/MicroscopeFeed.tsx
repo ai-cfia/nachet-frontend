@@ -4,7 +4,7 @@ import Webcam from "react-webcam";
 import { useEffect, useState } from "react";
 import { Box, CardHeader, Button } from "@mui/material";
 import { colours } from "../../../styles/colours";
-import { Canvas } from "../feed_capture/indexElements";
+import { Canvas } from "./indexElements";
 // Import icons
 import SwitchCameraIcon from "@mui/icons-material/SwitchCamera";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
