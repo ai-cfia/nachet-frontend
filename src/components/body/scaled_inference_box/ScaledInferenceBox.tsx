@@ -14,15 +14,25 @@ const ScaledInferenceBox = (props: {
   canvasHeight: number;
   label: string;
   visible: boolean;
+  canvasRef: React.RefObject<HTMLCanvasElement>;
+  toggleShowInference: (state: boolean) => void;
 }): JSX.Element => {
-  const { box, visible, imageWidth, imageHeight, canvasWidth, canvasHeight } =
-    props;
+  const {
+    box,
+    visible,
+    imageWidth,
+    imageHeight,
+    canvasWidth,
+    canvasHeight,
+    canvasRef,
+    toggleShowInference,
+  } = props;
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
-    if (FEATURE_FLAG) {
-      return;
-    }
+    // if (FEATURE_FLAG) {
+    //   return;
+    // }
     setAnchorEl(event.currentTarget);
   };
 
@@ -34,19 +44,18 @@ const ScaledInferenceBox = (props: {
     box,
   );
 
-  const OFFSET = 1; // arbitrary until canvas is fixed
   return (
     <>
       <Button
         sx={{
           position: "absolute",
-          minWidth: scaledWidth + OFFSET,
-          minHeight: scaledHeight + OFFSET,
-          maxWidth: scaledWidth + OFFSET,
-          maxHeight: scaledHeight + OFFSET,
+          minWidth: scaledWidth,
+          minHeight: scaledHeight,
+          maxWidth: scaledWidth,
+          maxHeight: scaledHeight,
           left: scaledTopX,
           top: scaledTopY,
-          border: "none",
+          // border: "2px solid green",
           borderRadius: 0,
           display: visible ? "block" : "none",
           zIndex: 10,
@@ -59,6 +68,8 @@ const ScaledInferenceBox = (props: {
       <SimpleFeedbackForm
         anchorEl={anchorEl}
         onClose={() => setAnchorEl(null)}
+        canvasRef={canvasRef}
+        toggleShowInference={toggleShowInference}
       />
     </>
   );

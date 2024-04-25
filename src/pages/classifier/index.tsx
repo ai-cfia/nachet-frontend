@@ -50,6 +50,7 @@ interface params {
   onCaptureClick: () => void;
   onImageUpload: (file: File) => void;
   isLoading: boolean; // Add this line
+  toggleShowInference: (state: boolean) => void;
 }
 
 const Classifier: React.FC<params> = (props) => {
@@ -73,6 +74,7 @@ const Classifier: React.FC<params> = (props) => {
             setUploadOpen={props.setUploadOpen}
             isWebcamActive={props.isWebcamActive}
             onCaptureClick={props.onCaptureClick}
+            toggleShowInference={props.toggleShowInference}
           />
         </LeftContent>
         <InfoContent>

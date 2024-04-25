@@ -2,7 +2,7 @@
 // MicroscopeFeed
 import Webcam from "react-webcam";
 import { useEffect, useState } from "react";
-import { Box, CardHeader, Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { colours } from "../../../styles/colours";
 import { Canvas } from "./indexElements";
 // Import icons
@@ -38,6 +38,7 @@ interface MicroscopeFeedProps {
     width: number;
     height: number;
   };
+  toggleShowInference: (state: boolean) => void;
 }
 
 const ButtonMicroscopeFeed = (props: {
@@ -48,8 +49,8 @@ const ButtonMicroscopeFeed = (props: {
 }): JSX.Element => {
   const { label, icon, onClick, disabled } = props;
   const buttonStyle = {
-    marginRight: "0.9vh",
-    marginLeft: 0,
+    marginRight: "0.2vh",
+    marginLeft: "0.2vh",
     borderRadius: "0.4vh",
     paddingTop: "0.3vh",
     paddingBottom: "0.3vh",
@@ -102,9 +103,10 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
     isLoading,
     onCaptureClick,
     windowSize,
+    toggleShowInference,
   } = props;
   const [imageData, setImageData] = useState<Images | null>(null);
-  const width = windowSize.width * 0.519;
+  const width = windowSize.width * 0.575;
   const height = windowSize.height * 0.605;
   const iconStyle = {
     fontSize: "1.7vh",
@@ -137,7 +139,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
   return (
     <Box
       sx={{
-        width: width - 0.5,
+        width: width,
         height: "fit-content",
         border: `0.01vh solid LightGrey`,
         borderRadius: "0.4vh",
@@ -145,76 +147,66 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
       boxShadow={0}
       data-testid="microscope-component"
     >
-      <CardHeader
-        titleTypographyProps={{
-          variant: "h6",
-          align: "left",
-          fontWeight: 600,
-          fontSize: "1.3vh",
-          color: colours.CFIA_Font_Black,
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          flexWrap: "wrap",
+          alignItems: "center",
+          padding: "0.8vh",
         }}
-        sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
-        action={
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "flex-end",
-              alignItems: "center",
-            }}
-          >
-            <ButtonMicroscopeFeed
-              label="CAPTURE"
-              icon={<AddAPhotoIcon color="inherit" style={iconStyle} />}
-              disabled={!isWebcamActive} // Disable when the webcam is active
-              onClick={() => {
-                capture();
-              }}
-            />
-            <ButtonMicroscopeFeed
-              label="SWITCH"
-              icon={<SwitchCameraIcon color="inherit" style={iconStyle} />}
-              disabled={!isWebcamActive} // Disable when the webcam is active
-              onClick={() => {
-                setSwitchDeviceOpen(true);
-              }}
-            />
-            <ButtonMicroscopeFeed
-              label="LOAD"
-              icon={<UploadFileIcon color="inherit" style={iconStyle} />}
-              disabled={isWebcamActive} // Disable when the webcam is active
-              onClick={() => {
-                setUploadOpen(true);
-              }}
-            />
-            <ButtonMicroscopeFeed
-              label="SAVE"
-              icon={<DownloadIcon color="inherit" style={iconStyle} />}
-              disabled={isWebcamActive} // Disable when the webcam is active
-              onClick={() => {
-                setSaveOpen(true);
-              }}
-            />
-            <ButtonMicroscopeFeed
-              label="MODEL SELECTION"
-              icon={<DonutSmallIcon color="inherit" style={iconStyle} />}
-              disabled={isWebcamActive} // Disable when the webcam is active
-              onClick={() => {
-                setSwitchModelOpen(true);
-              }}
-            />
-            <ButtonMicroscopeFeed
-              label="CLASSIFY"
-              icon={<CropFreeIcon color="inherit" style={iconStyle} />}
-              disabled={isWebcamActive} // Disable when the webcam is active
-              onClick={() => {
-                handleInference();
-              }}
-            />
-          </Box>
-        }
-      />
-      <div style={{ position: "relative", width: width - 1, height }}>
+      >
+        <ButtonMicroscopeFeed
+          label="CAPTURE"
+          icon={<AddAPhotoIcon color="inherit" style={iconStyle} />}
+          disabled={!isWebcamActive} // Disable when the webcam is active
+          onClick={() => {
+            capture();
+          }}
+        />
+        <ButtonMicroscopeFeed
+          label="SWITCH"
+          icon={<SwitchCameraIcon color="inherit" style={iconStyle} />}
+          disabled={!isWebcamActive} // Disable when the webcam is active
+          onClick={() => {
+            setSwitchDeviceOpen(true);
+          }}
+        />
+        <ButtonMicroscopeFeed
+          label="LOAD"
+          icon={<UploadFileIcon color="inherit" style={iconStyle} />}
+          disabled={isWebcamActive} // Disable when the webcam is active
+          onClick={() => {
+            setUploadOpen(true);
+          }}
+        />
+        <ButtonMicroscopeFeed
+          label="SAVE"
+          icon={<DownloadIcon color="inherit" style={iconStyle} />}
+          disabled={isWebcamActive} // Disable when the webcam is active
+          onClick={() => {
+            setSaveOpen(true);
+          }}
+        />
+        <ButtonMicroscopeFeed
+          label="MODEL SELECTION"
+          icon={<DonutSmallIcon color="inherit" style={iconStyle} />}
+          disabled={isWebcamActive} // Disable when the webcam is active
+          onClick={() => {
+            setSwitchModelOpen(true);
+          }}
+        />
+        <ButtonMicroscopeFeed
+          label="CLASSIFY"
+          icon={<CropFreeIcon color="inherit" style={iconStyle} />}
+          disabled={isWebcamActive} // Disable when the webcam is active
+          onClick={() => {
+            handleInference();
+          }}
+        />
+      </Box>
+      <div style={{ position: "relative", width: width, height }}>
         {isWebcamActive ? (
           <Webcam
             ref={webcamRef}
@@ -259,6 +251,8 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
                         canvasWidth={width}
                         canvasHeight={height}
                         visible={true}
+                        canvasRef={canvasRef}
+                        toggleShowInference={toggleShowInference}
                       />
                     );
                   })}

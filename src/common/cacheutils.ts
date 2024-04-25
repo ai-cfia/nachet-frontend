@@ -4,6 +4,82 @@ import { BlobError, DecodeError, FetchError, ValueError } from "../common";
 import { DecodedTiff } from "../hooks/useDecoderTiff";
 import { ApiModelData, Images, LabelOccurrences } from "./types";
 
+const getInferenceLabelIndex = (
+  prediction: string,
+  labelOccurrences: LabelOccurrences,
+): number => {
+  let labelIndex = 0;
+  Object.keys(labelOccurrences).forEach((key, index) => {
+    if (prediction === key) {
+      labelIndex = index;
+    }
+  });
+  return labelIndex;
+};
+
+const drawBoxLabel = (
+  box: Images["boxes"][0],
+  score: number,
+  index: number,
+  ctx: CanvasRenderingContext2D,
+  prediction: string,
+  labelOccurrences: LabelOccurrences,
+  switchTable: boolean,
+): void => {
+  const bottomY = box.bottomY;
+  const topY = box.topY;
+  const bottomX = box.bottomX;
+  const topX = box.topX;
+  const labelIndex = getInferenceLabelIndex(prediction, labelOccurrences);
+  const scorePercentage = (score * 100).toFixed(0);
+  const boxMidX = (bottomX - topX) / 2 + topX;
+  const labelBgWidth = 90;
+  const labelBgHeight = 30;
+  // check to see if label is cut off by the canvas edge, if so, move it to the bottom of the bounding box
+  const xValue = boxMidX;
+  let yValue = topY - 8;
+  if (topY <= 40) {
+    yValue = bottomY + 23;
+  }
+  ctx.beginPath();
+  ctx.fillStyle = "white";
+  ctx.fillRect(
+    boxMidX - (labelBgWidth / 2),
+    topY - labelBgHeight,
+    labelBgWidth,
+    labelBgHeight,
+  );
+  //ctx.fillRect(topX, topY - 30, 90, 30);
+  // draw label index
+  ctx.font = "bold 2.5vh Arial";
+  ctx.fillStyle = "black";
+  ctx.textAlign = "center";
+  if (switchTable) {
+    ctx.fillText(`[${labelIndex + 1}] - ${scorePercentage}%`, xValue, yValue);
+  } else {
+    ctx.fillText(`[${index + 1}]`, xValue, yValue);
+  }
+  ctx.closePath();
+};
+
+const drawBox = (
+  box: Images["boxes"][0],
+  ctx: CanvasRenderingContext2D,
+): void => {
+  const bottomY = box.bottomY;
+  const topY = box.topY;
+  const bottomX = box.bottomX;
+  const topX = box.topX;
+  ctx.beginPath();
+
+  // draw bounding box
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = "red";
+  ctx.rect(topX, topY, bottomX - topX, bottomY - topY);
+  ctx.stroke();
+  ctx.closePath();
+};
+
 const drawBoxes = (
   imageData: Images,
   selectedLabel: string,
@@ -24,53 +100,36 @@ const drawBoxes = (
   if (imageData.scores == null) {
     throw new ValueError("Image object is missing scores");
   }
-  imageData.classifications.forEach((prediction, index) => {
-    if (prediction === selectedLabel || selectedLabel === "all") {
-      const bottomY = imageData.boxes[index].bottomY;
-      const topY = imageData.boxes[index].topY;
-      const bottomX = imageData.boxes[index].bottomX;
-      const topX = imageData.boxes[index].topX;
-      ctx.beginPath();
-      // draw label index
-      ctx.font = "bold 0.9vw Arial";
-      ctx.fillStyle = "black";
-      ctx.textAlign = "center";
-      Object.keys(labelOccurrences).forEach((key, labelIndex) => {
-        const scorePercentage = (imageData.scores[index] * 100).toFixed(0);
-        // check to see if label is cut off by the canvas edge, if so, move it to the bottom of the bounding box
-        const xValue = (bottomX - topX) / 2 + topX;
-        let yValue = topY - 8;
-        if (topY <= 40) {
-          yValue = bottomY + 23;
-        }
-        if (prediction === key) {
-          if (switchTable) {
-            ctx.fillText(
-              `[${labelIndex + 1}] - ${scorePercentage}%`,
-              xValue,
-              yValue,
-            );
-          } else {
-            ctx.fillText(`[${index + 1}]`, xValue, yValue);
-          }
-        }
-      });
-      // draw bounding box
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = "red";
-      ctx.rect(topX, topY, bottomX - topX, bottomY - topY);
-      ctx.stroke();
-      ctx.closePath();
-    }
-    // capture label in bottom left
-    ctx.beginPath();
-    ctx.font = "bold 0.9vw Arial";
-    ctx.textAlign = "left";
-    ctx.fillStyle = "#4ee44e";
-    ctx.fillText(`Capture ${imageData.index}`, 10, canvas.height - 15);
-    ctx.stroke();
-    ctx.closePath();
+  let selectedClassifications = imageData.classifications;
+
+  if (selectedLabel !== "all") {
+    selectedClassifications = imageData.classifications.filter(
+      (prediction) => prediction === selectedLabel,
+    );
+  }
+  selectedClassifications.forEach((_prediction, index) => {
+    drawBox(imageData.boxes[index], ctx);
   });
+  selectedClassifications.forEach((prediction, index) => {
+    drawBoxLabel(
+      imageData.boxes[index],
+      imageData.scores[index],
+      index,
+      ctx,
+      prediction,
+      labelOccurrences,
+      switchTable,
+    );
+  });
+
+  // capture label in bottom left
+  ctx.beginPath();
+  ctx.font = "bold 0.9vw Arial";
+  ctx.textAlign = "left";
+  ctx.fillStyle = "#4ee44e";
+  ctx.fillText(`Capture ${imageData.index}`, 10, canvas.height - 15);
+  ctx.stroke();
+  ctx.closePath();
 };
 
 export const drawImage = async (
@@ -113,6 +172,7 @@ export const loadToCanvas = async (
   selectedLabel: string,
   labelOccurrences: any,
   switchTable: boolean,
+  showInference: boolean,
 ): Promise<void> => {
   // loads the current image to the canvas and draws the bounding boxes and labels,
   // should update whenever a change is made to the image cache or the score threshold and the selected label is changed
@@ -130,14 +190,16 @@ export const loadToCanvas = async (
   } else {
     await drawImage(canvas, ctx, imageData.src);
   }
-  drawBoxes(
-    imageData,
-    selectedLabel,
-    labelOccurrences,
-    switchTable,
-    canvas,
-    ctx,
-  );
+  if (showInference) {
+    drawBoxes(
+      imageData,
+      selectedLabel,
+      labelOccurrences,
+      switchTable,
+      canvas,
+      ctx,
+    );
+  }
 };
 
 export const fetchArrayBuffer = async (

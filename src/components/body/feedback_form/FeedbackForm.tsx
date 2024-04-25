@@ -17,6 +17,7 @@ import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import { useState, MouseEvent } from "react";
 import styled from "styled-components";
 import { SpeciesData } from "../../../common/types";
+import EditIcon from "@mui/icons-material/Edit";
 
 const FeedbackPopover = styled(Popover)`
   .MuiPopover-paper {
@@ -33,12 +34,14 @@ const getSpeciesLabel = (speciesData: SpeciesData): string => {
 interface SimpleFeedbackFormProps {
   anchorEl: HTMLButtonElement | null;
   onClose: () => void;
+  canvasRef: React.RefObject<HTMLCanvasElement>;
+  toggleShowInference: (state: boolean) => void;
 }
 
 export const SimpleFeedbackForm = (
   props: SimpleFeedbackFormProps,
 ): JSX.Element => {
-  const { anchorEl, onClose } = props;
+  const { anchorEl, onClose, canvasRef, toggleShowInference } = props;
   const [childAnchorEl, setChildAnchorEl] = useState<HTMLButtonElement | null>(
     null,
   );
@@ -94,6 +97,8 @@ export const SimpleFeedbackForm = (
         <NegativeFeedbackForm
           anchorEl={childAnchorEl}
           onClose={() => setChildAnchorEl(null)}
+          canvasRef={canvasRef}
+          toggleShowInference={toggleShowInference}
         />
       </Box>
     </Popover>
@@ -103,12 +108,14 @@ export const SimpleFeedbackForm = (
 interface NegativeFeedbackFormProps {
   anchorEl: HTMLButtonElement | null;
   onClose: () => void;
+  canvasRef: React.RefObject<HTMLCanvasElement>;
+  toggleShowInference: (state: boolean) => void;
 }
 
 export const NegativeFeedbackForm = (
   props: NegativeFeedbackFormProps,
 ): JSX.Element => {
-  const { anchorEl, onClose } = props;
+  const { anchorEl, onClose, canvasRef, toggleShowInference } = props;
   const [showInput, setShowInput] = useState<boolean>(false);
   const open = Boolean(anchorEl);
   const id = open ? "negative-feedback" : undefined;
@@ -141,6 +148,7 @@ export const NegativeFeedbackForm = (
   /* Section stub convert to prop or use state when backend defined */
 
   const handleClose = () => {
+    toggleShowInference(true);
     onClose();
   };
 
@@ -210,6 +218,24 @@ export const NegativeFeedbackForm = (
             }}
           ></FormControlLabel>
         </RadioGroup>
+        <Button
+          color="inherit"
+          variant="outlined"
+          // disabled={disabled}
+          onClick={() => toggleShowInference(false)}
+          //sx={buttonStyle}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            {<EditIcon />}
+            <span>Adjust Bounding Box</span>
+          </div>
+        </Button>
         {showInput && (
           <Autocomplete
             id="wrong-seed-in-list"
