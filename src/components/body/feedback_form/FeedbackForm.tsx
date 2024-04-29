@@ -36,12 +36,14 @@ interface SimpleFeedbackFormProps {
   onClose: () => void;
   canvasRef: React.RefObject<HTMLCanvasElement>;
   toggleShowInference: (state: boolean) => void;
+  toggleEditMode: () => void;
 }
 
 export const SimpleFeedbackForm = (
   props: SimpleFeedbackFormProps,
 ): JSX.Element => {
-  const { anchorEl, onClose, canvasRef, toggleShowInference } = props;
+  const { anchorEl, onClose, canvasRef, toggleShowInference, toggleEditMode } =
+    props;
   const [childAnchorEl, setChildAnchorEl] = useState<HTMLButtonElement | null>(
     null,
   );
@@ -51,6 +53,17 @@ export const SimpleFeedbackForm = (
 
   const handleNegativeFeedback = (event: MouseEvent<HTMLButtonElement>) => {
     setChildAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setChildAnchorEl(null);
+    onClose();
+  };
+
+  const handleEditMode = () => {
+    toggleShowInference(false);
+    toggleEditMode();
+    handleClose();
   };
 
   return (
@@ -96,9 +109,9 @@ export const SimpleFeedbackForm = (
         </IconButton>
         <NegativeFeedbackForm
           anchorEl={childAnchorEl}
-          onClose={() => setChildAnchorEl(null)}
+          onClose={handleClose}
           canvasRef={canvasRef}
-          toggleShowInference={toggleShowInference}
+          handleEditMode={handleEditMode}
         />
       </Box>
     </Popover>
@@ -109,13 +122,13 @@ interface NegativeFeedbackFormProps {
   anchorEl: HTMLButtonElement | null;
   onClose: () => void;
   canvasRef: React.RefObject<HTMLCanvasElement>;
-  toggleShowInference: (state: boolean) => void;
+  handleEditMode: () => void;
 }
 
 export const NegativeFeedbackForm = (
   props: NegativeFeedbackFormProps,
 ): JSX.Element => {
-  const { anchorEl, onClose, canvasRef, toggleShowInference } = props;
+  const { anchorEl, onClose, canvasRef, handleEditMode } = props;
   const [showInput, setShowInput] = useState<boolean>(false);
   const open = Boolean(anchorEl);
   const id = open ? "negative-feedback" : undefined;
@@ -146,9 +159,17 @@ export const NegativeFeedbackForm = (
     },
   ];
   /* Section stub convert to prop or use state when backend defined */
+  const handleBoundingBoxAdjustment = () => {
+    handleEditMode();
+    if (canvasRef.current) {
+      canvasRef.current.style.zIndex = "100";
+    }
+  };
 
   const handleClose = () => {
-    toggleShowInference(true);
+    if (canvasRef.current) {
+      canvasRef.current.style.zIndex = "0";
+    }
     onClose();
   };
 
@@ -222,7 +243,7 @@ export const NegativeFeedbackForm = (
           color="inherit"
           variant="outlined"
           // disabled={disabled}
-          onClick={() => toggleShowInference(false)}
+          onClick={handleBoundingBoxAdjustment}
           //sx={buttonStyle}
         >
           <div

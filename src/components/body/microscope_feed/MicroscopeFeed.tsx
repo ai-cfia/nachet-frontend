@@ -235,8 +235,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
                   left: 0,
                 }}
               >
-                {!isLoading &&
-                  imageData !== null &&
+                {imageData !== null &&
                   imageData.boxes.map((box, index) => {
                     return (
                       <ScaledInferenceBox
