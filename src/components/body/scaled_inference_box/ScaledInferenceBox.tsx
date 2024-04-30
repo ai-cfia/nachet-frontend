@@ -66,6 +66,11 @@ const ScaledInferenceBox = (props: {
     },
   };
 
+  const handleFreeformClose = () => {
+    toggleShowInference(true);
+    setAdjustMode(false);
+  }
+
   return (
     <>
       <Button sx={style} onClick={handleClick} />
@@ -79,7 +84,7 @@ const ScaledInferenceBox = (props: {
       <FreeformBox
         position={boxPosition}
         open={adjustMode}
-        toggleShowInference={toggleShowInference}
+        handleClose={handleFreeformClose}
       />
     </>
   );
