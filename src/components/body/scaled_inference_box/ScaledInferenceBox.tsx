@@ -31,9 +31,9 @@ const ScaledInferenceBox = (props: {
   const [adjustMode, setAdjustMode] = useState<boolean>(false);
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
-    // if (FEATURE_FLAG) {
-    //   return;
-    // }
+    if (FEATURE_FLAG) {
+      return;
+    }
     setAnchorEl(event.currentTarget);
   };
 
@@ -69,7 +69,7 @@ const ScaledInferenceBox = (props: {
   const handleFreeformClose = () => {
     toggleShowInference(true);
     setAdjustMode(false);
-  }
+  };
 
   return (
     <>

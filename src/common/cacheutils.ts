@@ -34,7 +34,7 @@ const drawBoxLabel = (
   const scorePercentage = (score * 100).toFixed(0);
   const boxMidX = (bottomX - topX) / 2 + topX;
   const labelBgWidth = 90;
-  const labelBgHeight = 30;
+  const labelBgHeight = 25;
   // check to see if label is cut off by the canvas edge, if so, move it to the bottom of the bounding box
   const xValue = boxMidX;
   let yValue = topY - 8;
@@ -44,10 +44,10 @@ const drawBoxLabel = (
   ctx.beginPath();
   ctx.fillStyle = "white";
   ctx.fillRect(
-    boxMidX - (labelBgWidth / 2),
+    boxMidX - labelBgWidth / 2,
     topY - labelBgHeight,
     labelBgWidth,
-    labelBgHeight,
+    labelBgHeight - 2,
   );
   //ctx.fillRect(topX, topY - 30, 90, 30);
   // draw label index
