@@ -3,7 +3,6 @@
 import Webcam from "react-webcam";
 import { useEffect, useState } from "react";
 import { Box, Button } from "@mui/material";
-import { colours } from "../../../styles/colours";
 import { Canvas } from "./indexElements";
 // Import icons
 import SwitchCameraIcon from "@mui/icons-material/SwitchCamera";
