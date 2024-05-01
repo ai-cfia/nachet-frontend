@@ -1,3 +1,4 @@
 import { SimpleFeedbackForm, NegativeFeedbackForm } from "./FeedbackForm";
+import FreeformBox from "./FreeformBox";
 
-export { SimpleFeedbackForm, NegativeFeedbackForm };
+export { SimpleFeedbackForm, NegativeFeedbackForm, FreeformBox };

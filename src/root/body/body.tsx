@@ -75,6 +75,7 @@ const Body: React.FC<params> = (props) => {
   const decodedTiff = useDecoderTiff(imageTiff);
   const backendUrl = useBackendUrl();
   const [metadata, setMetadata] = useState<ModelMetadata[]>([]);
+  const [showInference, setShowInference] = useState<boolean>(true);
 
   const captureFeed = (): void => {
     // takes screenshot of webcam feed and loads it to cache when capture button is pressed
@@ -175,6 +176,7 @@ const Body: React.FC<params> = (props) => {
       selectedLabel,
       labelOccurrences,
       switchTable,
+      showInference,
     );
   }, [
     selectedLabel,
@@ -184,6 +186,7 @@ const Body: React.FC<params> = (props) => {
     imageCache,
     imageIndex,
     isWebcamActive,
+    showInference,
   ]);
 
   useEffect(() => {
@@ -367,6 +370,7 @@ const Body: React.FC<params> = (props) => {
         onImageUpload={handleImageUpload}
         modelDisplayName={modelDisplayName}
         isLoading={isLoading}
+        toggleShowInference={(state: boolean) => setShowInference(state)}
       />
     </BodyContainer>
   );

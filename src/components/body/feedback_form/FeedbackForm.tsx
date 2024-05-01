@@ -17,6 +17,7 @@ import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import { useState, MouseEvent } from "react";
 import styled from "styled-components";
 import { SpeciesData } from "../../../common/types";
+import EditIcon from "@mui/icons-material/Edit";
 
 const FeedbackPopover = styled(Popover)`
   .MuiPopover-paper {
@@ -33,12 +34,16 @@ const getSpeciesLabel = (speciesData: SpeciesData): string => {
 interface SimpleFeedbackFormProps {
   anchorEl: HTMLButtonElement | null;
   onClose: () => void;
+  canvasRef: React.RefObject<HTMLCanvasElement>;
+  toggleShowInference: (state: boolean) => void;
+  toggleEditMode: () => void;
 }
 
 export const SimpleFeedbackForm = (
   props: SimpleFeedbackFormProps,
 ): JSX.Element => {
-  const { anchorEl, onClose } = props;
+  const { anchorEl, onClose, canvasRef, toggleShowInference, toggleEditMode } =
+    props;
   const [childAnchorEl, setChildAnchorEl] = useState<HTMLButtonElement | null>(
     null,
   );
@@ -48,6 +53,17 @@ export const SimpleFeedbackForm = (
 
   const handleNegativeFeedback = (event: MouseEvent<HTMLButtonElement>) => {
     setChildAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setChildAnchorEl(null);
+    onClose();
+  };
+
+  const handleEditMode = () => {
+    toggleShowInference(false);
+    toggleEditMode();
+    handleClose();
   };
 
   return (
@@ -93,7 +109,9 @@ export const SimpleFeedbackForm = (
         </IconButton>
         <NegativeFeedbackForm
           anchorEl={childAnchorEl}
-          onClose={() => setChildAnchorEl(null)}
+          onClose={handleClose}
+          canvasRef={canvasRef}
+          handleEditMode={handleEditMode}
         />
       </Box>
     </Popover>
@@ -103,12 +121,14 @@ export const SimpleFeedbackForm = (
 interface NegativeFeedbackFormProps {
   anchorEl: HTMLButtonElement | null;
   onClose: () => void;
+  canvasRef: React.RefObject<HTMLCanvasElement>;
+  handleEditMode: () => void;
 }
 
 export const NegativeFeedbackForm = (
   props: NegativeFeedbackFormProps,
 ): JSX.Element => {
-  const { anchorEl, onClose } = props;
+  const { anchorEl, onClose, canvasRef, handleEditMode } = props;
   const [showInput, setShowInput] = useState<boolean>(false);
   const open = Boolean(anchorEl);
   const id = open ? "negative-feedback" : undefined;
@@ -139,8 +159,17 @@ export const NegativeFeedbackForm = (
     },
   ];
   /* Section stub convert to prop or use state when backend defined */
+  const handleBoundingBoxAdjustment = () => {
+    handleEditMode();
+    if (canvasRef.current) {
+      canvasRef.current.style.zIndex = "100";
+    }
+  };
 
   const handleClose = () => {
+    if (canvasRef.current) {
+      canvasRef.current.style.zIndex = "0";
+    }
     onClose();
   };
 
@@ -210,6 +239,24 @@ export const NegativeFeedbackForm = (
             }}
           ></FormControlLabel>
         </RadioGroup>
+        <Button
+          color="inherit"
+          variant="outlined"
+          // disabled={disabled}
+          onClick={handleBoundingBoxAdjustment}
+          //sx={buttonStyle}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            {<EditIcon />}
+            <span>Adjust Bounding Box</span>
+          </div>
+        </Button>
         {showInput && (
           <Autocomplete
             id="wrong-seed-in-list"
