@@ -1,6 +1,6 @@
 import { describe, it } from "vitest";
 import { loadResultsToCache } from "../cacheutils";
-import { ApiModelData, Images } from "../types";
+import { ApiInferenceData, Images } from "../types";
 
 describe("loadResultsToCache", () => {
   let imageCache: Images[] = [
@@ -18,7 +18,7 @@ describe("loadResultsToCache", () => {
     },
   ];
 
-  let inferenceData: ApiModelData = {
+  let inferenceData: ApiInferenceData = {
     filename: "test",
     boxes: [
       {

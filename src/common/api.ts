@@ -1,6 +1,6 @@
 import axios from "axios";
 import { AzureAPIError, ValueError } from "./error";
-import { ApiModelData, Images, ModelMetadata } from "./types";
+import { ApiInferenceData, Images, ModelMetadata } from "./types";
 
 const handleAxios = async <T>(request: {
   method: string;
@@ -122,7 +122,7 @@ export const inferenceRequest = async (
   imageObject: Images,
   curDir: string,
   uuid: string,
-): Promise<ApiModelData[]> => {
+): Promise<ApiInferenceData[]> => {
   if (backendUrl === "" || backendUrl == null) {
     throw new ValueError("Backend URL is null or empty");
   }
@@ -153,7 +153,7 @@ export const inferenceRequest = async (
       container_name: uuid,
     },
   };
-  return handleAxios<ApiModelData[]>(request);
+  return handleAxios<ApiInferenceData[]>(request);
 };
 
 export const fetchModelMetadata = async (
