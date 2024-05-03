@@ -15,9 +15,10 @@ import DonutSmallIcon from "@mui/icons-material/DonutSmall";
 
 // Import a loading icon component (ensure you have this)
 import CircularProgress from "@mui/material/CircularProgress";
-import { Images } from "../../../common/types";
+import { FeedbackData, Images } from "../../../common/types";
 
 import ScaledInferenceBox from "../scaled_inference_box";
+import { sendFeedbackSingle } from "../../../common/api";
 interface MicroscopeFeedProps {
   webcamRef: React.RefObject<Webcam>;
   capture: () => void;
@@ -38,6 +39,7 @@ interface MicroscopeFeedProps {
     height: number;
   };
   toggleShowInference: (state: boolean) => void;
+  backendUrl: string;
 }
 
 const ButtonMicroscopeFeed = (props: {
@@ -103,8 +105,11 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
     onCaptureClick,
     windowSize,
     toggleShowInference,
+    backendUrl,
   } = props;
+
   const [imageData, setImageData] = useState<Images | null>(null);
+
   const width = windowSize.width * 0.575;
   const height = windowSize.height * 0.605;
   const iconStyle = {
@@ -118,6 +123,37 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
     paddingBottom: 0,
     paddingLeft: 0,
   };
+
+  const feedbackData: FeedbackData = {
+    imageId: 0,
+    class: "",
+    topX: 0,
+    topY: 0,
+    bottomX: 0,
+    bottomY: 0,
+  };
+
+  const submitPositiveFeedback = (index: number) => {
+    if (imageData === null) {
+      return;
+    }
+    console.log("Submitting positive feedback for key: ", index);
+    feedbackData.imageId = imageData.imageId || 0;
+    feedbackData.class = imageData.classifications[index];
+    feedbackData.topX = imageData.boxes[index].topX;
+    feedbackData.topY = imageData.boxes[index].topY;
+    feedbackData.bottomX = imageData.boxes[index].bottomX;
+    feedbackData.bottomY = imageData.boxes[index].bottomY;
+
+    sendFeedbackSingle(feedbackData, backendUrl)
+      .then(() => {
+        console.log("Feedback submitted successfully");
+      })
+      .catch((error) => {
+        console.error("Error submitting feedback: ", error);
+      });
+  };
+
   useEffect(() => {
     if (imageCache.length > 0) {
       const image = imageCache.find((image) => image.index === imageIndex);
@@ -239,6 +275,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
                     return (
                       <ScaledInferenceBox
                         key={index}
+                        index={index}
                         box={box}
                         label={
                           String((imageData.scores[index] * 100).toFixed(0)) +
@@ -251,6 +288,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
                         visible={true}
                         canvasRef={canvasRef}
                         toggleShowInference={toggleShowInference}
+                        submitPositiveFeedback={submitPositiveFeedback}
                       />
                     );
                   })}

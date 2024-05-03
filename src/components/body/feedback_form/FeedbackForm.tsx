@@ -19,6 +19,8 @@ import styled from "styled-components";
 import { SpeciesData } from "../../../common/types";
 import EditIcon from "@mui/icons-material/Edit";
 
+const FEATURE_FLAG = true;
+
 const FeedbackPopover = styled(Popover)`
   .MuiPopover-paper {
     padding: 10px;
@@ -37,13 +39,20 @@ interface SimpleFeedbackFormProps {
   canvasRef: React.RefObject<HTMLCanvasElement>;
   toggleShowInference: (state: boolean) => void;
   toggleEditMode: () => void;
+  submitPositiveFeedback: () => void;
 }
 
 export const SimpleFeedbackForm = (
   props: SimpleFeedbackFormProps,
 ): JSX.Element => {
-  const { anchorEl, onClose, canvasRef, toggleShowInference, toggleEditMode } =
-    props;
+  const {
+    anchorEl,
+    onClose,
+    canvasRef,
+    toggleShowInference,
+    toggleEditMode,
+    submitPositiveFeedback,
+  } = props;
   const [childAnchorEl, setChildAnchorEl] = useState<HTMLButtonElement | null>(
     null,
   );
@@ -51,7 +60,15 @@ export const SimpleFeedbackForm = (
   const open = Boolean(anchorEl);
   const id = open ? "simple-feedback" : undefined;
 
+  const handlePositiveFeedback = () => {
+    submitPositiveFeedback();
+    handleClose();
+  };
+
   const handleNegativeFeedback = (event: MouseEvent<HTMLButtonElement>) => {
+    if (FEATURE_FLAG) {
+      return;
+    }
     setChildAnchorEl(event.currentTarget);
   };
 
@@ -92,7 +109,7 @@ export const SimpleFeedbackForm = (
           flexWrap: "wrap",
         }}
       >
-        <IconButton size="small">
+        <IconButton size="small" onClick={handlePositiveFeedback}>
           <CheckCircleOutlinedIcon
             sx={{
               color: "green",

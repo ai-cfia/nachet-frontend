@@ -1,6 +1,6 @@
 import axios from "axios";
 import { AzureAPIError, ValueError } from "./error";
-import { ApiInferenceData, Images, ModelMetadata } from "./types";
+import { ApiInferenceData, FeedbackData, Images, ModelMetadata } from "./types";
 
 const handleAxios = async <T>(request: {
   method: string;
@@ -172,4 +172,23 @@ export const fetchModelMetadata = async (
     data: {},
   };
   return handleAxios<ModelMetadata[]>(request);
+};
+
+export const sendFeedbackSingle = async (
+  feedbackData: FeedbackData,
+  backendUrl: string,
+): Promise<void> => {
+  if (backendUrl === "" || backendUrl == null) {
+    throw new ValueError("Backend URL is null or empty");
+  }
+  const request = {
+    method: "post",
+    url: `${backendUrl}/feedback`,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    data: feedbackData,
+  };
+  return handleAxios(request);
 };

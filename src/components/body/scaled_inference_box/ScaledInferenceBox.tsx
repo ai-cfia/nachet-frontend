@@ -4,9 +4,8 @@ import { Images } from "../../../common/types";
 import { FreeformBox, SimpleFeedbackForm } from "../feedback_form";
 import { getScaledBounds } from "../../../common";
 
-const FEATURE_FLAG = true;
-
 const ScaledInferenceBox = (props: {
+  index: number;
   imageWidth: number;
   imageHeight: number;
   box: Images["boxes"][0];
@@ -16,8 +15,10 @@ const ScaledInferenceBox = (props: {
   visible: boolean;
   canvasRef: React.RefObject<HTMLCanvasElement>;
   toggleShowInference: (state: boolean) => void;
+  submitPositiveFeedback: (index: number) => void;
 }): JSX.Element => {
   const {
+    index,
     box,
     visible,
     imageWidth,
@@ -26,14 +27,12 @@ const ScaledInferenceBox = (props: {
     canvasHeight,
     canvasRef,
     toggleShowInference,
+    submitPositiveFeedback,
   } = props;
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [adjustMode, setAdjustMode] = useState<boolean>(false);
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
-    if (FEATURE_FLAG) {
-      return;
-    }
     setAnchorEl(event.currentTarget);
   };
 
@@ -80,6 +79,7 @@ const ScaledInferenceBox = (props: {
         canvasRef={canvasRef}
         toggleShowInference={toggleShowInference}
         toggleEditMode={() => setAdjustMode(!adjustMode)}
+        submitPositiveFeedback={() => submitPositiveFeedback(index)}
       />
       <FreeformBox
         position={boxPosition}
