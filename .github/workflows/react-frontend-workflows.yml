@@ -30,7 +30,7 @@ jobs:
     secrets: inherit
 
   deploy-gh-pages:
-    uses: ai-cfia/github-workflows/.github/workflows/workflow-gh-pages-deployment.yml@59-fix-github-pages-deployment-for-nachet-backend
+    uses: ai-cfia/github-workflows/.github/workflows/workflow-gh-pages-deployment.yml@main
     with:
       node-version: 18
       publish-dir: ./build
