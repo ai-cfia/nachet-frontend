@@ -214,12 +214,13 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
             height={height}
             style={{ objectFit: "cover" }}
             videoConstraints={{
-              width: width,
-              height,
+              width: 1920,
+              height: 1080,
               deviceId: activeDeviceId,
             }}
             screenshotFormat="image/png"
             screenshotQuality={1}
+            forceScreenshotSourceSize={true}
           />
         ) : (
           <>
