@@ -246,16 +246,17 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
           <Webcam
             ref={webcamRef}
             mirrored={false}
-            width={width}
-            height={height}
-            style={{ objectFit: "cover" }}
+            width="100%"
+            height="100%"
+            style={{ objectFit: "fill" }}
             videoConstraints={{
-              width: width,
-              height,
+              width: 1920,
+              height: 1080,
               deviceId: activeDeviceId,
             }}
             screenshotFormat="image/png"
             screenshotQuality={1}
+            forceScreenshotSourceSize={true}
           />
         ) : (
           <>
