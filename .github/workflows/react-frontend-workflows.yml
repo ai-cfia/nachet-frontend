@@ -28,3 +28,11 @@ jobs:
       tag: ${{ github.sha }}
       registry: ghcr.io/ai-cfia
     secrets: inherit
+
+  deploy-gh-pages:
+    uses: ai-cfia/github-workflows/.github/workflows/workflow-gh-pages-deployment.yml@59-fix-github-pages-deployment-for-nachet-backend
+    with:
+      node-version: 18
+      publish-dir: ./build
+      cache-dependency-path: .
+    secrets: inherit
