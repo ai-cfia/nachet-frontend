@@ -2,7 +2,7 @@ import React from "react";
 import UTIF from "utif";
 import { BlobError, DecodeError, FetchError, ValueError } from "../common";
 import { DecodedTiff } from "../hooks/useDecoderTiff";
-import { ApiModelData, Images, LabelOccurrences } from "./types";
+import { ApiInferenceData, Images, LabelOccurrences } from "./types";
 
 const getInferenceLabelIndex = (
   prediction: string,
@@ -337,7 +337,7 @@ export const loadCaptureToCache = async (
 };
 
 export const loadResultsToCache = (
-  inferenceData: ApiModelData,
+  inferenceData: ApiInferenceData,
   imageCache: Images[],
   imageIndex: number,
 ): Images[] => {

@@ -1,5 +1,6 @@
 export interface Images {
   index: number;
+  imageId?: number; // TODO convert to required once backend is implemented
   src: string;
   scores: number[];
   classifications: string[];
@@ -16,11 +17,34 @@ export interface Images {
   topN: Array<Array<{ score: number; label: string }>>;
 }
 
+export interface InferenceData {
+  imageId: number;
+  model_name: string;
+  boxes: Array<{
+    topX: number;
+    topY: number;
+    bottomX: number;
+    bottomY: number;
+  }>;
+  scores: number[];
+  classifications: string[];
+  topN: Array<Array<{ score: number; label: string }>>;
+}
+
+export interface FeedbackData {
+  imageId: number;
+  class: string;
+  topX: number;
+  topY: number;
+  bottomX: number;
+  bottomY: number;
+}
+
 export interface LabelOccurrences {
   [label: string]: number;
 }
 
-export interface ApiModelData {
+export interface ApiInferenceData {
   filename: string;
   boxes: Array<{
     topN: Array<{ score: number; label: string }>;
@@ -48,6 +72,15 @@ interface SpeciesData {
 }
 
 export interface ModelMetadata {
+  created_by: string;
+  creation_date: string;
+  dataset: string;
+  description: string;
+  identifiable: string[]; // TODO verify against backend spec
+  job_name: string;
+  metrics: string[]; // TODO verify against backend spec
   model_name: string;
+  models: string[];
+  pipeline_name: string;
   default?: boolean;
 }

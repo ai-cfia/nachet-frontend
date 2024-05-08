@@ -371,6 +371,7 @@ const Body: React.FC<params> = (props) => {
         modelDisplayName={modelDisplayName}
         isLoading={isLoading}
         toggleShowInference={(state: boolean) => setShowInference(state)}
+        backendUrl={backendUrl}
       />
     </BodyContainer>
   );
