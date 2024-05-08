@@ -1,0 +1,16 @@
+name: React frontend deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  deploy-gh-pages:
+    uses: ai-cfia/github-workflows/.github/workflows/workflow-gh-pages-deployment.yml@main
+    with:
+      node-version: 18
+      publish-dir: ./build
+      cache-dependency-path: .
+    secrets: inherit
