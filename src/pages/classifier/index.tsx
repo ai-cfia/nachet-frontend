@@ -52,6 +52,7 @@ interface params {
   isLoading: boolean; // Add this line
   toggleShowInference: (state: boolean) => void;
   backendUrl: string;
+  uuid: string;
 }
 
 const Classifier: React.FC<params> = (props) => {
@@ -77,6 +78,7 @@ const Classifier: React.FC<params> = (props) => {
             onCaptureClick={props.onCaptureClick}
             toggleShowInference={props.toggleShowInference}
             backendUrl={props.backendUrl}
+            uuid={props.uuid}
           />
         </LeftContent>
         <InfoContent>

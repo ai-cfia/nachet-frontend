@@ -20,10 +20,12 @@ describe("loadResultsToCache", () => {
 
   let inferenceData: ApiInferenceData = {
     filename: "test",
+    inferenceId: "test",
     boxes: [
       {
         score: 0.1,
         label: "a",
+        boxId: "0",
         box: {
           topX: 1,
           topY: 1,
@@ -37,6 +39,7 @@ describe("loadResultsToCache", () => {
       {
         score: 0.2,
         label: "b",
+        boxId: "1",
         box: {
           topX: 2,
           topY: 2,
@@ -50,6 +53,7 @@ describe("loadResultsToCache", () => {
       {
         score: 0.3,
         label: "c",
+        boxId: "2",
         box: {
           topX: 3,
           topY: 3,
@@ -83,10 +87,12 @@ describe("loadResultsToCache", () => {
 
     inferenceData = {
       filename: "test",
+      inferenceId: "test",
       boxes: [
         {
           score: 0.1,
           label: "a",
+          boxId: "0",
           box: {
             topX: 1,
             topY: 1,
@@ -100,6 +106,7 @@ describe("loadResultsToCache", () => {
         {
           score: 0.2,
           label: "b",
+          boxId: "1",
           box: {
             topX: 2,
             topY: 2,
@@ -113,6 +120,7 @@ describe("loadResultsToCache", () => {
         {
           score: 0.3,
           label: "c",
+          boxId: "2",
           box: {
             topX: 3,
             topY: 3,

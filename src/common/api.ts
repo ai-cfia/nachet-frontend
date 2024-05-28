@@ -1,6 +1,12 @@
 import axios from "axios";
 import { AzureAPIError, ValueError } from "./error";
-import { ApiInferenceData, FeedbackData, Images, ModelMetadata } from "./types";
+import {
+  ApiInferenceData,
+  FeedbackDataNegative,
+  FeedbackDataPositive,
+  Images,
+  ModelMetadata,
+} from "./types";
 
 const handleAxios = async <T>(request: {
   method: string;
@@ -174,8 +180,8 @@ export const fetchModelMetadata = async (
   return handleAxios<ModelMetadata[]>(request);
 };
 
-export const sendFeedbackSingle = async (
-  feedbackData: FeedbackData,
+export const sendFeedbackNewBox = async (
+  feedbackData: FeedbackDataNegative,
   backendUrl: string,
 ): Promise<void> => {
   if (backendUrl === "" || backendUrl == null) {
@@ -183,7 +189,45 @@ export const sendFeedbackSingle = async (
   }
   const request = {
     method: "post",
-    url: `${backendUrl}/feedback`,
+    url: `${backendUrl}/feedback-new-box`,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    data: feedbackData,
+  };
+  return handleAxios(request);
+};
+
+export const sendPositiveFeedback = async (
+  feedbackData: FeedbackDataPositive,
+  backendUrl: string,
+): Promise<void> => {
+  if (backendUrl === "" || backendUrl == null) {
+    throw new ValueError("Backend URL is null or empty");
+  }
+  const request = {
+    method: "post",
+    url: `${backendUrl}/feedback-positive`,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    data: feedbackData,
+  };
+  return handleAxios(request);
+};
+
+export const sendNegativeFeedback = async (
+  feedbackData: FeedbackDataNegative,
+  backendUrl: string,
+): Promise<void> => {
+  if (backendUrl === "" || backendUrl == null) {
+    throw new ValueError("Backend URL is null or empty");
+  }
+  const request = {
+    method: "post",
+    url: `${backendUrl}/feedback-negative`,
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
