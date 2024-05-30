@@ -42,22 +42,6 @@ export interface Images {
   topN: Array<Array<{ score: number; label: string }>>;
 }
 
-// export interface InferenceData {
-//   imageId: number;
-//   inferenceId: number;
-//   model_name: string;
-//   boxes: Array<{
-//     boxId: number;
-//     topX: number;
-//     topY: number;
-//     bottomX: number;
-//     bottomY: number;
-//   }>;
-//   scores: number[];
-//   classifications: string[];
-//   topN: Array<Array<{ score: number; label: string }>>;
-// }
-
 interface FeedbackData {
   userId: string;
   inferenceId: string;
