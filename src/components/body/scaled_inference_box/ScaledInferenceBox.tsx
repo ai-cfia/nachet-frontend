@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import { MouseEvent, useState } from "react";
-import { Images } from "../../../common/types";
-import { FreeformBox, SimpleFeedbackForm } from "../feedback_form";
+import { BoxCSS, Images } from "../../../common/types";
+import { SimpleFeedbackForm } from "../feedback_form";
 import { getScaledBounds } from "../../../common";
 
 const ScaledInferenceBox = (props: {
@@ -13,9 +13,11 @@ const ScaledInferenceBox = (props: {
   canvasHeight: number;
   label: string;
   visible: boolean;
-  canvasRef: React.RefObject<HTMLCanvasElement>;
-  toggleShowInference: (state: boolean) => void;
   submitPositiveFeedback: (index: number) => void;
+  handleNegativeFeedback: (
+    index: number | null,
+    boxPosition: BoxCSS | null,
+  ) => void;
 }): JSX.Element => {
   const {
     index,
@@ -25,12 +27,10 @@ const ScaledInferenceBox = (props: {
     imageHeight,
     canvasWidth,
     canvasHeight,
-    canvasRef,
-    toggleShowInference,
     submitPositiveFeedback,
+    handleNegativeFeedback,
   } = props;
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const [adjustMode, setAdjustMode] = useState<boolean>(false);
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -44,7 +44,7 @@ const ScaledInferenceBox = (props: {
     box,
   );
 
-  const boxPosition = {
+  const boxPosition: BoxCSS = {
     minWidth: scaledWidth,
     minHeight: scaledHeight,
     maxWidth: scaledWidth,
@@ -65,26 +65,16 @@ const ScaledInferenceBox = (props: {
     },
   };
 
-  const handleFreeformClose = () => {
-    toggleShowInference(true);
-    setAdjustMode(false);
-  };
-
   return (
     <>
       <Button sx={style} onClick={handleClick} />
       <SimpleFeedbackForm
         anchorEl={anchorEl}
         onClose={() => setAnchorEl(null)}
-        canvasRef={canvasRef}
-        toggleShowInference={toggleShowInference}
-        toggleEditMode={() => setAdjustMode(!adjustMode)}
         submitPositiveFeedback={() => submitPositiveFeedback(index)}
-      />
-      <FreeformBox
-        position={boxPosition}
-        open={adjustMode}
-        handleClose={handleFreeformClose}
+        handleNegativeFeedback={() =>
+          handleNegativeFeedback(index, boxPosition)
+        }
       />
     </>
   );
