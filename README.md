@@ -90,6 +90,32 @@ replace `.` with the relative path of any specific file or directory you wish
 to format. This allows for targeted formatting, ensuring that only the desired
 sections of your codebase are adjusted.
 
+### Running the application with docker
+
+1. Build the docker image:
+
+   ```bash
+   docker build -t finesse-frontend .
+   ```
+
+2. Run the image: `docker run -p 3000:3000 finesse-frontend`.
+
+### Docker-compose (optional)
+
+You can also use `docker-compose` to run the API with the client. The API is the
+backend that this client uses and is available at
+<https://github.com/ai-cfia/finesse-backend>.
+
+To run the API and the client together, make sure you have all the environment
+variables required from the backend (see .env.template in the repository) and
+then you can use the following command:
+
+```bash
+docker-compose up --build
+```
+
+You can then access the client at `http://localhost`.
+
 ## Deployment Environment Configuration Management
 
 For managing and configuring different deployment environments (development,
