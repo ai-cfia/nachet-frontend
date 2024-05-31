@@ -1,15 +1,15 @@
 # Vite React Project
 
-This project was initialized with [Vite](https://vitejs.dev/), a build tool
-that aims to provide a faster and leaner development experience for modern web
+This project was initialized with [Vite](https://vitejs.dev/), a build tool that
+aims to provide a faster and leaner development experience for modern web
 projects.
 
 ## Setting up @saithodev/ts-appversion
 
 To ensure a smooth development experience, it's crucial to manage the
-application versioning right from the start. We use @saithodev/ts-appversion
-for this purpose. Please install it by executing the command below before
-moving forward with the development or build process:
+application versioning right from the start. We use @saithodev/ts-appversion for
+this purpose. Please install it by executing the command below before moving
+forward with the development or build process:
 
 ```bash
 npm install @saithodev/ts-appversion
@@ -29,12 +29,11 @@ your project.
 npm run dev
 ```
 
-This will serve your application on localhost:5173, where you can view
-it in your preferred browser. The server is configured to automatically reload
-upon any changes to your code, providing instant feedback on your development
+This will serve your application on localhost:5173, where you can view it in
+your preferred browser. The server is configured to automatically reload upon
+any changes to your code, providing instant feedback on your development
 progress. Additionally, build errors and lint warnings will be prominently
-displayed in the console, helping you maintain a clean and efficient
-codebase.
+displayed in the console, helping you maintain a clean and efficient codebase.
 
 The app will automatically reload if you make changes to the code. You will see
 the build errors and lint warnings in the console.
@@ -45,8 +44,7 @@ In the project directory, you can run:
 
 ### `npm run dev`
 
-Starts the development server. Open localhost:5173 to view it in your
-browser.
+Starts the development server. Open localhost:5173 to view it in your browser.
 
 The app will automatically reload if you make changes to the code. You will see
 the build errors and lint warnings in the console.
@@ -59,8 +57,8 @@ ensure that the build includes the correct version of your application.
 ### `npm run build`
 
 Builds the app for production to the `dist` folder. It correctly bundles React
-in production mode and optimizes the build for the best performance. Your app
-is ready to be deployed!
+in production mode and optimizes the build for the best performance. Your app is
+ready to be deployed!
 
 ### `npm run preview`
 
@@ -86,8 +84,8 @@ npx prettier --write .
 ```
 
 Executing this command automatically formats the specified files. You can
-replace `.` with the relative path of any specific file or directory you wish
-to format. This allows for targeted formatting, ensuring that only the desired
+replace `.` with the relative path of any specific file or directory you wish to
+format. This allows for targeted formatting, ensuring that only the desired
 sections of your codebase are adjusted.
 
 ### Running the application with docker
@@ -114,7 +112,10 @@ then you can use the following command:
 docker-compose up --build
 ```
 
-You can then access the client at `http://localhost`.
+You can then access the client at `http://localhost`. Take note that the backend
+image is being pulled from our Github registry and the frontend image is being
+built from the Dockerfile in the repository. This enables preview of local
+changes in the frontend.
 
 ## Deployment Environment Configuration Management
 
@@ -144,8 +145,8 @@ different environments (development, staging, production).
 
 ### Required Variables
 
-1. `VITE_BACKEND_URL`: URL of the backend server. This is used to make API
-calls from the frontend.
+1. `VITE_BACKEND_URL`: URL of the backend server. This is used to make API calls
+from the frontend.
 2. `VITE_APP_MODE`: Determines the mode in which the application runs. Set to
 `"test"` for using test data, any other value will use real data from the
 backend.
