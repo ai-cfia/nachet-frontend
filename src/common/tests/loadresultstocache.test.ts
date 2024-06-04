@@ -172,6 +172,7 @@ describe("loadResultsToCache", () => {
           {
             boxId: "0",
             inferenceId: "test",
+            classId: "0",
             label: "a",
             topX: 1,
             topY: 1,
@@ -181,6 +182,7 @@ describe("loadResultsToCache", () => {
           {
             boxId: "1",
             inferenceId: "test",
+            classId: "1",
             label: "b",
             topX: 2,
             topY: 2,
@@ -190,6 +192,7 @@ describe("loadResultsToCache", () => {
           {
             boxId: "2",
             inferenceId: "test",
+            classId: "2",
             label: "c",
             topX: 3,
             topY: 3,
@@ -246,6 +249,7 @@ describe("loadResultsToCache", () => {
           {
             boxId: "0",
             inferenceId: "test",
+            classId: "0",
             label: "a",
             topX: 1,
             topY: 1,
@@ -255,6 +259,7 @@ describe("loadResultsToCache", () => {
           {
             boxId: "1",
             inferenceId: "test",
+            classId: "1",
             label: "b",
             topX: 2,
             topY: 2,
@@ -264,6 +269,7 @@ describe("loadResultsToCache", () => {
           {
             boxId: "2",
             inferenceId: "test",
+            classId: "2",
             label: "c",
             topX: 3,
             topY: 3,
@@ -286,6 +292,7 @@ describe("loadResultsToCache", () => {
           {
             boxId: "0",
             inferenceId: "test",
+            classId: "0",
             label: "a",
             topX: 1,
             topY: 1,
@@ -295,6 +302,7 @@ describe("loadResultsToCache", () => {
           {
             boxId: "1",
             inferenceId: "test",
+            classId: "1",
             label: "b",
             topX: 2,
             topY: 2,
@@ -304,6 +312,7 @@ describe("loadResultsToCache", () => {
           {
             boxId: "2",
             inferenceId: "test",
+            classId: "2",
             label: "c",
             topX: 3,
             topY: 3,
