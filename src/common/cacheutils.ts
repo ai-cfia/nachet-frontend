@@ -371,6 +371,7 @@ export const loadResultsToCache = (
         ...box.box,
         inferenceId: inferenceData.inferenceId,
         boxId: box.boxId,
+        classId: box.classId,
         label: box.label,
       };
     }),

@@ -11,42 +11,32 @@ import {
   Select,
   MenuItem,
   SelectChangeEvent,
+  FilterOptionsState,
 } from "@mui/material";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
-import { useState } from "react";
-// import styled from "styled-components";
-import {
-  BoxCSS,
-  FeedbackDataNegative,
-  SpeciesData,
-} from "../../../common/types";
-// import EditIcon from "@mui/icons-material/Edit";
+import { SyntheticEvent, useEffect, useMemo, useState } from "react";
+import { BoxCSS, ClassData, FeedbackDataNegative } from "../../../common/types";
 import Draggable from "react-draggable";
 
+// import styled from "styled-components";
 // const FeedbackPopover = styled(Popover)`
 //   .MuiPopover-paper {
 //     padding: 10px;
 //   }
 // `;
 
-const filter = createFilterOptions<SpeciesData>();
-
-const getSpeciesLabel = (speciesData: SpeciesData): string => {
-  return speciesData.label;
-};
-
 interface SimpleFeedbackFormProps {
   anchorEl: HTMLButtonElement | null;
   onClose: () => void;
   submitPositiveFeedback: () => void;
-  handleNegativeFeedback: () => void;
+  onNegativeFeedback: () => void;
 }
 
 export const SimpleFeedbackForm = (
   props: SimpleFeedbackFormProps,
 ): JSX.Element => {
-  const { anchorEl, onClose, submitPositiveFeedback, handleNegativeFeedback } =
+  const { anchorEl, onClose, submitPositiveFeedback, onNegativeFeedback } =
     props;
 
   const open = Boolean(anchorEl);
@@ -54,6 +44,11 @@ export const SimpleFeedbackForm = (
 
   const handlePositiveFeedback = () => {
     submitPositiveFeedback();
+    onClose();
+  };
+
+  const handleNegativeFeedback = () => {
+    onNegativeFeedback();
     onClose();
   };
 
@@ -113,47 +108,97 @@ interface NegativeFeedbackFormProps {
 export const NegativeFeedbackForm = (
   props: NegativeFeedbackFormProps,
 ): JSX.Element => {
-  const reasons = [
-    "No Seed",
-    "Multi Seed",
-    "Wrong Seed in List",
-    "Wrong Seed not in List",
-  ];
+  /* TODO: update when backend is defined Section stub convert to prop or use state when backend defined */
+
+  const classList = useMemo(() => {
+    return [
+      {
+        id: 1,
+        classId: "1",
+        label: "Species stub 1",
+      },
+      {
+        id: 2,
+        classId: "2",
+        label: "Species stub 2",
+      },
+    ];
+  }, []);
+
+  const reasons = useMemo(() => {
+    return ["No Seed", "Multi Seed", "Wrong Seed", "Wrong Seed not in List"];
+  }, []);
+  /* Section stub convert to prop or use state when backend defined */
+
+  const defaultClass = useMemo(() => {
+    return {
+      id: -1,
+      classId: "",
+      label: "",
+    };
+  }, []);
 
   const { inference, position, onCancel, onSubmit } = props;
-  const [selectedSpecies, setSelectedSpecies] = useState<string | SpeciesData>(
-    "",
-  );
-  const [comment, setComment] = useState<string>(reasons[0]);
+  const [selectedClass, setSelectedClass] = useState<ClassData>(defaultClass);
+  const [comment, setComment] = useState<string>(reasons[2]);
 
-  /* TODO: update when backend is defined Section stub convert to prop or use state when backend defined */
-  const speciesList = [
-    {
-      id: 1,
-      label: "Species stub 1",
-    },
-    {
-      id: 2,
-      label: "Species stub 2",
-    },
-  ];
-  /* Section stub convert to prop or use state when backend defined */
+  const filter = createFilterOptions<ClassData>();
+
+  const filteredClassList = (
+    options: ClassData[],
+    params: FilterOptionsState<ClassData>,
+  ): ClassData[] => {
+    const { inputValue } = params;
+    if (inputValue === "") {
+      return options;
+    }
+    const filtered = filter(options, params);
+
+    // Suggest the creation of a new value
+    const isExisting = options.some((option) => inputValue === option.label);
+    if (inputValue !== "" && !isExisting) {
+      filtered.push({
+        ...defaultClass,
+        label: `"${inputValue}"`,
+      });
+    }
+
+    return filtered;
+  };
+
+  const getClassLabel = (option: string | ClassData): string => {
+    return typeof option === "string" ? option : option.label;
+  };
+
+  const handleClassChange = (
+    event: SyntheticEvent<Element, Event>,
+    newValue: string | ClassData | null,
+  ) => {
+    event.preventDefault();
+    if (newValue == null) {
+      setSelectedClass(defaultClass);
+    } else if (typeof newValue === "string") {
+      setSelectedClass({
+        ...defaultClass,
+        label: newValue,
+      });
+    } else {
+      setSelectedClass(newValue);
+    }
+  };
 
   const handleCommentChange = (event: SelectChangeEvent<string>) => {
     setComment(event.target.value);
   };
 
   const handleSubmit = () => {
-    // TODO: update when backend is defined
     onSubmit({
       ...inference,
       boxes: [
         {
           ...inference.boxes[0],
-          label:
-            typeof selectedSpecies === "string"
-              ? selectedSpecies
-              : selectedSpecies.label,
+          classId: selectedClass.classId,
+          label: selectedClass.label,
           comment: comment,
         },
       ],
@@ -164,70 +209,69 @@ export const NegativeFeedbackForm = (
     onCancel();
   };
 
+  useEffect(() => {
+    if (inference != null) {
+      setSelectedClass(
+        classList.find((item) => {
+          return item.classId === inference.boxes[0].classId;
+        }) ?? defaultClass,
+      );
+    }
+  }, [classList, defaultClass, inference]);
+
   return (
     <Draggable
       defaultPosition={{
         x: position.left,
         y: position.top,
       }}
-      bounds="parent"
+      // bounds="parent"
       disabled={false}
     >
-      <Box sx={{ id: "negative-feedback", zIndex: 30, padding: "10px" }}>
-        <FormControl size="small">
+      <Box
+        sx={{
+          id: "negative-feedback",
+          position: "absolute",
+          zIndex: 500,
+          backgroundColor: "white",
+          border: "2px solid black",
+          padding: "10px",
+          minWidth: "300px",
+          minHeight: "5px",
+          borderRadius: "5px",
+        }}
+      >
+        <FormControl size="small" sx={{ width: "100%" }}>
           <Autocomplete
             id="feedback-class"
             renderInput={(params) => <TextField {...params} label="Class" />}
-            options={speciesList}
-            value={selectedSpecies}
-            onChange={(event, newValue) => {
-              event.preventDefault();
-              if (typeof newValue === "string") {
-                setSelectedSpecies(newValue);
-              } else {
-                setSelectedSpecies(newValue ?? "");
-              }
-            }}
+            options={classList}
+            value={selectedClass}
+            onChange={handleClassChange}
             isOptionEqualToValue={(option, value) =>
               option.label === value.label
             }
-            filterOptions={(options, params) => {
-              const { inputValue } = params;
-              if (inputValue === "") {
-                return options;
-              }
-              const filtered = filter(options, params);
-
-              // Suggest the creation of a new value
-              const isExisting = options.some(
-                (option) => inputValue === option.label,
-              );
-              if (inputValue !== "" && !isExisting) {
-                filtered.push({
-                  id: -1,
-                  label: `Add "${inputValue}"`,
-                });
-              }
-
-              return filtered;
-            }}
+            filterOptions={filteredClassList}
             disablePortal
             selectOnFocus
             clearOnBlur
             handleHomeEndKeys
             freeSolo={comment === "Wrong Seed not in List"}
-            getOptionLabel={(option) =>
-              getSpeciesLabel(
-                typeof option === "string" ? { id: -1, label: option } : option,
-              )
-            }
+            getOptionLabel={getClassLabel}
+            sx={{
+              marginTop: "20px",
+              width: "100%",
+            }}
           />
           <Select
             labelId="comment-select-label"
             id="feedback-comment"
-            value={reasons[0]}
+            value={comment}
             label="Feedback Comment"
             onChange={handleCommentChange}
+            sx={{
+              marginTop: "20px",
+            }}
           >
             {reasons.map((reason, index) => {
               return (
@@ -244,7 +288,7 @@ export const NegativeFeedbackForm = (
               flexDirection: "row",
               justifyContent: "space-evenly",
               alignItems: "center",
-              marginTop: "5px",
+              marginTop: "20px",
             }}
           >
             <Button
@@ -255,6 +299,7 @@ export const NegativeFeedbackForm = (
                   backgroundColor: "green",
                   opacity: 0.6,
                 },
+                marginRight: "10px",
               }}
               onClick={handleSubmit}
             >

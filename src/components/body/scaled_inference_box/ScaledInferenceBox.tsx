@@ -72,9 +72,7 @@ const ScaledInferenceBox = (props: {
         anchorEl={anchorEl}
         onClose={() => setAnchorEl(null)}
         submitPositiveFeedback={() => submitPositiveFeedback(index)}
-        handleNegativeFeedback={() =>
-          handleNegativeFeedback(index, boxPosition)
-        }
+        onNegativeFeedback={() => handleNegativeFeedback(index, boxPosition)}
       />
     </>
   );

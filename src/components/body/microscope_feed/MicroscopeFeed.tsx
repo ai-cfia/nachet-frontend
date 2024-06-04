@@ -28,6 +28,7 @@ import {
   sendPositiveFeedback,
 } from "../../../common/api";
 import { FreeformBox, NegativeFeedbackForm } from "../feedback_form";
+import { getUnscaledCoordinates } from "../../../common/imageutils";
 interface MicroscopeFeedProps {
   webcamRef: React.RefObject<Webcam>;
   capture: () => void;
@@ -195,23 +196,6 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
     if (imageData === null) {
       return;
     }
-
-    // const feedbackDataNegative: FeedbackDataNegative = {
-    //   userId: uuid,
-    //   inferenceId: "",
-    //   boxes: [
-    //     {
-    //       label: "",
-    //       boxId: "",
-    //       box: {
-    //         topX: 1,
-    //         topY: 1,
-    //         bottomX: 1,
-    //         bottomY: 1,
-    //       },
-    //     },
-    //   ],
-    // };
     console.log("Submitting negative feedback");
 
     sendNegativeFeedback(feedbackDataNegative, backendUrl)
@@ -226,6 +210,25 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
 
   const handleFreeformSubmit = (box: BoxCSS) => {
     setScaledFeedbackBox(box);
+    setInferenceForRevision((prev) => {
+      return prev
+        ? {
+            ...prev,
+            boxes: [
+              {
+                ...prev.boxes[0],
+                box: getUnscaledCoordinates(
+                  width,
+                  height,
+                  imageData!.imageDims[0],
+                  imageData!.imageDims[1],
+                  box,
+                ),
+              },
+            ],
+          }
+        : null;
+    });
   };
 
   const exitFeedbackMode = () => {
@@ -252,6 +255,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
         inferenceId: imageData.boxes[index].inferenceId,
         boxes: [
           {
+            classId: imageData.boxes[index].classId,
             label: imageData.boxes[index].label,
             boxId: imageData.boxes[index].boxId,
             box: {
@@ -416,7 +420,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
                         imageHeight={imageData.imageDims[1]}
                         canvasWidth={width}
                         canvasHeight={height}
-                        visible={true}
+                        visible={!feedbackMode}
                         submitPositiveFeedback={submitPositiveFeedback}
                         handleNegativeFeedback={enterFeedbackMode}
                       />

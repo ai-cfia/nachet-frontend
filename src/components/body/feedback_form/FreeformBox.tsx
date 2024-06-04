@@ -42,8 +42,8 @@ const FreeformBox = (props: FreeformBoxProps) => {
     _ref: HTMLElement,
     delta: NumberSize,
   ) => {
-    setWidth(delta.width);
-    setHeight(delta.height);
+    setWidth(width + delta.width);
+    setHeight(height + delta.height);
   };
 
   const handleSubmit = () => {
@@ -93,6 +93,7 @@ const FreeformBox = (props: FreeformBoxProps) => {
           topLeft: false,
         }}
         onResizeStop={handleResizeStop}
+        bounds="parent"
       >
         <Box
           sx={{

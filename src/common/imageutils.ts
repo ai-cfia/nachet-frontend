@@ -1,14 +1,11 @@
+import { BoxCSS, BoxCoordinates } from "./types";
+
 export const getScaledBounds = (
   containerWidth: number,
   containerHeight: number,
   itemWidth: number,
   itemHeight: number,
-  box: {
-    topX: number;
-    topY: number;
-    bottomX: number;
-    bottomY: number;
-  },
+  box: BoxCoordinates,
 ): {
   scaledWidth: number;
   scaledHeight: number;
@@ -26,5 +23,26 @@ export const getScaledBounds = (
     scaledHeight,
     scaledTopX,
     scaledTopY,
+  };
+};
+
+export const getUnscaledCoordinates = (
+  containerWidth: number,
+  containerHeight: number,
+  itemWidth: number,
+  itemHeight: number,
+  box: BoxCSS,
+): BoxCoordinates => {
+  const scaleFactorWidth = itemWidth / containerWidth;
+  const scaleFactorHeight = itemHeight / containerHeight;
+  const topX = box.left * scaleFactorWidth;
+  const topY = box.top * scaleFactorHeight;
+  const bottomX = box.left + box.minWidth * scaleFactorWidth;
+  const bottomY = box.top + box.minHeight * scaleFactorHeight;
+  return {
+    topX,
+    topY,
+    bottomX,
+    bottomY,
   };
 };
