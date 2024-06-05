@@ -16,16 +16,19 @@ import DonutSmallIcon from "@mui/icons-material/DonutSmall";
 // Import a loading icon component (ensure you have this)
 import CircularProgress from "@mui/material/CircularProgress";
 import {
+  BoxCSS,
+  FeedbackDataNegative,
   FeedbackDataPositive,
-  // FeedbackDataNegative,
   Images,
 } from "../../../common/types";
 
 import ScaledInferenceBox from "../scaled_inference_box";
 import {
-  // sendNegativeFeedback,
+  sendNegativeFeedback,
   sendPositiveFeedback,
 } from "../../../common/api";
+import { FreeformBox, NegativeFeedbackForm } from "../feedback_form";
+import { getUnscaledCoordinates } from "../../../common/imageutils";
 interface MicroscopeFeedProps {
   webcamRef: React.RefObject<Webcam>;
   capture: () => void;
@@ -117,10 +120,26 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
     uuid,
   } = props;
 
-  const [imageData, setImageData] = useState<Images | null>(null);
-
   const width = windowSize.width * 0.575;
   const height = windowSize.height * 0.605;
+
+  const defaultBoxPosition: BoxCSS = {
+    minWidth: width,
+    minHeight: height,
+    maxWidth: width,
+    maxHeight: height,
+    left: 0,
+    top: 0,
+  };
+
+  const [imageData, setImageData] = useState<Images | null>(null);
+  const [feedbackMode, setFeedbackMode] = useState<boolean>(false);
+  const [scaledFeedbackBox, setScaledFeedbackBox] = useState<BoxCSS | null>(
+    null,
+  );
+  const [inferenceForRevision, setInferenceForRevision] =
+    useState<FeedbackDataNegative | null>(null);
+
   const iconStyle = {
     fontSize: "1.7vh",
     paddingRight: "0.4vh",
@@ -131,12 +150,6 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
     paddingTop: 0,
     paddingBottom: 0,
     paddingLeft: 0,
-  };
-
-  const feedbackDataPositive: FeedbackDataPositive = {
-    userId: uuid,
-    inferenceId: "",
-    boxes: [{ boxId: "" }],
   };
 
   // const feedbackDataNegative: FeedbackDataNegative = {
@@ -157,12 +170,16 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
   // };
 
   const submitPositiveFeedback = (index: number) => {
-    if (imageData === null) {
+    if (imageData == null) {
       return;
     }
     console.log("Submitting positive feedback for key: ", index);
-    feedbackDataPositive.inferenceId = imageData.boxes[index].inferenceId;
-    feedbackDataPositive.boxes[0].boxId = imageData.boxes[index].boxId;
+
+    const feedbackDataPositive: FeedbackDataPositive = {
+      userId: uuid,
+      inferenceId: imageData.boxes[index].inferenceId,
+      boxes: [{ boxId: imageData.boxes[index].boxId }],
+    };
 
     sendPositiveFeedback(feedbackDataPositive, backendUrl)
       .then(() => {
@@ -173,22 +190,88 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
       });
   };
 
-  // const submitNegativeFeedback = (
-  //   feedbackDataNegative: FeedbackDataNegative,
-  // ) => {
-  //   if (imageData === null) {
-  //     return;
-  //   }
-  //   console.log("Submitting negative feedback");
+  const submitNegativeFeedback = (
+    feedbackDataNegative: FeedbackDataNegative,
+  ) => {
+    if (imageData === null) {
+      return;
+    }
+    console.log("Submitting negative feedback");
 
-  //   sendNegativeFeedback(feedbackDataNegative, backendUrl)
-  //     .then(() => {
-  //       console.log("Negative Feedback submitted successfully");
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error submitting feedback: ", error);
-  //     });
-  // };
+    sendNegativeFeedback(feedbackDataNegative, backendUrl)
+      .then(() => {
+        console.log("Negative Feedback submitted successfully");
+        exitFeedbackMode();
+      })
+      .catch((error) => {
+        console.error("Error submitting feedback: ", error);
+      });
+  };
+
+  const handleFreeformSubmit = (box: BoxCSS) => {
+    setScaledFeedbackBox(box);
+    setInferenceForRevision((prev) => {
+      return prev
+        ? {
+            ...prev,
+            boxes: [
+              {
+                ...prev.boxes[0],
+                box: getUnscaledCoordinates(
+                  width,
+                  height,
+                  imageData!.imageDims[0],
+                  imageData!.imageDims[1],
+                  box,
+                ),
+              },
+            ],
+          }
+        : null;
+    });
+  };
+
+  const exitFeedbackMode = () => {
+    toggleShowInference(true);
+    setFeedbackMode(false);
+    setInferenceForRevision(null);
+    setScaledFeedbackBox(null);
+  };
+
+  const enterFeedbackMode = (
+    index: number | null,
+    boxPosition: BoxCSS | null,
+  ) => {
+    if (imageData == null) {
+      return;
+    }
+
+    if (index == null || boxPosition == null) {
+      setScaledFeedbackBox(defaultBoxPosition);
+    } else {
+      setScaledFeedbackBox(boxPosition);
+      setInferenceForRevision({
+        userId: uuid,
+        inferenceId: imageData.boxes[index].inferenceId,
+        boxes: [
+          {
+            classId: imageData.boxes[index].classId,
+            label: imageData.boxes[index].label,
+            boxId: imageData.boxes[index].boxId,
+            box: {
+              topX: imageData.boxes[index].topX,
+              topY: imageData.boxes[index].topY,
+              bottomX: imageData.boxes[index].bottomX,
+              bottomY: imageData.boxes[index].bottomY,
+            },
+            comment: "",
+          },
+        ],
+      });
+    }
+    toggleShowInference(false);
+    setFeedbackMode(true);
+  };
 
   useEffect(() => {
     if (imageCache.length > 0) {
@@ -278,6 +361,21 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
         />
       </Box>
       <div style={{ position: "relative", width: width, height }}>
+        {feedbackMode && scaledFeedbackBox && inferenceForRevision && (
+          <>
+            <NegativeFeedbackForm
+              inference={inferenceForRevision}
+              position={scaledFeedbackBox}
+              onCancel={exitFeedbackMode}
+              onSubmit={submitNegativeFeedback}
+            />
+            <FreeformBox
+              position={scaledFeedbackBox}
+              onCancel={exitFeedbackMode}
+              onSubmit={handleFreeformSubmit}
+            />
+          </>
+        )}
         {isWebcamActive ? (
           <Webcam
             ref={webcamRef}
@@ -322,10 +420,9 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
                         imageHeight={imageData.imageDims[1]}
                         canvasWidth={width}
                         canvasHeight={height}
-                        visible={true}
-                        canvasRef={canvasRef}
-                        toggleShowInference={toggleShowInference}
+                        visible={!feedbackMode}
                         submitPositiveFeedback={submitPositiveFeedback}
+                        handleNegativeFeedback={enterFeedbackMode}
                       />
                     );
                   })}

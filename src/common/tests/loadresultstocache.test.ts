@@ -20,10 +20,12 @@ describe("loadResultsToCache", () => {
 
   let inferenceData: ApiInferenceData = {
     filename: "test",
+    imageId: "test",
     inferenceId: "test",
     boxes: [
       {
         score: 0.1,
+        classId: "0",
         label: "a",
         boxId: "0",
         box: {
@@ -38,6 +40,7 @@ describe("loadResultsToCache", () => {
       },
       {
         score: 0.2,
+        classId: "1",
         label: "b",
         boxId: "1",
         box: {
@@ -52,6 +55,7 @@ describe("loadResultsToCache", () => {
       },
       {
         score: 0.3,
+        classId: "2",
         label: "c",
         boxId: "2",
         box: {
@@ -87,10 +91,12 @@ describe("loadResultsToCache", () => {
 
     inferenceData = {
       filename: "test",
+      imageId: "test",
       inferenceId: "test",
       boxes: [
         {
           score: 0.1,
+          classId: "0",
           label: "a",
           boxId: "0",
           box: {
@@ -105,6 +111,7 @@ describe("loadResultsToCache", () => {
         },
         {
           score: 0.2,
+          classId: "1",
           label: "b",
           boxId: "1",
           box: {
@@ -119,6 +126,7 @@ describe("loadResultsToCache", () => {
         },
         {
           score: 0.3,
+          classId: "2",
           label: "c",
           boxId: "2",
           box: {
@@ -164,6 +172,7 @@ describe("loadResultsToCache", () => {
           {
             boxId: "0",
             inferenceId: "test",
+            classId: "0",
             label: "a",
             topX: 1,
             topY: 1,
@@ -173,6 +182,7 @@ describe("loadResultsToCache", () => {
           {
             boxId: "1",
             inferenceId: "test",
+            classId: "1",
             label: "b",
             topX: 2,
             topY: 2,
@@ -182,6 +192,7 @@ describe("loadResultsToCache", () => {
           {
             boxId: "2",
             inferenceId: "test",
+            classId: "2",
             label: "c",
             topX: 3,
             topY: 3,
@@ -238,6 +249,7 @@ describe("loadResultsToCache", () => {
           {
             boxId: "0",
             inferenceId: "test",
+            classId: "0",
             label: "a",
             topX: 1,
             topY: 1,
@@ -247,6 +259,7 @@ describe("loadResultsToCache", () => {
           {
             boxId: "1",
             inferenceId: "test",
+            classId: "1",
             label: "b",
             topX: 2,
             topY: 2,
@@ -256,6 +269,7 @@ describe("loadResultsToCache", () => {
           {
             boxId: "2",
             inferenceId: "test",
+            classId: "2",
             label: "c",
             topX: 3,
             topY: 3,
@@ -278,6 +292,7 @@ describe("loadResultsToCache", () => {
           {
             boxId: "0",
             inferenceId: "test",
+            classId: "0",
             label: "a",
             topX: 1,
             topY: 1,
@@ -287,6 +302,7 @@ describe("loadResultsToCache", () => {
           {
             boxId: "1",
             inferenceId: "test",
+            classId: "1",
             label: "b",
             topX: 2,
             topY: 2,
@@ -296,6 +312,7 @@ describe("loadResultsToCache", () => {
           {
             boxId: "2",
             inferenceId: "test",
+            classId: "2",
             label: "c",
             topX: 3,
             topY: 3,

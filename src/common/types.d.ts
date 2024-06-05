@@ -1,17 +1,14 @@
 export interface ApiInferenceData {
   filename: string;
+  imageId: string;
   inferenceId: string;
   boxes: Array<{
     topN: Array<{ score: number; label: string }>;
     score: number;
     label: string;
+    classId: string;
     boxId: string;
-    box: {
-      topX: number;
-      topY: number;
-      bottomX: number;
-      bottomY: number;
-    };
+    box: BoxCoordinates;
     overlapping: boolean;
     overlappingIndices: number;
   }>;
@@ -26,20 +23,35 @@ export interface Images {
   src: string;
   scores: number[];
   classifications: string[];
-  boxes: Array<{
-    inferenceId: string;
-    boxId: string;
-    label: string;
-    topX: number;
-    topY: number;
-    bottomX: number;
-    bottomY: number;
-  }>;
+  boxes: InferenceBox[];
   annotated: boolean;
   imageDims: number[];
   overlapping: boolean[];
   overlappingIndices: number[];
   topN: Array<Array<{ score: number; label: string }>>;
+}
+
+export interface BoxCoordinates {
+  topX: number;
+  topY: number;
+  bottomX: number;
+  bottomY: number;
+}
+
+export interface InferenceBox extends BoxCoordinates {
+  inferenceId: string;
+  boxId: string;
+  classId: string;
+  label: string;
+}
+
+export interface BoxCSS {
+  minWidth: number;
+  minHeight: number;
+  maxWidth: number;
+  maxHeight: number;
+  left: number;
+  top: number;
 }
 
 interface FeedbackData {
@@ -56,13 +68,10 @@ export interface FeedbackDataPositive extends FeedbackData {
 export interface FeedbackDataNegative extends FeedbackData {
   boxes: Array<{
     label: string;
+    classId: string;
     boxId: string;
-    box: {
-      topX: number;
-      topY: number;
-      bottomX: number;
-      bottomY: number;
-    };
+    box: BoxCoordinates;
+    comment: string;
   }>;
 }
 
@@ -71,8 +80,14 @@ export interface LabelOccurrences {
 }
 
 // TODO: Redefine when the backend is updated
-interface SpeciesData {
+interface ClassData {
   id: number;
+  classId: string;
+  label: string;
+}
+
+interface ApiSpeciesData {
+  classId: string;
   label: string;
 }
 
