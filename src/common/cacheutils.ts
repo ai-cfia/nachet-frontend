@@ -366,7 +366,14 @@ export const loadResultsToCache = (
     ...newCache[index],
     scores: inferenceData.boxes.map((box) => box.score),
     classifications: inferenceData.boxes.map((box) => box.label),
-    boxes: inferenceData.boxes.map((box) => box.box),
+    boxes: inferenceData.boxes.map((box) => {
+      return {
+        ...box.box,
+        inferenceId: inferenceData.inferenceId,
+        boxId: box.boxId,
+        label: box.label,
+      };
+    }),
     overlapping: inferenceData.boxes.map((box) => box.overlapping),
     overlappingIndices: inferenceData.boxes.map(
       (box) => box.overlappingIndices,

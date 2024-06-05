@@ -372,6 +372,7 @@ const Body: React.FC<params> = (props) => {
         isLoading={isLoading}
         toggleShowInference={(state: boolean) => setShowInference(state)}
         backendUrl={backendUrl}
+        uuid={props.uuid}
       />
     </BodyContainer>
   );

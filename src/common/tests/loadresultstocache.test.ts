@@ -20,10 +20,12 @@ describe("loadResultsToCache", () => {
 
   let inferenceData: ApiInferenceData = {
     filename: "test",
+    inferenceId: "test",
     boxes: [
       {
         score: 0.1,
         label: "a",
+        boxId: "0",
         box: {
           topX: 1,
           topY: 1,
@@ -37,6 +39,7 @@ describe("loadResultsToCache", () => {
       {
         score: 0.2,
         label: "b",
+        boxId: "1",
         box: {
           topX: 2,
           topY: 2,
@@ -50,6 +53,7 @@ describe("loadResultsToCache", () => {
       {
         score: 0.3,
         label: "c",
+        boxId: "2",
         box: {
           topX: 3,
           topY: 3,
@@ -83,10 +87,12 @@ describe("loadResultsToCache", () => {
 
     inferenceData = {
       filename: "test",
+      inferenceId: "test",
       boxes: [
         {
           score: 0.1,
           label: "a",
+          boxId: "0",
           box: {
             topX: 1,
             topY: 1,
@@ -100,6 +106,7 @@ describe("loadResultsToCache", () => {
         {
           score: 0.2,
           label: "b",
+          boxId: "1",
           box: {
             topX: 2,
             topY: 2,
@@ -113,6 +120,7 @@ describe("loadResultsToCache", () => {
         {
           score: 0.3,
           label: "c",
+          boxId: "2",
           box: {
             topX: 3,
             topY: 3,
@@ -153,9 +161,33 @@ describe("loadResultsToCache", () => {
         scores: [0.1, 0.2, 0.3],
         classifications: ["a", "b", "c"],
         boxes: [
-          { topX: 1, topY: 1, bottomX: 1, bottomY: 1 },
-          { topX: 2, topY: 2, bottomX: 2, bottomY: 2 },
-          { topX: 3, topY: 3, bottomX: 3, bottomY: 3 },
+          {
+            boxId: "0",
+            inferenceId: "test",
+            label: "a",
+            topX: 1,
+            topY: 1,
+            bottomX: 1,
+            bottomY: 1,
+          },
+          {
+            boxId: "1",
+            inferenceId: "test",
+            label: "b",
+            topX: 2,
+            topY: 2,
+            bottomX: 2,
+            bottomY: 2,
+          },
+          {
+            boxId: "2",
+            inferenceId: "test",
+            label: "c",
+            topX: 3,
+            topY: 3,
+            bottomX: 3,
+            bottomY: 3,
+          },
         ],
         annotated: true,
         imageDims: [0, 0],
@@ -203,9 +235,33 @@ describe("loadResultsToCache", () => {
         scores: [0.1, 0.2, 0.3],
         classifications: ["a", "b", "c"],
         boxes: [
-          { topX: 1, topY: 1, bottomX: 1, bottomY: 1 },
-          { topX: 2, topY: 2, bottomX: 2, bottomY: 2 },
-          { topX: 3, topY: 3, bottomX: 3, bottomY: 3 },
+          {
+            boxId: "0",
+            inferenceId: "test",
+            label: "a",
+            topX: 1,
+            topY: 1,
+            bottomX: 1,
+            bottomY: 1,
+          },
+          {
+            boxId: "1",
+            inferenceId: "test",
+            label: "b",
+            topX: 2,
+            topY: 2,
+            bottomX: 2,
+            bottomY: 2,
+          },
+          {
+            boxId: "2",
+            inferenceId: "test",
+            label: "c",
+            topX: 3,
+            topY: 3,
+            bottomX: 3,
+            bottomY: 3,
+          },
         ],
         annotated: true,
         imageDims: [0, 0],
@@ -219,9 +275,33 @@ describe("loadResultsToCache", () => {
         scores: [0.1, 0.2, 0.3],
         classifications: ["a", "b", "c"],
         boxes: [
-          { topX: 1, topY: 1, bottomX: 1, bottomY: 1 },
-          { topX: 2, topY: 2, bottomX: 2, bottomY: 2 },
-          { topX: 3, topY: 3, bottomX: 3, bottomY: 3 },
+          {
+            boxId: "0",
+            inferenceId: "test",
+            label: "a",
+            topX: 1,
+            topY: 1,
+            bottomX: 1,
+            bottomY: 1,
+          },
+          {
+            boxId: "1",
+            inferenceId: "test",
+            label: "b",
+            topX: 2,
+            topY: 2,
+            bottomX: 2,
+            bottomY: 2,
+          },
+          {
+            boxId: "2",
+            inferenceId: "test",
+            label: "c",
+            topX: 3,
+            topY: 3,
+            bottomX: 3,
+            bottomY: 3,
+          },
         ],
         annotated: true,
         imageDims: [0, 0],

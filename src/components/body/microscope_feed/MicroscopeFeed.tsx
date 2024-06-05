@@ -15,10 +15,17 @@ import DonutSmallIcon from "@mui/icons-material/DonutSmall";
 
 // Import a loading icon component (ensure you have this)
 import CircularProgress from "@mui/material/CircularProgress";
-import { FeedbackData, Images } from "../../../common/types";
+import {
+  FeedbackDataPositive,
+  // FeedbackDataNegative,
+  Images,
+} from "../../../common/types";
 
 import ScaledInferenceBox from "../scaled_inference_box";
-import { sendFeedbackSingle } from "../../../common/api";
+import {
+  // sendNegativeFeedback,
+  sendPositiveFeedback,
+} from "../../../common/api";
 interface MicroscopeFeedProps {
   webcamRef: React.RefObject<Webcam>;
   capture: () => void;
@@ -40,6 +47,7 @@ interface MicroscopeFeedProps {
   };
   toggleShowInference: (state: boolean) => void;
   backendUrl: string;
+  uuid: string;
 }
 
 const ButtonMicroscopeFeed = (props: {
@@ -106,6 +114,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
     windowSize,
     toggleShowInference,
     backendUrl,
+    uuid,
   } = props;
 
   const [imageData, setImageData] = useState<Images | null>(null);
@@ -124,35 +133,62 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
     paddingLeft: 0,
   };
 
-  const feedbackData: FeedbackData = {
-    imageId: 0,
-    class: "",
-    topX: 0,
-    topY: 0,
-    bottomX: 0,
-    bottomY: 0,
+  const feedbackDataPositive: FeedbackDataPositive = {
+    userId: uuid,
+    inferenceId: "",
+    boxes: [{ boxId: "" }],
   };
+
+  // const feedbackDataNegative: FeedbackDataNegative = {
+  //   userId: uuid,
+  //   inferenceId: "",
+  //   boxes: [
+  //     {
+  //       label: "",
+  //       boxId: "",
+  //       box: {
+  //         topX: 1,
+  //         topY: 1,
+  //         bottomX: 1,
+  //         bottomY: 1,
+  //       },
+  //     },
+  //   ],
+  // };
 
   const submitPositiveFeedback = (index: number) => {
     if (imageData === null) {
       return;
     }
     console.log("Submitting positive feedback for key: ", index);
-    feedbackData.imageId = imageData.imageId || 0;
-    feedbackData.class = imageData.classifications[index];
-    feedbackData.topX = imageData.boxes[index].topX;
-    feedbackData.topY = imageData.boxes[index].topY;
-    feedbackData.bottomX = imageData.boxes[index].bottomX;
-    feedbackData.bottomY = imageData.boxes[index].bottomY;
+    feedbackDataPositive.inferenceId = imageData.boxes[index].inferenceId;
+    feedbackDataPositive.boxes[0].boxId = imageData.boxes[index].boxId;
 
-    sendFeedbackSingle(feedbackData, backendUrl)
+    sendPositiveFeedback(feedbackDataPositive, backendUrl)
       .then(() => {
-        console.log("Feedback submitted successfully");
+        console.log("Positive Feedback submitted successfully");
       })
       .catch((error) => {
         console.error("Error submitting feedback: ", error);
       });
   };
+
+  // const submitNegativeFeedback = (
+  //   feedbackDataNegative: FeedbackDataNegative,
+  // ) => {
+  //   if (imageData === null) {
+  //     return;
+  //   }
+  //   console.log("Submitting negative feedback");
+
+  //   sendNegativeFeedback(feedbackDataNegative, backendUrl)
+  //     .then(() => {
+  //       console.log("Negative Feedback submitted successfully");
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error submitting feedback: ", error);
+  //     });
+  // };
 
   useEffect(() => {
     if (imageCache.length > 0) {
