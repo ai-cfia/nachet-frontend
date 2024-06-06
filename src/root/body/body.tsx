@@ -96,7 +96,11 @@ const Body: React.FC<params> = (props) => {
       requestUUID(backendUrl, email)
         .then((response) => {
           props.setUuid(response.uuid);
-          Cookies.set("user-uuid", response.uuid, { expires: 30 });
+          Cookies.set("user-uuid", response.uuid, {
+            expires: 30,
+            sameSite: "strict",
+            secure: true,
+          });
         })
         .catch((error) => {
           console.error(error);
