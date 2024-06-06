@@ -236,3 +236,28 @@ export const sendNegativeFeedback = async (
   };
   return handleAxios(request);
 };
+
+export const requestUUID = async (
+  backendUrl: string,
+  email: string,
+): Promise<{
+  uuid: string;
+}> => {
+  if (backendUrl === "" || backendUrl == null) {
+    throw new ValueError("Backend URL is null or empty");
+  }
+  const request = {
+    method: "get",
+    url: `${backendUrl}/get-user-id`,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    data: {
+      email: email,
+    },
+  };
+  return handleAxios<{
+    uuid: string;
+  }>(request);
+};

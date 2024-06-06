@@ -16,6 +16,9 @@ const mockProps = {
   handleCreativeCommonsAgreement: vi.fn(),
   setSignUpOpen: vi.fn(),
   signUpOpen: false,
+  signedIn: false,
+  setSignedIn: vi.fn(),
+  setUuid: vi.fn(),
 };
 
 const mockAddEventListener = vi.fn();
