@@ -241,13 +241,13 @@ export const requestUUID = async (
   backendUrl: string,
   email: string,
 ): Promise<{
-  uuid: string;
+  user_id: string;
 }> => {
   if (backendUrl === "" || backendUrl == null) {
     throw new ValueError("Backend URL is null or empty");
   }
   const request = {
-    method: "get",
+    method: "post",
     url: `${backendUrl}/get-user-id`,
     headers: {
       "Content-Type": "application/json",
@@ -258,6 +258,6 @@ export const requestUUID = async (
     },
   };
   return handleAxios<{
-    uuid: string;
+    user_id: string;
   }>(request);
 };
