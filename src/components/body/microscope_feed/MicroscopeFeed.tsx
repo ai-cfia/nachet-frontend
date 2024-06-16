@@ -1,7 +1,7 @@
 // \components\body\microscope_feed\index.tsx
 // MicroscopeFeed
 import Webcam from "react-webcam";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Box, Button } from "@mui/material";
 import { Canvas } from "./indexElements";
 // Import icons
@@ -17,6 +17,7 @@ import DonutSmallIcon from "@mui/icons-material/DonutSmall";
 import CircularProgress from "@mui/material/CircularProgress";
 import {
   BoxCSS,
+  ClassData,
   FeedbackDataNegative,
   FeedbackDataPositive,
   Images,
@@ -24,6 +25,7 @@ import {
 
 import ScaledInferenceBox from "../scaled_inference_box";
 import {
+  requestClassList,
   sendNegativeFeedback,
   sendPositiveFeedback,
 } from "../../../common/api";
@@ -140,6 +142,26 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
   const [inferenceForRevision, setInferenceForRevision] =
     useState<FeedbackDataNegative | null>(null);
 
+  const classList: ClassData[] = useMemo(() => {
+    const classes: ClassData[] = [];
+    const getClasses = () => {
+      return requestClassList(backendUrl, uuid).then((response) => {
+        return response.data;
+      });
+    };
+    getClasses().then((data) => {
+      for (let i = 0; i < data.length; i++) {
+        classes.push({
+          id: i,
+          classId: data[i].seed_id,
+          label: data[i].seed_name,
+        });
+      }
+    });
+
+    return classes;
+  }, [backendUrl, uuid]);
+
   const iconStyle = {
     fontSize: "1.7vh",
     paddingRight: "0.4vh",
@@ -151,23 +173,6 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
     paddingBottom: 0,
     paddingLeft: 0,
   };
-
-  // const feedbackDataNegative: FeedbackDataNegative = {
-  //   userId: uuid,
-  //   inferenceId: "",
-  //   boxes: [
-  //     {
-  //       label: "",
-  //       boxId: "",
-  //       box: {
-  //         topX: 1,
-  //         topY: 1,
-  //         bottomX: 1,
-  //         bottomY: 1,
-  //       },
-  //     },
-  //   ],
-  // };
 
   const submitPositiveFeedback = (index: number) => {
     if (imageData == null) {
@@ -366,6 +371,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
             <NegativeFeedbackForm
               inference={inferenceForRevision}
               position={scaledFeedbackBox}
+              classList={classList}
               onCancel={exitFeedbackMode}
               onSubmit={submitNegativeFeedback}
             />

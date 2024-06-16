@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import Body from "./body";
 import axios from "axios";
+import { a } from "vitest/dist/suite-a18diDsI";
 
 process.env.VITE_BACKEND_URL = "somebackendurl";
 
@@ -53,6 +54,24 @@ vi.mock("../../common", async (importOriginal) => {
     deleteAzureStorageDir: vi.fn(),
     inferenceRequest: vi.fn(),
     requestModelMetadata: vi.fn(),
+    requestClassList: vi.fn(async () => {
+      return new Promise<any>((resolve) => {
+        resolve([
+          {
+            seed_id: "1",
+            seed_name: "seed_name1",
+          },
+          {
+            seed_id: "2",
+            seed_name: "seed_name2",
+          },
+          {
+            seed_id: "3",
+            seed_name: "seed_name3",
+          },
+        ]);
+      });
+    }),
   };
 });
 

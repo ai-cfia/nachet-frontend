@@ -79,7 +79,6 @@ export interface LabelOccurrences {
   [label: string]: number;
 }
 
-// TODO: Redefine when the backend is updated
 interface ClassData {
   id: number;
   classId: string;
@@ -87,8 +86,10 @@ interface ClassData {
 }
 
 interface ApiSpeciesData {
-  classId: string;
-  label: string;
+  data: Array<{
+    seed_id: string;
+    seed_name: string;
+  }>;
 }
 
 export interface ModelMetadata {

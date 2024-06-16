@@ -2,6 +2,7 @@ import axios from "axios";
 import { AzureAPIError, ValueError } from "./error";
 import {
   ApiInferenceData,
+  ApiSpeciesData,
   FeedbackDataNegative,
   FeedbackDataPositive,
   Images,
@@ -156,7 +157,7 @@ export const inferenceRequest = async (
       image: imageObject.src,
       imageDims: imageObject.imageDims,
       folder_name: curDir,
-      container_name: uuid,
+      user_id: uuid,
     },
   };
   return handleAxios<ApiInferenceData[]>(request);
@@ -260,4 +261,28 @@ export const requestUUID = async (
   return handleAxios<{
     user_id: string;
   }>(request);
+};
+
+export const requestClassList = async (
+  backendUrl: string,
+  uuid: string,
+): Promise<ApiSpeciesData> => {
+  if (backendUrl === "" || backendUrl == null) {
+    throw new ValueError("Backend URL is null or empty");
+  }
+  if (uuid === "" || uuid == null) {
+    throw new ValueError("UUID is null or empty");
+  }
+  const request = {
+    method: "post",
+    url: `${backendUrl}/get-class-list`,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    data: {
+      uuid: uuid,
+    },
+  };
+  return handleAxios<ApiSpeciesData>(request);
 };
