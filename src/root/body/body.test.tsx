@@ -2,7 +2,6 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import Body from "./body";
 import axios from "axios";
-import { a } from "vitest/dist/suite-a18diDsI";
 
 process.env.VITE_BACKEND_URL = "somebackendurl";
 

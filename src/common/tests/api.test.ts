@@ -161,6 +161,7 @@ describe("inferenceRequest", () => {
         imageObject,
         curDir,
         uuid,
+        uuid,
       ),
     ).toEqual("data");
   });

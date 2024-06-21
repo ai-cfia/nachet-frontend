@@ -32,7 +32,6 @@ interface params {
     height: number;
   };
   uuid: string;
-  container_uuid: string;
   creativeCommonsPopupOpen: boolean;
   setCreativeCommonsPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleCreativeCommonsAgreement: (agree: boolean) => void;
