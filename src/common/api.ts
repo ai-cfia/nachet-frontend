@@ -129,7 +129,8 @@ export const inferenceRequest = async (
   imageObject: Images,
   curDir: string,
   uuid: string,
-): Promise<ApiInferenceData[]> => {
+  container_uuid: string,
+): Promise<ApiInferenceData> => {
   if (backendUrl === "" || backendUrl == null) {
     throw new ValueError("Backend URL is null or empty");
   }
@@ -158,9 +159,10 @@ export const inferenceRequest = async (
       imageDims: imageObject.imageDims,
       folder_name: curDir,
       user_id: uuid,
+      container_name: container_uuid,
     },
   };
-  return handleAxios<ApiInferenceData[]>(request);
+  return handleAxios<ApiInferenceData>(request);
 };
 
 export const fetchModelMetadata = async (
@@ -265,24 +267,25 @@ export const requestUUID = async (
 
 export const requestClassList = async (
   backendUrl: string,
-  uuid: string,
+  // uuid: string,
 ): Promise<ApiSpeciesData> => {
   if (backendUrl === "" || backendUrl == null) {
     throw new ValueError("Backend URL is null or empty");
   }
-  if (uuid === "" || uuid == null) {
-    throw new ValueError("UUID is null or empty");
-  }
+  // if (uuid === "" || uuid == null) {
+  //   throw new ValueError("UUID is null or empty");
+  // }
   const request = {
-    method: "post",
-    url: `${backendUrl}/get-class-list`,
+    method: "get",
+    url: `${backendUrl}/seeds`,
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
     },
-    data: {
-      uuid: uuid,
-    },
+    data: {},
+    // data: {
+    //   uuid: uuid,
+    // },
   };
   return handleAxios<ApiSpeciesData>(request);
 };

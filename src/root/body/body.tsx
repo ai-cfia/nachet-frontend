@@ -32,6 +32,7 @@ interface params {
     height: number;
   };
   uuid: string;
+  container_uuid: string;
   creativeCommonsPopupOpen: boolean;
   setCreativeCommonsPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleCreativeCommonsAgreement: (agree: boolean) => void;
@@ -165,12 +166,11 @@ const Body: React.FC<params> = (props) => {
         imageObject,
         curDir,
         props.uuid,
+        props.uuid,
       )
         .then((response) => {
           setReadAzureStorage(!readAzureStorage);
-          setImageCache(
-            loadResultsToCache(response[0], imageCache, imageIndex),
-          );
+          setImageCache(loadResultsToCache(response, imageCache, imageIndex));
           setModelDisplayName(selectedModel);
         })
         .catch((error) => {

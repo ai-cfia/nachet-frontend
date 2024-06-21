@@ -145,8 +145,8 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
   const classList: ClassData[] = useMemo(() => {
     const classes: ClassData[] = [];
     const getClasses = () => {
-      return requestClassList(backendUrl, uuid).then((response) => {
-        return response.data;
+      return requestClassList(backendUrl).then((response) => {
+        return response.seeds;
       });
     };
     getClasses().then((data) => {
@@ -160,7 +160,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
     });
 
     return classes;
-  }, [backendUrl, uuid]);
+  }, [backendUrl]);
 
   const iconStyle = {
     fontSize: "1.7vh",

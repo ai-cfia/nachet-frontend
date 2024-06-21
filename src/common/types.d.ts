@@ -1,13 +1,14 @@
 export interface ApiInferenceData {
   filename: string;
   imageId: string;
-  inferenceId: string;
+  inference_id: string;
   boxes: Array<{
     topN: Array<{ score: number; label: string }>;
     score: number;
     label: string;
     classId: string;
-    boxId: string;
+    object_type_id: string;
+    box_id: string;
     box: BoxCoordinates;
     overlapping: boolean;
     overlappingIndices: number;
@@ -86,7 +87,7 @@ interface ClassData {
 }
 
 interface ApiSpeciesData {
-  data: Array<{
+  seeds: Array<{
     seed_id: string;
     seed_name: string;
   }>;

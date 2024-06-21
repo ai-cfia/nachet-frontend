@@ -1,6 +1,6 @@
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import { useCallback, Fragment, useState, useEffect } from "react";
-// import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 import Cookies from "js-cookie";
 import Navbar from "./components/header/navbar";
 import Body from "./root/body";
@@ -19,6 +19,7 @@ function App({
     height: window.innerHeight,
   });
   const [uuid, setUuid] = useState<string>("");
+  const [container_uuid, setContainerUuid] = useState<string>("");
   const [creativeCommonsPopupOpen, setCreativeCommonsPopupOpen] =
     useState<boolean>(false);
   const [switchLanguage, setSwitchLanguage] = useState<boolean>(false);
@@ -47,24 +48,24 @@ function App({
     }
   }, []);
 
-  // const createUuid = useCallback((): void => {
-  //   // create a new uuid for user and set a cookie to remember it for 10 years (it is used to identify user container in azure storage)
-  //   const newUuid = uuidv4();
-  //   setUuid(newUuid);
-  //   Cookies.set("user-uuid", newUuid, { expires: 365 * 10 });
-  // }, []);
+  const createContainerUuid = useCallback((): void => {
+    // create a new uuid for user and set a cookie to remember it for 10 years (it is used to identify user container in azure storage)
+    const newUuid = uuidv4();
+    setContainerUuid(newUuid);
+    Cookies.set("container-uuid", newUuid, { expires: 365 * 10 });
+  }, []);
 
-  // const getUuid = useCallback((): void => {
-  //   // check if the user has already a uuid (cookie)
-  //   const existingUuid = Cookies.get("user-uuid") as string;
-  //   if (existingUuid !== undefined) {
-  //     setUuid(existingUuid);
-  //     console.log("Existing UUID: " + existingUuid);
-  //   } else {
-  //     console.log("Creating new UUID");
-  //     createUuid();
-  //   }
-  // }, [createUuid]);
+  const getContainerUuid = useCallback((): void => {
+    // check if the user has already a uuid (cookie)
+    const existingUuid = Cookies.get("container-uuid") as string;
+    if (existingUuid !== undefined) {
+      setContainerUuid(existingUuid);
+      console.log("Existing Container UUID: " + existingUuid);
+    } else {
+      console.log("Creating new Container UUID");
+      createContainerUuid();
+    }
+  }, [createContainerUuid]);
 
   // const handleSignIn = (): void => {
   //   setSignedIn(true);
@@ -88,8 +89,9 @@ function App({
   // }, [signedIn]);
 
   useEffect(() => {
+    getContainerUuid();
     getCreativeCommonsAgreement();
-  }, [getCreativeCommonsAgreement]);
+  }, [getContainerUuid, getCreativeCommonsAgreement]);
 
   useEffect(() => {
     // update window size on resize
@@ -127,6 +129,7 @@ function App({
               <Body
                 windowSize={windowSize}
                 uuid={uuid}
+                container_uuid={container_uuid}
                 creativeCommonsPopupOpen={creativeCommonsPopupOpen}
                 setCreativeCommonsPopupOpen={setCreativeCommonsPopupOpen}
                 handleCreativeCommonsAgreement={handleCreativeCommonsAgreement}
