@@ -9,6 +9,7 @@ import {
   Images,
   ModelMetadata,
 } from "./types";
+import { b } from "vitest/dist/suite-a18diDsI";
 
 const handleAxios = async <T>(request: {
   method: string;
