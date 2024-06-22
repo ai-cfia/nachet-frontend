@@ -106,3 +106,13 @@ export interface ModelMetadata {
   pipeline_name: string;
   default?: boolean;
 }
+
+export interface BatchUploadMetadata {
+  containerName: string;
+  uuid: string;
+  seedId: string;
+  zoom: number;
+  seedCount: number;
+  imageDataUrl: string;
+  sessionId: string;
+}

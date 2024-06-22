@@ -3,11 +3,13 @@ import { AzureAPIError, ValueError } from "./error";
 import {
   ApiInferenceData,
   ApiSpeciesData,
+  BatchUploadMetadata,
   FeedbackDataNegative,
   FeedbackDataPositive,
   Images,
   ModelMetadata,
 } from "./types";
+import { b } from "vitest/dist/suite-a18diDsI";
 
 const handleAxios = async <T>(request: {
   method: string;
@@ -290,4 +292,99 @@ export const requestClassList = async (
     // },
   };
   return handleAxios<ApiSpeciesData>(request);
+};
+
+export const batchUploadInit = async (
+  backendUrl: string,
+  uuid: string,
+  containerUuid: string,
+  nbPictures: number,
+): Promise<{
+  session_id: string;
+}> => {
+  if (backendUrl === "" || backendUrl == null) {
+    throw new ValueError("Backend URL is null or empty");
+  }
+  if (uuid === "" || uuid == null) {
+    throw new ValueError("UUID is null or empty");
+  }
+  if (containerUuid === "" || containerUuid == null) {
+    throw new ValueError("Container UUID is null or empty");
+  }
+  if (nbPictures === 0 || nbPictures == null) {
+    throw new ValueError("Number of pictures is null or empty");
+  }
+  const request = {
+    method: "post",
+    url: `${backendUrl}/new-batch-import`,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    data: {
+      user_id: uuid,
+      container_name: containerUuid,
+      nb_pictures: nbPictures,
+    },
+  };
+  return handleAxios<{
+    session_id: string;
+  }>(request);
+};
+
+export const batchUploadImage = async (
+  backendUrl: string,
+  data: BatchUploadMetadata,
+): Promise<boolean> => {
+  const {
+    containerName,
+    uuid,
+    seedId,
+    zoom,
+    seedCount,
+    sessionId,
+    imageDataUrl,
+  } = data;
+  if (backendUrl === "" || backendUrl == null) {
+    throw new ValueError("Backend URL is null or empty");
+  }
+  if (sessionId === "" || sessionId == null) {
+    throw new ValueError("Session ID is null or empty");
+  }
+  if (imageDataUrl === "" || imageDataUrl == null) {
+    throw new ValueError("Image is null or empty");
+  }
+  if (containerName === "" || containerName == null) {
+    throw new ValueError("Container name is null or empty");
+  }
+  if (uuid === "" || uuid == null) {
+    throw new ValueError("UUID is null or empty");
+  }
+  if (seedId === "" || seedId == null) {
+    throw new ValueError("Seed ID is null or empty");
+  }
+  if (zoom === 0 || zoom == null) {
+    throw new ValueError("Zoom is null or empty");
+  }
+  if (seedCount === 0 || seedCount == null) {
+    throw new ValueError("Seed count is null or empty");
+  }
+  const request = {
+    method: "post",
+    url: `${backendUrl}/upload-picture`,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    data: {
+      container_name: containerName,
+      user_id: uuid,
+      seed_id: seedId,
+      zoom_level: zoom,
+      nb_seeds: seedCount,
+      session_id: sessionId,
+      image: imageDataUrl,
+    },
+  };
+  return handleAxios(request);
 };
