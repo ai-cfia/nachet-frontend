@@ -1,21 +1,26 @@
 import styled from "styled-components";
 import {
+  Autocomplete,
   Box,
   Button,
   CardHeader,
+  FilterOptionsState,
   FormControl,
   IconButton,
-  Input,
   LinearProgress,
   Stack,
   TextField,
+  createFilterOptions,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { colours } from "../../../styles/colours";
-import React from "react";
-import { useBackendUrl } from "../../../hooks";
-import { batchUploadImage, batchUploadInit } from "../../../common/api";
-import { BatchUploadMetadata } from "../../../common/types";
+import React, { SyntheticEvent, useMemo } from "react";
+import {
+  batchUploadImage,
+  batchUploadInit,
+  requestClassList,
+} from "../../../common/api";
+import { BatchUploadMetadata, ClassData } from "../../../common/types";
 
 export const Overlay = styled.div`
   position: fixed;
@@ -66,6 +71,80 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
   const [zoom, setZoom] = React.useState<number>(1);
   const [seedCount, setSeedCount] = React.useState<number>(0);
   const [sessionId, setSessionId] = React.useState<string>("");
+
+  const classList: ClassData[] = useMemo(() => {
+    const classes: ClassData[] = [];
+    const getClasses = () => {
+      return requestClassList(backendUrl).then((response) => {
+        return response.seeds;
+      });
+    };
+    getClasses().then((data) => {
+      for (let i = 0; i < data.length; i++) {
+        classes.push({
+          id: i,
+          classId: data[i].seed_id,
+          label: data[i].seed_name,
+        });
+      }
+    });
+
+    return classes;
+  }, [backendUrl]);
+
+  const defaultClass = useMemo(() => {
+    return {
+      id: -1,
+      classId: "",
+      label: "",
+    };
+  }, []);
+  const [selectedClass, setSelectedClass] =
+    React.useState<ClassData>(defaultClass);
+  const filter = createFilterOptions<ClassData>();
+
+  const filteredClassList = (
+    options: ClassData[],
+    params: FilterOptionsState<ClassData>,
+  ): ClassData[] => {
+    const { inputValue } = params;
+    if (inputValue === "") {
+      return options;
+    }
+    const filtered = filter(options, params);
+
+    // Suggest the creation of a new value
+    const isExisting = options.some((option) => inputValue === option.label);
+    if (inputValue !== "" && !isExisting) {
+      filtered.push({
+        ...defaultClass,
+        label: `"${inputValue}"`,
+      });
+    }
+
+    return filtered;
+  };
+
+  const getClassLabel = (option: string | ClassData): string => {
+    return typeof option === "string" ? option : option.label;
+  };
+
+  const handleClassChange = (
+    event: SyntheticEvent<Element, Event>,
+    newValue: string | ClassData | null,
+  ) => {
+    event.preventDefault();
+    if (newValue == null) {
+      setSelectedClass(defaultClass);
+    } else if (typeof newValue === "string") {
+      setSelectedClass({
+        ...defaultClass,
+        label: newValue,
+      });
+    } else {
+      setSelectedClass(newValue);
+    }
+  };
 
   const uploadImage = (file: File): void => {
     if (file == null) {
@@ -121,7 +200,7 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
         setUploadProgress(0);
         setUploadError(null);
         uploadImage(files[0]);
-        setUploadTotalProgress(prev => prev + 1);
+        setUploadTotalProgress((prev) => prev + 1);
       })
       .catch((error) => {
         setUploadError(error.toString());
@@ -180,6 +259,27 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
                 />
               </Stack>
             )}
+            <Autocomplete
+              id="seed-class"
+              renderInput={(params) => <TextField {...params} label="Class" />}
+              options={classList}
+              value={selectedClass}
+              onChange={handleClassChange}
+              isOptionEqualToValue={(option, value) =>
+                option.label === value.label
+              }
+              filterOptions={filteredClassList}
+              disablePortal
+              selectOnFocus
+              clearOnBlur
+              handleHomeEndKeys
+              freeSolo={false}
+              getOptionLabel={getClassLabel}
+              sx={{
+                marginTop: "20px",
+                width: "100%",
+              }}
+            />
             <TextField
               id="seed-count"
               label="Seed Count"
