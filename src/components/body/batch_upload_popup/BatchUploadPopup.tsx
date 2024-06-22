@@ -6,6 +6,8 @@ import {
   FormControl,
   IconButton,
   Input,
+  LinearProgress,
+  Stack,
   TextField,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
@@ -53,8 +55,11 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
   const { setBatchUploadOpen, containerName, uuid, backendUrl } = props;
 
   const [files, setFiles] = React.useState<FileList | null>(null);
+  const [fileCount, setFileCount] = React.useState<number>(0);
   const [uploading, setUploading] = React.useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = React.useState<number>(0);
+  const [uploadTotalProgress, setUploadTotalProgress] =
+    React.useState<number>(0);
   const [uploadError, setUploadError] = React.useState<string | null>(null);
 
   const [seedId, setSeedId] = React.useState<string>("");
@@ -63,33 +68,36 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
   const [sessionId, setSessionId] = React.useState<string>("");
 
   const uploadImage = (file: File): void => {
-      if (file !== undefined) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          if (typeof reader.result !== "string") {
-            return;
-          }
-          const data: BatchUploadMetadata = {
-            containerName: containerName,
-            uuid: uuid,
-            seedId: seedId,
-            zoom: zoom,
-            seedCount: seedCount,
-            imageDataUrl: reader.result,
-            sessionId: sessionId,
-          };
-          batchUploadImage(backendUrl, data).then((response) => {
-            if (response) {
-              console.log("Successfully uploaded image: ", file.name);
-            }
-            setUploadProgress((prev) => prev + 1);
-          }).catch((error) => {
-            console.error("Error uploading image: ", file.name);
-            throw error;
-          });
-        };
-        reader.readAsDataURL(file);
+    if (file == null) {
+      return;
+    }
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (typeof reader.result !== "string") {
+        return;
+      }
+      const data: BatchUploadMetadata = {
+        containerName: containerName,
+        uuid: uuid,
+        seedId: seedId,
+        zoom: zoom,
+        seedCount: seedCount,
+        imageDataUrl: reader.result,
+        sessionId: sessionId,
       };
+      batchUploadImage(backendUrl, data)
+        .then((response) => {
+          if (response) {
+            console.log("Successfully uploaded image: ", file.name);
+          }
+          setUploadProgress((prev) => prev + 1);
+        })
+        .catch((error) => {
+          console.error("Error uploading image: ", file.name);
+          throw error;
+        });
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -98,6 +106,7 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
     if (files !== null) {
       console.log(files);
       setFiles(files);
+      setFileCount(files.length);
     }
   };
 
@@ -105,12 +114,14 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
     if (files === null) {
       return;
     }
-    batchUploadInit(backendUrl, uuid, containerName, files.length)
+    batchUploadInit(backendUrl, uuid, containerName, fileCount)
       .then((response) => {
         setSessionId(response.session_id);
         setUploading(true);
         setUploadProgress(0);
         setUploadError(null);
+        uploadImage(files[0]);
+        setUploadTotalProgress(prev => prev + 1);
       })
       .catch((error) => {
         setUploadError(error.toString());
@@ -119,6 +130,7 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
   };
 
   const handleClose = (): void => {
+    // setUploadError(null);
     setBatchUploadOpen(false);
   };
 
@@ -154,8 +166,36 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
         />
         <InfoContainer>
           <FormControl>
+            {uploadError && <p style={{ color: "red" }}>{uploadError}</p>}
+            {uploading && (
+              <Stack spacing={2}>
+                <LinearProgress
+                  variant="determinate"
+                  value={(uploadTotalProgress / fileCount) * 100}
+                  sx={{ width: "100%", marginBottom: "20px" }}
+                />
+                <LinearProgress
+                  variant="indeterminate"
+                  sx={{ width: "100%", marginBottom: "20px" }}
+                />
+              </Stack>
+            )}
             <TextField
-              id="outlined-basic"
+              id="seed-count"
+              label="Seed Count"
+              variant="outlined"
+              type="number"
+              onChange={(e) => setSeedCount(parseInt(e.target.value))}
+            />
+            <TextField
+              id="zoom-level"
+              label="Zoom Level"
+              variant="outlined"
+              type="number"
+              onChange={(e) => setZoom(parseInt(e.target.value))}
+            />
+            <TextField
+              id="file-input"
               label="Outlined"
               variant="outlined"
               type="file"
