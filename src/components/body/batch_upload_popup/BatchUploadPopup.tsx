@@ -43,10 +43,8 @@ export const InfoContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-left: 1vw;
-  padding-right: 1vw;
-  margin-top: 1vh;
-  margin-bottom: 3vh;
+  min-width: 100%;
+  width: 100%;
 `;
 
 interface params {
@@ -73,6 +71,9 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
   const [sessionId, setSessionId] = React.useState<string>("");
 
   const classList: ClassData[] = useMemo(() => {
+    if (backendUrl === "" || backendUrl == null) {
+      return [];
+    };
     const classes: ClassData[] = [];
     const getClasses = () => {
       return requestClassList(backendUrl).then((response) => {
@@ -217,7 +218,7 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
     <Overlay>
       <Box
         sx={{
-          width: "20vw",
+          width: "fit-content",
           height: "fit-content",
           zIndex: 30,
           border: `0.01vh solid LightGrey`,
@@ -241,7 +242,9 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
               <CloseIcon />
             </IconButton>
           }
-          sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
+          sx={{
+            width: "100%",
+           }}
         />
         <InfoContainer>
           <FormControl>
@@ -276,7 +279,7 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
               freeSolo={false}
               getOptionLabel={getClassLabel}
               sx={{
-                marginTop: "20px",
+                marginTop: "5px",
                 width: "100%",
               }}
             />
@@ -286,6 +289,10 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
               variant="outlined"
               type="number"
               onChange={(e) => setSeedCount(parseInt(e.target.value))}
+              sx={{
+                marginTop: "5px",
+                width: "100%",
+              }}
             />
             <TextField
               id="zoom-level"
@@ -293,6 +300,10 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
               variant="outlined"
               type="number"
               onChange={(e) => setZoom(parseInt(e.target.value))}
+              sx={{
+                marginTop: "5px",
+                width: "100%",
+              }}
             />
             <TextField
               id="file-input"
@@ -303,6 +314,10 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
                 multiple: true,
               }}
               onChange={handleChange}
+              sx={{
+                marginTop: "5px",
+                width: "100%",
+              }}
             />
             {/* <input
             type="file"

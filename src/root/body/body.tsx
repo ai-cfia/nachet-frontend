@@ -328,6 +328,9 @@ const Body: React.FC<params> = (props) => {
       {batchUploadOpen && (
         <BatchUploadPopup
           setBatchUploadOpen={setBatchUploadOpen}
+          backendUrl={backendUrl}
+          uuid={props.uuid}
+          containerName={props.uuid}
         />
       )}
       {uploadOpen && (
