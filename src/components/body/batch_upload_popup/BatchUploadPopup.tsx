@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { colours } from "../../../styles/colours";
-import React, { SyntheticEvent, useMemo } from "react";
+import React, { SyntheticEvent, useEffect, useMemo } from "react";
 import {
   batchUploadImage,
   batchUploadInit,
@@ -66,32 +66,11 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
   const [uploadError, setUploadError] = React.useState<string | null>(null);
 
   const [seedId, setSeedId] = React.useState<string>("");
-  const [zoom, setZoom] = React.useState<number>(1);
+  const [zoom, setZoom] = React.useState<number>(0);
   const [seedCount, setSeedCount] = React.useState<number>(0);
   const [sessionId, setSessionId] = React.useState<string>("");
 
-  const classList: ClassData[] = useMemo(() => {
-    if (backendUrl === "" || backendUrl == null) {
-      return [];
-    };
-    const classes: ClassData[] = [];
-    const getClasses = () => {
-      return requestClassList(backendUrl).then((response) => {
-        return response.seeds;
-      });
-    };
-    getClasses().then((data) => {
-      for (let i = 0; i < data.length; i++) {
-        classes.push({
-          id: i,
-          classId: data[i].seed_id,
-          label: data[i].seed_name,
-        });
-      }
-    });
-
-    return classes;
-  }, [backendUrl]);
+  const [classList, setClassList] = React.useState<ClassData[]>([]);
 
   const defaultClass = useMemo(() => {
     return {
@@ -100,8 +79,9 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
       label: "",
     };
   }, []);
-  const [selectedClass, setSelectedClass] =
-    React.useState<ClassData>(defaultClass);
+  const [selectedClass, setSelectedClass] = React.useState<ClassData | null>(
+    null,
+  );
   const filter = createFilterOptions<ClassData>();
 
   const filteredClassList = (
@@ -136,7 +116,7 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
   ) => {
     event.preventDefault();
     if (newValue == null) {
-      setSelectedClass(defaultClass);
+      setSelectedClass(null);
     } else if (typeof newValue === "string") {
       setSelectedClass({
         ...defaultClass,
@@ -144,6 +124,7 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
       });
     } else {
       setSelectedClass(newValue);
+      setSeedId(newValue.classId);
     }
   };
 
@@ -180,7 +161,9 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
     reader.readAsDataURL(file);
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleFilesSelected = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
     // TODO validation
     const files = event.target.files;
     if (files !== null) {
@@ -190,23 +173,62 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
     }
   };
 
+  const resetUpload = (): void => {
+    setUploading(false);
+    setUploadProgress(0);
+    setUploadTotalProgress(0);
+    setUploadError(null);
+  };
+
+  const resetForm = (): void => {
+    setSelectedClass(null);
+    setSeedCount(0);
+    setZoom(0);
+    setFiles(null);
+    setFileCount(0);
+    setSessionId("");
+  };
+
   const handleUpload = (): void => {
-    if (files === null) {
+    if (selectedClass == null) {
+      setUploadError("Please select a class");
       return;
     }
+    if (seedCount < 1) {
+      setUploadError("Please enter a seed count");
+      return;
+    }
+    if (zoom < 1) {
+      setUploadError("Please enter a zoom level");
+      return;
+    }
+    if (files == null || files.length === 0) {
+      setUploadError("Please select an image");
+      return;
+    }
+
+    //remove before pr
+    if (uploadProgress) {
+      console.log("Already uploading");
+    }
+
     batchUploadInit(backendUrl, uuid, containerName, fileCount)
       .then((response) => {
         setSessionId(response.session_id);
+        resetUpload();
         setUploading(true);
-        setUploadProgress(0);
-        setUploadError(null);
+
+        //loop
+
         uploadImage(files[0]);
         setUploadTotalProgress((prev) => prev + 1);
       })
       .catch((error) => {
         setUploadError(error.toString());
       });
-    setUploading(false);
+
+    resetUpload();
+    resetForm();
   };
 
   const handleClose = (): void => {
@@ -214,40 +236,72 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
     setBatchUploadOpen(false);
   };
 
+  const updateFileList = (): string => {
+    if (files === null) {
+      return "";
+    }
+    let fileList = "";
+    for (let i = 0; i < files.length; i++) {
+      fileList += String(i + 1) + " - " + files[i].name + "\n";
+    }
+    return fileList;
+  };
+
+  useEffect(() => {
+    if (backendUrl === "" || backendUrl == null) {
+      return;
+    }
+    requestClassList(backendUrl).then((response) => {
+      const classes: ClassData[] = [];
+      for (let i = 0; i < response.seeds.length; i++) {
+        classes.push({
+          id: i,
+          classId: response.seeds[i].seed_id,
+          label: response.seeds[i].seed_name,
+        });
+      }
+      setClassList(classes);
+    });
+  }, [backendUrl]);
+
   return (
     <Overlay>
       <Box
         sx={{
-          width: "fit-content",
+          width: "20%",
           height: "fit-content",
           zIndex: 30,
           border: `0.01vh solid LightGrey`,
           borderRadius: 1,
           background: colours.CFIA_Background_White,
+          display: "flex",
+          flexDirection: "column",
+          padding: "10px",
         }}
         boxShadow={1}
       >
         <CardHeader
-          title="Load Image"
-          titleTypographyProps={{
-            variant: "h6",
-            align: "left",
-            fontWeight: 600,
-            fontSize: "1.3vh",
-            color: colours.CFIA_Font_Black,
-            zIndex: 30,
-          }}
+          title="Batch Upload Images"
           action={
             <IconButton onClick={handleClose}>
               <CloseIcon />
             </IconButton>
           }
           sx={{
-            width: "100%",
-           }}
+            display: "flex",
+            width: "auto",
+          }}
         />
         <InfoContainer>
-          <FormControl>
+          <FormControl
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
             {uploadError && <p style={{ color: "red" }}>{uploadError}</p>}
             {uploading && (
               <Stack spacing={2}>
@@ -262,9 +316,16 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
                 />
               </Stack>
             )}
+
             <Autocomplete
-              id="seed-class"
-              renderInput={(params) => <TextField {...params} label="Class" />}
+              id="input-seed-class"
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Class"
+                  error={selectedClass == null}
+                />
+              )}
               options={classList}
               value={selectedClass}
               onChange={handleClassChange}
@@ -279,56 +340,84 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
               freeSolo={false}
               getOptionLabel={getClassLabel}
               sx={{
-                marginTop: "5px",
+                marginTop: "0px",
                 width: "100%",
               }}
             />
+
             <TextField
-              id="seed-count"
+              id="input-seed-count"
               label="Seed Count"
               variant="outlined"
               type="number"
               onChange={(e) => setSeedCount(parseInt(e.target.value))}
               sx={{
-                marginTop: "5px",
+                marginTop: "10px",
                 width: "100%",
               }}
+              inputProps={{
+                min: 1,
+                max: 100,
+                style: { textAlign: "center" },
+              }}
+              error={seedCount < 1}
             />
             <TextField
-              id="zoom-level"
+              id="input-zoom-level"
               label="Zoom Level"
               variant="outlined"
               type="number"
               onChange={(e) => setZoom(parseInt(e.target.value))}
               sx={{
-                marginTop: "5px",
+                marginTop: "10px",
                 width: "100%",
               }}
-            />
-            <TextField
-              id="file-input"
-              label="Outlined"
-              variant="outlined"
-              type="file"
               inputProps={{
-                multiple: true,
+                min: 1,
+                max: 100,
+                style: { textAlign: "center" },
               }}
-              onChange={handleChange}
-              sx={{
-                marginTop: "5px",
-                width: "100%",
-              }}
+              error={zoom < 1}
             />
-            {/* <input
-            type="file"
-            onChange={uploadImage}
-            style={{
-              minWidth: "100%",
-              width: "100%",
-              fontSize: "0.7vw",
-            }}
-            multiple
-          /> */}
+
+            <Button
+              variant="contained"
+              component="label"
+              sx={{
+                marginTop: "10px",
+                width: "fit-content",
+              }}
+            >
+              Select Files
+              <input
+                type="file"
+                multiple
+                onChange={handleFilesSelected}
+                hidden
+              />
+            </Button>
+            {/* scrollable list of file names */}
+            {files && fileCount > 0 && (
+              <TextField
+                id="input-file-list"
+                label=""
+                variant="filled"
+                value={updateFileList()}
+                multiline
+                maxRows={12}
+                sx={{
+                  width: "100%",
+                }}
+                inputProps={{
+                  readOnly: true,
+                  style: {
+                    overflow: "scroll",
+                    textWrap: "nowrap",
+                    cursor: "pointer",
+                  },
+                }}
+              />
+            )}
 
             <Box
               sx={{

@@ -1,2 +1,2 @@
-import BatchUploadPopup from './BatchUploadPopup';
+import BatchUploadPopup from "./BatchUploadPopup";
 export default BatchUploadPopup;
