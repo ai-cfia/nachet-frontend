@@ -111,6 +111,7 @@ export interface BatchUploadMetadata {
   containerName: string;
   uuid: string;
   seedId: string;
+  seedName: string; // TODO: remove when backend is implemented
   zoom: number;
   seedCount: number;
   imageDataUrl: string;

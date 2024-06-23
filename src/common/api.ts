@@ -339,6 +339,7 @@ export const batchUploadImage = async (
     containerName,
     uuid,
     seedId,
+    seedName, // TODO: remove when backend is implemented
     zoom,
     seedCount,
     sessionId,
@@ -379,6 +380,7 @@ export const batchUploadImage = async (
       container_name: containerName,
       user_id: uuid,
       seed_id: seedId,
+      seed_name: seedName, // TODO: remove when backend is implemented
       zoom_level: zoom,
       nb_seeds: seedCount,
       session_id: sessionId,
