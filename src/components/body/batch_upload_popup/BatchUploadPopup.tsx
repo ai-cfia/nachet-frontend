@@ -20,7 +20,15 @@ import CloseIcon from "@mui/icons-material/Close";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import { colours } from "../../../styles/colours";
-import React, { SyntheticEvent, useEffect, useMemo } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  SyntheticEvent,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import {
   batchUploadImage,
   batchUploadInit,
@@ -54,30 +62,29 @@ export const InfoContainer = styled.div`
 `;
 
 interface params {
-  setBatchUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setBatchUploadOpen: Dispatch<SetStateAction<boolean>>;
   backendUrl: string;
   containerName: string;
   uuid: string;
 }
 
-const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
+const BatchUploadPopup = (props: params): JSX.Element => {
   const { setBatchUploadOpen, containerName, uuid, backendUrl } = props;
 
-  const [files, setFiles] = React.useState<FileList | null>(null);
-  const [fileCount, setFileCount] = React.useState<number>(0);
-  const [fileStatus, setFileStatus] = React.useState<boolean[]>([]);
-  const [uploading, setUploading] = React.useState<boolean>(false);
-  const [uploadProgress, setUploadProgress] = React.useState<number>(0);
-  const [uploadTotalProgress, setUploadTotalProgress] =
-    React.useState<number>(0);
-  const [uploadError, setUploadError] = React.useState<string | null>(null);
+  const [files, setFiles] = useState<FileList | null>(null);
+  const [fileCount, setFileCount] = useState<number>(0);
+  const [fileStatus, setFileStatus] = useState<boolean[]>([]);
+  const [uploading, setUploading] = useState<boolean>(false);
+  const [uploadTotalProgress, setUploadTotalProgress] = useState<number>(0);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
 
-  const [seedId, setSeedId] = React.useState<string>("");
-  const [zoom, setZoom] = React.useState<number>(0);
-  const [seedCount, setSeedCount] = React.useState<number>(0);
-  const [sessionId, setSessionId] = React.useState<string>("");
+  const [seedId, setSeedId] = useState<string>("");
+  const [zoom, setZoom] = useState<number>(0);
+  const [seedCount, setSeedCount] = useState<number>(0);
+  const [sessionId, setSessionId] = useState<string>("");
 
-  const [classList, setClassList] = React.useState<ClassData[]>([]);
+  const [classList, setClassList] = useState<ClassData[]>([]);
 
   const defaultClass = useMemo(() => {
     return {
@@ -86,9 +93,7 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
       label: "",
     };
   }, []);
-  const [selectedClass, setSelectedClass] = React.useState<ClassData | null>(
-    null,
-  );
+  const [selectedClass, setSelectedClass] = useState<ClassData | null>(null);
   const filter = createFilterOptions<ClassData>();
 
   const filteredClassList = (
@@ -135,61 +140,7 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
     }
   };
 
-  // const uploadImage = (file: File) =>
-  //   useCallback(
-  //     (file: File): Promise<boolean> => {
-  //       return new Promise((resolve, reject) => {
-  //         if (file == null) {
-  //           reject("No file selected");
-  //         }
-  //         const reader = new FileReader();
-  //         reader.onloadend = () => {
-  //           const imageDataUrl = reader.result;
-  //           if (typeof imageDataUrl !== "string") {
-  //             reject("Invalid file type");
-  //             return;
-  //           }
-  //           const data: BatchUploadMetadata = {
-  //             containerName: containerName,
-  //             uuid: uuid,
-  //             seedId: seedId,
-  //             seedName: selectedClass?.label ?? "", // TODO: remove when backend is implemented
-  //             zoom: zoom,
-  //             seedCount: seedCount,
-  //             imageDataUrl: imageDataUrl,
-  //             sessionId: sessionId,
-  //           };
-  //           batchUploadImage(backendUrl, data)
-  //             .then((response) => {
-  //               if (response) {
-  //                 console.log("Successfully uploaded image: ", file.name);
-  //               }
-  //               setUploadProgress((prev) => prev + 1);
-  //               resolve(true);
-  //             })
-  //             .catch((error) => {
-  //               console.error("Error uploading image: ", file.name);
-  //               reject(error);
-  //             });
-  //         };
-  //         reader.readAsDataURL(file);
-  //       });
-  //     },
-  //     [
-  //       backendUrl,
-  //       containerName,
-  //       seedCount,
-  //       seedId,
-  //       selectedClass,
-  //       sessionId,
-  //       uuid,
-  //       zoom,
-  //     ],
-  //   );
-
-  const handleFilesSelected = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ): void => {
+  const handleFilesSelected = (event: ChangeEvent<HTMLInputElement>): void => {
     // TODO validation
     const files = event.target.files;
     if (files !== null) {
@@ -202,9 +153,9 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
 
   const resetUpload = (): void => {
     setUploading(false);
-    setUploadProgress(0);
     setUploadTotalProgress(0);
     setUploadError(null);
+    setUploadSuccess(false);
   };
 
   const resetForm = (): void => {
@@ -237,9 +188,6 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
     }
 
     setUploading(true);
-    if (uploadProgress) {
-      setUploadProgress((prev) => prev + 1);
-    }
 
     batchUploadInit(backendUrl, uuid, containerName, fileCount)
       .then((response) => {
@@ -258,19 +206,30 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
   };
 
   useEffect(() => {
+    if (fileStatus.length === 0) {
+      return;
+    }
+    if (fileStatus.some((status) => status === false)) {
+      return;
+    }
+    setUploadSuccess(true);
+  }, [fileStatus]);
+
+  useEffect(() => {
     if (backendUrl == null || backendUrl === "") {
       return;
     }
     requestClassList(backendUrl)
       .then((response) => {
+        const list: ClassData[] = [];
         response.seeds.forEach((element, index) => {
-          classList.push({
+          list.push({
             id: index,
             classId: element.seed_id,
             label: element.seed_name,
           });
         });
-        setClassList(classList);
+        setClassList(list);
       })
       .catch((error) => {
         console.error("Error fetching class list: ", error);
@@ -310,7 +269,7 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
             imageDataUrl: imageDataUrl,
             sessionId: sessionId,
           };
-          batchUploadImage(backendUrl, data, setUploadProgress)
+          batchUploadImage(backendUrl, data)
             .then((response) => {
               if (response) {
                 console.log("Successfully uploaded image: ", file.name);
@@ -325,39 +284,6 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
         reader.readAsDataURL(file);
       });
     };
-
-    // //loop
-    // if (!fileStatus[0]) {
-    //   uploadImage(files[0])
-    //     .then((response) => {
-    //       setFileStatus((prev) => {
-    //         const newStatus = [...prev];
-    //         newStatus[0] = response;
-    //         return newStatus;
-    //       });
-    //     })
-    //     .catch((error) => {
-    //       console.error(error);
-    //     });
-    // }
-
-    // setUploadTotalProgress((prev) => prev + 1);
-    // fileStatus.forEach((status, index) => {
-    //   if (!status) {
-    //     uploadImage(files[index])
-    //       .then((response) => {
-    //         setFileStatus((prev) => {
-    //           const newStatus = [...prev];
-    //           newStatus[index] = response;
-    //           return newStatus;
-    //         });
-    //         setUploadTotalProgress((prev) => prev + 1);
-    //       })
-    //       .catch((error) => {
-    //         console.error(error);
-    //       });
-    //   }
-    // });
 
     const batchUpload = async () => {
       const uploadPromises: Promise<boolean>[] = [];
@@ -452,8 +378,7 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
                   sx={{ width: "100%", height: "10px" }}
                 />
                 <LinearProgress
-                  variant="determinate"
-                  value={uploadProgress}
+                  variant="indeterminate"
                   sx={{ width: "100%", height: "10px" }}
                 />
               </Stack>
@@ -608,7 +533,7 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
                 marginTop: "20px",
               }}
             >
-              {!uploading && (
+              {!uploading && !uploadSuccess && (
                 <Button
                   sx={{
                     backgroundColor: "green",
@@ -635,7 +560,7 @@ const BatchUploadPopup: React.FC<params> = (props): JSX.Element => {
                 }}
                 onClick={handleClose}
               >
-                Cancel
+                {uploadSuccess ? "Close" : "Cancel"}
               </Button>
             </Box>
           </FormControl>
