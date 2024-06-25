@@ -42,6 +42,38 @@ const handleAxios = async <T>(request: {
   return data;
 };
 
+const handleAxiosPost = async <T>(request: {
+  method: string;
+  url: string;
+  headers: { [label: string]: string };
+  data: any;
+}): Promise<T> => {
+  const data = await axios.post(request.url, request.data, request.headers)
+    .then((response) => {
+      if (response.status === 200) {
+        return response.data;
+      } else {
+        throw new AzureAPIError(response.data);
+      }
+    })
+    .catch((error) => {
+      if (error.response) {
+        console.error(error.response.data);
+        console.error(error.response.status);
+        console.error(error.response.headers);
+        throw new AzureAPIError(error.response.data);
+      } else if (error.request) {
+        console.error(error.request);
+        throw new AzureAPIError(error.request);
+      } else {
+        console.error("Error", error.message);
+      }
+      console.error(error.config);
+      throw new AzureAPIError(error.config);
+    });
+  return data;
+};
+
 export const readAzureStorageDir = async (
   backendUrl: string,
   uuid: string,
@@ -334,6 +366,7 @@ export const batchUploadInit = async (
 export const batchUploadImage = async (
   backendUrl: string,
   data: BatchUploadMetadata,
+  setProgress: (progress: number) => void,
 ): Promise<boolean> => {
   const {
     containerName,
@@ -386,6 +419,11 @@ export const batchUploadImage = async (
       session_id: sessionId,
       image: imageDataUrl,
     },
+    onUploadProgress: (progressEvent: ProgressEvent) => {
+      const progress = (progressEvent.loaded / progressEvent.total) * 100;
+      console.log(`Upload Progress: ${progress}%`);
+      setProgress(progress);
+    },
   };
-  return handleAxios(request);
+  return handleAxiosPost(request);
 };
