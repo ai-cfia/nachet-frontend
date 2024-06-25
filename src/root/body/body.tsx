@@ -21,10 +21,10 @@ import {
   fetchModelMetadata,
   inferenceRequest,
   readAzureStorageDir,
+  requestUUID,
 } from "../../common";
 import { Images, LabelOccurrences, ModelMetadata } from "../../common/types";
 import Cookies from "js-cookie";
-import { requestUUID } from "../../common/api";
 
 interface params {
   windowSize: {
@@ -63,7 +63,9 @@ const Body: React.FC<params> = (props) => {
   );
   const [curDir, setCurDir] = useState<string>("General");
   const [readAzureStorage, setReadAzureStorage] = useState<boolean>(false);
-  const [azureStorageDir, setAzureStorageDir] = useState<any>({});
+  const [azureStorageDir, setAzureStorageDir] = useState<{
+    [key: string]: number;
+  }>({});
   const [delDirectoryOpen, setDelDirectoryOpen] = useState<boolean>(false);
   const [selectedModel, setSelectedModel] = useState("Swin transformer");
   const [modelDisplayName, setModelDisplayName] = useState("");

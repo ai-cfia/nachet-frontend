@@ -44,7 +44,9 @@ const handleAxios = async <T>(request: {
 export const readAzureStorageDir = async (
   backendUrl: string,
   uuid: string,
-): Promise<void> => {
+): Promise<{
+  [key: string]: number;
+}> => {
   if (backendUrl === "" || backendUrl == null) {
     throw new ValueError("Backend URL is null or empty");
   }

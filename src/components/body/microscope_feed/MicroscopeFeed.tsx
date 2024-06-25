@@ -28,7 +28,7 @@ import {
   requestClassList,
   sendNegativeFeedback,
   sendPositiveFeedback,
-} from "../../../common/api";
+} from "../../../common";
 import { FreeformBox, NegativeFeedbackForm } from "../feedback_form";
 import { getUnscaledCoordinates } from "../../../common/imageutils";
 interface MicroscopeFeedProps {
@@ -144,10 +144,9 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
 
   const classList: ClassData[] = useMemo(() => {
     const classes: ClassData[] = [];
-    const getClasses = () => {
-      return requestClassList(backendUrl).then((response) => {
-        return response.seeds;
-      });
+    const getClasses = async () => {
+      const response = await requestClassList(backendUrl);
+      return response.seeds;
     };
     getClasses().then((data) => {
       for (let i = 0; i < data.length; i++) {
