@@ -120,8 +120,6 @@ export const NegativeFeedbackForm = (
   const { inference, position, classList, onCancel, onSubmit } = props;
   const [selectedClass, setSelectedClass] = useState<ClassData>(defaultClass);
   const [comment, setComment] = useState<string>(reasons[2]);
-  const [slassDropdownEnabled, setClassDropdownEnabled] =
-    useState<boolean>(true);
 
   const filter = createFilterOptions<ClassData>();
 
@@ -207,9 +205,6 @@ export const NegativeFeedbackForm = (
         classId: "",
         label: "",
       });
-      setClassDropdownEnabled(false);
-    } else {
-      setClassDropdownEnabled(true);
     }
   }, [comment]);
 
@@ -256,7 +251,7 @@ export const NegativeFeedbackForm = (
               marginTop: "20px",
               width: "100%",
             }}
-            disabled={!slassDropdownEnabled}
+            disabled={comment === "No Seed"}
           />
           <Select
             labelId="comment-select-label"

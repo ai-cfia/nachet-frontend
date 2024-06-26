@@ -25,6 +25,7 @@ import {
 } from "../../common";
 import { Images, LabelOccurrences, ModelMetadata } from "../../common/types";
 import Cookies from "js-cookie";
+import BatchUploadPopup from "../../components/body/batch_upload_popup";
 
 interface params {
   windowSize: {
@@ -52,6 +53,7 @@ const Body: React.FC<params> = (props) => {
   const [imageFormat, setImageFormat] = useState<string>("image/png");
   const [imageLabel, setImageLabel] = useState<string>("");
   const [saveOpen, setSaveOpen] = useState(false);
+  const [batchUploadOpen, setBatchUploadOpen] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
   const [modelInfoPopupOpen, setModelInfoPopupOpen] = useState(false);
   const [switchDeviceOpen, setSwitchDeviceOpen] = useState(false);
@@ -323,6 +325,14 @@ const Body: React.FC<params> = (props) => {
           saveIndividualImage={saveIndividualImage}
         />
       )}
+      {batchUploadOpen && (
+        <BatchUploadPopup
+          setBatchUploadOpen={setBatchUploadOpen}
+          backendUrl={backendUrl}
+          uuid={props.uuid}
+          containerName={props.uuid}
+        />
+      )}
       {uploadOpen && (
         <UploadPopup
           setUploadOpen={setUploadOpen}
@@ -378,6 +388,7 @@ const Body: React.FC<params> = (props) => {
       <Classifier
         handleInference={handleInferenceRequest}
         imageIndex={imageIndex}
+        setBatchUploadOpen={setBatchUploadOpen}
         setUploadOpen={setUploadOpen}
         imageSrc={imageSrc}
         webcamRef={webcamRef}

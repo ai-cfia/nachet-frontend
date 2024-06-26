@@ -22,6 +22,7 @@ interface params {
   savedImages: any[];
   clearImageCache: () => void;
   setImageIndex: React.Dispatch<React.SetStateAction<number>>;
+  setBatchUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
   canvasRef: React.RefObject<HTMLCanvasElement>;
   handleInference: () => void;
@@ -73,6 +74,7 @@ const Classifier: React.FC<params> = (props) => {
             setSwitchModelOpen={props.setSwitchModelOpen}
             imageCache={props.savedImages}
             imageIndex={props.imageIndex}
+            setBatchUploadOpen={props.setBatchUploadOpen}
             setUploadOpen={props.setUploadOpen}
             isWebcamActive={props.isWebcamActive}
             onCaptureClick={props.onCaptureClick}

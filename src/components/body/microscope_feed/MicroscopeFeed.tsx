@@ -38,6 +38,7 @@ interface MicroscopeFeedProps {
   setSwitchDeviceOpen: React.Dispatch<React.SetStateAction<boolean>>;
   canvasRef: React.RefObject<HTMLCanvasElement>;
   setSaveOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setBatchUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSwitchModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
   imageCache: Images[];
@@ -108,6 +109,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
     setSwitchDeviceOpen,
     canvasRef,
     setSaveOpen,
+    setBatchUploadOpen,
     setUploadOpen,
     setSwitchModelOpen,
     imageCache,
@@ -329,6 +331,14 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
           disabled={!isWebcamActive} // Disable when the webcam is active
           onClick={() => {
             setSwitchDeviceOpen(true);
+          }}
+        />
+        <ButtonMicroscopeFeed
+          label="BATCH"
+          icon={<UploadFileIcon color="inherit" style={iconStyle} />}
+          disabled={isWebcamActive} // Disable when the webcam is active
+          onClick={() => {
+            setBatchUploadOpen(true);
           }}
         />
         <ButtonMicroscopeFeed
