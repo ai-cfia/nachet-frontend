@@ -1,7 +1,7 @@
 import StorageDirectoryView from "./StorageDirectoryView";
 
 export interface params {
-  azureStorageDir: any;
+  azureStorageDir: { [key: string]: number };
   curDir: string;
   setCurDir: React.Dispatch<React.SetStateAction<string>>;
   setCreateDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -28,7 +28,8 @@ const StorageDirectoryContainer: React.FC<params> = (props): JSX.Element => {
 
   return (
     <StorageDirectoryView
-      {...props}
+      azureStorageDir={props.azureStorageDir}
+      curDir={props.curDir}
       handleSelect={handleSelect}
       handleDelete={handleDelete}
       handleCreateDirectory={handleCreateDirectory}

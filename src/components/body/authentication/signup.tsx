@@ -13,9 +13,11 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { colours } from "../../../styles/colours";
+import Cookies from "js-cookie";
 
 interface params {
   setSignUpOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onSignIn: () => void;
 }
 
 const SignUp: React.FC<params> = (props): JSX.Element => {
@@ -27,8 +29,11 @@ const SignUp: React.FC<params> = (props): JSX.Element => {
     const data = new FormData(event.currentTarget);
     console.log({
       email: data.get("email"),
-      password: data.get("password"),
+      // password: data.get("password"),
     });
+    Cookies.set("user-email", String(data.get("email") ?? ""), { expires: 30 });
+    props.onSignIn();
+    handleClose();
   };
 
   return (

@@ -6,9 +6,9 @@ import StorageDirectoryContainer from "../StorageDirectoryContainer";
 describe("StorageDirectoryContainer", () => {
   const mockProps = {
     azureStorageDir: {
-      testDir1: "testDir1",
-      testDir2: "testDir2",
-      testDir3: "testDir3",
+      testDir1: 0,
+      testDir2: 1,
+      testDir3: 2,
     },
     curDir: "testDir",
     setCurDir: vi.fn(),

@@ -16,7 +16,9 @@ import FolderIcon from "@mui/icons-material/Folder";
 import FilterIcon from "@mui/icons-material/Filter";
 
 interface params {
-  azureStorageDir: any;
+  azureStorageDir: {
+    [key: string]: number;
+  };
   curDir: string;
   handleSelect: (folder: string) => void;
   handleDelete: (folder: string) => void;

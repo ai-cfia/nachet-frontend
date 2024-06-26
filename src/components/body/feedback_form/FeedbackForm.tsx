@@ -19,13 +19,6 @@ import { SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { BoxCSS, ClassData, FeedbackDataNegative } from "../../../common/types";
 import Draggable from "react-draggable";
 
-// import styled from "styled-components";
-// const FeedbackPopover = styled(Popover)`
-//   .MuiPopover-paper {
-//     padding: 10px;
-//   }
-// `;
-
 interface SimpleFeedbackFormProps {
   anchorEl: HTMLButtonElement | null;
   onClose: () => void;
@@ -101,6 +94,7 @@ export const SimpleFeedbackForm = (
 interface NegativeFeedbackFormProps {
   inference: FeedbackDataNegative;
   position: BoxCSS;
+  classList: ClassData[];
   onCancel: () => void;
   onSubmit: (feedbackDataNegative: FeedbackDataNegative) => void;
 }
@@ -109,21 +103,6 @@ export const NegativeFeedbackForm = (
   props: NegativeFeedbackFormProps,
 ): JSX.Element => {
   /* TODO: update when backend is defined Section stub convert to prop or use state when backend defined */
-
-  const classList = useMemo(() => {
-    return [
-      {
-        id: 1,
-        classId: "1",
-        label: "Species stub 1",
-      },
-      {
-        id: 2,
-        classId: "2",
-        label: "Species stub 2",
-      },
-    ];
-  }, []);
 
   const reasons = useMemo(() => {
     return ["No Seed", "Multi Seed", "Wrong Seed", "Wrong Seed not in List"];
@@ -138,9 +117,11 @@ export const NegativeFeedbackForm = (
     };
   }, []);
 
-  const { inference, position, onCancel, onSubmit } = props;
+  const { inference, position, classList, onCancel, onSubmit } = props;
   const [selectedClass, setSelectedClass] = useState<ClassData>(defaultClass);
   const [comment, setComment] = useState<string>(reasons[2]);
+  const [slassDropdownEnabled, setClassDropdownEnabled] =
+    useState<boolean>(true);
 
   const filter = createFilterOptions<ClassData>();
 
@@ -219,6 +200,19 @@ export const NegativeFeedbackForm = (
     }
   }, [classList, defaultClass, inference]);
 
+  useEffect(() => {
+    if (comment === "No Seed") {
+      setSelectedClass({
+        id: -1,
+        classId: "",
+        label: "",
+      });
+      setClassDropdownEnabled(false);
+    } else {
+      setClassDropdownEnabled(true);
+    }
+  }, [comment]);
+
   return (
     <Draggable
       defaultPosition={{
@@ -262,6 +256,7 @@ export const NegativeFeedbackForm = (
               marginTop: "20px",
               width: "100%",
             }}
+            disabled={!slassDropdownEnabled}
           />
           <Select
             labelId="comment-select-label"

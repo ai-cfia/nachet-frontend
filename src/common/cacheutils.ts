@@ -369,9 +369,9 @@ export const loadResultsToCache = (
     boxes: inferenceData.boxes.map((box) => {
       return {
         ...box.box,
-        inferenceId: inferenceData.inferenceId,
-        boxId: box.boxId,
-        classId: box.classId,
+        inferenceId: inferenceData.inference_id,
+        boxId: box.box_id,
+        classId: box.object_type_id,
         label: box.label,
       };
     }),

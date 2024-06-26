@@ -11,6 +11,10 @@ import {
   deleteAzureStorageDir,
   inferenceRequest,
   fetchModelMetadata,
+  requestClassList,
+  sendNegativeFeedback,
+  sendPositiveFeedback,
+  requestUUID,
 } from "./api";
 import {
   loadToCanvas,
@@ -42,4 +46,8 @@ export {
   loadResultsToCache,
   getLabelOccurrence,
   getScaledBounds,
+  requestClassList,
+  sendNegativeFeedback,
+  sendPositiveFeedback,
+  requestUUID,
 };

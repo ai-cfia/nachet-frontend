@@ -2,6 +2,7 @@ import axios from "axios";
 import { AzureAPIError, ValueError } from "./error";
 import {
   ApiInferenceData,
+  ApiSpeciesData,
   FeedbackDataNegative,
   FeedbackDataPositive,
   Images,
@@ -43,7 +44,9 @@ const handleAxios = async <T>(request: {
 export const readAzureStorageDir = async (
   backendUrl: string,
   uuid: string,
-): Promise<void> => {
+): Promise<{
+  [key: string]: number;
+}> => {
   if (backendUrl === "" || backendUrl == null) {
     throw new ValueError("Backend URL is null or empty");
   }
@@ -128,7 +131,8 @@ export const inferenceRequest = async (
   imageObject: Images,
   curDir: string,
   uuid: string,
-): Promise<ApiInferenceData[]> => {
+  container_uuid: string,
+): Promise<ApiInferenceData> => {
   if (backendUrl === "" || backendUrl == null) {
     throw new ValueError("Backend URL is null or empty");
   }
@@ -156,10 +160,11 @@ export const inferenceRequest = async (
       image: imageObject.src,
       imageDims: imageObject.imageDims,
       folder_name: curDir,
-      container_name: uuid,
+      user_id: uuid,
+      container_name: container_uuid,
     },
   };
-  return handleAxios<ApiInferenceData[]>(request);
+  return handleAxios<ApiInferenceData>(request);
 };
 
 export const fetchModelMetadata = async (
@@ -235,4 +240,54 @@ export const sendNegativeFeedback = async (
     data: feedbackData,
   };
   return handleAxios(request);
+};
+
+export const requestUUID = async (
+  backendUrl: string,
+  email: string,
+): Promise<{
+  user_id: string;
+}> => {
+  if (backendUrl === "" || backendUrl == null) {
+    throw new ValueError("Backend URL is null or empty");
+  }
+  const request = {
+    method: "post",
+    url: `${backendUrl}/get-user-id`,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    data: {
+      email: email,
+    },
+  };
+  return handleAxios<{
+    user_id: string;
+  }>(request);
+};
+
+export const requestClassList = async (
+  backendUrl: string,
+  // uuid: string,
+): Promise<ApiSpeciesData> => {
+  if (backendUrl === "" || backendUrl == null) {
+    throw new ValueError("Backend URL is null or empty");
+  }
+  // if (uuid === "" || uuid == null) {
+  //   throw new ValueError("UUID is null or empty");
+  // }
+  const request = {
+    method: "get",
+    url: `${backendUrl}/seeds`,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    data: {},
+    // data: {
+    //   uuid: uuid,
+    // },
+  };
+  return handleAxios<ApiSpeciesData>(request);
 };

@@ -1,10 +1,66 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import Body from "./body";
-import axios from "axios";
 
 process.env.VITE_BACKEND_URL = "somebackendurl";
 
+vi.mock("../../common", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("../../common")>();
+  return {
+    ...mod,
+    readAzureStorageDir: vi.fn(() => {
+      return Promise.resolve({
+        testDir1: 0,
+        testDir2: 1,
+        testDir3: 2,
+      });
+    }),
+    createAzureStorageDir: vi.fn(),
+    deleteAzureStorageDir: vi.fn(),
+    inferenceRequest: vi.fn(),
+    fetchModelMetadata: vi.fn(() => {
+      return Promise.resolve([
+        {
+          created_by: "Wayne Gretzky",
+          creation_date: "2023-12-01",
+          dataset: "",
+          default: false,
+          description:
+            "trained using 6 seed images per image of 14of15 tagarno",
+          job_name: "neat_cartoon_k0y4m0vz",
+          model_name: "9000 Seed Detector",
+          models: ["m-14of15seeds-6seedsmag"],
+          pipeline_id: "123",
+          pipeline_name: "9000 Seed Detector",
+          version: "1",
+        },
+      ]);
+    }),
+    requestClassList: vi.fn(() => {
+      return Promise.resolve({
+        seeds: [
+          {
+            seed_id: "1",
+            seed_name: "seed_name1",
+          },
+          {
+            seed_id: "2",
+            seed_name: "seed_name2",
+          },
+          {
+            seed_id: "3",
+            seed_name: "seed_name3",
+          },
+        ],
+      });
+    }),
+    requestUUID: vi.fn(() => {
+      return Promise.resolve({
+        uuid: "1234",
+      });
+    }),
+  };
+});
 const mockProps = {
   windowSize: {
     width: 1000,
@@ -16,6 +72,9 @@ const mockProps = {
   handleCreativeCommonsAgreement: vi.fn(),
   setSignUpOpen: vi.fn(),
   signUpOpen: false,
+  signedIn: false,
+  setSignedIn: vi.fn(),
+  setUuid: vi.fn(),
 };
 
 const mockAddEventListener = vi.fn();
@@ -35,33 +94,6 @@ Object.defineProperty(global.navigator, "mediaDevices", {
 
 Object.defineProperty(global.window, "alert", {
   value: vi.fn(),
-});
-
-vi.mock("../../common", async (importOriginal) => {
-  const mod = await importOriginal<typeof import("../../common")>();
-  return {
-    ...mod,
-    readAzureStorageDir: vi.fn(async () => {
-      return new Promise<any>((resolve) => {
-        resolve(true);
-      });
-    }),
-    createAzureStorageDir: vi.fn(),
-    deleteAzureStorageDir: vi.fn(),
-    inferenceRequest: vi.fn(),
-    requestModelMetadata: vi.fn(),
-  };
-});
-
-vi.mock("axios");
-vi.mocked(axios).mockResolvedValue({
-  ok: true,
-  status: 200,
-  data: {
-    testDir1: "testDir1",
-    testDir2: "testDir2",
-    testDir3: "testDir3",
-  },
 });
 
 describe("Body", () => {

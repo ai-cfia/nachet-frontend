@@ -1,5 +1,5 @@
 // root\body\index.tsx
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import type Webcam from "react-webcam";
 import { BodyContainer } from "./indexElements";
 import Classifier from "../../pages/classifier";
@@ -21,8 +21,10 @@ import {
   fetchModelMetadata,
   inferenceRequest,
   readAzureStorageDir,
+  requestUUID,
 } from "../../common";
 import { Images, LabelOccurrences, ModelMetadata } from "../../common/types";
+import Cookies from "js-cookie";
 
 interface params {
   windowSize: {
@@ -35,6 +37,9 @@ interface params {
   handleCreativeCommonsAgreement: (agree: boolean) => void;
   setSignUpOpen: React.Dispatch<React.SetStateAction<boolean>>;
   signUpOpen: boolean;
+  signedIn: boolean;
+  setUuid: React.Dispatch<React.SetStateAction<string>>;
+  setSignedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Body: React.FC<params> = (props) => {
@@ -58,7 +63,9 @@ const Body: React.FC<params> = (props) => {
   );
   const [curDir, setCurDir] = useState<string>("General");
   const [readAzureStorage, setReadAzureStorage] = useState<boolean>(false);
-  const [azureStorageDir, setAzureStorageDir] = useState<any>({});
+  const [azureStorageDir, setAzureStorageDir] = useState<{
+    [key: string]: number;
+  }>({});
   const [delDirectoryOpen, setDelDirectoryOpen] = useState<boolean>(false);
   const [selectedModel, setSelectedModel] = useState("Swin transformer");
   const [modelDisplayName, setModelDisplayName] = useState("");
@@ -76,6 +83,39 @@ const Body: React.FC<params> = (props) => {
   const backendUrl = useBackendUrl();
   const [metadata, setMetadata] = useState<ModelMetadata[]>([]);
   const [showInference, setShowInference] = useState<boolean>(true);
+
+  const onSignIn = (): void => {
+    props.setSignedIn(true);
+  };
+
+  // uuid will check if an email is already stored in the cookie, if not setsignup open
+  const getUuid = useCallback((): void => {
+    // check if the user has email stored in the cookie
+    const email: string | undefined = Cookies.get("user-email");
+    if (email == null || !email.includes("@") || !props.signedIn) {
+      props.setSignUpOpen(true);
+    } else {
+      requestUUID(backendUrl, email)
+        .then((response) => {
+          props.setUuid(response.user_id);
+          Cookies.set("user-uuid", response.user_id, {
+            expires: 30,
+            sameSite: "strict",
+            secure: true,
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          alert("Error fetching UUID, see console for details");
+        });
+      // props.setUuid(props.uuid);
+      // Cookies.set("user-uuid", props.uuid, { expires: 30 });
+    }
+  }, [props, backendUrl]);
+
+  useEffect(() => {
+    getUuid();
+  }, [getUuid]);
 
   const captureFeed = (): void => {
     // takes screenshot of webcam feed and loads it to cache when capture button is pressed
@@ -127,12 +167,11 @@ const Body: React.FC<params> = (props) => {
         imageObject,
         curDir,
         props.uuid,
+        props.uuid,
       )
         .then((response) => {
           setReadAzureStorage(!readAzureStorage);
-          setImageCache(
-            loadResultsToCache(response[0], imageCache, imageIndex),
-          );
+          setImageCache(loadResultsToCache(response, imageCache, imageIndex));
           setModelDisplayName(selectedModel);
         })
         .catch((error) => {
@@ -326,7 +365,9 @@ const Body: React.FC<params> = (props) => {
           setReadAzureStorage={setReadAzureStorage}
         />
       )}
-      {props.signUpOpen && <SignUp setSignUpOpen={props.setSignUpOpen} />}
+      {props.signUpOpen && (
+        <SignUp setSignUpOpen={props.setSignUpOpen} onSignIn={onSignIn} />
+      )}
       {props.creativeCommonsPopupOpen && (
         <CreativeCommonsPopup
           setCreativeCommonsPopupOpen={props.setCreativeCommonsPopupOpen}

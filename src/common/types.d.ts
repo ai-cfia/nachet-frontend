@@ -1,13 +1,14 @@
 export interface ApiInferenceData {
   filename: string;
   imageId: string;
-  inferenceId: string;
+  inference_id: string;
   boxes: Array<{
     topN: Array<{ score: number; label: string }>;
     score: number;
     label: string;
     classId: string;
-    boxId: string;
+    object_type_id: string;
+    box_id: string;
     box: BoxCoordinates;
     overlapping: boolean;
     overlappingIndices: number;
@@ -79,7 +80,6 @@ export interface LabelOccurrences {
   [label: string]: number;
 }
 
-// TODO: Redefine when the backend is updated
 interface ClassData {
   id: number;
   classId: string;
@@ -87,8 +87,10 @@ interface ClassData {
 }
 
 interface ApiSpeciesData {
-  classId: string;
-  label: string;
+  seeds: Array<{
+    seed_id: string;
+    seed_name: string;
+  }>;
 }
 
 export interface ModelMetadata {
