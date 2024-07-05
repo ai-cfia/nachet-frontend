@@ -243,7 +243,7 @@ export const NegativeFeedbackForm = (
   return (
     <Draggable
       defaultPosition={{
-        x: position.left + position.minWidth + 10,
+        x: position.left - parseInt(formWidth.slice(0, -2)) - 10,
         y: position.top,
       }}
       bounds="parent"
