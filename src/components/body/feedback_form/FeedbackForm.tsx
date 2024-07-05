@@ -71,7 +71,7 @@ export const SimpleFeedbackForm = (
           flexWrap: "wrap",
         }}
       >
-        <IconButton size="small" onClick={handlePositiveFeedback}>
+        <IconButton sx={{marginRight: "15px"}} onClick={handlePositiveFeedback}>
           <CheckCircleOutlinedIcon
             sx={{
               color: "green",
@@ -97,6 +97,7 @@ interface NegativeFeedbackFormProps {
   classList: ClassData[];
   onCancel: () => void;
   onSubmit: (feedbackDataNegative: FeedbackDataNegative) => void;
+  isNewAnnotation: boolean;
 }
 
 export const NegativeFeedbackForm = (
@@ -119,7 +120,14 @@ export const NegativeFeedbackForm = (
 
   const formWidth = "300px";
 
-  const { inference, position, classList, onCancel, onSubmit } = props;
+  const {
+    inference,
+    position,
+    classList,
+    onCancel,
+    onSubmit,
+    isNewAnnotation,
+  } = props;
   const [selectedClass, setSelectedClass] = useState<ClassData>(defaultClass);
   const [comment, setComment] = useState<string>(reasons[2]);
 
@@ -255,24 +263,26 @@ export const NegativeFeedbackForm = (
             }}
             disabled={comment === "No Seed"}
           />
-          <Select
-            labelId="comment-select-label"
-            id="feedback-comment"
-            value={comment}
-            label="Feedback Comment"
-            onChange={handleCommentChange}
-            sx={{
-              marginTop: "20px",
-            }}
-          >
-            {reasons.map((reason, index) => {
-              return (
-                <MenuItem key={index} value={reason}>
-                  {reason}
-                </MenuItem>
-              );
-            })}
-          </Select>
+          {!isNewAnnotation && (
+            <Select
+              labelId="comment-select-label"
+              id="feedback-comment"
+              value={comment}
+              label="Feedback Comment"
+              onChange={handleCommentChange}
+              sx={{
+                marginTop: "20px",
+              }}
+            >
+              {reasons.map((reason, index) => {
+                return (
+                  <MenuItem key={index} value={reason}>
+                    {reason}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          )}
 
           <Box
             sx={{

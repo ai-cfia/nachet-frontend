@@ -12,10 +12,11 @@ interface FreeformBoxProps {
   position: BoxCSS;
   onSubmit: (boxPosition: BoxCSS) => void;
   onCancel: () => void;
+  isNewAnnotation: boolean;
 }
 
 const FreeformBox = (props: FreeformBoxProps) => {
-  const { onSubmit, onCancel, position } = props;
+  const { onSubmit, onCancel, position, isNewAnnotation } = props;
   const [dragEnabled, setDragEnabled] = useState(true);
   const [topX, setTopX] = useState(position.left);
   const [topY, setTopY] = useState(position.top);
@@ -123,27 +124,31 @@ const FreeformBox = (props: FreeformBoxProps) => {
               <OpenInFullOutlinedIcon />
             )}
           </IconButton>
-          <IconButton
-            sx={{
-              ...buttonStyle,
-              color: "green",
-              marginRight: "10px",
-              marginLeft: "10px",
-            }}
-            onClick={handleSubmit}
-          >
-            <CheckCircleOutlinedIcon />
-          </IconButton>
+          {!isNewAnnotation && (
+            <>
+              <IconButton
+                sx={{
+                  ...buttonStyle,
+                  color: "green",
+                  marginRight: "10px",
+                  marginLeft: "10px",
+                }}
+                onClick={handleSubmit}
+              >
+                <CheckCircleOutlinedIcon />
+              </IconButton>
 
-          <IconButton
-            sx={{
-              ...buttonStyle,
-              color: "red",
-            }}
-            onClick={onCancel}
-          >
-            <CancelOutlinedIcon />
-          </IconButton>
+              <IconButton
+                sx={{
+                  ...buttonStyle,
+                  color: "red",
+                }}
+                onClick={onCancel}
+              >
+                <CancelOutlinedIcon />
+              </IconButton>
+            </>
+          )}
         </Box>
       </Resizable>
     </Draggable>

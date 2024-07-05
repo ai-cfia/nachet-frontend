@@ -139,6 +139,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
 
   const [imageData, setImageData] = useState<Images | null>(null);
   const [feedbackMode, setFeedbackMode] = useState<boolean>(false);
+  const [isNewAnnotation, setIsNewAnnotation] = useState<boolean>(false);
   const [scaledFeedbackBox, setScaledFeedbackBox] = useState<BoxCSS | null>(
     null,
   );
@@ -239,6 +240,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
   };
 
   const handleAnnotate = () => {
+    setIsNewAnnotation(true);
     enterFeedbackMode(imageIndex, null);
   };
 
@@ -247,6 +249,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
     setFeedbackMode(false);
     setInferenceForRevision(null);
     setScaledFeedbackBox(null);
+    setIsNewAnnotation(false);
   };
 
   const enterFeedbackMode = (
@@ -396,7 +399,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
         <ButtonMicroscopeFeed
           label="CLASSIFY"
           icon={<CropFreeIcon color="inherit" style={iconStyle} />}
-          disabled={isWebcamActive} // Disable when the webcam is active
+          disabled={isWebcamActive || imageCache.length == 0} // Disable when the webcam is active
           onClick={() => {
             handleInference();
           }}
@@ -404,7 +407,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
         <ButtonMicroscopeFeed
           label="ANNOTATE"
           icon={<FormatShapesOutlinedIcon color="inherit" style={iconStyle} />}
-          disabled={isWebcamActive} // Disable when the webcam is active
+          disabled={isWebcamActive || imageCache.length == 0} // Disable when the webcam is active
           onClick={() => {
             handleAnnotate();
           }}
@@ -419,11 +422,13 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
               classList={classList}
               onCancel={exitFeedbackMode}
               onSubmit={submitNegativeFeedback}
+              isNewAnnotation={isNewAnnotation}
             />
             <FreeformBox
               position={scaledFeedbackBox}
               onCancel={exitFeedbackMode}
               onSubmit={handleFreeformSubmit}
+              isNewAnnotation={isNewAnnotation}
             />
           </>
         )}
