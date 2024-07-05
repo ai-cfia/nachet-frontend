@@ -216,22 +216,6 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
       });
   };
 
-  const submitNewAnnotation = (feedbackDataNegative: FeedbackDataNegative) => {
-    if (imageData === null) {
-      return;
-    }
-    console.log("Submitting new annotation");
-
-    sendNewAnnotation(feedbackDataNegative, backendUrl)
-      .then(() => {
-        console.log("New Annotation submitted successfully");
-        exitFeedbackMode();
-      })
-      .catch((error) => {
-        console.error("Error submitting new annotation: ", error);
-      });
-  };
-
   const handleFreeformSubmit = (box: BoxCSS) => {
     setScaledFeedbackBox(box);
     setInferenceForRevision((prev) => {
@@ -257,7 +241,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
 
   const handleAnnotate = () => {
     setIsNewAnnotation(true);
-    enterFeedbackMode(imageIndex, null);
+    enterFeedbackMode(imageIndex, defaultBoxPosition);
   };
 
   const exitFeedbackMode = () => {
@@ -268,26 +252,23 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
     setIsNewAnnotation(false);
   };
 
-  const enterFeedbackMode = (
-    index: number,
-    boxPosition: BoxCSS | null,
-  ) => {
-    if (boxPosition == null) {
-      setScaledFeedbackBox(defaultBoxPosition);
-      const image = imageCache.find((image) => image.index === imageIndex)
-      if (image == null) {
-        return;
-      };
+  const enterFeedbackMode = (index: number, boxPosition: BoxCSS) => {
+    if (imageData == null) {
+      return;
+    }
+
+    setScaledFeedbackBox(boxPosition);
+    if (isNewAnnotation) {
       const unscaledBox = getUnscaledCoordinates(
         width,
         height,
-        image.imageDims[0],
-        image.imageDims[1],
-        defaultBoxPosition,
+        imageData.imageDims[0],
+        imageData.imageDims[1],
+        boxPosition,
       );
       setInferenceForRevision({
         userId: uuid,
-        inferenceId: "",
+        inferenceId: imageData.boxes[0].inferenceId,
         boxes: [
           {
             classId: "",
@@ -299,10 +280,6 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
         ],
       });
     } else {
-      if (imageData == null) {
-        return;
-      }
-      setScaledFeedbackBox(boxPosition);
       setInferenceForRevision({
         userId: uuid,
         inferenceId: imageData.boxes[index].inferenceId,
@@ -322,6 +299,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
         ],
       });
     }
+
     toggleShowInference(false);
     setFeedbackMode(true);
   };
@@ -444,7 +422,6 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
               position={scaledFeedbackBox}
               onCancel={exitFeedbackMode}
               onSubmit={handleFreeformSubmit}
-              isNewAnnotation={isNewAnnotation}
             />
           </>
         )}
