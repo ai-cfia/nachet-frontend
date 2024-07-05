@@ -3,7 +3,6 @@ import {
   Box,
   IconButton,
   FormControl,
-  // FormLabel,
   Button,
   Autocomplete,
   TextField,
@@ -12,6 +11,14 @@ import {
   MenuItem,
   SelectChangeEvent,
   FilterOptionsState,
+  Paper,
+  TableContainer,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+  TableHead,
+  Typography,
 } from "@mui/material";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
@@ -71,7 +78,10 @@ export const SimpleFeedbackForm = (
           flexWrap: "wrap",
         }}
       >
-        <IconButton sx={{marginRight: "15px"}} onClick={handlePositiveFeedback}>
+        <IconButton
+          sx={{ marginRight: "15px" }}
+          onClick={handlePositiveFeedback}
+        >
           <CheckCircleOutlinedIcon
             sx={{
               color: "green",
@@ -106,7 +116,13 @@ export const NegativeFeedbackForm = (
   /* TODO: update when backend is defined Section stub convert to prop or use state when backend defined */
 
   const reasons = useMemo(() => {
-    return ["No Seed", "Multi Seed", "Wrong Seed", "Wrong Seed not in List"];
+    return [
+      "Seed not Detected",
+      "Wrong Seed",
+      "No Seed",
+      "Multi Seed",
+      "Wrong Seed not in List",
+    ];
   }, []);
   /* Section stub convert to prop or use state when backend defined */
 
@@ -129,7 +145,7 @@ export const NegativeFeedbackForm = (
     isNewAnnotation,
   } = props;
   const [selectedClass, setSelectedClass] = useState<ClassData>(defaultClass);
-  const [comment, setComment] = useState<string>(reasons[2]);
+  const [comment, setComment] = useState<string>(reasons[1]);
 
   const filter = createFilterOptions<ClassData>();
 
@@ -218,6 +234,12 @@ export const NegativeFeedbackForm = (
     }
   }, [comment]);
 
+  useEffect(() => {
+    if (isNewAnnotation) {
+      setComment(reasons[0]);
+    }
+  }, [isNewAnnotation, reasons]);
+
   return (
     <Draggable
       defaultPosition={{
@@ -237,10 +259,51 @@ export const NegativeFeedbackForm = (
           padding: "10px",
           minWidth: formWidth,
           minHeight: "5px",
-          borderRadius: "5px",
+          borderRadius: "10px",
+          justifyContent: "center",
         }}
       >
-        <FormControl size="small" sx={{ width: "100%" }}>
+        <FormControl size="small" sx={{ width: "100%", alignItems: "center" }}>
+          <Typography variant="h5" sx={{ textAlign: "center", marginBottom: "10px" }}>
+            Feedback
+            </Typography>
+
+          <TableContainer component={Paper}  sx={{ maxWidth: "fit-content" }}>
+            <Table sx={{ maxWidth: "fit-content" }}  size="small" aria-label="Bounding Box">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Bounding Box</TableCell>
+                  <TableCell>_</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>TopX</TableCell>
+                  <TableCell sx={{textAlign: "right"}}>
+                    {inference.boxes[0].box.topX.toFixed(2)}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>TopY</TableCell>
+                  <TableCell sx={{textAlign: "right"}}>
+                    {inference.boxes[0].box.topY.toFixed(2)}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>BottomX</TableCell>
+                  <TableCell sx={{textAlign: "right"}}>
+                    {inference.boxes[0].box.bottomX.toFixed(2)}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>BottomY</TableCell>
+                  <TableCell sx={{textAlign: "right"}}>
+                    {inference.boxes[0].box.bottomY.toFixed(2)}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
           <Autocomplete
             id="feedback-class"
             renderInput={(params) => <TextField {...params} label="Class" />}
@@ -263,26 +326,27 @@ export const NegativeFeedbackForm = (
             }}
             disabled={comment === "No Seed"}
           />
-          {!isNewAnnotation && (
-            <Select
-              labelId="comment-select-label"
-              id="feedback-comment"
-              value={comment}
-              label="Feedback Comment"
-              onChange={handleCommentChange}
-              sx={{
-                marginTop: "20px",
-              }}
-            >
-              {reasons.map((reason, index) => {
-                return (
-                  <MenuItem key={index} value={reason}>
-                    {reason}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          )}
+
+          <Select
+            disabled={isNewAnnotation}
+            labelId="comment-select-label"
+            id="feedback-comment"
+            value={comment}
+            label="Feedback Comment"
+            onChange={handleCommentChange}
+            sx={{
+              marginTop: "20px",
+              minWidth: "100%",
+            }}
+          >
+            {reasons.map((reason, index) => {
+              return (
+                <MenuItem key={index} value={reason}>
+                  {reason}
+                </MenuItem>
+              );
+            })}
+          </Select>
 
           <Box
             sx={{
@@ -291,6 +355,7 @@ export const NegativeFeedbackForm = (
               justifyContent: "space-evenly",
               alignItems: "center",
               marginTop: "20px",
+              minWidth: "100%",
             }}
           >
             <Button
