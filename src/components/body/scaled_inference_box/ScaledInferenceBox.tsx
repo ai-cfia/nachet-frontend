@@ -14,10 +14,7 @@ const ScaledInferenceBox = (props: {
   label: string;
   visible: boolean;
   submitPositiveFeedback: (index: number) => void;
-  handleNegativeFeedback: (
-    index: number,
-    boxPosition: BoxCSS,
-  ) => void;
+  handleNegativeFeedback: (index: number, boxPosition: BoxCSS) => void;
 }): JSX.Element => {
   const {
     index,

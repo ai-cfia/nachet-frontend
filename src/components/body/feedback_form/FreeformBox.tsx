@@ -2,7 +2,7 @@ import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import { NumberSize, Resizable } from "re-resizable";
 import { Box, IconButton } from "@mui/material";
 import OpenWithOutlinedIcon from "@mui/icons-material/OpenWithOutlined";
-import SaveIcon from '@mui/icons-material/Save';
+import SaveIcon from "@mui/icons-material/Save";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import OpenInFullOutlinedIcon from "@mui/icons-material/OpenInFullOutlined";
 import { useState } from "react";

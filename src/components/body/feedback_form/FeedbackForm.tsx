@@ -264,12 +264,19 @@ export const NegativeFeedbackForm = (
         }}
       >
         <FormControl size="small" sx={{ width: "100%", alignItems: "center" }}>
-          <Typography variant="h5" sx={{ textAlign: "center", marginBottom: "10px" }}>
+          <Typography
+            variant="h5"
+            sx={{ textAlign: "center", marginBottom: "10px" }}
+          >
             Feedback
-            </Typography>
+          </Typography>
 
-          <TableContainer component={Paper}  sx={{ maxWidth: "fit-content" }}>
-            <Table sx={{ maxWidth: "fit-content" }}  size="small" aria-label="Bounding Box">
+          <TableContainer component={Paper} sx={{ maxWidth: "fit-content" }}>
+            <Table
+              sx={{ maxWidth: "fit-content" }}
+              size="small"
+              aria-label="Bounding Box"
+            >
               <TableHead>
                 <TableRow>
                   <TableCell>Bounding Box</TableCell>
@@ -279,25 +286,25 @@ export const NegativeFeedbackForm = (
               <TableBody>
                 <TableRow>
                   <TableCell>TopX</TableCell>
-                  <TableCell sx={{textAlign: "right"}}>
+                  <TableCell sx={{ textAlign: "right" }}>
                     {inference.boxes[0].box.topX.toFixed(2)}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>TopY</TableCell>
-                  <TableCell sx={{textAlign: "right"}}>
+                  <TableCell sx={{ textAlign: "right" }}>
                     {inference.boxes[0].box.topY.toFixed(2)}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>BottomX</TableCell>
-                  <TableCell sx={{textAlign: "right"}}>
+                  <TableCell sx={{ textAlign: "right" }}>
                     {inference.boxes[0].box.bottomX.toFixed(2)}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>BottomY</TableCell>
-                  <TableCell sx={{textAlign: "right"}}>
+                  <TableCell sx={{ textAlign: "right" }}>
                     {inference.boxes[0].box.bottomY.toFixed(2)}
                   </TableCell>
                 </TableRow>
