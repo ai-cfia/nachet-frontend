@@ -216,6 +216,22 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
       });
   };
 
+  const submitNewAnnotation = (feedbackDataNegative: FeedbackDataNegative) => {
+    if (imageData === null) {
+      return;
+    }
+    console.log("Submitting new annotation");
+
+    sendNewAnnotation(feedbackDataNegative, backendUrl)
+      .then(() => {
+        console.log("New Annotation submitted successfully");
+        exitFeedbackMode();
+      })
+      .catch((error) => {
+        console.error("Error submitting new annotation: ", error);
+      });
+  };
+
   const handleFreeformSubmit = (box: BoxCSS) => {
     setScaledFeedbackBox(box);
     setInferenceForRevision((prev) => {
