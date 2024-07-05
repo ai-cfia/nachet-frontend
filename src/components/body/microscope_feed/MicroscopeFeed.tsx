@@ -254,6 +254,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
 
   const enterFeedbackMode = (index: number, boxPosition: BoxCSS) => {
     if (imageData == null) {
+      exitFeedbackMode();
       return;
     }
 
