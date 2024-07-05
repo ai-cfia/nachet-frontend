@@ -124,10 +124,11 @@ const FreeformBox = (props: FreeformBoxProps) => {
             )}
           </IconButton>
           <IconButton
-            size="small"
             sx={{
               ...buttonStyle,
               color: "green",
+              marginRight: "10px",
+              marginLeft: "10px",
             }}
             onClick={handleSubmit}
           >
@@ -135,7 +136,6 @@ const FreeformBox = (props: FreeformBoxProps) => {
           </IconButton>
 
           <IconButton
-            size="small"
             sx={{
               ...buttonStyle,
               color: "red",

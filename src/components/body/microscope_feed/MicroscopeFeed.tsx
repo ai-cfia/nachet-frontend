@@ -12,6 +12,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import CropFreeIcon from "@mui/icons-material/CropFree";
 import ToggleButton from "../buttons/ToggleButton";
 import DonutSmallIcon from "@mui/icons-material/DonutSmall";
+import FormatShapesOutlinedIcon from "@mui/icons-material/FormatShapesOutlined";
 
 // Import a loading icon component (ensure you have this)
 import CircularProgress from "@mui/material/CircularProgress";
@@ -128,12 +129,12 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
   const height = windowSize.height * 0.605;
 
   const defaultBoxPosition: BoxCSS = {
-    minWidth: width,
-    minHeight: height,
-    maxWidth: width,
-    maxHeight: height,
-    left: 0,
-    top: 0,
+    minWidth: 100,
+    minHeight: 100,
+    maxWidth: 100,
+    maxHeight: 100,
+    left: width / 2 - 50,
+    top: height / 2 - 50,
   };
 
   const [imageData, setImageData] = useState<Images | null>(null);
@@ -237,6 +238,10 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
     });
   };
 
+  const handleAnnotate = () => {
+    enterFeedbackMode(imageIndex, null);
+  };
+
   const exitFeedbackMode = () => {
     toggleShowInference(true);
     setFeedbackMode(false);
@@ -245,16 +250,39 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
   };
 
   const enterFeedbackMode = (
-    index: number | null,
+    index: number,
     boxPosition: BoxCSS | null,
   ) => {
-    if (imageData == null) {
-      return;
-    }
-
-    if (index == null || boxPosition == null) {
+    if (boxPosition == null) {
       setScaledFeedbackBox(defaultBoxPosition);
+      const image = imageCache.find((image) => image.index === imageIndex)
+      if (image == null) {
+        return;
+      };
+      const unscaledBox = getUnscaledCoordinates(
+        width,
+        height,
+        image.imageDims[0],
+        image.imageDims[1],
+        defaultBoxPosition,
+      );
+      setInferenceForRevision({
+        userId: uuid,
+        inferenceId: "",
+        boxes: [
+          {
+            classId: "",
+            label: "",
+            boxId: "",
+            box: unscaledBox,
+            comment: "",
+          },
+        ],
+      });
     } else {
+      if (imageData == null) {
+        return;
+      }
       setScaledFeedbackBox(boxPosition);
       setInferenceForRevision({
         userId: uuid,
@@ -371,6 +399,14 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
           disabled={isWebcamActive} // Disable when the webcam is active
           onClick={() => {
             handleInference();
+          }}
+        />
+        <ButtonMicroscopeFeed
+          label="ANNOTATE"
+          icon={<FormatShapesOutlinedIcon color="inherit" style={iconStyle} />}
+          disabled={isWebcamActive} // Disable when the webcam is active
+          onClick={() => {
+            handleAnnotate();
           }}
         />
       </Box>

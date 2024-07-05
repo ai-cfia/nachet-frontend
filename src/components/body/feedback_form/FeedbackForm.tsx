@@ -117,6 +117,8 @@ export const NegativeFeedbackForm = (
     };
   }, []);
 
+  const formWidth = "300px";
+
   const { inference, position, classList, onCancel, onSubmit } = props;
   const [selectedClass, setSelectedClass] = useState<ClassData>(defaultClass);
   const [comment, setComment] = useState<string>(reasons[2]);
@@ -211,10 +213,10 @@ export const NegativeFeedbackForm = (
   return (
     <Draggable
       defaultPosition={{
-        x: position.left,
+        x: position.left + position.minWidth + 10,
         y: position.top,
       }}
-      // bounds="parent"
+      bounds="parent"
       disabled={false}
     >
       <Box
@@ -225,7 +227,7 @@ export const NegativeFeedbackForm = (
           backgroundColor: "white",
           border: "2px solid black",
           padding: "10px",
-          minWidth: "300px",
+          minWidth: formWidth,
           minHeight: "5px",
           borderRadius: "5px",
         }}
