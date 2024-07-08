@@ -37,8 +37,8 @@ export const getUnscaledCoordinates = (
   const scaleFactorHeight = itemHeight / containerHeight;
   const topX = box.left * scaleFactorWidth;
   const topY = box.top * scaleFactorHeight;
-  const bottomX = box.left + box.minWidth * scaleFactorWidth;
-  const bottomY = box.top + box.minHeight * scaleFactorHeight;
+  const bottomX = (box.left + box.minWidth) * scaleFactorWidth;
+  const bottomY = (box.top + box.minHeight) * scaleFactorHeight;
   return {
     topX,
     topY,

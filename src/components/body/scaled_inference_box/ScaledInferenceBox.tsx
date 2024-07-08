@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import { MouseEvent, useState } from "react";
-import { BoxCSS, Images } from "../../../common/types";
+import { BoxCSS, InferenceBox } from "../../../common/types";
 import { SimpleFeedbackForm } from "../feedback_form";
 import { getScaledBounds } from "../../../common";
 
@@ -8,16 +8,13 @@ const ScaledInferenceBox = (props: {
   index: number;
   imageWidth: number;
   imageHeight: number;
-  box: Images["boxes"][0];
+  box: InferenceBox;
   canvasWidth: number;
   canvasHeight: number;
   label: string;
   visible: boolean;
   submitPositiveFeedback: (index: number) => void;
-  handleNegativeFeedback: (
-    index: number | null,
-    boxPosition: BoxCSS | null,
-  ) => void;
+  handleNegativeFeedback: (index: number, boxPosition: BoxCSS) => void;
 }): JSX.Element => {
   const {
     index,

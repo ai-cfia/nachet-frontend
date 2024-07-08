@@ -2,7 +2,7 @@ import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import { NumberSize, Resizable } from "re-resizable";
 import { Box, IconButton } from "@mui/material";
 import OpenWithOutlinedIcon from "@mui/icons-material/OpenWithOutlined";
-import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
+import SaveIcon from "@mui/icons-material/Save";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import OpenInFullOutlinedIcon from "@mui/icons-material/OpenInFullOutlined";
 import { useState } from "react";
@@ -21,6 +21,7 @@ const FreeformBox = (props: FreeformBoxProps) => {
   const [topY, setTopY] = useState(position.top);
   const [width, setWidth] = useState(position.minWidth);
   const [height, setHeight] = useState(position.minHeight);
+  const [changesSaved, setChangesSaved] = useState(true);
 
   const buttonStyle = {
     borderRadius: "0",
@@ -34,6 +35,7 @@ const FreeformBox = (props: FreeformBoxProps) => {
   ) => {
     setTopX(dragElement.x);
     setTopY(dragElement.y);
+    setChangesSaved(false);
   };
 
   const handleResizeStop = (
@@ -44,6 +46,7 @@ const FreeformBox = (props: FreeformBoxProps) => {
   ) => {
     setWidth(width + delta.width);
     setHeight(height + delta.height);
+    setChangesSaved(false);
   };
 
   const handleSubmit = () => {
@@ -55,6 +58,7 @@ const FreeformBox = (props: FreeformBoxProps) => {
       maxWidth: width,
       maxHeight: height,
     };
+    setChangesSaved(true);
     onSubmit(currPosition);
   };
 
@@ -123,19 +127,20 @@ const FreeformBox = (props: FreeformBoxProps) => {
               <OpenInFullOutlinedIcon />
             )}
           </IconButton>
+
           <IconButton
-            size="small"
             sx={{
               ...buttonStyle,
-              color: "green",
+              color: changesSaved ? "green" : "grey",
+              marginRight: "10px",
+              marginLeft: "10px",
             }}
             onClick={handleSubmit}
           >
-            <CheckCircleOutlinedIcon />
+            <SaveIcon />
           </IconButton>
 
           <IconButton
-            size="small"
             sx={{
               ...buttonStyle,
               color: "red",
