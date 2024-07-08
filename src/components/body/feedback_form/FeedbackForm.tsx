@@ -25,6 +25,7 @@ import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import { SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { BoxCSS, ClassData, FeedbackDataNegative } from "../../../common/types";
 import Draggable from "react-draggable";
+import LoadingIndicator from "../loading_indicator";
 
 interface SimpleFeedbackFormProps {
   anchorEl: HTMLButtonElement | null;
@@ -108,6 +109,9 @@ interface NegativeFeedbackFormProps {
   onCancel: () => void;
   onSubmit: (feedbackDataNegative: FeedbackDataNegative) => void;
   isNewAnnotation: boolean;
+  classListLoading: boolean;
+  apiLoading: boolean;
+  children: JSX.Element | null;
 }
 
 export const NegativeFeedbackForm = (
@@ -143,6 +147,9 @@ export const NegativeFeedbackForm = (
     onCancel,
     onSubmit,
     isNewAnnotation,
+    classListLoading,
+    apiLoading,
+    children,
   } = props;
   const [selectedClass, setSelectedClass] = useState<ClassData>(defaultClass);
   const [comment, setComment] = useState<string>(reasons[1]);
@@ -270,91 +277,103 @@ export const NegativeFeedbackForm = (
           >
             Feedback
           </Typography>
+          {children}
+          {apiLoading && (
+            <>
+              <TableContainer
+                component={Paper}
+                sx={{ maxWidth: "fit-content" }}
+              >
+                <Table
+                  sx={{ maxWidth: "fit-content" }}
+                  size="small"
+                  aria-label="Bounding Box"
+                >
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Bounding Box</TableCell>
+                      <TableCell>_</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>TopX</TableCell>
+                      <TableCell sx={{ textAlign: "right" }}>
+                        {inference.boxes[0].box.topX.toFixed(2)}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>TopY</TableCell>
+                      <TableCell sx={{ textAlign: "right" }}>
+                        {inference.boxes[0].box.topY.toFixed(2)}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>BottomX</TableCell>
+                      <TableCell sx={{ textAlign: "right" }}>
+                        {inference.boxes[0].box.bottomX.toFixed(2)}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>BottomY</TableCell>
+                      <TableCell sx={{ textAlign: "right" }}>
+                        {inference.boxes[0].box.bottomY.toFixed(2)}
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              {classListLoading ? (
+                <LoadingIndicator />
+              ) : (
+                <Autocomplete
+                  id="feedback-class"
+                  renderInput={(params) => (
+                    <TextField {...params} label="Class" />
+                  )}
+                  options={classList}
+                  value={selectedClass}
+                  onChange={handleClassChange}
+                  isOptionEqualToValue={(option, value) =>
+                    option.label === value.label
+                  }
+                  filterOptions={filteredClassList}
+                  disablePortal
+                  selectOnFocus
+                  clearOnBlur
+                  handleHomeEndKeys
+                  freeSolo={comment === "Wrong Seed not in List"}
+                  getOptionLabel={getClassLabel}
+                  sx={{
+                    marginTop: "20px",
+                    width: "100%",
+                  }}
+                  disabled={comment === "No Seed"}
+                />
+              )}
 
-          <TableContainer component={Paper} sx={{ maxWidth: "fit-content" }}>
-            <Table
-              sx={{ maxWidth: "fit-content" }}
-              size="small"
-              aria-label="Bounding Box"
-            >
-              <TableHead>
-                <TableRow>
-                  <TableCell>Bounding Box</TableCell>
-                  <TableCell>_</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell>TopX</TableCell>
-                  <TableCell sx={{ textAlign: "right" }}>
-                    {inference.boxes[0].box.topX.toFixed(2)}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>TopY</TableCell>
-                  <TableCell sx={{ textAlign: "right" }}>
-                    {inference.boxes[0].box.topY.toFixed(2)}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>BottomX</TableCell>
-                  <TableCell sx={{ textAlign: "right" }}>
-                    {inference.boxes[0].box.bottomX.toFixed(2)}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>BottomY</TableCell>
-                  <TableCell sx={{ textAlign: "right" }}>
-                    {inference.boxes[0].box.bottomY.toFixed(2)}
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <Autocomplete
-            id="feedback-class"
-            renderInput={(params) => <TextField {...params} label="Class" />}
-            options={classList}
-            value={selectedClass}
-            onChange={handleClassChange}
-            isOptionEqualToValue={(option, value) =>
-              option.label === value.label
-            }
-            filterOptions={filteredClassList}
-            disablePortal
-            selectOnFocus
-            clearOnBlur
-            handleHomeEndKeys
-            freeSolo={comment === "Wrong Seed not in List"}
-            getOptionLabel={getClassLabel}
-            sx={{
-              marginTop: "20px",
-              width: "100%",
-            }}
-            disabled={comment === "No Seed"}
-          />
-
-          <Select
-            disabled={isNewAnnotation}
-            labelId="comment-select-label"
-            id="feedback-comment"
-            value={comment}
-            label="Feedback Comment"
-            onChange={handleCommentChange}
-            sx={{
-              marginTop: "20px",
-              minWidth: "100%",
-            }}
-          >
-            {reasons.map((reason, index) => {
-              return (
-                <MenuItem key={index} value={reason}>
-                  {reason}
-                </MenuItem>
-              );
-            })}
-          </Select>
-
+              <Select
+                disabled={isNewAnnotation}
+                labelId="comment-select-label"
+                id="feedback-comment"
+                value={comment}
+                label="Feedback Comment"
+                onChange={handleCommentChange}
+                sx={{
+                  marginTop: "20px",
+                  minWidth: "100%",
+                }}
+              >
+                {reasons.map((reason, index) => {
+                  return (
+                    <MenuItem key={index} value={reason}>
+                      {reason}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </>
+          )}
           <Box
             sx={{
               display: "flex",
@@ -365,20 +384,22 @@ export const NegativeFeedbackForm = (
               minWidth: "100%",
             }}
           >
-            <Button
-              sx={{
-                backgroundColor: "green",
-                color: "white",
-                "&:hover": {
+            {apiLoading && (
+              <Button
+                sx={{
                   backgroundColor: "green",
-                  opacity: 0.6,
-                },
-                marginRight: "10px",
-              }}
-              onClick={handleSubmit}
-            >
-              Submit
-            </Button>
+                  color: "white",
+                  "&:hover": {
+                    backgroundColor: "green",
+                    opacity: 0.6,
+                  },
+                  marginRight: "10px",
+                }}
+                onClick={handleSubmit}
+              >
+                Submit
+              </Button>
+            )}
             <Button
               sx={{
                 backgroundColor: "red",
@@ -390,7 +411,7 @@ export const NegativeFeedbackForm = (
               }}
               onClick={handleCancel}
             >
-              Cancel
+              {apiLoading ? "Cancel" : "Close"}
             </Button>
           </Box>
         </FormControl>
