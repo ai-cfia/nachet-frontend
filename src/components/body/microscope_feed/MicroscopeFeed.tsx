@@ -33,6 +33,7 @@ import {
 import { FreeformBox, NegativeFeedbackForm } from "../feedback_form";
 import { getUnscaledCoordinates } from "../../../common/imageutils";
 import ApiAction from "../api_action";
+import { colours } from "../../../styles/colours";
 interface MicroscopeFeedProps {
   webcamRef: React.RefObject<Webcam>;
   capture: () => void;
@@ -210,6 +211,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
       })
       .finally(() => {
         setApiLoading(false);
+        exitFeedbackMode();
       });
   };
 
@@ -233,6 +235,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
       })
       .finally(() => {
         setApiLoading(false);
+        exitFeedbackMode();
       });
   };
 
@@ -433,6 +436,28 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
         />
       </Box>
       <div style={{ position: "relative", width: width, height }}>
+        {!apiResultDismissed ? (
+          // <Overlay>
+          <Box
+            sx={{
+              width: "15vw",
+              height: "fit-content",
+              zIndex: 30,
+              border: `0.01vh solid LightGrey`,
+              borderRadius: 1,
+              background: colours.CFIA_Background_White,
+            }}
+            boxShadow={1}
+          >
+            <ApiAction
+              loading={apiLoading}
+              success={apiSuccess}
+              error={apiError}
+              dismiss={() => setApiResultDismissed(true)}
+            />
+          </Box>
+        ) : // </Overlay>
+        null}
         {feedbackMode && scaledFeedbackBox && inferenceForRevision && (
           <>
             <NegativeFeedbackForm
@@ -443,16 +468,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
               onSubmit={submitNegativeFeedback}
               isNewAnnotation={isNewAnnotation}
               classListLoading={classListLoading}
-              apiLoading={apiResultDismissed}
-            >
-              {!apiResultDismissed ? (
-                <ApiAction
-                  loading={apiLoading}
-                  success={apiSuccess}
-                  error={apiError}
-                />
-              ) : null}
-            </NegativeFeedbackForm>
+            />
             <FreeformBox
               position={scaledFeedbackBox}
               onCancel={exitFeedbackMode}

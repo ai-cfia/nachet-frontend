@@ -11,7 +11,9 @@ export const LoadingIndicator = (): JSX.Element => {
         justifyContent: "center",
       }}
     >
-      <CircularProgress style={{ color: "#05486c", width: "10%", height: "10%" }} />
+      <CircularProgress
+        style={{ color: "#05486c", width: "10%", height: "10%" }}
+      />
     </Box>
   );
 };

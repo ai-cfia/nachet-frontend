@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import { MouseEvent, useState } from "react";
 import { BoxCSS, InferenceBox } from "../../../common/types";
 import { SimpleFeedbackForm } from "../feedback_form";
@@ -15,7 +15,6 @@ const ScaledInferenceBox = (props: {
   visible: boolean;
   submitPositiveFeedback: (index: number) => void;
   handleNegativeFeedback: (index: number, boxPosition: BoxCSS) => void;
-  children?: JSX.Element | null;
 }): JSX.Element => {
   const {
     index,
@@ -27,7 +26,6 @@ const ScaledInferenceBox = (props: {
     canvasHeight,
     submitPositiveFeedback,
     handleNegativeFeedback,
-    children,
   } = props;
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
@@ -67,9 +65,7 @@ const ScaledInferenceBox = (props: {
 
   return (
     <>
-      <Button sx={style} onClick={handleClick}>
-        {children}
-      </Button>
+      <Button sx={style} onClick={handleClick} />
       <SimpleFeedbackForm
         anchorEl={anchorEl}
         onClose={() => setAnchorEl(null)}
