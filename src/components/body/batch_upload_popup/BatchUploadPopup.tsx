@@ -79,6 +79,7 @@ const BatchUploadPopup = (props: params): JSX.Element => {
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
 
+  const [folderName, setFolderName] = useState<string>("");
   const [seedId, setSeedId] = useState<string>("");
   const [zoom, setZoom] = useState<number>(0);
   const [seedCount, setSeedCount] = useState<number>(0);
@@ -159,6 +160,7 @@ const BatchUploadPopup = (props: params): JSX.Element => {
   };
 
   const resetForm = (): void => {
+    setFolderName("");
     setSelectedClass(null);
     setSeedCount(0);
     setZoom(0);
@@ -189,7 +191,7 @@ const BatchUploadPopup = (props: params): JSX.Element => {
 
     setUploading(true);
 
-    batchUploadInit(backendUrl, uuid, containerName, fileCount)
+    batchUploadInit(backendUrl, uuid, folderName, containerName, fileCount)
       .then((response) => {
         setSessionId(response.session_id);
       })
@@ -323,6 +325,7 @@ const BatchUploadPopup = (props: params): JSX.Element => {
     fileStatus,
     uploading,
     backendUrl,
+    folderName,
     seedId,
     seedCount,
     selectedClass,
@@ -384,6 +387,24 @@ const BatchUploadPopup = (props: params): JSX.Element => {
               </Stack>
             )}
 
+            <TextField
+              id="input-folder-name"
+              label="Folder Name"
+              variant="outlined"
+              value={folderName}
+              onChange={(e) => setFolderName(e.target.value)}
+              sx={{
+                marginTop: "10px",
+                width: "100%",
+              }}
+              inputProps={{
+                min: 1,
+                max: 100,
+                style: { textAlign: "center" },
+              }}
+              disabled={uploading}
+            />
+
             <Autocomplete
               id="input-seed-class"
               renderInput={(params) => (
@@ -407,7 +428,7 @@ const BatchUploadPopup = (props: params): JSX.Element => {
               freeSolo={false}
               getOptionLabel={getClassLabel}
               sx={{
-                marginTop: "0px",
+                marginTop: "10px",
                 width: "100%",
               }}
               disabled={uploading}
