@@ -15,13 +15,30 @@ export const ApiAction = (props: ApiActionProps) => {
 
   return (
     <Box
+    sx={{
+      position: "absolute",
+      zIndex: 1000,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      minHeight: "100%",
+      minWidth: "100%",
+    }}>
+    <Box
       sx={{
+        zIndex: 1000,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        minHeight: "100%",
-        minWidth: "100%",
+        minHeight: "100px",
+        minWidth: "100px",
+        maxHeight: "300px",
+        backgroundColor: "white",
+        border: "1px solid black",
+        borderRadius: "5px",
+        boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.75)",
       }}
     >
       {loading && <LoadingIndicator />}
@@ -64,6 +81,7 @@ export const ApiAction = (props: ApiActionProps) => {
           Dismiss
         </Button>
       )}
+    </Box>
     </Box>
   );
 };

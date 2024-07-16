@@ -151,7 +151,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
   const [apiLoading, setApiLoading] = useState<boolean>(false);
   const [apiSuccess, setApiSuccess] = useState<boolean>(false);
   const [apiError, setApiError] = useState<string | null>(null);
-  const [apiResultDismissed, setApiResultDismissed] = useState<boolean>(false);
+  const [apiResultDismissed, setApiResultDismissed] = useState<boolean>(true);
 
   const classList: ClassData[] = useMemo(() => {
     const classes: ClassData[] = [];
@@ -211,7 +211,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
       })
       .finally(() => {
         setApiLoading(false);
-        exitFeedbackMode();
+        // exitFeedbackMode();
       });
   };
 
@@ -235,7 +235,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
       })
       .finally(() => {
         setApiLoading(false);
-        exitFeedbackMode();
+        // exitFeedbackMode();
       });
   };
 
@@ -275,8 +275,8 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
     setIsNewAnnotation(false);
     setApiLoading(false);
     setApiSuccess(false);
-    setApiError(null);
     setApiResultDismissed(true);
+    setApiError(null);
   };
 
   const enterFeedbackMode = (index: number, boxPosition: BoxCSS) => {
@@ -453,7 +453,9 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
               loading={apiLoading}
               success={apiSuccess}
               error={apiError}
-              dismiss={() => setApiResultDismissed(true)}
+              dismiss={() => {
+                exitFeedbackMode();
+              }}
             />
           </Box>
         ) : // </Overlay>
