@@ -15,73 +15,74 @@ export const ApiAction = (props: ApiActionProps) => {
 
   return (
     <Box
-    sx={{
-      position: "absolute",
-      zIndex: 1000,
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      minHeight: "100%",
-      minWidth: "100%",
-    }}>
-    <Box
       sx={{
+        position: "absolute",
         zIndex: 1000,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        minHeight: "100px",
-        minWidth: "100px",
-        maxHeight: "300px",
-        backgroundColor: "white",
-        border: "1px solid black",
-        borderRadius: "5px",
-        boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.75)",
+        minHeight: "100%",
+        minWidth: "100%",
       }}
     >
-      {loading && <LoadingIndicator />}
-      {!loading &&
-        (success ? (
-          <CheckCircleOutlinedIcon
-            sx={{
-              color: "green",
-              fontSize: 100,
-            }}
-          />
-        ) : (
-          <>
-            <ReportGmailerrorredIcon
+      <Box
+        sx={{
+          zIndex: 1000,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "100px",
+          minWidth: "100px",
+          maxHeight: "300px",
+          backgroundColor: "white",
+          border: "1px solid black",
+          borderRadius: "5px",
+          boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.75)",
+        }}
+      >
+        {loading && <LoadingIndicator />}
+        {!loading &&
+          (success ? (
+            <CheckCircleOutlinedIcon
               sx={{
-                color: "red",
+                color: "green",
                 fontSize: 100,
               }}
             />
-            <Typography
-              variant="body2"
-              sx={{ color: "red", textAlign: "center", marginBottom: "10px" }}
-            >
-              {error}
-            </Typography>{" "}
-          </>
-        ))}
-      {!loading && (
-        <Button
-          sx={{
-            backgroundColor: "blue",
-            color: "white",
-            "&:hover": {
+          ) : (
+            <>
+              <ReportGmailerrorredIcon
+                sx={{
+                  color: "red",
+                  fontSize: 100,
+                }}
+              />
+              <Typography
+                variant="body2"
+                sx={{ color: "red", textAlign: "center", marginBottom: "10px" }}
+              >
+                {error}
+              </Typography>{" "}
+            </>
+          ))}
+        {!loading && (
+          <Button
+            sx={{
               backgroundColor: "blue",
-              opacity: 0.5,
-            },
-          }}
-          onClick={dismiss}
-        >
-          Dismiss
-        </Button>
-      )}
-    </Box>
+              color: "white",
+              "&:hover": {
+                backgroundColor: "blue",
+                opacity: 0.5,
+              },
+            }}
+            onClick={dismiss}
+          >
+            Dismiss
+          </Button>
+        )}
+      </Box>
     </Box>
   );
 };
