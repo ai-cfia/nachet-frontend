@@ -39,6 +39,7 @@ export const ApiAction = (props: ApiActionProps) => {
           backgroundColor: "white",
           border: "1px solid black",
           borderRadius: "5px",
+          padding: "20px",
           boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.75)",
         }}
       >
