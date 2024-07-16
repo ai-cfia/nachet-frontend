@@ -58,7 +58,8 @@ const ScaledInferenceBox = (props: {
     display: visible ? "block" : "none",
     zIndex: 10,
     "&:hover": {
-      bgcolor: "rgba(175, 247, 148, 0.3)",
+      bgcolor: "#0b9deb",
+      opacity: 0.2,
     },
   };
 

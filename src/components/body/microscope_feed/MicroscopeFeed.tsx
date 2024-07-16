@@ -32,6 +32,8 @@ import {
 } from "../../../common";
 import { FreeformBox, NegativeFeedbackForm } from "../feedback_form";
 import { getUnscaledCoordinates } from "../../../common/imageutils";
+import ApiAction from "../api_action";
+import { colours } from "../../../styles/colours";
 interface MicroscopeFeedProps {
   webcamRef: React.RefObject<Webcam>;
   capture: () => void;
@@ -145,10 +147,16 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
   );
   const [inferenceForRevision, setInferenceForRevision] =
     useState<FeedbackDataNegative | null>(null);
+  const [classListLoading, setClassListLoading] = useState<boolean>(true);
+  const [apiLoading, setApiLoading] = useState<boolean>(false);
+  const [apiSuccess, setApiSuccess] = useState<boolean>(false);
+  const [apiError, setApiError] = useState<string | null>(null);
+  const [apiResultDismissed, setApiResultDismissed] = useState<boolean>(true);
 
   const classList: ClassData[] = useMemo(() => {
     const classes: ClassData[] = [];
     const getClasses = async () => {
+      setClassListLoading(true);
       const response = await requestClassList(backendUrl);
       return response.seeds;
     };
@@ -160,6 +168,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
           label: data[i].seed_name,
         });
       }
+      setClassListLoading(false);
     });
 
     return classes;
@@ -189,12 +198,20 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
       boxes: [{ boxId: imageData.boxes[index].boxId }],
     };
 
+    setApiLoading(true);
+    setApiResultDismissed(false);
     sendPositiveFeedback(feedbackDataPositive, backendUrl)
       .then(() => {
         console.log("Positive Feedback submitted successfully");
+        setApiSuccess(true);
       })
       .catch((error) => {
         console.error("Error submitting feedback: ", error);
+        setApiError(error.message);
+      })
+      .finally(() => {
+        setApiLoading(false);
+        // exitFeedbackMode();
       });
   };
 
@@ -205,14 +222,20 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
       return;
     }
     console.log("Submitting negative feedback");
-
+    setApiLoading(true);
+    setApiResultDismissed(false);
     sendNegativeFeedback(feedbackDataNegative, backendUrl)
       .then(() => {
         console.log("Negative Feedback submitted successfully");
-        exitFeedbackMode();
+        setApiSuccess(true);
       })
       .catch((error) => {
         console.error("Error submitting feedback: ", error);
+        setApiError(error.message);
+      })
+      .finally(() => {
+        setApiLoading(false);
+        // exitFeedbackMode();
       });
   };
 
@@ -250,6 +273,10 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
     setInferenceForRevision(null);
     setScaledFeedbackBox(null);
     setIsNewAnnotation(false);
+    setApiLoading(false);
+    setApiSuccess(false);
+    setApiResultDismissed(true);
+    setApiError(null);
   };
 
   const enterFeedbackMode = (index: number, boxPosition: BoxCSS) => {
@@ -409,6 +436,30 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
         />
       </Box>
       <div style={{ position: "relative", width: width, height }}>
+        {!apiResultDismissed ? (
+          // <Overlay>
+          <Box
+            sx={{
+              width: "15vw",
+              height: "fit-content",
+              zIndex: 30,
+              border: `0.01vh solid LightGrey`,
+              borderRadius: 1,
+              background: colours.CFIA_Background_White,
+            }}
+            boxShadow={1}
+          >
+            <ApiAction
+              loading={apiLoading}
+              success={apiSuccess}
+              error={apiError}
+              dismiss={() => {
+                exitFeedbackMode();
+              }}
+            />
+          </Box>
+        ) : // </Overlay>
+        null}
         {feedbackMode && scaledFeedbackBox && inferenceForRevision && (
           <>
             <NegativeFeedbackForm
@@ -418,6 +469,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
               onCancel={exitFeedbackMode}
               onSubmit={submitNegativeFeedback}
               isNewAnnotation={isNewAnnotation}
+              classListLoading={classListLoading}
             />
             <FreeformBox
               position={scaledFeedbackBox}
