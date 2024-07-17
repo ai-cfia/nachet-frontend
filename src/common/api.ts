@@ -296,6 +296,7 @@ export const requestClassList = async (
 export const batchUploadInit = async (
   backendUrl: string,
   uuid: string,
+  folderName: string,
   containerUuid: string,
   nbPictures: number,
 ): Promise<{
@@ -322,6 +323,7 @@ export const batchUploadInit = async (
     },
     data: {
       user_id: uuid,
+      folder_name: folderName,
       container_name: containerUuid,
       nb_pictures: nbPictures,
     },
