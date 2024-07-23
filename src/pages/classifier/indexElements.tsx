@@ -20,12 +20,13 @@ export const ColumnContainer = styled.div`
   background: ${colours.CFIA_Background_White};
   color: ${colours.CFIA_Font_Black};
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  min-width: 100%;
   max-width: 100%;
-  height: fit-content;
+  // height: fit-content;
+  min-height: 100%;
 `;
 
 export const TopContent = styled.div`

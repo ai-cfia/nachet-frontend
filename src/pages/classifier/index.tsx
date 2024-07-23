@@ -1,17 +1,12 @@
 // \pages\classifier\index.tsx
 // Classifier
-import {
-  RowContainer,
-  LeftContent,
-  ColumnContainer,
-  InfoContent,
-} from "./indexElements";
 import type Webcam from "react-webcam";
 import React from "react";
 import ClassificationResults from "../../components/body/classification_results";
 import ImageCache from "../../components/body/image_cache";
 import StorageDirectory from "../../components/body/directory_list";
 import MicroscopeFeed from "../../components/body/microscope_feed";
+import { Grid } from "@mui/material";
 
 interface params {
   imageSrc: string;
@@ -58,40 +53,65 @@ interface params {
 
 const Classifier: React.FC<params> = (props) => {
   return (
-    <ColumnContainer>
-      <RowContainer>
-        <LeftContent>
-          <MicroscopeFeed
-            capture={props.capture}
-            webcamRef={props.webcamRef}
-            windowSize={props.windowSize}
-            activeDeviceId={props.activeDeviceId}
-            setSwitchDeviceOpen={props.setSwitchDeviceOpen}
-            isLoading={props.isLoading}
-            canvasRef={props.canvasRef}
-            setSaveOpen={props.setSaveOpen}
-            handleInference={props.handleInference}
-            setSwitchModelOpen={props.setSwitchModelOpen}
-            imageCache={props.savedImages}
-            imageIndex={props.imageIndex}
-            setBatchUploadOpen={props.setBatchUploadOpen}
-            setUploadOpen={props.setUploadOpen}
-            isWebcamActive={props.isWebcamActive}
-            onCaptureClick={props.onCaptureClick}
-            toggleShowInference={props.toggleShowInference}
-            backendUrl={props.backendUrl}
-            uuid={props.uuid}
-          />
-        </LeftContent>
-        <InfoContent>
-          <StorageDirectory
-            azureStorageDir={props.azureStorageDir}
-            curDir={props.curDir}
-            handleDirChange={props.handleDirChange}
-            setCreateDirectoryOpen={props.setCreateDirectoryOpen}
-            setDelDirectoryOpen={props.setDelDirectoryOpen}
-            setCurDir={props.setCurDir}
-          />
+    // <ColumnContainer>
+    <Grid
+      container
+      columnSpacing={1}
+      sx={{
+        display: "flex",
+        alignItems: "normal",
+        justifyContent: "center",
+        marginLeft: "40px",
+        marginRight: "40px",
+        paddingLeft: "40px",
+        paddingRight: "40px",
+        minHeight: "70vh",
+        maxHeight: "80vh",
+      }}
+    >
+      <Grid container item xs>
+        <StorageDirectory
+          azureStorageDir={props.azureStorageDir}
+          curDir={props.curDir}
+          handleDirChange={props.handleDirChange}
+          setCreateDirectoryOpen={props.setCreateDirectoryOpen}
+          setDelDirectoryOpen={props.setDelDirectoryOpen}
+          setCurDir={props.setCurDir}
+        />
+      </Grid>
+      <Grid
+        container
+        item
+        xs={7.5}
+        sx={{
+          alignItems: "normal",
+          justifyContent: "center",
+        }}
+      >
+        <MicroscopeFeed
+          capture={props.capture}
+          webcamRef={props.webcamRef}
+          windowSize={props.windowSize}
+          activeDeviceId={props.activeDeviceId}
+          setSwitchDeviceOpen={props.setSwitchDeviceOpen}
+          isLoading={props.isLoading}
+          canvasRef={props.canvasRef}
+          setSaveOpen={props.setSaveOpen}
+          handleInference={props.handleInference}
+          setSwitchModelOpen={props.setSwitchModelOpen}
+          imageCache={props.savedImages}
+          imageIndex={props.imageIndex}
+          setBatchUploadOpen={props.setBatchUploadOpen}
+          setUploadOpen={props.setUploadOpen}
+          isWebcamActive={props.isWebcamActive}
+          onCaptureClick={props.onCaptureClick}
+          toggleShowInference={props.toggleShowInference}
+          backendUrl={props.backendUrl}
+          uuid={props.uuid}
+        />
+      </Grid>
+      <Grid container item xs direction={"column"} spacing={1}>
+        <Grid item xs={6}>
           <ImageCache
             removeImage={props.removeImage}
             savedImages={props.savedImages}
@@ -100,6 +120,15 @@ const Classifier: React.FC<params> = (props) => {
             clearImageCache={props.clearImageCache}
             imageIndex={props.imageIndex}
           />
+        </Grid>
+        <Grid
+          item
+          xs={6}
+          sx={{
+            display: "flex",
+            alignItems: "stretch",
+          }}
+        >
           <ClassificationResults
             savedImages={props.savedImages}
             imageSrc={props.imageSrc}
@@ -112,9 +141,15 @@ const Classifier: React.FC<params> = (props) => {
             setSwitchTable={props.setSwitchTable}
             modelDisplayName={props.modelDisplayName}
           />
-        </InfoContent>
-      </RowContainer>
-    </ColumnContainer>
+        </Grid>
+      </Grid>
+
+      {/* <LeftContent>
+        </LeftContent>
+        <InfoContent>
+        </InfoContent> */}
+    </Grid>
+    // </ColumnContainer>
   );
 };
 

@@ -37,9 +37,12 @@ const StorageDirectoryView: React.FC<params> = (props) => {
     <Box
       sx={{
         width: "100%",
-        height: "22.23vh",
-        border: `0.01vh solid LightGrey`,
-        borderRadius: "0.4vh",
+        height: "100%",
+        minHeight: "100%",
+        padding: "0px",
+        margin: "0px",
+        border: `1px solid LightGrey`,
+        borderRadius: "5px",
       }}
       boxShadow={0}
       data-testid="storage-directory-component"
@@ -50,29 +53,23 @@ const StorageDirectoryView: React.FC<params> = (props) => {
           variant: "h6",
           align: "left",
           fontWeight: 600,
-          fontSize: "1.3vh",
+          fontSize: "14px",
           color: colours.CFIA_Font_Black,
         }}
-        sx={{ padding: "0.8vh 1vh 0.8vh 0.8vh" }}
+        sx={{ padding: "10px" }}
         action={
           <div>
             <IconButton
               sx={{
                 padding: 0,
-                marginTop: "0.27vh",
-                marginRight: "0.4vh",
+                marginRight: "5px",
               }}
               onClick={handleCreateDirectory}
             >
               <CreateNewFolderIcon
                 style={{
                   color: colours.CFIA_Background_Blue,
-                  fontSize: "2vh",
-                  marginTop: "0.1vh",
-                  marginBottom: "0.1vh",
-                  marginRight: "0.1vh",
-                  paddingTop: 0,
-                  paddingBottom: 0,
+                  fontSize: "24px",
                 }}
               />
             </IconButton>
@@ -82,18 +79,19 @@ const StorageDirectoryView: React.FC<params> = (props) => {
       <TableContainer
         sx={{
           overflow: "auto",
-          height: "18.465vh", // 18.75
-          maxHeight: "18.465vh",
+          height: "100%",
           border: 0,
           borderTopRightRadius: 0,
           borderTopLeftRadius: 0,
-          borderTop: `0.01vh solid LightGrey`,
+          borderTop: `1px solid LightGrey`,
           borderBottom: 0,
           boxShadow: "none",
+          padding: 0,
+          margin: 0,
         }}
         id={"container_with_scrolls"}
       >
-        <Table sx={{ borderBottom: 0 }}>
+        <Table sx={{ borderBottom: 0, height: "100%" }}>
           <TableBody sx={{ borderBottom: 0 }}>
             {Object.keys(azureStorageDir).map(
               (folderKey: string, index: number) => (
