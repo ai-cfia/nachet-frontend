@@ -1,9 +1,10 @@
 ---
 name: Feature Request
 about: Suggest an idea for this project
-title: "User Feature Request: *{insert feature request here}*"
+title: 'User Feature Request: *{insert feature request here}*'
 labels: user-visible
-assignees: ""
+assignees: ''
+
 ---
 
 **Is your feature request related to a problem? Please describe.**

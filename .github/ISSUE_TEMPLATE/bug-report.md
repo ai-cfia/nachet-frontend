@@ -1,32 +1,52 @@
 ---
 name: Bug Report
 about: Create a report to help us improve
-title: "User Reported Bug: {Insert reported bug here}"
-labels: user-reported-bug
-assignees: ""
+title: 'User Reported Bug: {Insert reported bug Title here}'
+labels: bug
+assignees: ''
+
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+---  
+name: Bug report  
+about: Create a report to help us improve  
+title: As a [stakeholder], I want to [description of the desired outcome].  
+labels: bug  
+assignees: ""  
+---  
 
-**To Reproduce**
-Steps to reproduce the behavior:
+## Description  
 
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+**Bug Summary:** [Provide a brief but clear summary of the bug. Add visuals  
+like screenshots and GIFs if possible.]  
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+**Steps to Reproduce:**  
+[Outline the steps to reproduce the bug, being as detailed as possible.]  
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**Expected Behavior:**  
+[Describe what you expected to happen.]  
 
-**Desktop (please complete the following information):**
+**Actual Behavior:**  
+[Describe what actually happened.]  
 
-- OS: Windows (version, 10, 11, etc.)
-- Browser [e.g. chrome, safari, edge, firefox]
+**Environment:**  
 
-**Additional context**
-Add any other context about the problem here.
+**Commit Hash:** [e.g., 1cb3d1876a7b4c2435b4a5067e5ae53631063948]  
+
+**OS Version:** [e.g., Windows 10, macOS 11.2]  
+
+**Browser Version:** [e.g., Chrome 91.0.4472.77]  
+
+**Logs and Screenshots:**  
+
+**Browser Console Logs:**  
+[Include relevant browser console logs, if applicable]  
+
+**Extra Screenshots:**  
+[Attach any relevant extra screenshots]  
+
+**Additional Context:**  
+[Include any other context about the problem here.]  
+
+**Suggested Fix:** (facultatif)  
+[If you have an idea of how to fix the bug, describe it here.]
