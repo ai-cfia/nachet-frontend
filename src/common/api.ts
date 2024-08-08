@@ -3,6 +3,7 @@ import { AzureAPIError, ValueError } from "./error";
 import {
   ApiInferenceData,
   ApiSpeciesData,
+  AzureStorageDirectoryItemApi,
   BatchUploadMetadata,
   FeedbackDataNegative,
   FeedbackDataPositive,
@@ -45,9 +46,7 @@ const handleAxios = async <T>(request: {
 export const readAzureStorageDir = async (
   backendUrl: string,
   uuid: string,
-): Promise<{
-  [key: string]: number;
-}> => {
+): Promise<AzureStorageDirectoryItemApi[]> => {
   if (backendUrl === "" || backendUrl == null) {
     throw new ValueError("Backend URL is null or empty");
   }

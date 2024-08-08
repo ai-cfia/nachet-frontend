@@ -12,6 +12,7 @@ import ClassificationResults from "../../components/body/classification_results"
 import ImageCache from "../../components/body/image_cache";
 import StorageDirectory from "../../components/body/directory_list";
 import MicroscopeFeed from "../../components/body/microscope_feed";
+import { AzureStorageDirectoryItem } from "../../common/types";
 
 interface params {
   imageSrc: string;
@@ -31,7 +32,7 @@ interface params {
   setSwitchDeviceOpen: React.Dispatch<React.SetStateAction<boolean>>;
   imageIndex: number;
   activeDeviceId: string | undefined;
-  azureStorageDir: any;
+  azureStorageDir: AzureStorageDirectoryItem[];
   curDir: string;
   setCreateDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleDirChange: (dir: string) => void;

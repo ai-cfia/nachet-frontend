@@ -5,11 +5,59 @@ import StorageDirectoryContainer from "../StorageDirectoryContainer";
 
 describe("StorageDirectoryContainer", () => {
   const mockProps = {
-    azureStorageDir: {
-      testDir1: 0,
-      testDir2: 1,
-      testDir3: 2,
-    },
+    azureStorageDir: [
+      {
+        folderName: "testDir1",
+        nbPictures: 1,
+        pictureSetId: "testDir1ID",
+        pictures: [
+          {
+            inferenceExists: false,
+            isValidation: false,
+            pictureId: "testDir1Pic1",
+          },
+        ],
+      },
+      {
+        folderName: "testDir2",
+        nbPictures: 2,
+        pictureSetId: "testDir2ID",
+        pictures: [
+          {
+            inferenceExists: false,
+            isValidation: false,
+            pictureId: "testDir2Pic1",
+          },
+          {
+            inferenceExists: false,
+            isValidation: false,
+            pictureId: "testDir2Pic2",
+          },
+        ],
+      },
+      {
+        folderName: "testDir3",
+        nbPictures: 3,
+        pictureSetId: "testDir3ID",
+        pictures: [
+          {
+            inferenceExists: false,
+            isValidation: false,
+            pictureId: "testDir3Pic1",
+          },
+          {
+            inferenceExists: false,
+            isValidation: false,
+            pictureId: "testDir3Pic2",
+          },
+          {
+            inferenceExists: false,
+            isValidation: false,
+            pictureId: "testDir3Pic3",
+          },
+        ],
+      },
+    ],
     curDir: "testDir",
     setCurDir: vi.fn(),
     setCreateDirectoryOpen: vi.fn(),
@@ -45,7 +93,9 @@ describe("StorageDirectoryContainer", () => {
     ) {
       const deleteButton = getByTestId("delete-icon" + i);
       fireEvent.click(deleteButton);
-      expect(mockProps.handleDirChange).toHaveBeenCalledWith("testDir" + i);
+      expect(mockProps.handleDirChange).toHaveBeenCalledWith(
+        "testDir" + i + "ID",
+      );
       expect(mockProps.setDelDirectoryOpen).toHaveBeenCalledWith(true);
     }
   });
@@ -61,7 +111,9 @@ describe("StorageDirectoryContainer", () => {
     ) {
       const folderElement = getByTestId("folder-icon" + i);
       fireEvent.click(folderElement);
-      expect(mockProps.handleDirChange).toHaveBeenCalledWith("testDir" + i);
+      expect(mockProps.handleDirChange).toHaveBeenCalledWith(
+        "testDir" + i + "ID",
+      );
     }
   });
 

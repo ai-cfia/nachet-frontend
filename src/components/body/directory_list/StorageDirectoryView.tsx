@@ -14,11 +14,10 @@ import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
 import CloseIcon from "@mui/icons-material/Close";
 import FolderIcon from "@mui/icons-material/Folder";
 import FilterIcon from "@mui/icons-material/Filter";
+import { AzureStorageDirectoryItem } from "../../../common/types";
 
 interface params {
-  azureStorageDir: {
-    [key: string]: number;
-  };
+  azureStorageDir: AzureStorageDirectoryItem[];
   curDir: string;
   handleSelect: (folder: string) => void;
   handleDelete: (folder: string) => void;
@@ -95,13 +94,13 @@ const StorageDirectoryView: React.FC<params> = (props) => {
       >
         <Table sx={{ borderBottom: 0 }}>
           <TableBody sx={{ borderBottom: 0 }}>
-            {Object.keys(azureStorageDir).map(
-              (folderKey: string, index: number) => (
+            {azureStorageDir.map(
+              (item: AzureStorageDirectoryItem, index: number) => (
                 <TableRow
                   key={index}
                   sx={{
                     backgroundColor:
-                      folderKey === curDir
+                      item.pictureSetId === curDir
                         ? "#F5F5F5"
                         : colours.CFIA_Background_White,
                     "&:hover": {
@@ -125,7 +124,7 @@ const StorageDirectoryView: React.FC<params> = (props) => {
                       color: colours.CFIA_Font_Black,
                     }}
                     onClick={() => {
-                      handleSelect(folderKey);
+                      handleSelect(item.pictureSetId);
                     }}
                     data-testid={"folder-icon" + (index + 1)}
                   >
@@ -147,7 +146,7 @@ const StorageDirectoryView: React.FC<params> = (props) => {
                           paddingRight: "0.3vw",
                         }}
                       />
-                      <span>{folderKey}</span>
+                      <span>{item.folderName ?? item.pictureSetId}</span>
                     </div>
                   </TableCell>
                   <TableCell
@@ -161,7 +160,7 @@ const StorageDirectoryView: React.FC<params> = (props) => {
                       color: colours.CFIA_Font_Black,
                     }}
                     onClick={() => {
-                      handleSelect(folderKey);
+                      handleSelect(item.pictureSetId);
                     }}
                   >
                     <div
@@ -174,7 +173,7 @@ const StorageDirectoryView: React.FC<params> = (props) => {
                       }}
                     >
                       <span style={{ marginRight: "0.1vw" }}>
-                        {azureStorageDir[folderKey]}
+                        {item.nbPictures}
                       </span>
                       <FilterIcon
                         style={{
@@ -202,10 +201,10 @@ const StorageDirectoryView: React.FC<params> = (props) => {
                   >
                     <IconButton
                       onClick={() => {
-                        handleDelete(folderKey);
+                        handleDelete(item.pictureSetId);
                       }}
                       sx={{ padding: 0 }}
-                      disabled={folderKey === "General"}
+                      disabled={item.pictureSetId === "General"}
                       data-testid={"delete-icon" + (index + 1)}
                     >
                       <CloseIcon
