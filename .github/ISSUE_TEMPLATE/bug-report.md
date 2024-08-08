@@ -1,21 +1,14 @@
----
-name: Bug Report
-about: Create a report to help us improve
-title: 'User Reported Bug: {Insert reported bug Title here}'
-labels: bug
-assignees: ''
-
----
-
 ---  
 name: Bug report  
 about: Create a report to help us improve  
 title: As a [stakeholder], I want to [description of the desired outcome].  
 labels: bug  
 assignees: ""  
+
 ---  
 
-## Description  
+**Description**  
+[A clear and concise description of what the bug is.]
 
 **Bug Summary:** [Provide a brief but clear summary of the bug. Add visuals  
 like screenshots and GIFs if possible.]  
