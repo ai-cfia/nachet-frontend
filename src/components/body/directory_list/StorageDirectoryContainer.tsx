@@ -1,7 +1,8 @@
+import { AzureStorageDirectoryItem } from "../../../common/types";
 import StorageDirectoryView from "./StorageDirectoryView";
 
 export interface params {
-  azureStorageDir: { [key: string]: number };
+  azureStorageDir: AzureStorageDirectoryItem[];
   curDir: string;
   setCurDir: React.Dispatch<React.SetStateAction<string>>;
   setCreateDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
