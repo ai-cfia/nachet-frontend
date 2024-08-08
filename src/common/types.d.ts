@@ -141,3 +141,7 @@ interface AzureStorageDirectoryItemApi {
     picture_id: string;
   }[];
 }
+
+interface ReadAzureStorageDirApi {
+  folders: AzureStorageDirectoryItemApi[];
+}
