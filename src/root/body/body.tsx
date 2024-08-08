@@ -23,7 +23,13 @@ import {
   readAzureStorageDir,
   requestUUID,
 } from "../../common";
-import { Images, LabelOccurrences, ModelMetadata } from "../../common/types";
+import {
+  AzureStorageDirectoryItem,
+  AzureStorageDirectoryItemApi,
+  Images,
+  LabelOccurrences,
+  ModelMetadata,
+} from "../../common/types";
 import Cookies from "js-cookie";
 import BatchUploadPopup from "../../components/body/batch_upload_popup";
 
@@ -65,9 +71,9 @@ const Body: React.FC<params> = (props) => {
   );
   const [curDir, setCurDir] = useState<string>("General");
   const [readAzureStorage, setReadAzureStorage] = useState<boolean>(false);
-  const [azureStorageDir, setAzureStorageDir] = useState<{
-    [key: string]: number;
-  }>({});
+  const [azureStorageDir, setAzureStorageDir] = useState<
+    AzureStorageDirectoryItem[]
+  >([]);
   const [delDirectoryOpen, setDelDirectoryOpen] = useState<boolean>(false);
   const [selectedModel, setSelectedModel] = useState("Swin transformer");
   const [modelDisplayName, setModelDisplayName] = useState("");
@@ -276,7 +282,23 @@ const Body: React.FC<params> = (props) => {
     }
     readAzureStorageDir(backendUrl, props.uuid)
       .then((response) => {
-        setAzureStorageDir(response);
+        const directories: AzureStorageDirectoryItem[] = [];
+        const folders = response.folders;
+        folders.forEach((item: AzureStorageDirectoryItemApi) => {
+          directories.push({
+            folderName: item.folder_name,
+            nbPictures: item.nb_pictures,
+            pictureSetId: item.picture_set_id,
+            pictures: item.pictures.map((pic) => {
+              return {
+                inferenceExists: pic.inference_exists,
+                isValidation: pic.is_validation,
+                pictureId: pic.picture_id,
+              };
+            }),
+          });
+        });
+        setAzureStorageDir(directories);
       })
       .catch((error) => {
         console.error(error);

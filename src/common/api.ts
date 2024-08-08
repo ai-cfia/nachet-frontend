@@ -8,6 +8,7 @@ import {
   FeedbackDataPositive,
   Images,
   ModelMetadata,
+  ReadAzureStorageDirApi,
 } from "./types";
 
 const handleAxios = async <T>(request: {
@@ -45,9 +46,7 @@ const handleAxios = async <T>(request: {
 export const readAzureStorageDir = async (
   backendUrl: string,
   uuid: string,
-): Promise<{
-  [key: string]: number;
-}> => {
+): Promise<ReadAzureStorageDirApi> => {
   if (backendUrl === "" || backendUrl == null) {
     throw new ValueError("Backend URL is null or empty");
   }
@@ -56,7 +55,7 @@ export const readAzureStorageDir = async (
   }
   const request = {
     method: "post",
-    url: `${backendUrl}/dir`,
+    url: `${backendUrl}/get-directories`,
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",

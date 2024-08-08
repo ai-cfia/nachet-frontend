@@ -117,3 +117,31 @@ export interface BatchUploadMetadata {
   imageDataUrl: string;
   sessionId: string;
 }
+
+interface DirectoryPicture {
+  inferenceExists: boolean;
+  isValidation: boolean;
+  pictureId: string;
+}
+
+interface AzureStorageDirectoryItem {
+  folderName: string;
+  nbPictures: number;
+  pictureSetId: string;
+  pictures: DirectoryPicture[];
+}
+
+interface AzureStorageDirectoryItemApi {
+  folder_name: string;
+  nb_pictures: number;
+  picture_set_id: string;
+  pictures: {
+    inference_exists: boolean;
+    is_validation: boolean;
+    picture_id: string;
+  }[];
+}
+
+interface ReadAzureStorageDirApi {
+  folders: AzureStorageDirectoryItemApi[];
+}
