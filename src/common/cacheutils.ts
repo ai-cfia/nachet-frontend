@@ -100,13 +100,14 @@ const drawBoxes = (
   if (imageData.scores == null) {
     throw new ValueError("Image object is missing scores");
   }
-  let selectedClassifications = imageData.classifications
-    .map((prediction, index) => ({ label: prediction, index }))
+  let selectedClassifications = imageData.classifications.map(
+    (prediction, index) => ({ label: prediction, index }),
+  );
 
   if (selectedLabel !== "all") {
     selectedClassifications = imageData.classifications
       .map((prediction, index) => ({ label: prediction, index }))
-      .filter(item => item.label === selectedLabel);
+      .filter((item) => item.label === selectedLabel);
   }
   selectedClassifications.forEach((prediction) => {
     drawBox(imageData.boxes[prediction.index], ctx);
