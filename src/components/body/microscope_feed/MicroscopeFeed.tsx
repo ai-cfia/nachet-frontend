@@ -67,16 +67,14 @@ const ButtonMicroscopeFeed = (props: {
 }): JSX.Element => {
   const { label, icon, onClick, disabled } = props;
   const buttonStyle = {
-    marginRight: "0.2vh",
-    marginLeft: "0.2vh",
-    borderRadius: "0.4vh",
-    paddingTop: "0.3vh",
-    paddingBottom: "0.3vh",
-    paddingLeft: "0.7vh",
-    paddingRight: "0.7vh",
-    fontSize: "1.17vh",
+    margin: "5px",
+    borderRadius: "5px",
+    padding: "5px",
+    paddingLeft: "10px",
+    paddingRight: "10px",
+    fontSize: "12px",
     width: "fit-content",
-    border: `0.01vh solid LightGrey`,
+    border: `1px solid LightGrey`,
     "&:hover": {
       backgroundColor: "#F5F5F5",
       transition: "0.1s ease-in-out all",
@@ -352,10 +350,15 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
   return (
     <Box
       sx={{
-        width: width,
+        display: "flex",
+        flexDirection: "column",
+        // width: width,
         height: "fit-content",
-        border: `0.01vh solid LightGrey`,
-        borderRadius: "0.4vh",
+        minWidth: "100%",
+        // minHeight: "100%",
+        // maxHeight: "100%",
+        border: `1px solid LightGrey`,
+        borderRadius: "5px",
       }}
       boxShadow={0}
       data-testid="microscope-component"
@@ -367,7 +370,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
           justifyContent: "center",
           flexWrap: "wrap",
           alignItems: "center",
-          padding: "0.8vh",
+          padding: "10px",
         }}
       >
         <ButtonMicroscopeFeed
@@ -435,7 +438,15 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
           }}
         />
       </Box>
-      <div style={{ position: "relative", width: width, height }}>
+      <Box
+        sx={{
+          position: "relative",
+          // minWidth: "100%",
+          // minHeight: "100%",
+          alignContent: "center",
+          justifyContent: "center",
+        }}
+      >
         {!apiResultDismissed ? (
           // <Overlay>
           <Box
@@ -550,7 +561,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
             )}
           </>
         )}
-      </div>
+      </Box>
 
       <div style={{ display: "flex" }}>
         <ToggleButton
