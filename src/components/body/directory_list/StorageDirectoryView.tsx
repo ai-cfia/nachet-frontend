@@ -38,7 +38,7 @@ const StorageDirectoryView: React.FC<params> = (props) => {
       sx={{
         width: "100%",
         height: "100%",
-        minHeight: "100%",
+        // minHeight: "100%",
         padding: "0px",
         margin: "0px",
         border: `1px solid LightGrey`,
@@ -76,9 +76,9 @@ const StorageDirectoryView: React.FC<params> = (props) => {
           </div>
         }
       />
-      <TableContainer
+      <Box
         sx={{
-          overflow: "auto",
+          overflowY: "auto",
           height: "100%",
           border: 0,
           borderTopRightRadius: 0,
@@ -88,10 +88,11 @@ const StorageDirectoryView: React.FC<params> = (props) => {
           boxShadow: "none",
           padding: 0,
           margin: 0,
-        }}
+        }}>
+      <TableContainer
         id={"container_with_scrolls"}
       >
-        <Table sx={{ borderBottom: 0, height: "100%" }}>
+        <Table sx={{ borderBottom: 0 }}>
           <TableBody sx={{ borderBottom: 0 }}>
             {Object.keys(azureStorageDir).map(
               (folderKey: string, index: number) => (
@@ -223,7 +224,7 @@ const StorageDirectoryView: React.FC<params> = (props) => {
             )}
           </TableBody>
         </Table>
-      </TableContainer>
+      </TableContainer></Box>
     </Box>
   );
 };

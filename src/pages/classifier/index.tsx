@@ -66,10 +66,17 @@ const Classifier: React.FC<params> = (props) => {
         paddingLeft: "40px",
         paddingRight: "40px",
         minHeight: "70vh",
-        maxHeight: "80vh",
+        maxHeight: "70vh",
       }}
     >
-      <Grid container item xs>
+      <Grid
+        container
+        item
+        xs
+        sx={{
+          maxHeight: "70vh",
+        }}
+      >
         <StorageDirectory
           azureStorageDir={props.azureStorageDir}
           curDir={props.curDir}
