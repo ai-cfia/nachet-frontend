@@ -367,7 +367,7 @@ export const loadResultsToCache = (
   newCache[index] = {
     ...newCache[index],
     scores: inferenceData.boxes.map((box) => box.score),
-    classifications: inferenceData.boxes.map((box) => box.label),
+    classifications: inferenceData.boxes.map((box) => box.label.replace(/^\d+\s+/, '')),
     boxes: inferenceData.boxes.map((box) => {
       return {
         ...box.box,

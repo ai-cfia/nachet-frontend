@@ -29,6 +29,7 @@ import {
   requestClassList,
   sendNegativeFeedback,
   sendPositiveFeedback,
+  loadResultsToCache,
 } from "../../../common";
 import { FreeformBox, NegativeFeedbackForm } from "../feedback_form";
 import { getUnscaledCoordinates } from "../../../common/imageutils";
@@ -45,6 +46,7 @@ interface MicroscopeFeedProps {
   setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSwitchModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
   imageCache: Images[];
+  setImageCache : React.Dispatch<React.SetStateAction<Images[]>>;
   handleInference: () => void;
   imageIndex: number;
   isWebcamActive: boolean;
@@ -116,6 +118,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
     setUploadOpen,
     setSwitchModelOpen,
     imageCache,
+    setImageCache,
     handleInference,
     imageIndex,
     isWebcamActive,
@@ -201,8 +204,9 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
     setApiLoading(true);
     setApiResultDismissed(false);
     sendPositiveFeedback(feedbackDataPositive, backendUrl)
-      .then(() => {
+      .then((response) => {
         console.log("Positive Feedback submitted successfully");
+        setImageCache(loadResultsToCache(response, imageCache, imageIndex));
         setApiSuccess(true);
       })
       .catch((error) => {
@@ -225,8 +229,9 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
     setApiLoading(true);
     setApiResultDismissed(false);
     sendNegativeFeedback(feedbackDataNegative, backendUrl)
-      .then(() => {
+      .then((response) => {
         console.log("Negative Feedback submitted successfully");
+        setImageCache(loadResultsToCache(response, imageCache, imageIndex));
         setApiSuccess(true);
       })
       .catch((error) => {

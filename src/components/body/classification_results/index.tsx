@@ -235,7 +235,7 @@ const ClassificationResults: React.FC<params> = (props) => {
                       handleSelect(key);
                     }}
                   >
-                    {key.split(" ").slice(1).join(" ")}
+                    {key}
                   </TableCell>
                   <TableCell
                     align="right"
@@ -384,7 +384,7 @@ const ClassificationResults: React.FC<params> = (props) => {
                                   paddingBottom: "0.5vh",
                                 }}
                               >
-                                {prediction.split(" ").slice(1).join(" ")}
+                                {prediction}
                               </TableCell>
                               <TableCell
                                 align="right"
