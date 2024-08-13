@@ -46,7 +46,7 @@ interface MicroscopeFeedProps {
   setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSwitchModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
   imageCache: Images[];
-  setImageCache : React.Dispatch<React.SetStateAction<Images[]>>;
+  setImageCache: React.Dispatch<React.SetStateAction<Images[]>>;
   handleInference: () => void;
   imageIndex: number;
   isWebcamActive: boolean;

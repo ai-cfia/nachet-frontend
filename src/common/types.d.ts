@@ -17,7 +17,7 @@ export interface ApiInferenceData {
     seed_name: number;
   };
   totalBoxes: number;
-  models: Array<{name: string; version: number}>;
+  models: Array<{ name: string; version: number }>;
 }
 export interface Images {
   index: number;
