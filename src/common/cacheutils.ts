@@ -66,6 +66,7 @@ const drawBox = (
   box: Images["boxes"][0],
   ctx: CanvasRenderingContext2D,
 ): void => {
+  console.log(box);
   const bottomY = box.bottomY;
   const topY = box.topY;
   const bottomX = box.bottomX;
@@ -74,7 +75,11 @@ const drawBox = (
 
   // draw bounding box
   ctx.lineWidth = 3;
-  ctx.strokeStyle = "red";
+  if(box.is_verified) {
+    ctx.strokeStyle = "green";
+  } else {
+    ctx.strokeStyle = "red";
+  }
   ctx.rect(topX, topY, bottomX - topX, bottomY - topY);
   ctx.stroke();
   ctx.closePath();
@@ -377,6 +382,7 @@ export const loadResultsToCache = (
         boxId: box.box_id,
         classId: box.object_type_id,
         label: box.label,
+        is_verified: box.is_verified,
       };
     }),
     overlapping: inferenceData.boxes.map((box) => box.overlapping),

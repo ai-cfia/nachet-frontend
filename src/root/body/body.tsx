@@ -178,6 +178,9 @@ const Body: React.FC<params> = (props) => {
         props.uuid,
       )
         .then((response) => {
+          for(var box of response.boxes){
+            console.log(box);
+          }
           setReadAzureStorage(!readAzureStorage);
           setImageCache(loadResultsToCache(response, imageCache, imageIndex));
           setModelDisplayName(selectedModel);
