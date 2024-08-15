@@ -12,7 +12,7 @@ import ClassificationResults from "../../components/body/classification_results"
 import ImageCache from "../../components/body/image_cache";
 import StorageDirectory from "../../components/body/directory_list";
 import MicroscopeFeed from "../../components/body/microscope_feed";
-import { AzureStorageDirectoryItem } from "../../common/types";
+import { AzureStorageDirectoryItem, Images } from "../../common/types";
 
 interface params {
   imageSrc: string;
@@ -21,6 +21,7 @@ interface params {
   setSaveOpen: React.Dispatch<React.SetStateAction<boolean>>;
   capture: () => void;
   savedImages: any[];
+  setImageCache: React.Dispatch<React.SetStateAction<Images[]>>;
   clearImageCache: () => void;
   setImageIndex: React.Dispatch<React.SetStateAction<number>>;
   setBatchUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -74,6 +75,7 @@ const Classifier: React.FC<params> = (props) => {
             handleInference={props.handleInference}
             setSwitchModelOpen={props.setSwitchModelOpen}
             imageCache={props.savedImages}
+            setImageCache={props.setImageCache}
             imageIndex={props.imageIndex}
             setBatchUploadOpen={props.setBatchUploadOpen}
             setUploadOpen={props.setUploadOpen}

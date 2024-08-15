@@ -418,6 +418,7 @@ const Body: React.FC<params> = (props) => {
         setSaveOpen={setSaveOpen}
         capture={captureFeed}
         savedImages={imageCache}
+        setImageCache={setImageCache}
         clearImageCache={clearCache}
         canvasRef={canvasRef}
         removeImage={removeFromCache}

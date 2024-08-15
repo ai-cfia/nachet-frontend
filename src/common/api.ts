@@ -188,7 +188,7 @@ export const fetchModelMetadata = async (
 export const sendFeedbackNewBox = async (
   feedbackData: FeedbackDataNegative,
   backendUrl: string,
-): Promise<void> => {
+): Promise<ApiInferenceData> => {
   if (backendUrl === "" || backendUrl == null) {
     throw new ValueError("Backend URL is null or empty");
   }
@@ -201,13 +201,13 @@ export const sendFeedbackNewBox = async (
     },
     data: feedbackData,
   };
-  return handleAxios(request);
+  return handleAxios<ApiInferenceData>(request);
 };
 
 export const sendPositiveFeedback = async (
   feedbackData: FeedbackDataPositive,
   backendUrl: string,
-): Promise<void> => {
+): Promise<ApiInferenceData> => {
   if (backendUrl === "" || backendUrl == null) {
     throw new ValueError("Backend URL is null or empty");
   }
@@ -220,13 +220,13 @@ export const sendPositiveFeedback = async (
     },
     data: feedbackData,
   };
-  return handleAxios(request);
+  return handleAxios<ApiInferenceData>(request);
 };
 
 export const sendNegativeFeedback = async (
   feedbackData: FeedbackDataNegative,
   backendUrl: string,
-): Promise<void> => {
+): Promise<ApiInferenceData> => {
   if (backendUrl === "" || backendUrl == null) {
     throw new ValueError("Backend URL is null or empty");
   }
@@ -239,7 +239,7 @@ export const sendNegativeFeedback = async (
     },
     data: feedbackData,
   };
-  return handleAxios(request);
+  return handleAxios<ApiInferenceData>(request);
 };
 
 export const requestUUID = async (
