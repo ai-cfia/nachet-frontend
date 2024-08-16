@@ -74,7 +74,7 @@ const drawBox = (
 
   // draw bounding box
   ctx.lineWidth = 3;
-  if(box.is_verified) {
+  if (box.is_verified) {
     ctx.strokeStyle = "green";
   } else {
     ctx.strokeStyle = "red";
