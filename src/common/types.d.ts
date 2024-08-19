@@ -12,6 +12,7 @@ export interface ApiInferenceData {
     box: BoxCoordinates;
     overlapping: boolean;
     overlappingIndices: number;
+    is_verified: boolean;
   }>;
   labelOccurrence: {
     seed_name: number;
@@ -45,6 +46,7 @@ export interface InferenceBox extends BoxCoordinates {
   boxId: string;
   classId: string;
   label: string;
+  is_verified: boolean;
 }
 
 export interface BoxCSS {
