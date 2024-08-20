@@ -4,6 +4,7 @@ import { Box, CardHeader, IconButton, Select, MenuItem } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material/Select";
 import CloseIcon from "@mui/icons-material/Close";
 import { colours } from "../../../styles/colours";
+import { t } from "i18next";
 
 interface params {
   setSwitchDeviceOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -39,7 +40,7 @@ const SwitchDevice: React.FC<params> = (props): JSX.Element => {
         boxShadow={1}
       >
         <CardHeader
-          title="Choose Media Device"
+          title={t("choose_media_device")}
           titleTypographyProps={{
             variant: "h6",
             align: "left",

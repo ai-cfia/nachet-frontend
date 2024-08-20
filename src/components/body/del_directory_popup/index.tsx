@@ -5,6 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { colours } from "../../../styles/colours";
 import { useBackendUrl } from "../../../hooks";
 import { deleteAzureStorageDir } from "../../../common/api";
+import { t } from "i18next";
 
 interface params {
   setDelDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -27,7 +28,7 @@ const DeleteDirectoryPopup: React.FC<params> = (props): JSX.Element => {
         setReadAzureStorage((prev) => !prev);
       })
       .catch((error) => {
-        alert("Error deleting directory, see console for more details");
+        alert(t("error_deleting_directory"));
         console.error(error);
       });
   };
@@ -54,7 +55,7 @@ const DeleteDirectoryPopup: React.FC<params> = (props): JSX.Element => {
         boxShadow={1}
       >
         <CardHeader
-          title="Delete Directory"
+          title={t("delete_directory")}
           titleTypographyProps={{
             variant: "h6",
             align: "left",
@@ -71,7 +72,7 @@ const DeleteDirectoryPopup: React.FC<params> = (props): JSX.Element => {
           sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
         />
         <InfoContainer>
-          <Text>Are you sure you want to delete {curDir}?</Text>
+          <Text>{t("are_you_sure_you_want_to_delete_")}{curDir}?</Text>
           <ButtonWrap>
             <Button
               variant="outlined"
@@ -96,7 +97,7 @@ const DeleteDirectoryPopup: React.FC<params> = (props): JSX.Element => {
               }}
               onClick={handleYes}
             >
-              Delete
+              {t("delete")}
             </Button>
             <Button
               variant="outlined"
@@ -120,7 +121,7 @@ const DeleteDirectoryPopup: React.FC<params> = (props): JSX.Element => {
               }}
               onClick={handleClose}
             >
-              Cancel
+              {t("cancel")}
             </Button>
           </ButtonWrap>
         </InfoContainer>

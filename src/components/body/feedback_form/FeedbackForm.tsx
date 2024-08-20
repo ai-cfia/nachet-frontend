@@ -26,6 +26,7 @@ import { SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { BoxCSS, ClassData, FeedbackDataNegative } from "../../../common/types";
 import Draggable from "react-draggable";
 import LoadingIndicator from "../loading_indicator";
+import { t } from "i18next";
 
 interface SimpleFeedbackFormProps {
   anchorEl: HTMLButtonElement | null;
@@ -119,11 +120,11 @@ export const NegativeFeedbackForm = (
 
   const reasons = useMemo(() => {
     return [
-      "Seed not Detected",
-      "Wrong Seed",
-      "No Seed",
-      "Multi Seed",
-      "Wrong Seed not in List",
+      t("seed_not_detected"),
+      t("wrong_seed"),
+      t("no_seed"),
+      t("multi_seed"),
+      t("wrong_seed_not_in_list"),
     ];
   }, []);
   /* Section stub convert to prop or use state when backend defined */
@@ -228,7 +229,7 @@ export const NegativeFeedbackForm = (
   }, [classList, defaultClass, inference]);
 
   useEffect(() => {
-    if (comment === "No Seed") {
+    if (comment === t("no_seed")) {
       setSelectedClass({
         id: -1,
         classId: "",
@@ -271,7 +272,7 @@ export const NegativeFeedbackForm = (
             variant="h5"
             sx={{ textAlign: "center", marginBottom: "10px" }}
           >
-            Feedback
+            {t("feedback")}
           </Typography>
 
           <>
@@ -283,7 +284,7 @@ export const NegativeFeedbackForm = (
               >
                 <TableHead>
                   <TableRow>
-                    <TableCell>Bounding Box</TableCell>
+                    <TableCell>{t("bounding_box")}</TableCell>
                     <TableCell>_</TableCell>
                   </TableRow>
                 </TableHead>
@@ -321,7 +322,7 @@ export const NegativeFeedbackForm = (
               <Autocomplete
                 id="feedback-class"
                 renderInput={(params) => (
-                  <TextField {...params} label="Class" />
+                  <TextField {...params} label={t("class")} />
                 )}
                 options={classList}
                 value={selectedClass}
@@ -334,13 +335,13 @@ export const NegativeFeedbackForm = (
                 selectOnFocus
                 clearOnBlur
                 handleHomeEndKeys
-                freeSolo={comment === "Wrong Seed not in List"}
+                freeSolo={comment === t("wrong_seed_not_in_list")}
                 getOptionLabel={getClassLabel}
                 sx={{
                   marginTop: "20px",
                   width: "100%",
                 }}
-                disabled={comment === "No Seed"}
+                disabled={comment === t("no_seed")}
               />
             )}
 
@@ -349,7 +350,7 @@ export const NegativeFeedbackForm = (
               labelId="comment-select-label"
               id="feedback-comment"
               value={comment}
-              label="Feedback Comment"
+              label={t("feedback_comment")}
               onChange={handleCommentChange}
               sx={{
                 marginTop: "20px",
@@ -388,7 +389,7 @@ export const NegativeFeedbackForm = (
               }}
               onClick={handleSubmit}
             >
-              Submit
+              {t("submit")}
             </Button>
 
             <Button

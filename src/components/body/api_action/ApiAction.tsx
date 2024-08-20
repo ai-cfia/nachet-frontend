@@ -2,6 +2,7 @@ import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
 import LoadingIndicator from "../loading_indicator";
 import { Box, Button, Typography } from "@mui/material";
+import { t } from "i18next";
 
 export interface ApiActionProps {
   loading: boolean;
@@ -80,7 +81,7 @@ export const ApiAction = (props: ApiActionProps) => {
             }}
             onClick={dismiss}
           >
-            Dismiss
+            {t("close")}
           </Button>
         )}
       </Box>

@@ -32,6 +32,7 @@ import {
 } from "../../common/types";
 import Cookies from "js-cookie";
 import BatchUploadPopup from "../../components/body/batch_upload_popup";
+import { t } from "i18next";
 
 interface params {
   windowSize: {
@@ -114,7 +115,7 @@ const Body: React.FC<params> = (props) => {
         })
         .catch((error) => {
           console.error(error);
-          alert("Error fetching UUID, see console for details");
+          alert(t("error_fetching_uuid"));
         });
       // props.setUuid(props.uuid);
       // Cookies.set("user-uuid", props.uuid, { expires: 30 });
@@ -183,14 +184,14 @@ const Body: React.FC<params> = (props) => {
           setModelDisplayName(selectedModel);
         })
         .catch((error) => {
-          alert("Error fetching inference data, see console for details");
+          alert(t("error_fetching_inference_data"));
           console.error(error);
         })
         .finally(() => {
           setIsLoading(false);
         });
     } else {
-      alert("Please select a directory");
+      alert(t("please_select_directory"));
     }
   };
 
@@ -302,7 +303,7 @@ const Body: React.FC<params> = (props) => {
       })
       .catch((error) => {
         console.error(error);
-        alert("Error reading Azure storage directory, see console for details");
+        alert(t("error_reading_azure_storage_directory"));
       });
   }, [props.uuid, readAzureStorage, backendUrl]);
 
@@ -328,7 +329,7 @@ const Body: React.FC<params> = (props) => {
       })
       .catch((error) => {
         console.error(error);
-        alert("Error fetching model metadata, see console for details");
+        alert(t("error_fetching_model_metadata"));
       });
   }, [backendUrl]);
 

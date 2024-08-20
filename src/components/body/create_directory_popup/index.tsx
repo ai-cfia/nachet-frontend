@@ -5,6 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { colours } from "../../../styles/colours";
 import { useBackendUrl } from "../../../hooks";
 import { createAzureStorageDir } from "../../../common/api";
+import { t } from "i18next";
 
 interface params {
   setCreateDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -36,7 +37,7 @@ const CreateFolder: React.FC<params> = (props): JSX.Element => {
         setReadAzureStorage((prev) => !prev);
       })
       .catch((error) => {
-        alert("Error creating directory, see console for more details");
+        alert(t("error_creating_directory"));
         console.error(error);
       });
   };
@@ -60,7 +61,7 @@ const CreateFolder: React.FC<params> = (props): JSX.Element => {
         boxShadow={1}
       >
         <CardHeader
-          title="Create New Directory"
+          title={t("create_new_directory")}
           titleTypographyProps={{
             variant: "h6",
             align: "left",
@@ -79,7 +80,7 @@ const CreateFolder: React.FC<params> = (props): JSX.Element => {
         <InfoContainer>
           <TextField
             id="outlined-basic"
-            label="Directory Name"
+            label={t("directory_name")}
             variant="outlined"
             fullWidth
             InputLabelProps={{ shrink: true }}
@@ -116,7 +117,7 @@ const CreateFolder: React.FC<params> = (props): JSX.Element => {
                 handleCreateDirectory();
               }}
             >
-              Create
+              {t("create")}
             </Button>
             <Button
               variant="outlined"
@@ -141,7 +142,7 @@ const CreateFolder: React.FC<params> = (props): JSX.Element => {
               }}
               onClick={handleClose}
             >
-              Cancel
+              {t("cancel")}
             </Button>
           </ButtonWrap>
         </InfoContainer>

@@ -3,6 +3,7 @@ import { Overlay, InfoContainer } from "./indexElements";
 import { Box, CardHeader, IconButton, Input } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { colours } from "../../../styles/colours";
+import { t } from "i18next";
 
 interface params {
   setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -47,7 +48,7 @@ const UploadPopup: React.FC<params> = (props): JSX.Element => {
         boxShadow={1}
       >
         <CardHeader
-          title="Load Image"
+          title={t("load_image")}
           titleTypographyProps={{
             variant: "h6",
             align: "left",

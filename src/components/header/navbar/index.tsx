@@ -4,6 +4,7 @@ import { Nav, NavbarContainer, NavLogo, NavMenu } from "./indexElements";
 import { Button, IconButton } from "@mui/material";
 import { colours } from "../../../styles/colours";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { t } from "i18next";
 
 interface params {
   windowSize: {
@@ -26,7 +27,7 @@ const Navbar: React.FC<params> = (props) => {
     paddingLeft: "0.7vh",
     paddingRight: "0.7vh",
     fontSize: "1.17vh",
-    width: "7vh",
+    width: "12vh",
     border: `0.01vh solid LightGrey`,
     color: colours.CFIA_Font_Black,
     "&:hover": {
@@ -56,7 +57,7 @@ const Navbar: React.FC<params> = (props) => {
               }}
               sx={buttonStyle}
             >
-              SIGN IN
+              {t("sign_in")}
             </Button>
           )}
           {props.signedIn && (

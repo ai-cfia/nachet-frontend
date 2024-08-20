@@ -17,6 +17,7 @@ import { colours } from "../../../styles/colours";
 import { saveAs } from "file-saver";
 import JSZip from "jszip";
 import { Images } from "../../../common/types";
+import { t } from "i18next";
 
 interface params {
   imageSrc: string;
@@ -121,7 +122,7 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
         boxShadow={1}
       >
         <CardHeader
-          title="Save Capture"
+          title={t("save_capture")}
           titleTypographyProps={{
             variant: "h6",
             align: "left",
@@ -172,7 +173,7 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
               <>
                 <TextField
                   id="outlined-basic"
-                  label="Capture Name"
+                  label={t("capture_name")}
                   variant="outlined"
                   onChange={handleLabel}
                   value={props.imageLabel}
@@ -234,7 +235,7 @@ const SavePopup: React.FC<params> = (props): JSX.Element => {
               }}
               onClick={saveImage}
             >
-              SAVE
+              {t("save")}
             </Button>
           </ButtonWrap>
         </InfoContainer>
