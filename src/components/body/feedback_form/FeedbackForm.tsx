@@ -403,7 +403,7 @@ export const NegativeFeedbackForm = (
               }}
               onClick={handleCancel}
             >
-              Cancel
+              {t("cancel")}
             </Button>
           </Box>
         </FormControl>
