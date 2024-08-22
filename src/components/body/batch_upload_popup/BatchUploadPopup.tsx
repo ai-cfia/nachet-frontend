@@ -178,11 +178,11 @@ const BatchUploadPopup = (props: params): JSX.Element => {
       return;
     }
     if (seedCount < 1) {
-      setUploadError(t('please_enter_a_seed_count'));
+      setUploadError(t("please_enter_a_seed_count"));
       return;
     }
     if (zoom < 1) {
-      setUploadError(t('please_enter_a_zoom_level'));
+      setUploadError(t("please_enter_a_zoom_level"));
       return;
     }
     if (files == null || files.length === 0) {

@@ -1,8 +1,8 @@
-import React from 'react';
-import { Select, MenuItem, SelectChangeEvent } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import i18next from 'i18next';
-import { AppbarWrap, AppbarContainer, AppbarHeader } from './indexElements';
+import React from "react";
+import { Select, MenuItem, SelectChangeEvent } from "@mui/material";
+import { useTranslation } from "react-i18next";
+import i18next from "i18next";
+import { AppbarWrap, AppbarContainer, AppbarHeader } from "./indexElements";
 import { colours } from "../../../styles/colours";
 
 interface Params {
@@ -41,7 +41,7 @@ const Appbar: React.FC<Params> = (props) => {
         width={props.windowSize.width}
         height={props.windowSize.height}
       >
-        <AppbarHeader>{t('seed_classification_interface')}</AppbarHeader>
+        <AppbarHeader>{t("seed_classification_interface")}</AppbarHeader>
         <Select
           value={props.switchLanguage ? "en" : "fr"}
           onChange={handleLanguageChange}

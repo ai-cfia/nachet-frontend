@@ -72,7 +72,10 @@ const DeleteDirectoryPopup: React.FC<params> = (props): JSX.Element => {
           sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
         />
         <InfoContainer>
-          <Text>{t("are_you_sure_you_want_to_delete_")}{curDir}?</Text>
+          <Text>
+            {t("are_you_sure_you_want_to_delete_")}
+            {curDir}?
+          </Text>
           <ButtonWrap>
             <Button
               variant="outlined"

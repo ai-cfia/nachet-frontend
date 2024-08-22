@@ -1,9 +1,27 @@
 import React from "react";
 import { Overlay, InfoContainer } from "./indexElements";
-import { Box, CardHeader, IconButton, Input } from "@mui/material";
+import { Box, CardHeader, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { colours } from "../../../styles/colours";
 import { t } from "i18next";
+import { styled } from "@mui/material/styles";
+
+const CustomInput = styled("input")({
+  display: "none",
+});
+
+const CustomLabel = styled("label")({
+  display: "inline-block",
+  padding: "0.5em 1em",
+  fontSize: "0.7vw",
+  color: "#fff",
+  backgroundColor: "#007bff",
+  borderRadius: "0.4vh",
+  cursor: "pointer",
+  "&:hover": {
+    backgroundColor: "#0056b3",
+  },
+});
 
 interface params {
   setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -65,14 +83,8 @@ const UploadPopup: React.FC<params> = (props): JSX.Element => {
           sx={{ padding: "0.8vh 0.8vh 0.8vh 0.8vh" }}
         />
         <InfoContainer>
-          <Input
-            type="file"
-            fullWidth
-            onChange={uploadImage}
-            sx={{
-              fontSize: "0.7vw",
-            }}
-          />
+          <CustomLabel htmlFor="upload-button">{t("browse_file")}</CustomLabel>
+          <CustomInput id="upload-button" type="file" onChange={uploadImage} />
         </InfoContainer>
       </Box>
     </Overlay>

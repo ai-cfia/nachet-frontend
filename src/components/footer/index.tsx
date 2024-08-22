@@ -6,8 +6,7 @@ import {
   FooterLink,
 } from "./indexElements";
 import CanadaLogo from "../../assets/Canada_logo.png";
-import { t } from 'i18next';
-
+import { t } from "i18next";
 
 interface params {
   windowSize: {
@@ -25,7 +24,7 @@ const Footer: React.FC<params> = (props) => {
         height={props.windowSize.height}
       >
         <FooterLink href="https://github.com/ai-cfia">
-        {t('developed_by_ai_lab')}
+          {t("developed_by_ai_lab")}
         </FooterLink>
         <FooterLink>
           {environment.version !== "" ? "Version: " + environment.version : ""}{" "}

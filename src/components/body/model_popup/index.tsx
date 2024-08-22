@@ -8,7 +8,6 @@ import Typography from "@mui/material/Typography";
 import testData from "../../../static_data/static_model_data.json";
 import { t } from "i18next";
 
-
 interface params {
   setSwitchModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
   switchModelOpen: boolean;
@@ -168,9 +167,7 @@ const SwitchModel: React.FC<params> = (props): JSX.Element => {
               flexWrap: "wrap",
             }}
           >
-            <span>
-              {t("done")}
-            </span>
+            <span>{t("done")}</span>
           </div>
         </Button>
       </Box>
