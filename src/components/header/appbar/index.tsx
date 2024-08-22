@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Select, MenuItem, SelectChangeEvent } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import i18next from "i18next";
@@ -14,9 +14,16 @@ interface Params {
 const Appbar: React.FC<Params> = (props) => {
   const { t } = useTranslation();
 
+  const [language, setLanguage] = useState(i18next.language);
+
+  useEffect(() => {
+    setLanguage(i18next.language);
+  }, []);
+
   const handleLanguageChange = (event: SelectChangeEvent<string>) => {
     const newLanguage = event.target.value as string;
     i18next.changeLanguage(newLanguage);
+    setLanguage(newLanguage);
     props.setSwitchLanguage(newLanguage === "en");
   };
 
@@ -43,7 +50,7 @@ const Appbar: React.FC<Params> = (props) => {
       >
         <AppbarHeader>{t("seed_classification_interface")}</AppbarHeader>
         <Select
-          value={props.switchLanguage ? "en" : "fr"}
+          value={language}
           onChange={handleLanguageChange}
           sx={selectStyle}
         >
