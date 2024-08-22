@@ -52,7 +52,7 @@
     "top_results": "Meilleurs résultats",
     "feedback": "Rétroaction",
     "submit": "Soumettre",
-    "bounding_box": "Cadre d'objet",
+    "bounding_box": "Rectangle englobant",
     "feedback_comment": "Commentaire de rétroaction",
     "seed_not_detected": "Semence non détectée",
     "wrong_seed": "Mauvaise semence",
