@@ -194,6 +194,10 @@ const Body: React.FC<params> = (props) => {
     }
   };
 
+  const retrievePicture = (folder: string, picture: string): void => {
+    console.log("Folder: ", folder, " Picture: ", picture);
+  };
+
   useEffect(() => {
     const imageData = imageCache.find((img) => img.index === imageIndex);
     if (imageData === undefined) {
@@ -448,6 +452,7 @@ const Body: React.FC<params> = (props) => {
         toggleShowInference={(state: boolean) => setShowInference(state)}
         backendUrl={backendUrl}
         uuid={props.uuid}
+        handleSelectPicture={retrievePicture}
       />
     </BodyContainer>
   );

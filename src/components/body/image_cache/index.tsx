@@ -47,7 +47,7 @@ const ImageCache: React.FC<params> = (props) => {
     if (savedImages && savedImages.length > 0 && imageIndex >= 0) {
       setImageId(savedImages[imageIndex]?.imageId ?? "");
     }
-  });
+  }, [savedImages, imageIndex]);
 
   return (
     <Box

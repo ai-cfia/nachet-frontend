@@ -57,6 +57,7 @@ interface params {
   toggleShowInference: (state: boolean) => void;
   backendUrl: string;
   uuid: string;
+  handleSelectPicture: (folder: string, picture: string) => void;
 }
 
 const Classifier: React.FC<params> = (props) => {
@@ -95,6 +96,7 @@ const Classifier: React.FC<params> = (props) => {
             setCreateDirectoryOpen={props.setCreateDirectoryOpen}
             setDelDirectoryOpen={props.setDelDirectoryOpen}
             setCurDir={props.setCurDir}
+            handleSelectPicture={props.handleSelectPicture}
           />
           <ImageCache
             removeImage={props.removeImage}
