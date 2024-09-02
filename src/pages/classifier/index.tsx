@@ -21,7 +21,7 @@ interface params {
   imageFormat: string;
   setSaveOpen: React.Dispatch<React.SetStateAction<boolean>>;
   capture: () => void;
-  savedImages: any[];
+  savedImages: Images[];
   setImageCache: React.Dispatch<React.SetStateAction<Images[]>>;
   clearImageCache: () => void;
   setImageIndex: React.Dispatch<React.SetStateAction<number>>;

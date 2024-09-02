@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -17,9 +17,10 @@ import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Images } from "../../../common/types";
 
 interface params {
-  savedImages: any[];
+  savedImages: Images[];
   setImageIndex: React.Dispatch<React.SetStateAction<number>>;
   removeImage: (src: string) => void;
   clearImageCache: () => void;
@@ -33,6 +34,21 @@ interface params {
 const maxHeight = 35.395;
 
 const ImageCache: React.FC<params> = (props) => {
+  const {
+    savedImages,
+    setImageIndex,
+    removeImage,
+    clearImageCache,
+    imageIndex,
+  } = props;
+  const [imageId, setImageId] = React.useState("");
+
+  useEffect(() => {
+    if (savedImages && savedImages.length > 0 && imageIndex >= 0) {
+      setImageId(savedImages[imageIndex]?.imageId ?? "");
+    }
+  });
+
   return (
     <Box
       sx={{
@@ -69,7 +85,7 @@ const ImageCache: React.FC<params> = (props) => {
           }}
         >
           <CardHeader
-            title="CAPTURES"
+            title={"IMAGE | " + imageId}
             titleTypographyProps={{
               variant: "h6",
               align: "left",
@@ -85,7 +101,7 @@ const ImageCache: React.FC<params> = (props) => {
               <IconButton
                 sx={{ padding: 0, marginTop: "0.27vh", marginRight: "0.4vh" }}
                 onClick={() => {
-                  props.clearImageCache();
+                  clearImageCache();
                 }}
               >
                 <DeleteIcon
@@ -120,12 +136,12 @@ const ImageCache: React.FC<params> = (props) => {
           >
             <Table sx={{ borderBottom: 0 }}>
               <TableBody sx={{ borderBottom: 0 }}>
-                {props.savedImages.map((item: any, i) => (
+                {savedImages.map((item: any, i) => (
                   <TableRow
                     key={i}
                     sx={{
                       backgroundColor:
-                        item.index === props.imageIndex
+                        item.index === imageIndex
                           ? "#F5F5F5"
                           : colours.CFIA_Background_White,
                       "&:hover": {
@@ -149,7 +165,7 @@ const ImageCache: React.FC<params> = (props) => {
                       }}
                       align="left"
                       onClick={() => {
-                        props.setImageIndex(item.index);
+                        setImageIndex(item.index);
                       }}
                     >
                       <div
@@ -188,7 +204,7 @@ const ImageCache: React.FC<params> = (props) => {
                     >
                       <IconButton
                         onClick={() => {
-                          props.removeImage(item.index);
+                          removeImage(item.index);
                         }}
                         sx={{ padding: 0 }}
                       >

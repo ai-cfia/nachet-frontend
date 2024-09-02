@@ -73,7 +73,7 @@ const StorageDirectoryView: React.FC<params> = (props) => {
           }}
         >
           <CardHeader
-            title="DIRECTORIES"
+            title={"DIRECTORY | " + curDir}
             titleTypographyProps={{
               variant: "h6",
               align: "left",

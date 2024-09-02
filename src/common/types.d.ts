@@ -22,7 +22,7 @@ export interface ApiInferenceData {
 }
 export interface Images {
   index: number;
-  imageId?: number; // TODO convert to required once backend is implemented
+  imageId?: string; // TODO convert to required once backend is implemented
   src: string;
   scores: number[];
   classifications: string[];

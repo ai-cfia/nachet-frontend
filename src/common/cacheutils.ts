@@ -390,6 +390,7 @@ export const loadResultsToCache = (
     ),
     topN,
     annotated: true,
+    imageId: inferenceData.inference_id,
   };
 
   return newCache;
