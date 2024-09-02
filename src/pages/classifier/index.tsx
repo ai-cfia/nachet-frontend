@@ -8,6 +8,7 @@ import {
 } from "./indexElements";
 import type Webcam from "react-webcam";
 import React from "react";
+
 import ClassificationResults from "../../components/body/classification_results";
 import ImageCache from "../../components/body/image_cache";
 import StorageDirectory from "../../components/body/directory_list";

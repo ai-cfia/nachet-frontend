@@ -39,6 +39,7 @@ describe("loadResultsToCache", () => {
         topN: [],
         overlapping: false,
         overlappingIndices: 0,
+        is_verified: false,
       },
       {
         score: 0.2,
@@ -55,6 +56,7 @@ describe("loadResultsToCache", () => {
         topN: [],
         overlapping: false,
         overlappingIndices: 0,
+        is_verified: false,
       },
       {
         score: 0.3,
@@ -71,6 +73,7 @@ describe("loadResultsToCache", () => {
         topN: [],
         overlapping: false,
         overlappingIndices: 0,
+        is_verified: false,
       },
     ],
     labelOccurrence: { seed_name: 0 },
@@ -114,6 +117,7 @@ describe("loadResultsToCache", () => {
           topN: [],
           overlapping: false,
           overlappingIndices: 0,
+          is_verified: false,
         },
         {
           score: 0.2,
@@ -130,6 +134,7 @@ describe("loadResultsToCache", () => {
           topN: [],
           overlapping: false,
           overlappingIndices: 0,
+          is_verified: false,
         },
         {
           score: 0.3,
@@ -146,6 +151,7 @@ describe("loadResultsToCache", () => {
           topN: [],
           overlapping: false,
           overlappingIndices: 0,
+          is_verified: false,
         },
       ],
       labelOccurrence: { seed_name: 0 },

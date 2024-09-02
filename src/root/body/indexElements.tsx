@@ -9,8 +9,9 @@ export const BodyContainer = styled.div<{ width: number }>`
   align-items: center;
   justify-content: center;
   z-index: 0;
+  min-width: 100%;
   max-width: 100%;
-  padding: 0px 1.5vw;
+  // padding: 0px 1.5vw;
   position: relative;
   margin-top: 6.5vh;
   margin-bottom: 10vh;

@@ -15,6 +15,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import FolderIcon from "@mui/icons-material/Folder";
 import FilterIcon from "@mui/icons-material/Filter";
 import { AzureStorageDirectoryItem } from "../../../common/types";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 interface params {
   azureStorageDir: AzureStorageDirectoryItem[];
@@ -23,6 +27,8 @@ interface params {
   handleDelete: (folder: string) => void;
   handleCreateDirectory: () => void;
 }
+
+const maxHeight = 25.395;
 
 const StorageDirectoryView: React.FC<params> = (props) => {
   const {
@@ -36,195 +42,224 @@ const StorageDirectoryView: React.FC<params> = (props) => {
     <Box
       sx={{
         width: "100%",
-        height: "22.23vh",
+        //height: "22.23vh",
+        height: "fit-content",
         border: `0.01vh solid LightGrey`,
         borderRadius: "0.4vh",
       }}
       boxShadow={0}
       data-testid="storage-directory-component"
     >
-      <CardHeader
-        title="DIRECTORIES"
-        titleTypographyProps={{
-          variant: "h6",
-          align: "left",
-          fontWeight: 600,
-          fontSize: "1.3vh",
-          color: colours.CFIA_Font_Black,
-        }}
-        sx={{ padding: "0.8vh 1vh 0.8vh 0.8vh" }}
-        action={
-          <div>
-            <IconButton
-              sx={{
-                padding: 0,
-                marginTop: "0.27vh",
-                marginRight: "0.4vh",
-              }}
-              onClick={handleCreateDirectory}
-            >
-              <CreateNewFolderIcon
-                style={{
-                  color: colours.CFIA_Background_Blue,
-                  fontSize: "2vh",
-                  marginTop: "0.1vh",
-                  marginBottom: "0.1vh",
-                  marginRight: "0.1vh",
-                  paddingTop: 0,
-                  paddingBottom: 0,
-                }}
-              />
-            </IconButton>
-          </div>
-        }
-      />
-      <TableContainer
+      <Accordion
+        disableGutters
         sx={{
-          overflow: "auto",
-          height: "18.465vh", // 18.75
-          maxHeight: "18.465vh",
-          border: 0,
-          borderTopRightRadius: 0,
-          borderTopLeftRadius: 0,
-          borderTop: `0.01vh solid LightGrey`,
-          borderBottom: 0,
-          boxShadow: "none",
+          width: "100%",
+          maxWidth: "100%",
+          // height: '50%',
+          maxHeight: String(maxHeight + 10) + "vh",
+          // border: `0.01vh solid LightGrey`,
+          // borderRadius: "0.4vh",
+          position: "relative",
+          zIndex: 0,
+          padding: "0px 0px 0px 0px",
         }}
-        id={"container_with_scrolls"}
       >
-        <Table sx={{ borderBottom: 0 }}>
-          <TableBody sx={{ borderBottom: 0 }}>
-            {azureStorageDir.map(
-              (item: AzureStorageDirectoryItem, index: number) => (
-                <TableRow
-                  key={index}
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1-content"
+          id="panel1-header"
+          sx={{
+            padding: "0px 0px 0px 0px",
+          }}
+        >
+          <CardHeader
+            title="DIRECTORIES"
+            titleTypographyProps={{
+              variant: "h6",
+              align: "left",
+              fontWeight: 600,
+              fontSize: "1.3vh",
+              color: colours.CFIA_Font_Black,
+            }}
+            sx={{
+              width: "100%",
+              padding: "0.8vh 1vh 0.8vh 0.8vh",
+            }}
+            action={
+              <div>
+                <IconButton
                   sx={{
-                    backgroundColor:
-                      item.pictureSetId === curDir
-                        ? "#F5F5F5"
-                        : colours.CFIA_Background_White,
-                    "&:hover": {
-                      backgroundColor: "#F5F5F5",
-                      transition: "0.1s ease-in-out all",
-                    },
+                    padding: 0,
+                    marginTop: "0.27vh",
+                    marginRight: "0.4vh",
                   }}
+                  onClick={handleCreateDirectory}
                 >
-                  <TableCell
-                    align="left"
-                    sx={{
-                      cursor: "pointer",
-                      paddingRight: 0,
-                      fontSize: "1.1vh",
-                      paddingTop: "0.5vh",
-                      paddingBottom: "0.5vh",
-                      paddingLeft: "0.8vh",
-                      width: "10vw",
-                      maxWidth: "10vw",
-                      textOverflow: "break-word",
-                      color: colours.CFIA_Font_Black,
+                  <CreateNewFolderIcon
+                    style={{
+                      color: colours.CFIA_Background_Blue,
+                      fontSize: "2vh",
+                      marginTop: "0.1vh",
+                      marginBottom: "0.1vh",
+                      marginRight: "0.1vh",
+                      paddingTop: 0,
+                      paddingBottom: 0,
                     }}
-                    onClick={() => {
-                      handleSelect(item.pictureSetId);
-                    }}
-                    data-testid={"folder-icon" + (index + 1)}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        flexWrap: "wrap",
+                  />
+                </IconButton>
+              </div>
+            }
+          />
+        </AccordionSummary>
+        <AccordionDetails>
+          <TableContainer
+            sx={{
+              // overflow: "scroll",
+              minHeight: "18.465vh", // 18.75
+              maxHeight: String(maxHeight) + "vh",
+              border: 0,
+              borderTopRightRadius: 0,
+              borderTopLeftRadius: 0,
+              borderTop: `0.01vh solid LightGrey`,
+              borderBottom: 0,
+              boxShadow: "none",
+            }}
+            id={"container_with_scrolls"}
+          >
+            <Table sx={{ borderBottom: 0 }}>
+              <TableBody sx={{ borderBottom: 0 }}>
+                {azureStorageDir.map(
+                  (item: AzureStorageDirectoryItem, index: number) => (
+                    <TableRow
+                      key={index}
+                      sx={{
+                        backgroundColor:
+                          item.pictureSetId === curDir
+                            ? "#F5F5F5"
+                            : colours.CFIA_Background_White,
+                        "&:hover": {
+                          backgroundColor: "#F5F5F5",
+                          transition: "0.1s ease-in-out all",
+                        },
                       }}
                     >
-                      <FolderIcon
-                        style={{
-                          color: colours.CFIA_Background_Blue,
-                          fontSize: "1.8vh",
-                          marginTop: 0,
-                          marginBottom: 0,
-                          paddingTop: 0,
-                          paddingBottom: 0,
-                          paddingRight: "0.3vw",
+                      <TableCell
+                        align="left"
+                        sx={{
+                          cursor: "pointer",
+                          paddingRight: 0,
+                          fontSize: "1.1vh",
+                          paddingTop: "0.5vh",
+                          paddingBottom: "0.5vh",
+                          paddingLeft: "0.8vh",
+                          width: "80%",
+                          // maxWidth: "10vw",
+                          textOverflow: "break-word",
+                          color: colours.CFIA_Font_Black,
                         }}
-                      />
-                      <span>{item.folderName ?? item.pictureSetId}</span>
-                    </div>
-                  </TableCell>
-                  <TableCell
-                    align="right"
-                    sx={{
-                      cursor: "pointer",
-                      fontSize: "1.15vh",
-                      paddingTop: "0.5vh",
-                      paddingBottom: "0.5vh",
-                      paddingLeft: "0.8vh",
-                      color: colours.CFIA_Font_Black,
-                    }}
-                    onClick={() => {
-                      handleSelect(item.pictureSetId);
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        width: "100%",
-                        justifyContent: "flex-end",
-                        alignContent: "center",
-                        marginLeft: "1vw",
-                      }}
-                    >
-                      <span style={{ marginRight: "0.1vw" }}>
-                        {item.nbPictures}
-                      </span>
-                      <FilterIcon
-                        style={{
-                          color: colours.CFIA_Background_Blue,
-                          fontSize: "1.7vh",
-                          marginTop: 0,
-                          marginBottom: 0,
-                          paddingTop: 0,
-                          paddingBottom: 0,
-                          paddingLeft: "0.3vw",
+                        onClick={() => {
+                          handleSelect(item.pictureSetId);
                         }}
-                      />
-                    </div>
-                  </TableCell>
-                  <TableCell
-                    align="right"
-                    sx={{
-                      cursor: "pointer",
-                      paddingLeft: 0,
-                      fontSize: "1.0vh",
-                      paddingTop: "0.5vh",
-                      paddingBottom: "0.5vh",
-                      paddingRight: "0.8vh",
-                    }}
-                  >
-                    <IconButton
-                      onClick={() => {
-                        handleDelete(item.pictureSetId);
-                      }}
-                      sx={{ padding: 0 }}
-                      disabled={item.pictureSetId === "General"}
-                      data-testid={"delete-icon" + (index + 1)}
-                    >
-                      <CloseIcon
-                        style={{
-                          color: colours.CFIA_Background_Blue,
-                          fontSize: "1.8vh",
-                          marginTop: 0,
-                          marginBottom: 0,
-                          paddingTop: 0,
-                          paddingBottom: 0,
+                        data-testid={"folder-icon" + (index + 1)}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            flexWrap: "wrap",
+                          }}
+                        >
+                          <FolderIcon
+                            style={{
+                              color: colours.CFIA_Background_Blue,
+                              fontSize: "1.8vh",
+                              marginTop: 0,
+                              marginBottom: 0,
+                              paddingTop: 0,
+                              paddingBottom: 0,
+                              paddingRight: "0.3vw",
+                            }}
+                          />
+                          <span>{item.folderName ?? item.pictureSetId}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell
+                        align="right"
+                        sx={{
+                          cursor: "pointer",
+                          fontSize: "1.15vh",
+                          paddingTop: "0.5vh",
+                          paddingBottom: "0.5vh",
+                          color: colours.CFIA_Font_Black,
+                          width: "20%",
                         }}
-                      />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ),
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                        onClick={() => {
+                          handleSelect(item.pictureSetId);
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            width: "100%",
+                            justifyContent: "flex-end",
+                            alignContent: "center",
+                          }}
+                        >
+                          <span style={{ marginRight: "0.1vw" }}>
+                            {item.nbPictures}
+                          </span>
+                          <FilterIcon
+                            style={{
+                              color: colours.CFIA_Background_Blue,
+                              fontSize: "1.7vh",
+                              marginTop: 0,
+                              marginBottom: 0,
+                              paddingTop: 0,
+                              paddingBottom: 0,
+                              paddingLeft: "5px",
+                            }}
+                          />
+                        </div>
+                      </TableCell>
+                      <TableCell
+                        align="right"
+                        sx={{
+                          cursor: "pointer",
+                          paddingLeft: 0,
+                          fontSize: "1.0vh",
+                          paddingTop: "0.5vh",
+                          paddingBottom: "0.5vh",
+                          paddingRight: "0.8vh",
+                        }}
+                      >
+                        <IconButton
+                          onClick={() => {
+                            handleDelete(item.pictureSetId);
+                          }}
+                          sx={{ padding: 0 }}
+                          disabled={item.pictureSetId === "General"}
+                          data-testid={"delete-icon" + (index + 1)}
+                        >
+                          <CloseIcon
+                            style={{
+                              color: colours.CFIA_Background_Blue,
+                              fontSize: "1.8vh",
+                              marginTop: 0,
+                              marginBottom: 0,
+                              paddingTop: 0,
+                              paddingBottom: 0,
+                            }}
+                          />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ),
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </AccordionDetails>
+      </Accordion>
     </Box>
   );
 };

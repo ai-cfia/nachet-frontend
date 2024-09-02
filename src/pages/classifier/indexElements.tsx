@@ -7,7 +7,7 @@ export const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   min-width: 100%;
   max-width: 100%;
   height: fit-content;
@@ -23,7 +23,7 @@ export const ColumnContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  min-width: 100%;
   max-width: 100%;
   height: fit-content;
 `;
@@ -54,9 +54,9 @@ export const InfoContent = styled.div`
   flex-direction: column;
   align-items: start;
   justify-content: start;
-  width: 19%;
-  max-width: 19%;
-  height: 100%;
+  width: 25%;
+  max-width: 25%;
+  min-height: 100%;
   max-height: 100%;
   z-index: 0;
   position: relative;
