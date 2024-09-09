@@ -23,7 +23,6 @@ FROM node:18
 WORKDIR /nachet-frontend
 
 COPY --from=build /nachet-frontend/dist ./build
-
 COPY ./src/assets/CFIA_small_logo.ico ./build/favicon.ico
 
 RUN npm install -g serve
