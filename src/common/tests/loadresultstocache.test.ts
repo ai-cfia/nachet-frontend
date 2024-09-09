@@ -186,6 +186,7 @@ describe("loadResultsToCache", () => {
             topY: 1,
             bottomX: 1,
             bottomY: 1,
+            is_verified: false,
           },
           {
             boxId: "1",
@@ -196,6 +197,7 @@ describe("loadResultsToCache", () => {
             topY: 2,
             bottomX: 2,
             bottomY: 2,
+            is_verified: false,
           },
           {
             boxId: "2",
@@ -206,6 +208,7 @@ describe("loadResultsToCache", () => {
             topY: 3,
             bottomX: 3,
             bottomY: 3,
+            is_verified: false,
           },
         ],
         annotated: true,
@@ -263,6 +266,7 @@ describe("loadResultsToCache", () => {
             topY: 1,
             bottomX: 1,
             bottomY: 1,
+            is_verified: false,
           },
           {
             boxId: "1",
@@ -273,6 +277,7 @@ describe("loadResultsToCache", () => {
             topY: 2,
             bottomX: 2,
             bottomY: 2,
+            is_verified: false,
           },
           {
             boxId: "2",
@@ -283,6 +288,7 @@ describe("loadResultsToCache", () => {
             topY: 3,
             bottomX: 3,
             bottomY: 3,
+            is_verified: false,
           },
         ],
         annotated: true,
@@ -306,6 +312,7 @@ describe("loadResultsToCache", () => {
             topY: 1,
             bottomX: 1,
             bottomY: 1,
+            is_verified: false,
           },
           {
             boxId: "1",
@@ -316,6 +323,7 @@ describe("loadResultsToCache", () => {
             topY: 2,
             bottomX: 2,
             bottomY: 2,
+            is_verified: false,
           },
           {
             boxId: "2",
@@ -326,6 +334,7 @@ describe("loadResultsToCache", () => {
             topY: 3,
             bottomX: 3,
             bottomY: 3,
+            is_verified: false,
           },
         ],
         annotated: true,
