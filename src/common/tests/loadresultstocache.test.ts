@@ -180,6 +180,7 @@ describe("loadResultsToCache", () => {
       {
         index: 0,
         src: "test",
+        imageId: "test",
         scores: [0.1, 0.2, 0.3],
         classifications: ["a", "b", "c"],
         boxes: [
@@ -260,6 +261,7 @@ describe("loadResultsToCache", () => {
       {
         index: 0,
         src: "test",
+        imageId: "test",
         scores: [0.1, 0.2, 0.3],
         classifications: ["a", "b", "c"],
         boxes: [
@@ -306,6 +308,7 @@ describe("loadResultsToCache", () => {
       {
         index: 1,
         src: "test",
+        imageId: "test",
         scores: [0.1, 0.2, 0.3],
         classifications: ["a", "b", "c"],
         boxes: [
