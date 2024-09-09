@@ -390,3 +390,37 @@ export const batchUploadImage = async (
   };
   return handleAxios(request);
 };
+
+export const fetchPicture = async (
+  backendUrl: string,
+  uuid: string,
+  folderName: string,
+  pictureId: string,
+): Promise<string> => {
+  if (backendUrl === "" || backendUrl == null) {
+    throw new ValueError("Backend URL is null or empty");
+  }
+  if (uuid === "" || uuid == null) {
+    throw new ValueError("UUID is null or empty");
+  }
+  if (folderName === "" || folderName == null) {
+    throw new ValueError("Folder name is null or empty");
+  }
+  if (pictureId === "" || pictureId == null) {
+    throw new ValueError("Picture ID is null or empty");
+  }
+  const request = {
+    method: "post",
+    url: `${backendUrl}/get-picture`,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    data: {
+      user_id: uuid,
+      container_name: folderName,
+      picture_id: pictureId,
+    },
+  };
+  return handleAxios(request);
+}

@@ -32,6 +32,7 @@ import {
 } from "../../common/types";
 import Cookies from "js-cookie";
 import BatchUploadPopup from "../../components/body/batch_upload_popup";
+import { fetchPicture } from "../../common/api";
 
 interface params {
   windowSize: {
@@ -196,6 +197,14 @@ const Body: React.FC<params> = (props) => {
 
   const retrievePicture = (folder: string, picture: string): void => {
     console.log("Folder: ", folder, " Picture: ", picture);
+    fetchPicture(backendUrl, props.uuid, folder, picture)
+      .then((response) => {
+        console.log("Response: ", response);
+      })
+      .catch((error) => {
+        console.error(error);
+        alert("Error fetching picture, see console for details");
+      });
   };
 
   useEffect(() => {
