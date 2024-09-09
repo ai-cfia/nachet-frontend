@@ -381,7 +381,7 @@ export const loadResultsToCache = (
         boxId: box.box_id,
         classId: box.object_type_id,
         label: box.label,
-        is_verified: box.is_verified,
+        is_verified: box.is_verified !== undefined ? box.is_verified : false,
       };
     }),
     overlapping: inferenceData.boxes.map((box) => box.overlapping),
