@@ -17,6 +17,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CropFreeIcon from "@mui/icons-material/CropFree";
 import LabelIcon from "@mui/icons-material/Label";
 import Typography from "@mui/material/Typography";
+import { t } from "i18next";
 
 interface params {
   savedImages: any[];
@@ -69,7 +70,7 @@ const ClassificationResults: React.FC<params> = (props) => {
             fontSize: "0.75em",
           }}
         >
-          Top Results
+          {t("top_results")}
         </Typography>
         {topN.map((result, index) => {
           // Parse the score to a float if it's a string, then immediately declare it as a const.
@@ -116,7 +117,7 @@ const ClassificationResults: React.FC<params> = (props) => {
       <CardHeader
         title={
           <span>
-            {"RESULTS | "}
+            {t("results")}
             <strong>{props.modelDisplayName}</strong>
           </span>
         }

@@ -35,6 +35,7 @@ import { FreeformBox, NegativeFeedbackForm } from "../feedback_form";
 import { getUnscaledCoordinates } from "../../../common/imageutils";
 import ApiAction from "../api_action";
 import { colours } from "../../../styles/colours";
+import { t } from "i18next";
 interface MicroscopeFeedProps {
   webcamRef: React.RefObject<Webcam>;
   capture: () => void;
@@ -376,7 +377,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
         }}
       >
         <ButtonMicroscopeFeed
-          label="CAPTURE"
+          label={t("capture_btn")}
           icon={<AddAPhotoIcon color="inherit" style={iconStyle} />}
           disabled={!isWebcamActive} // Disable when the webcam is active
           onClick={() => {
@@ -384,7 +385,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
           }}
         />
         <ButtonMicroscopeFeed
-          label="SWITCH"
+          label={t("switch")}
           icon={<SwitchCameraIcon color="inherit" style={iconStyle} />}
           disabled={!isWebcamActive} // Disable when the webcam is active
           onClick={() => {
@@ -392,7 +393,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
           }}
         />
         <ButtonMicroscopeFeed
-          label="BATCH"
+          label={t("batch")}
           icon={<UploadFileIcon color="inherit" style={iconStyle} />}
           disabled={isWebcamActive} // Disable when the webcam is active
           onClick={() => {
@@ -400,7 +401,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
           }}
         />
         <ButtonMicroscopeFeed
-          label="LOAD"
+          label={t("load")}
           icon={<UploadFileIcon color="inherit" style={iconStyle} />}
           disabled={isWebcamActive} // Disable when the webcam is active
           onClick={() => {
@@ -408,7 +409,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
           }}
         />
         <ButtonMicroscopeFeed
-          label="SAVE"
+          label={t("save")}
           icon={<DownloadIcon color="inherit" style={iconStyle} />}
           disabled={isWebcamActive} // Disable when the webcam is active
           onClick={() => {
@@ -416,7 +417,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
           }}
         />
         <ButtonMicroscopeFeed
-          label="MODEL SELECTION"
+          label={t("model_selection")}
           icon={<DonutSmallIcon color="inherit" style={iconStyle} />}
           disabled={isWebcamActive} // Disable when the webcam is active
           onClick={() => {
@@ -424,7 +425,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
           }}
         />
         <ButtonMicroscopeFeed
-          label="CLASSIFY"
+          label={t("classify")}
           icon={<CropFreeIcon color="inherit" style={iconStyle} />}
           disabled={isWebcamActive || imageCache.length == 0} // Disable when the webcam is active
           onClick={() => {
@@ -432,7 +433,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
           }}
         />
         <ButtonMicroscopeFeed
-          label="ANNOTATE"
+          label={t("annotate")}
           icon={<FormatShapesOutlinedIcon color="inherit" style={iconStyle} />}
           disabled={isWebcamActive || imageCache.length == 0} // Disable when the webcam is active
           onClick={() => {
@@ -565,7 +566,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
               onCaptureClick();
             }
           }}
-          text="Video Feed"
+          text={t("video_feed")}
         />
         <ToggleButton
           isActive={isWebcamActive}
@@ -574,7 +575,7 @@ const MicroscopeFeed = (props: MicroscopeFeedProps): JSX.Element => {
               onCaptureClick();
             }
           }}
-          text="Capture"
+          text={t("capture_feed")}
         />
       </div>
     </Box>

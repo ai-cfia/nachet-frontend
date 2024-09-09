@@ -15,6 +15,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import FolderIcon from "@mui/icons-material/Folder";
 import FilterIcon from "@mui/icons-material/Filter";
 import { AzureStorageDirectoryItem } from "../../../common/types";
+import { t } from "i18next";
 
 interface params {
   azureStorageDir: AzureStorageDirectoryItem[];
@@ -44,7 +45,7 @@ const StorageDirectoryView: React.FC<params> = (props) => {
       data-testid="storage-directory-component"
     >
       <CardHeader
-        title="DIRECTORIES"
+        title={t("directories")}
         titleTypographyProps={{
           variant: "h6",
           align: "left",

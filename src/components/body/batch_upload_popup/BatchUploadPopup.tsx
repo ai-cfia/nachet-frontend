@@ -35,6 +35,7 @@ import {
   requestClassList,
 } from "../../../common/api";
 import { BatchUploadMetadata, ClassData } from "../../../common/types";
+import { t } from "i18next";
 
 export const Overlay = styled.div`
   position: fixed;
@@ -173,19 +174,19 @@ const BatchUploadPopup = (props: params): JSX.Element => {
   const handleUpload = (): void => {
     resetUpload();
     if (selectedClass == null) {
-      setUploadError("Please select a class");
+      setUploadError(t("please_select_a_class"));
       return;
     }
     if (seedCount < 1) {
-      setUploadError("Please enter a seed count");
+      setUploadError(t("please_enter_a_seed_count"));
       return;
     }
     if (zoom < 1) {
-      setUploadError("Please enter a zoom level");
+      setUploadError(t("please_enter_a_zoom_level"));
       return;
     }
     if (files == null || files.length === 0) {
-      setUploadError("Please select an image");
+      setUploadError(t("please_select_files"));
       return;
     }
 
@@ -252,13 +253,13 @@ const BatchUploadPopup = (props: params): JSX.Element => {
     const uploadImage = (file: File): Promise<boolean> => {
       return new Promise((resolve, reject) => {
         if (file == null) {
-          reject("No file selected");
+          reject(t("no_file_selected"));
         }
         const reader = new FileReader();
         reader.onloadend = () => {
           const imageDataUrl = reader.result;
           if (typeof imageDataUrl !== "string") {
-            reject("Invalid file type");
+            reject(t("invalid_file_type"));
             return;
           }
           const data: BatchUploadMetadata = {
@@ -351,7 +352,7 @@ const BatchUploadPopup = (props: params): JSX.Element => {
         boxShadow={1}
       >
         <CardHeader
-          title="Batch Upload Images"
+          title={t("batch_upload_images")}
           action={
             <IconButton onClick={handleClose}>
               <CloseIcon />
@@ -389,7 +390,7 @@ const BatchUploadPopup = (props: params): JSX.Element => {
 
             <TextField
               id="input-folder-name"
-              label="Folder Name"
+              label={t("folder_name")}
               variant="outlined"
               value={folderName}
               onChange={(e) => setFolderName(e.target.value)}
@@ -410,7 +411,7 @@ const BatchUploadPopup = (props: params): JSX.Element => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Class"
+                  label={t("class")}
                   error={selectedClass == null}
                 />
               )}
@@ -436,7 +437,7 @@ const BatchUploadPopup = (props: params): JSX.Element => {
 
             <TextField
               id="input-seed-count"
-              label="Seed Count"
+              label={t("seed_count")}
               variant="outlined"
               type="number"
               value={seedCount > 0 ? seedCount : ""}
@@ -455,7 +456,7 @@ const BatchUploadPopup = (props: params): JSX.Element => {
             />
             <TextField
               id="input-zoom-level"
-              label="Zoom Level"
+              label={t("zoom_level")}
               variant="outlined"
               type="number"
               value={zoom > 0 ? zoom : ""}
@@ -482,7 +483,7 @@ const BatchUploadPopup = (props: params): JSX.Element => {
               }}
               disabled={uploading}
             >
-              Select Files
+              {t("select_files")}
               <input
                 type="file"
                 multiple
@@ -508,7 +509,7 @@ const BatchUploadPopup = (props: params): JSX.Element => {
                   dense={true}
                   subheader={
                     <ListSubheader component="div" id="nested-list-subheader">
-                      Transfer Status
+                      {t("transfer_status")}
                     </ListSubheader>
                   }
                 >
@@ -567,7 +568,7 @@ const BatchUploadPopup = (props: params): JSX.Element => {
                   }}
                   onClick={handleUpload}
                 >
-                  Upload
+                  {t("upload")}
                 </Button>
               )}
               <Button
@@ -581,7 +582,7 @@ const BatchUploadPopup = (props: params): JSX.Element => {
                 }}
                 onClick={handleClose}
               >
-                {uploadSuccess ? "Close" : "Cancel"}
+                {uploadSuccess ? t("close") : t("cancel")}
               </Button>
             </Box>
           </FormControl>

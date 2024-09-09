@@ -6,6 +6,7 @@ import { colours } from "../../../styles/colours";
 import Radio from "@mui/material/Radio";
 import Typography from "@mui/material/Typography";
 import testData from "../../../static_data/static_model_data.json";
+import { t } from "i18next";
 
 interface params {
   setSwitchModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -47,7 +48,7 @@ const SwitchModel: React.FC<params> = (props): JSX.Element => {
         boxShadow={1}
       >
         <CardHeader
-          title="Classification Model Selection"
+          title={t("classification_model_selection")}
           titleTypographyProps={{
             variant: "h6",
             align: "left",
@@ -68,7 +69,7 @@ const SwitchModel: React.FC<params> = (props): JSX.Element => {
             variant="subtitle1"
             sx={{ marginTop: 1, marginBottom: 2 }}
           >
-            Model Selection:
+            {t("model_selection_popup")}
           </Typography>
           <Box
             sx={{
@@ -166,7 +167,7 @@ const SwitchModel: React.FC<params> = (props): JSX.Element => {
               flexWrap: "wrap",
             }}
           >
-            <span>Done</span>
+            <span>{t("done")}</span>
           </div>
         </Button>
       </Box>

@@ -14,6 +14,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { colours } from "../../../styles/colours";
 import Cookies from "js-cookie";
+import { t } from "i18next";
 
 interface params {
   setSignUpOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -50,7 +51,7 @@ const SignUp: React.FC<params> = (props): JSX.Element => {
         boxShadow={1}
       >
         <CardHeader
-          title="Sign In"
+          title={t("sign_in")}
           titleTypographyProps={{
             variant: "h6",
             align: "left",
@@ -78,7 +79,7 @@ const SignUp: React.FC<params> = (props): JSX.Element => {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label={t("email_address")}
               name="email"
               autoComplete="email"
               autoFocus
@@ -89,7 +90,7 @@ const SignUp: React.FC<params> = (props): JSX.Element => {
               required
               fullWidth
               name="password"
-              label="Password"
+              label={t("password")}
               type="password"
               id="password"
               autoComplete="current-password"
@@ -104,7 +105,7 @@ const SignUp: React.FC<params> = (props): JSX.Element => {
                   sx={{ fontSize: "0.5vh" }}
                 />
               }
-              label="Remember me"
+              label={t("remember_me")}
             />
             <Button
               type="submit"
@@ -112,17 +113,17 @@ const SignUp: React.FC<params> = (props): JSX.Element => {
               variant="contained"
               sx={{ mt: 3, mb: 2, background: colours.CFIA_Background_Blue }}
             >
-              Sign In
+              {t("sign_in")}
             </Button>
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
-                  Forgot password?
+                  {t("forgot_password")}
                 </Link>
               </Grid>
               <Grid item>
                 <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  {t("dont_have_account")}
                 </Link>
               </Grid>
             </Grid>
