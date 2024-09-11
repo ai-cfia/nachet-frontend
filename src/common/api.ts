@@ -423,4 +423,4 @@ export const fetchPicture = async (
     },
   };
   return handleAxios(request);
-}
+};
