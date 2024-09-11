@@ -17,6 +17,10 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CropFreeIcon from "@mui/icons-material/CropFree";
 import LabelIcon from "@mui/icons-material/Label";
 import Typography from "@mui/material/Typography";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 interface params {
   savedImages: any[];
@@ -33,6 +37,8 @@ interface params {
     height: number;
   };
 }
+
+const maxHeight = 35.395;
 
 const ClassificationResults: React.FC<params> = (props) => {
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
@@ -106,365 +112,395 @@ const ClassificationResults: React.FC<params> = (props) => {
     <Box
       sx={{
         width: "100%",
-        height: "22.23vh", // "22.425vh"
+        //height: "22.23vh", // "22.425vh"
         border: `0.01vh solid LightGrey`,
         borderRadius: "0.4vh",
       }}
       boxShadow={0}
       data-testid="classification-results-component"
     >
-      <CardHeader
-        title={
-          <span>
-            {"RESULTS | "}
-            <strong>{props.modelDisplayName}</strong>
-          </span>
-        }
-        titleTypographyProps={{
-          variant: "h6",
-          align: "left",
-          fontWeight: 600,
-          fontSize: "1.3vh",
-          color: colours.CFIA_Font_Black,
-        }}
-        sx={{ padding: "0.8vh 1vh 0.8vh 0.8vh" }}
-        action={
-          <>
-            <IconButton
-              sx={{ padding: 0, marginTop: "0.27vh", marginRight: "0.4vh" }}
-              onClick={() => {
-                props.setSwitchTable(!props.switchTable);
-              }}
-            >
-              <SwitchLeftIcon
-                style={{
-                  color: colours.CFIA_Background_Blue,
-                  fontSize: "2vh",
-                  marginTop: "0.1vh",
-                  marginBottom: "0.1vh",
-                  marginRight: "0.1vh",
-                  paddingTop: 0,
-                  paddingBottom: 0,
-                }}
-              />
-            </IconButton>
-          </>
-        }
-      />
-      <TableContainer
+      <Accordion
+        disableGutters
         sx={{
-          overflow: "auto",
-          height: "18.465vh", // 18.75
-          maxHeight: "18.465vh",
-          border: 0,
-          borderTopRightRadius: 0,
-          borderTopLeftRadius: 0,
-          borderTop: `0.01vh solid LightGrey`,
-          borderBottom: 0,
-          boxShadow: "none",
+          width: "100%",
+          maxWidth: "100%",
+          // height: '50%',
+          maxHeight: String(maxHeight + 10) + "vh",
+          // border: `0.01vh solid LightGrey`,
+          // borderRadius: "0.4vh",
+          position: "relative",
+          zIndex: 0,
+          padding: "0px 0px 0px 0px",
         }}
-        id={"container_with_scrolls"}
       >
-        <Table sx={{ borderBottom: 0 }}>
-          <TableBody sx={{ borderBottom: 0 }}>
-            {props.switchTable &&
-              Object.keys(props.labelOccurrences).map((key, index) => (
-                <TableRow
-                  key={index}
-                  sx={{
-                    backgroundColor:
-                      props.selectedLabel === key
-                        ? "#F5F5F5"
-                        : colours.CFIA_Background_White,
-                    "&:hover": {
-                      backgroundColor: "#F5F5F5",
-                      transition: "0.1s ease-in-out all",
-                    },
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1-content"
+          id="panel1-header"
+          sx={{
+            padding: "0px 0px 0px 0px",
+          }}
+        >
+          <CardHeader
+            title={
+              <span>
+                {"RESULTS | "}
+                <strong>{props.modelDisplayName}</strong>
+              </span>
+            }
+            titleTypographyProps={{
+              variant: "h6",
+              align: "left",
+              fontWeight: 600,
+              fontSize: "1.3vh",
+              color: colours.CFIA_Font_Black,
+            }}
+            sx={{
+              width: "100%",
+              padding: "0.8vh 1vh 0.8vh 0.8vh",
+            }}
+            action={
+              <>
+                <IconButton
+                  sx={{ padding: 0, marginTop: "0.27vh", marginRight: "0.4vh" }}
+                  onClick={() => {
+                    props.setSwitchTable(!props.switchTable);
                   }}
                 >
-                  <TableCell
-                    align="left"
-                    sx={{
-                      cursor: "pointer",
-                      paddingRight: 0,
-                      fontSize: "1.0vh",
-                      paddingTop: "0.5vh",
-                      paddingBottom: "0.5vh",
-                      paddingLeft: "0.8vh",
-                      color: colours.CFIA_Font_Black,
+                  <SwitchLeftIcon
+                    style={{
+                      color: colours.CFIA_Background_Blue,
+                      fontSize: "2vh",
+                      marginTop: "0.1vh",
+                      marginBottom: "0.1vh",
+                      marginRight: "0.1vh",
+                      paddingTop: 0,
+                      paddingBottom: 0,
                     }}
-                    onClick={() => {
-                      handleSelect(key);
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        flexWrap: "wrap",
+                  />
+                </IconButton>
+              </>
+            }
+          />
+        </AccordionSummary>
+        <AccordionDetails>
+          <TableContainer
+            sx={{
+              // overflow: "scroll",
+              minHeight: "18.465vh", // 18.75
+              maxHeight: String(maxHeight) + "vh",
+              border: 0,
+              borderTopRightRadius: 0,
+              borderTopLeftRadius: 0,
+              borderTop: `0.01vh solid LightGrey`,
+              borderBottom: 0,
+              boxShadow: "none",
+            }}
+            id={"container_with_scrolls"}
+          >
+            <Table sx={{ borderBottom: 0 }}>
+              <TableBody sx={{ borderBottom: 0 }}>
+                {props.switchTable &&
+                  Object.keys(props.labelOccurrences).map((key, index) => (
+                    <TableRow
+                      key={index}
+                      sx={{
+                        backgroundColor:
+                          props.selectedLabel === key
+                            ? "#F5F5F5"
+                            : colours.CFIA_Background_White,
+                        "&:hover": {
+                          backgroundColor: "#F5F5F5",
+                          transition: "0.1s ease-in-out all",
+                        },
                       }}
                     >
-                      <LabelIcon
-                        style={{
-                          color: colours.CFIA_Background_Blue,
-                          fontSize: "1.8vh",
-                          marginTop: 0,
-                          marginBottom: 0,
-                          paddingTop: 0,
-                          paddingBottom: 0,
-                          paddingRight: "0.3vw",
+                      <TableCell
+                        align="left"
+                        sx={{
+                          cursor: "pointer",
+                          paddingRight: 0,
+                          fontSize: "1.0vh",
+                          paddingTop: "0.5vh",
+                          paddingBottom: "0.5vh",
+                          paddingLeft: "0.8vh",
+                          color: colours.CFIA_Font_Black,
                         }}
-                      />
-                      <span style={{ width: "0.7vw", textAlign: "left" }}>
-                        {index + 1}
-                      </span>
-                    </div>
-                  </TableCell>
-                  <TableCell
-                    align="center"
-                    sx={{
-                      cursor: "pointer",
-                      paddingRight: 0,
-                      fontSize: "1.0vh",
-                      paddingLeft: 0,
-                      paddingTop: "0.5vh",
-                      paddingBottom: "0.5vh",
-                      color: colours.CFIA_Font_Black,
-                    }}
-                    onClick={() => {
-                      handleSelect(key);
-                    }}
-                  >
-                    {key}
-                  </TableCell>
-                  <TableCell
-                    align="right"
-                    sx={{
-                      cursor: "pointer",
-                      paddingRight: 0,
-                      fontSize: "1.15vh",
-                      paddingTop: "0.5vh",
-                      paddingBottom: "0.5vh",
-                      paddingLeft: "0.8vh",
-                      color: colours.CFIA_Font_Black,
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "right",
-                        flexWrap: "wrap",
-                      }}
-                    >
-                      <span style={{ width: "0.7vw", textAlign: "right" }}>
-                        {props.labelOccurrences[key]}
-                      </span>
-                      <CropFreeIcon
-                        style={{
-                          color: colours.CFIA_Background_Blue,
-                          fontSize: "1.7vh",
-                          marginTop: 0,
-                          marginBottom: 0,
-                          paddingTop: 0,
-                          paddingBottom: 0,
-                          paddingLeft: "0.3vw",
+                        onClick={() => {
+                          handleSelect(key);
                         }}
-                      />
-                    </div>
-                  </TableCell>
-                  <TableCell
-                    align="right"
-                    sx={{
-                      cursor: "pointer",
-                      paddingLeft: 0,
-                      fontSize: "1.0vh",
-                      paddingTop: "0.5vh",
-                      paddingBottom: "0.5vh",
-                      paddingRight: "0.8vh",
-                    }}
-                  >
-                    <IconButton
-                      onClick={() => {
-                        console.log("more options");
-                      }}
-                      sx={{ padding: 0 }}
-                    >
-                      <MoreVertIcon
-                        style={{
-                          color: colours.CFIA_Background_Blue,
-                          fontSize: "1.8vh",
-                          marginTop: 0,
-                          marginBottom: 0,
-                          paddingTop: 0,
-                          paddingBottom: 0,
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            flexWrap: "wrap",
+                          }}
+                        >
+                          <LabelIcon
+                            style={{
+                              color: colours.CFIA_Background_Blue,
+                              fontSize: "1.8vh",
+                              marginTop: 0,
+                              marginBottom: 0,
+                              paddingTop: 0,
+                              paddingBottom: 0,
+                              paddingRight: "0.3vw",
+                            }}
+                          />
+                          <span style={{ width: "0.7vw", textAlign: "left" }}>
+                            {index + 1}
+                          </span>
+                        </div>
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          cursor: "pointer",
+                          paddingRight: 0,
+                          fontSize: "1.0vh",
+                          paddingLeft: 0,
+                          paddingTop: "0.5vh",
+                          paddingBottom: "0.5vh",
+                          color: colours.CFIA_Font_Black,
                         }}
-                      />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
+                        onClick={() => {
+                          handleSelect(key);
+                        }}
+                      >
+                        {key}
+                      </TableCell>
+                      <TableCell
+                        align="right"
+                        sx={{
+                          cursor: "pointer",
+                          paddingRight: 0,
+                          fontSize: "1.15vh",
+                          paddingTop: "0.5vh",
+                          paddingBottom: "0.5vh",
+                          paddingLeft: "0.8vh",
+                          color: colours.CFIA_Font_Black,
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "right",
+                            flexWrap: "wrap",
+                          }}
+                        >
+                          <span style={{ width: "0.7vw", textAlign: "right" }}>
+                            {props.labelOccurrences[key]}
+                          </span>
+                          <CropFreeIcon
+                            style={{
+                              color: colours.CFIA_Background_Blue,
+                              fontSize: "1.7vh",
+                              marginTop: 0,
+                              marginBottom: 0,
+                              paddingTop: 0,
+                              paddingBottom: 0,
+                              paddingLeft: "0.3vw",
+                            }}
+                          />
+                        </div>
+                      </TableCell>
+                      <TableCell
+                        align="right"
+                        sx={{
+                          cursor: "pointer",
+                          paddingLeft: 0,
+                          fontSize: "1.0vh",
+                          paddingTop: "0.5vh",
+                          paddingBottom: "0.5vh",
+                          paddingRight: "0.8vh",
+                        }}
+                      >
+                        <IconButton
+                          onClick={() => {
+                            console.log("more options");
+                          }}
+                          sx={{ padding: 0 }}
+                        >
+                          <MoreVertIcon
+                            style={{
+                              color: colours.CFIA_Background_Blue,
+                              fontSize: "1.8vh",
+                              marginTop: 0,
+                              marginBottom: 0,
+                              paddingTop: 0,
+                              paddingBottom: 0,
+                            }}
+                          />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
 
-            {!props.switchTable &&
-              props.savedImages.map((object: any, objectIndex: number) => {
-                if (
-                  object.index === props.imageIndex &&
-                  object.annotated === true
-                ) {
-                  return object.classifications.map(
-                    (prediction: any, classificationIndex: number) => {
-                      const rowId = `${objectIndex}-${classificationIndex}`;
-                      const topN = object.topN[classificationIndex];
-                      const isExpanded = expandedRow === rowId;
-                      const labelMatchesSelection =
-                        props.selectedLabel === "all" ||
-                        props.selectedLabel === prediction;
+                {!props.switchTable &&
+                  props.savedImages.map((object: any, objectIndex: number) => {
+                    if (
+                      object.index === props.imageIndex &&
+                      object.annotated === true
+                    ) {
+                      return object.classifications.map(
+                        (prediction: any, classificationIndex: number) => {
+                          const rowId = `${objectIndex}-${classificationIndex}`;
+                          const topN = object.topN[classificationIndex];
+                          const isExpanded = expandedRow === rowId;
+                          const labelMatchesSelection =
+                            props.selectedLabel === "all" ||
+                            props.selectedLabel === prediction;
 
-                      if (labelMatchesSelection) {
-                        return (
-                          <React.Fragment key={rowId}>
-                            <TableRow
-                              key={rowId}
-                              sx={{
-                                "&:hover": {
-                                  backgroundColor: "#F5F5F5",
-                                  transition: "0.1s ease-in-out all",
-                                },
-                              }}
-                              onClick={() => {
-                                handleRowClick(rowId);
-                              }}
-                            >
-                              <TableCell
-                                align="left"
-                                sx={{
-                                  cursor: "pointer",
-                                  paddingRight: 0,
-                                  fontSize: "1.0vh",
-                                  paddingTop: "0.5vh",
-                                  paddingBottom: "0.5vh",
-                                  paddingLeft: "0.8vh",
-                                }}
-                              >
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    flexWrap: "wrap",
+                          if (labelMatchesSelection) {
+                            return (
+                              <React.Fragment key={rowId}>
+                                <TableRow
+                                  key={rowId}
+                                  sx={{
+                                    "&:hover": {
+                                      backgroundColor: "#F5F5F5",
+                                      transition: "0.1s ease-in-out all",
+                                    },
+                                  }}
+                                  onClick={() => {
+                                    handleRowClick(rowId);
                                   }}
                                 >
-                                  <LabelIcon
-                                    style={{
-                                      color: colours.CFIA_Background_Blue,
-                                      fontSize: "1.8vh",
-                                      marginTop: 0,
-                                      marginBottom: 0,
-                                      paddingTop: 0,
-                                      paddingBottom: 0,
-                                      paddingRight: "0.3vw",
-                                    }}
-                                  />
-                                  <span
-                                    style={{
-                                      width: "0.7vw",
-                                      textAlign: "left",
+                                  <TableCell
+                                    align="left"
+                                    sx={{
+                                      cursor: "pointer",
+                                      paddingRight: 0,
+                                      fontSize: "1.0vh",
+                                      paddingTop: "0.5vh",
+                                      paddingBottom: "0.5vh",
+                                      paddingLeft: "0.8vh",
                                     }}
                                   >
-                                    {classificationIndex + 1}
-                                  </span>
-                                </div>
-                              </TableCell>
-                              <TableCell
-                                align="center"
-                                sx={{
-                                  cursor: "pointer",
-                                  paddingRight: 0,
-                                  fontSize: "1.0vh",
-                                  paddingLeft: 0,
-                                  paddingTop: "0.5vh",
-                                  paddingBottom: "0.5vh",
-                                }}
-                              >
-                                {prediction}
-                              </TableCell>
-                              <TableCell
-                                align="right"
-                                sx={{
-                                  cursor: "pointer",
-                                  paddingLeft: 0,
-                                  fontSize: "1.0vh",
-                                  paddingTop: "0.5vh",
-                                  paddingBottom: "0.5vh",
-                                  paddingRight: "0.8vh",
-                                }}
-                              >
-                                {(
-                                  object.scores[classificationIndex] * 100
-                                ).toFixed(0)}
-                                %
-                              </TableCell>
-                              <TableCell
-                                align="left"
-                                sx={{
-                                  fontSize: "1.0vh",
-                                  paddingTop: "0.5vh",
-                                  paddingBottom: "0.5vh",
-                                  paddingRight: "0.8vh",
-                                }}
-                              >
-                                {/* Content or modifications for this cell */}
-                              </TableCell>
-                              <TableCell
-                                align="right"
-                                sx={{
-                                  cursor: "pointer",
-                                  paddingLeft: 0,
-                                  fontSize: "1.0vh",
-                                  paddingTop: "0.5vh",
-                                  paddingBottom: "0.5vh",
-                                  paddingRight: "0.8vh",
-                                }}
-                              >
-                                <IconButton
-                                  onClick={() => {
-                                    // logic to handle more options
-                                  }}
-                                  sx={{ padding: 0 }}
-                                >
-                                  <MoreVertIcon
-                                    style={{
-                                      color: colours.CFIA_Background_Blue,
-                                      fontSize: "1.8vh",
-                                      marginTop: 0,
-                                      marginBottom: 0,
-                                      paddingTop: 0,
-                                      paddingBottom: 0,
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        flexWrap: "wrap",
+                                      }}
+                                    >
+                                      <LabelIcon
+                                        style={{
+                                          color: colours.CFIA_Background_Blue,
+                                          fontSize: "1.8vh",
+                                          marginTop: 0,
+                                          marginBottom: 0,
+                                          paddingTop: 0,
+                                          paddingBottom: 0,
+                                          paddingRight: "0.3vw",
+                                        }}
+                                      />
+                                      <span
+                                        style={{
+                                          width: "0.7vw",
+                                          textAlign: "left",
+                                        }}
+                                      >
+                                        {classificationIndex + 1}
+                                      </span>
+                                    </div>
+                                  </TableCell>
+                                  <TableCell
+                                    align="center"
+                                    sx={{
+                                      cursor: "pointer",
+                                      paddingRight: 0,
+                                      fontSize: "1.0vh",
+                                      paddingLeft: 0,
+                                      paddingTop: "0.5vh",
+                                      paddingBottom: "0.5vh",
                                     }}
-                                  />
-                                </IconButton>
-                              </TableCell>
-                            </TableRow>
-                            {isExpanded && (
-                              <TableRow>
-                                <TableCell colSpan={6}>
-                                  <Box p={2}>
-                                    {topN?.length > 0 && renderTopResults(topN)}
-                                  </Box>
-                                </TableCell>
-                              </TableRow>
-                            )}
-                          </React.Fragment>
-                        );
-                      }
+                                  >
+                                    {prediction}
+                                  </TableCell>
+                                  <TableCell
+                                    align="right"
+                                    sx={{
+                                      cursor: "pointer",
+                                      paddingLeft: 0,
+                                      fontSize: "1.0vh",
+                                      paddingTop: "0.5vh",
+                                      paddingBottom: "0.5vh",
+                                      paddingRight: "0.8vh",
+                                    }}
+                                  >
+                                    {(
+                                      object.scores[classificationIndex] * 100
+                                    ).toFixed(0)}
+                                    %
+                                  </TableCell>
+                                  <TableCell
+                                    align="left"
+                                    sx={{
+                                      fontSize: "1.0vh",
+                                      paddingTop: "0.5vh",
+                                      paddingBottom: "0.5vh",
+                                      paddingRight: "0.8vh",
+                                    }}
+                                  >
+                                    {/* Content or modifications for this cell */}
+                                  </TableCell>
+                                  <TableCell
+                                    align="right"
+                                    sx={{
+                                      cursor: "pointer",
+                                      paddingLeft: 0,
+                                      fontSize: "1.0vh",
+                                      paddingTop: "0.5vh",
+                                      paddingBottom: "0.5vh",
+                                      paddingRight: "0.8vh",
+                                    }}
+                                  >
+                                    <IconButton
+                                      onClick={() => {
+                                        // logic to handle more options
+                                      }}
+                                      sx={{ padding: 0 }}
+                                    >
+                                      <MoreVertIcon
+                                        style={{
+                                          color: colours.CFIA_Background_Blue,
+                                          fontSize: "1.8vh",
+                                          marginTop: 0,
+                                          marginBottom: 0,
+                                          paddingTop: 0,
+                                          paddingBottom: 0,
+                                        }}
+                                      />
+                                    </IconButton>
+                                  </TableCell>
+                                </TableRow>
+                                {isExpanded && (
+                                  <TableRow>
+                                    <TableCell colSpan={6}>
+                                      <Box p={2}>
+                                        {topN?.length > 0 &&
+                                          renderTopResults(topN)}
+                                      </Box>
+                                    </TableCell>
+                                  </TableRow>
+                                )}
+                              </React.Fragment>
+                            );
+                          }
+                          return null;
+                        },
+                      );
+                    } else {
                       return null;
-                    },
-                  );
-                } else {
-                  return null;
-                }
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                    }
+                  })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </AccordionDetails>
+      </Accordion>
     </Box>
   );
 };

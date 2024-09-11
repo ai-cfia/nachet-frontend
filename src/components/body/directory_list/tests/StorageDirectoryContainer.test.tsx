@@ -63,6 +63,7 @@ describe("StorageDirectoryContainer", () => {
     setCreateDirectoryOpen: vi.fn(),
     setDelDirectoryOpen: vi.fn(),
     handleDirChange: vi.fn(),
+    handleSelectPicture: vi.fn(),
   };
 
   beforeEach(() => {

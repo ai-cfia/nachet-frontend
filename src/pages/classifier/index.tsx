@@ -8,6 +8,7 @@ import {
 } from "./indexElements";
 import type Webcam from "react-webcam";
 import React from "react";
+
 import ClassificationResults from "../../components/body/classification_results";
 import ImageCache from "../../components/body/image_cache";
 import StorageDirectory from "../../components/body/directory_list";
@@ -20,7 +21,7 @@ interface params {
   imageFormat: string;
   setSaveOpen: React.Dispatch<React.SetStateAction<boolean>>;
   capture: () => void;
-  savedImages: any[];
+  savedImages: Images[];
   setImageCache: React.Dispatch<React.SetStateAction<Images[]>>;
   clearImageCache: () => void;
   setImageIndex: React.Dispatch<React.SetStateAction<number>>;
@@ -56,6 +57,7 @@ interface params {
   toggleShowInference: (state: boolean) => void;
   backendUrl: string;
   uuid: string;
+  handleSelectPicture: (folder: string, picture: string) => void;
 }
 
 const Classifier: React.FC<params> = (props) => {
@@ -94,6 +96,7 @@ const Classifier: React.FC<params> = (props) => {
             setCreateDirectoryOpen={props.setCreateDirectoryOpen}
             setDelDirectoryOpen={props.setDelDirectoryOpen}
             setCurDir={props.setCurDir}
+            handleSelectPicture={props.handleSelectPicture}
           />
           <ImageCache
             removeImage={props.removeImage}

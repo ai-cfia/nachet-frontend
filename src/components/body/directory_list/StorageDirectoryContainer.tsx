@@ -8,6 +8,7 @@ export interface params {
   setCreateDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setDelDirectoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleDirChange: (dir: string) => void;
+  handleSelectPicture: (folder: string, picture: string) => void;
 }
 
 const StorageDirectoryContainer: React.FC<params> = (props): JSX.Element => {
@@ -34,6 +35,7 @@ const StorageDirectoryContainer: React.FC<params> = (props): JSX.Element => {
       handleSelect={handleSelect}
       handleDelete={handleDelete}
       handleCreateDirectory={handleCreateDirectory}
+      handleSelectPicture={props.handleSelectPicture}
     />
   );
 };
