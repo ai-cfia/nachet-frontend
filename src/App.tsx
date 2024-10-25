@@ -6,6 +6,7 @@ import Navbar from "./components/header/navbar";
 import Body from "./root/body";
 import Footer from "./components/footer";
 import Appbar from "./components/header/appbar";
+import { decodeAndDecompressCookie } from "./common/cookiedecoder";
 
 interface AppProps {
   basename?: string;
@@ -71,7 +72,16 @@ function App({
   //   setSignedIn(true);
   // };
 
-  // // uuid will check if an email is already stored in the cookie, if not setsignup open
+  // uuid will check if an email is already stored in the cookie, if not setsignup open
+  const encodedJWT = Cookies.get("jxVouchCookie");
+  if (encodedJWT) {
+    const decodedJWT = decodeAndDecompressCookie(encodedJWT);
+    if (decodedJWT.email) {
+      // setUuid(decodedJWT.email);
+      // setSignedIn(true);
+      console.log(decodedJWT.email);
+    }
+  }
   // const getUuid = useCallback((): void => {
   //   // check if the user has email stored in the cookie
   //   const email: string | undefined = Cookies.get("user-email");
