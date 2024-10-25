@@ -237,6 +237,13 @@ const Body: React.FC<params> = (props) => {
   ]);
 
   useEffect(() => {
+    if (
+      !navigator ||
+      !navigator.mediaDevices ||
+      typeof navigator.mediaDevices.enumerateDevices !== "function"
+    ) {
+      return;
+    }
     // retrieves the available devices and sets the active device to the first available device
     const updateDevices = async (): Promise<any> => {
       try {

@@ -1,21 +1,24 @@
 // cookieDecoder.ts
 import pako from "pako";
+import { Base64 } from "js-base64";
+import { jwtDecode } from "jwt-decode";
 
-export function decodeAndDecompressCookie(encgzipss: string): any {
-  // Base64 decoding
-  const urlSafeBase64DecodedString = atob(encgzipss);
-
-  // Gzip decompression
-  const gzipDecompressedArrayBuffer = pako.ungzip(
-    new Uint8Array(
-      urlSafeBase64DecodedString.split("").map((char) => char.charCodeAt(0)),
-    ),
+export function decodeAndDecompressCookie(encgzipss: string) {
+  const urlSafeBase64DecodedString = Base64.toUint8Array(
+    encgzipss.replace(/_/g, "/").replace(/-/g, "+"),
   );
 
-  // Convert the ArrayBuffer to a String and then to a JSON object
-  const jwtDecodedObject: any = JSON.parse(
-    pako.ungzip(gzipDecompressedArrayBuffer, { to: "string" }),
+  // Decompress gzip
+  const gzipDecompressedArray = pako.inflate(urlSafeBase64DecodedString);
+  const gzipDecompressedString = new TextDecoder("utf-8").decode(
+    gzipDecompressedArray,
   );
+
+  // Decode JWT
+  const jwtDecodedObject = jwtDecode<{ CustomClaims: { email: String } }>(
+    gzipDecompressedString,
+  );
+  //   console.log(JSON.stringify(jwtDecodedObject));
 
   return jwtDecodedObject;
 }

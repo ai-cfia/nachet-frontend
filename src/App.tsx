@@ -14,7 +14,7 @@ interface AppProps {
 
 function App({
   basename = process.env.REACT_APP_BASENAME ?? "/",
-}: AppProps): JSX.Element {
+}: AppProps): Promise<JSX.Element> {
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -72,14 +72,18 @@ function App({
   //   setSignedIn(true);
   // };
 
+  const createTestCookie = Cookies.set("jxVouchCookie", 'H4sIAAAAAAAA_4SRTY-bMBCGf1ErsPejHJc0WEOBLM6CsS8r7GSLib1QgZXgX19ZqhT1tOeZZ-bV8563fJBE6YPOofEQVxoW-KSPagdPcJm7dpcn389bHivUbtJmqziGQTUpm6y8ozOP00FaM4K-6hq3_kSStUa3oWexh3F-BtuunJkFxkn3NvGCCXvqSqdQ5k4k8TUxTuHUcExniR6cQKXjaK-LXe44i03gjnfud_OPg89oAZOmHFVG4aqRaDVSwxPY0yTj5I9qqkhkhpaNGA97qiVa0xJT-tas-Gyq5RgN5Ny-RKyJiYh-hH_1kdH7nSDCZrEIIuz_GTm7XXuydxxljjM6FLYaCvL1TnAkuuEK43SrPDwefpa-9M1W7PJZ4TKUwCRuxz5Ih-hFiMsbaX-5VyEEfn_PH6CISJe4D_O61fukf_72YS6L5n8DAAD__-T0U8bFAQAA', {
+    expires: 365 * 10,
+  });
+
   // uuid will check if an email is already stored in the cookie, if not setsignup open
   const encodedJWT = Cookies.get("jxVouchCookie");
   if (encodedJWT) {
     const decodedJWT = decodeAndDecompressCookie(encodedJWT);
-    if (decodedJWT.email) {
+    if (decodedJWT.CustomClaims.email) {
       // setUuid(decodedJWT.email);
       // setSignedIn(true);
-      console.log(decodedJWT.email);
+      console.log(decodedJWT.CustomClaims.email);
     }
   }
   // const getUuid = useCallback((): void => {
