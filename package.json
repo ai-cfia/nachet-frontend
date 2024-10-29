@@ -1,7 +1,7 @@
 {
   "name": "nachet-frontend",
   "private": true,
-  "version": "0.9.3",
+  "version": "0.9.4",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -28,8 +28,11 @@
     "browser-image-compression": "^2.0.2",
     "express": "^4.18.2",
     "file-saver": "^2.0.5",
+    "js-base64": "^3.7.7",
     "js-cookie": "^3.0.5",
     "jszip": "^3.10.1",
+    "jwt-decode": "^4.0.0",
+    "pako": "^2.1.0",
     "re-resizable": "^6.9.16",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -64,6 +67,7 @@
     "@types/file-saver": "^2.0.7",
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^20.11.29",
+    "@types/pako": "^2.0.3",
     "@types/react": "^18.2.64",
     "@types/react-dom": "^18.2.21",
     "@types/utif": "^3.0.5",

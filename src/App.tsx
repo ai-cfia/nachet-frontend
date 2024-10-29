@@ -23,7 +23,7 @@ function App({
   const [creativeCommonsPopupOpen, setCreativeCommonsPopupOpen] =
     useState<boolean>(false);
   const [switchLanguage, setSwitchLanguage] = useState<boolean>(false);
-  const [signedIn, setSignedIn] = useState<boolean>(false);
+  const [signedIn, setSignedIn] = useState<boolean>(true);
   const [signUpOpen, setSignUpOpen] = useState<boolean>(false);
 
   const handleCreativeCommonsAgreement = (agree: boolean): void => {
@@ -47,46 +47,6 @@ function App({
       setCreativeCommonsPopupOpen(true);
     }
   }, []);
-
-  // const createContainerUuid = useCallback((): void => {
-  //   // create a new uuid for user and set a cookie to remember it for 10 years (it is used to identify user container in azure storage)
-  //   const newUuid = uuidv4();
-  //   setContainerUuid(newUuid);
-  //   Cookies.set("container-uuid", newUuid, { expires: 365 * 10 });
-  // }, []);
-
-  // const getContainerUuid = useCallback((): void => {
-  //   // check if the user has already a uuid (cookie)
-  //   const existingUuid = Cookies.get("container-uuid") as string;
-  //   if (existingUuid !== undefined) {
-  //     setContainerUuid(existingUuid);
-  //     console.log("Existing Container UUID: " + existingUuid);
-  //   } else {
-  //     console.log("Creating new Container UUID");
-  //     createContainerUuid();
-  //   }
-  // }, [createContainerUuid]);
-
-  // const handleSignIn = (): void => {
-  //   setSignedIn(true);
-  // };
-
-  // // uuid will check if an email is already stored in the cookie, if not setsignup open
-  // const getUuid = useCallback((): void => {
-  //   // check if the user has email stored in the cookie
-  //   const email: string | undefined = Cookies.get("user-email");
-  //   if (email == null || !email.includes("@") || !signedIn) {
-  //     setSignUpOpen(true);
-  //   } else {
-  //     requestUUID(email)
-  //     .then((response) => {
-  //       setUuid(response.data.uuid);
-  //       Cookies.set("user-uuid", response.data.uuid, { expires: 30 });
-  //     }
-  //     setUuid(uuid);
-  //     Cookies.set("user-uuid", uuid, { expires: 30 });
-  //   }
-  // }, [signedIn]);
 
   useEffect(() => {
     getCreativeCommonsAgreement();
