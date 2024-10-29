@@ -32,6 +32,7 @@ import {
 } from "../../common/types";
 import Cookies from "js-cookie";
 import BatchUploadPopup from "../../components/body/batch_upload_popup";
+import { decodeAndDecompressCookie } from "../../common/cookiedecoder";
 
 interface params {
   windowSize: {
@@ -95,17 +96,39 @@ const Body: React.FC<params> = (props) => {
   const onSignIn = (): void => {
     props.setSignedIn(true);
   };
-
+  const { setSignUpOpen, setUuid, signedIn, setSignedIn } = props;
   // uuid will check if an email is already stored in the cookie, if not setsignup open
   const getUuid = useCallback((): void => {
-    // check if the user has email stored in the cookie
-    const email: string | undefined = Cookies.get("user-email");
-    if (email == null || !email.includes("@") || !props.signedIn) {
-      props.setSignUpOpen(true);
+    const uuid = Cookies.get("user-uuid");
+    if (uuid) {
+      setUuid(uuid);
+      setSignedIn(true);
+      return;
+    }
+    const getEmail = (): string | undefined => {
+      //
+      const encodedJWT = Cookies.get("jxVouchCookie");
+      if (encodedJWT) {
+        const decodedJWT = decodeAndDecompressCookie(encodedJWT);
+        if (decodedJWT.CustomClaims.email) {
+          setSignedIn(true);
+          Cookies.set("user-email", decodedJWT.CustomClaims.email, {
+            expires: 90,
+          });
+          console.log(decodedJWT.CustomClaims.email);
+        }
+        return decodedJWT.CustomClaims.email;
+      } else {
+        return Cookies.get("user-email");
+      }
+    };
+    const email = getEmail();
+    if (email == null || !email.includes("@") || !signedIn) {
+      setSignUpOpen(true);
     } else {
       requestUUID(backendUrl, email)
         .then((response) => {
-          props.setUuid(response.user_id);
+          setUuid(response.user_id);
           Cookies.set("user-uuid", response.user_id, {
             expires: 30,
             sameSite: "strict",
@@ -119,7 +142,7 @@ const Body: React.FC<params> = (props) => {
       // props.setUuid(props.uuid);
       // Cookies.set("user-uuid", props.uuid, { expires: 30 });
     }
-  }, [props, backendUrl]);
+  }, [backendUrl, setUuid, setSignUpOpen, signedIn, setSignedIn]);
 
   useEffect(() => {
     getUuid();

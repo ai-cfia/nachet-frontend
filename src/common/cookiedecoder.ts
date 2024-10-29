@@ -15,7 +15,7 @@ export function decodeAndDecompressCookie(encgzipss: string) {
   );
 
   // Decode JWT
-  const jwtDecodedObject = jwtDecode<{ CustomClaims: { email: String } }>(
+  const jwtDecodedObject = jwtDecode<{ CustomClaims: { email: string } }>(
     gzipDecompressedString,
   );
   //   console.log(JSON.stringify(jwtDecodedObject));
