@@ -97,50 +97,50 @@ const Body: React.FC<params> = (props) => {
     props.setSignedIn(true);
   };
   const { setSignUpOpen, setUuid, signedIn, setSignedIn } = props;
+
   // uuid will check if an email is already stored in the cookie, if not setsignup open
-  const getUuid = useCallback((): void => {
+  const getUuid = useCallback(async (): Promise<void> => {
     const uuid = Cookies.get("user-uuid");
     if (uuid) {
       setUuid(uuid);
       setSignedIn(true);
       return;
     }
-    const getEmail = (): string | undefined => {
-      //
-      const encodedJWT = Cookies.get("jxVouchCookie");
-      if (encodedJWT) {
-        const decodedJWT = decodeAndDecompressCookie(encodedJWT);
-        if (decodedJWT.CustomClaims.email) {
-          setSignedIn(true);
-          Cookies.set("user-email", decodedJWT.CustomClaims.email, {
-            expires: 90,
-          });
-          console.log(decodedJWT.CustomClaims.email);
-        }
-        return decodedJWT.CustomClaims.email;
-      } else {
-        return Cookies.get("user-email");
-      }
-    };
-    const email = getEmail();
-    if (email == null || !email.includes("@") || !signedIn) {
-      setSignUpOpen(true);
-    } else {
-      requestUUID(backendUrl, email)
-        .then((response) => {
-          setUuid(response.user_id);
-          Cookies.set("user-uuid", response.user_id, {
-            expires: 30,
-            sameSite: "strict",
-            secure: true,
-          });
-        })
-        .catch((error) => {
-          console.error(error);
-          alert("Error fetching UUID, see console for details");
+    try {
+      await requestUUID(backendUrl, "").then((response) => {
+        setUuid(response.user_id);
+        Cookies.set("user-uuid", response.user_id, {
+          expires: 30,
+          sameSite: "strict",
+          secure: true,
         });
-      // props.setUuid(props.uuid);
-      // Cookies.set("user-uuid", props.uuid, { expires: 30 });
+      });
+    } catch (error) {
+      // External devs do not have access to the jxVouchCookie
+      const INTERNAL = true;
+      if (INTERNAL) {
+        console.error(error);
+        alert("Error fetching UUID, see console for details");
+      } else {
+        const email = Cookies.get("user-email");
+        if (email == null || !email.includes("@") || !signedIn) {
+          setSignUpOpen(true);
+        } else {
+          await requestUUID(backendUrl, email)
+            .then((response) => {
+              setUuid(response.user_id);
+              Cookies.set("user-uuid", response.user_id, {
+                expires: 30,
+                sameSite: "strict",
+                secure: true,
+              });
+            })
+            .catch((error) => {
+              console.error(error);
+              alert("Error fetching UUID, see console for details");
+            });
+        }
+      }
     }
   }, [backendUrl, setUuid, setSignUpOpen, signedIn, setSignedIn]);
 
