@@ -32,7 +32,6 @@ import {
 } from "../../common/types";
 import Cookies from "js-cookie";
 import BatchUploadPopup from "../../components/body/batch_upload_popup";
-import { decodeAndDecompressCookie } from "../../common/cookiedecoder";
 
 interface params {
   windowSize: {
@@ -97,50 +96,35 @@ const Body: React.FC<params> = (props) => {
     props.setSignedIn(true);
   };
   const { setSignUpOpen, setUuid, signedIn, setSignedIn } = props;
+
   // uuid will check if an email is already stored in the cookie, if not setsignup open
-  const getUuid = useCallback((): void => {
-    const uuid = Cookies.get("user-uuid");
-    if (uuid) {
-      setUuid(uuid);
-      setSignedIn(true);
-      return;
-    }
-    const getEmail = (): string | undefined => {
-      //
-      const encodedJWT = Cookies.get("jxVouchCookie");
-      if (encodedJWT) {
-        const decodedJWT = decodeAndDecompressCookie(encodedJWT);
-        if (decodedJWT.CustomClaims.email) {
-          setSignedIn(true);
-          Cookies.set("user-email", decodedJWT.CustomClaims.email, {
-            expires: 90,
-          });
-          console.log(decodedJWT.CustomClaims.email);
-        }
-        return decodedJWT.CustomClaims.email;
+  const getUuid = useCallback(async (): Promise<void> => {
+    try {
+      await requestUUID(backendUrl, "").then((response) => {
+        setUuid(response.user_id);
+        setSignedIn(true);
+      });
+    } catch (error) {
+      // External devs do not have access to the jxVouchCookie
+      const INTERNAL = true;
+      if (INTERNAL) {
+        console.error(error);
+        alert("Error fetching UUID, see console for details");
       } else {
-        return Cookies.get("user-email");
+        const email = Cookies.get("user-email");
+        if (email == null || !email.includes("@") || !signedIn) {
+          setSignUpOpen(true);
+        } else {
+          await requestUUID(backendUrl, email)
+            .then((response) => {
+              setUuid(response.user_id);
+            })
+            .catch((error) => {
+              console.error(error);
+              alert("Error fetching UUID, see console for details");
+            });
+        }
       }
-    };
-    const email = getEmail();
-    if (email == null || !email.includes("@") || !signedIn) {
-      setSignUpOpen(true);
-    } else {
-      requestUUID(backendUrl, email)
-        .then((response) => {
-          setUuid(response.user_id);
-          Cookies.set("user-uuid", response.user_id, {
-            expires: 30,
-            sameSite: "strict",
-            secure: true,
-          });
-        })
-        .catch((error) => {
-          console.error(error);
-          alert("Error fetching UUID, see console for details");
-        });
-      // props.setUuid(props.uuid);
-      // Cookies.set("user-uuid", props.uuid, { expires: 30 });
     }
   }, [backendUrl, setUuid, setSignUpOpen, signedIn, setSignedIn]);
 
