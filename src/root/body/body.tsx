@@ -32,7 +32,6 @@ import {
 } from "../../common/types";
 import Cookies from "js-cookie";
 import BatchUploadPopup from "../../components/body/batch_upload_popup";
-import { decodeAndDecompressCookie } from "../../common/cookiedecoder";
 
 interface params {
   windowSize: {
