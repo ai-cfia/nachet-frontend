@@ -100,20 +100,10 @@ const Body: React.FC<params> = (props) => {
 
   // uuid will check if an email is already stored in the cookie, if not setsignup open
   const getUuid = useCallback(async (): Promise<void> => {
-    const uuid = Cookies.get("user-uuid");
-    if (uuid) {
-      setUuid(uuid);
-      setSignedIn(true);
-      return;
-    }
     try {
       await requestUUID(backendUrl, "").then((response) => {
         setUuid(response.user_id);
-        Cookies.set("user-uuid", response.user_id, {
-          expires: 30,
-          sameSite: "strict",
-          secure: true,
-        });
+        setSignedIn(true);
       });
     } catch (error) {
       // External devs do not have access to the jxVouchCookie
@@ -129,11 +119,6 @@ const Body: React.FC<params> = (props) => {
           await requestUUID(backendUrl, email)
             .then((response) => {
               setUuid(response.user_id);
-              Cookies.set("user-uuid", response.user_id, {
-                expires: 30,
-                sameSite: "strict",
-                secure: true,
-              });
             })
             .catch((error) => {
               console.error(error);

@@ -27,10 +27,6 @@ const SignUp: React.FC<params> = (props): JSX.Element => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      // password: data.get("password"),
-    });
     Cookies.set("user-email", String(data.get("email") ?? ""), { expires: 30 });
     props.onSignIn();
     handleClose();
