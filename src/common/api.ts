@@ -261,6 +261,7 @@ export const requestUUID = async (
     data: {
       email: email,
     },
+    withCredentials: true,
   };
   return handleAxios<{
     user_id: string;
