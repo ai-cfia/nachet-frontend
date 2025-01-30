@@ -642,7 +642,7 @@ displays real data.
 
 ## Test Case: Enhanced Model Selection and Classification Process
 
-#### Objective
+### Objective
 
 Verify that the application allows users to select a classification model via a
 dedicated "Model Selection" button, which opens a popup for model choice. Ensure
