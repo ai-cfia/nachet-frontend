@@ -8,12 +8,12 @@ and as expected before deployment or release.
 
 ## Testing Backend URL Warning Functionality
 
-#### Objective
+### Objective
 
 Verify the application correctly displays a warning if the backend URL is not
 set or is non-responsive.
 
-#### Preconditions
+### Preconditions
 
 - [ ] The application is open.
 - [ ] Nachet Backend is set up and running locally. The Nachet Backend can be
@@ -23,12 +23,12 @@ locally, use the command `hypercorn -b :8080 app:app` in the terminal.
 - [ ] The backend URL environment variable is either not set, empty, or pointing
 to a non-responsive server.
 
-#### Test Steps
+### Test Steps
 
 1. Start the application.
 2. Observe the application's behavior during initialization.
 
-#### Expected Results
+### Expected Results
 
 - [ ] If the backend URL is not correctly configured or the server is non-
 responsive, a warning message should appear at the top of the screen.
@@ -37,11 +37,11 @@ URL.
 - [ ] If the backend URL is correctly configured and the server is responsive,
 no warning message should be displayed.
 
-#### Actual Results
+### Actual Results
 
 - [ ] Describe the actual outcome of the test.
 
-#### Pass/Fail
+### Pass/Fail
 
 - [ ] Pass if the warning message accurately reflects the state of the backend
 URL.
@@ -573,7 +573,7 @@ reporting style.
 
 ## Test Case: Populating Model List Based on Environment Setting
 
-#### Objective
+### Objective
 
 Verify that the Results Tuner Popup correctly populates the model list with real
 data or test data based on the `VITE_APP_MODE` environment variable.
@@ -848,12 +848,12 @@ déploiement ou la publication.
 
 ## Tester la fonctionnalité d’avertissement de l’URL du backend
 
-#### Objectif
+### Objectif
 
 Vérifier que l'application affiche correctement un avertissement si l'URL du
 backend n'est pas configurée ou si le serveur est non réactif.
 
-#### Préconditions
+### Préconditions
 
 - [ ] L'application est ouverte.
 - [ ] Le backend Nachet est configuré et en cours d'exécution localement. Le
@@ -864,12 +864,12 @@ backend n'est pas configurée ou si le serveur est non réactif.
 - [ ] La variable d'environnement contenant l'URL du backend n'est pas définie,
   est vide, ou pointe vers un serveur non réactif.
 
-#### Étapes de test
+### Étapes de test
 
 1. Démarrer l'application.
 2. Observer le comportement de l'application lors de l'initialisation.
 
-#### Résultats attendus
+### Résultats attendus
 
 - [ ] Si l'URL du backend n'est pas correctement configurée ou si le serveur est
   non réactif, un message d’avertissement doit apparaître en haut de l’écran.
@@ -878,11 +878,11 @@ backend n'est pas configurée ou si le serveur est non réactif.
 - [ ] Si l'URL du backend est correctement configurée et que le serveur est
   réactif, aucun message d'avertissement ne doit être affiché.
 
-#### Résultats observés
+### Résultats observés
 
 - [ ] Décrire les résultats réels obtenus pendant le test.
 
-#### Succès/Échec
+### Succès/Échec
 
 - [ ] Succès si le message d’avertissement reflète avec précision l’état de
   l’URL du backend.

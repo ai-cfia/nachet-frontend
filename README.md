@@ -329,7 +329,7 @@ Cette documentation couvre :
 Consultez cette documentation pour comprendre comment gérer et utiliser
 efficacement les configurations d'environnement dans votre projet.
 
-## Configuration des variables d'environnement
+## Variables d'environnement
 
 Pour exécuter correctement l'application, certaines variables d'environnement
 doivent être configurées. Ces variables contrôlent divers aspects du
