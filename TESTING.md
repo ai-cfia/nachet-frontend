@@ -1401,21 +1401,21 @@ des Captures.
 - [ ] Échec si des captures restent visibles dans le tableau ou si l'icône de la
   corbeille ne fonctionne pas correctement.
 
-# Test de la composante Résultats
+## Test de la composante Résultats
 
-## Test 1 : Basculer entre les rapports groupés et individuels
+### Test 1 : Basculer entre les rapports groupés et individuels
 
-### Objectif
+#### Objectif
 
 S'assurer que les utilisateurs peuvent basculer entre les rapports groupés et
 individuels dans le tableau des Résultats.
 
-### Préconditions
+#### Préconditions
 
 - [ ] L'application est ouverte et l'utilisateur est connecté (si nécessaire).
 - [ ] Le tableau des Résultats est rempli avec des résultats de classification.
 
-### Étapes de test
+#### Étapes de test
 
 1. Cliquer sur l'icône « grouper/dégrouper » dans le tableau des Résultats.
 2. Observer les modifications dans la présentation des résultats de
@@ -1423,18 +1423,18 @@ individuels dans le tableau des Résultats.
 3. Basculer plusieurs fois entre les modes groupé et individuel pour tester les
    deux vues.
 
-### Résultats attendus
+#### Résultats attendus
 
 - [ ] En cliquant sur l'icône, l'affichage des résultats passe entre le mode
   groupé et le mode individuel.
 - [ ] Le tableau des Résultats affiche correctement les données selon le mode
   sélectionné.
 
-### Résultats observés
+#### Résultats observés
 
 - [ ] Décrire ce qui s'est réellement passé lors de l'exécution du test.
 
-### Succès/Échec
+#### Succès/Échec
 
 - [ ] Succès si le basculement entre les deux modes fonctionne correctement.
 - [ ] Échec si le tableau ne met pas à jour l'affichage ou affiche des données
