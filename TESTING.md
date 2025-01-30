@@ -966,7 +966,8 @@ train de visualiser l'image capturée.
 
 #### Objectif
 
-S'assurer que le bouton « Changer » permet à l'utilisateur de changer de périphérique de webcam.
+S'assurer que le bouton « Changer » permet à l'utilisateur de changer de
+périphérique de webcam.
 
 #### Préconditions
 
@@ -1206,7 +1207,8 @@ des images et des captures localement.
 
 - [ ] La fenêtre contextuelle « Enregistrer la capture » apparaît avec des
   options pour enregistrer la capture et le cache.
-- [ ] L'image ou les images sont enregistrées dans le format sélectionné dans l'ordinateur.
+- [ ] L'image ou les images sont enregistrées dans le format sélectionné dans
+  l'ordinateur.
 
 #### Résultats observés
 
@@ -1263,14 +1265,16 @@ S'assurer que les utilisateurs peuvent créer un nouveau répertoire.
 #### Étapes de test
 
 1. Cliquer sur l'icône de dossier avec un symbole '+' miniature.
-2. Observer l'apparition de la fenêtre contextuelle « Créer un nouveau répertoire ».
+2. Observer l'apparition de la fenêtre contextuelle « Créer un nouveau
+   répertoire ».
 3. Entrer un nom pour le nouveau répertoire dans le champ de saisie.
 4. Cliquer sur le bouton « Créer » pour créer le répertoire.
 5. Vérifier si le nouveau répertoire apparaît dans le tableau des Répertoires.
 
 #### Résultats attendus
 
-- [ ] La fenêtre contextuelle « Créer un nouveau répertoire » apparaît après avoir cliqué sur l'icône de dossier.
+- [ ] La fenêtre contextuelle « Créer un nouveau répertoire » apparaît après
+  avoir cliqué sur l'icône de dossier.
 - [ ] Un nouveau répertoire est créé et apparaît dans le tableau des
   Répertoires.
 - [ ] L'utilisateur peut annuler la création en cliquant sur « Annuler ».
@@ -1442,15 +1446,15 @@ individuels dans le tableau des Résultats.
 
 #### Objectif
 
-Vérifier que la fenêtre « Results Tuner » affiche la liste des modèles avec
-des données réelles lorsque `VITE_APP_MODE` est configuré en mode production.
+Vérifier que la fenêtre « Results Tuner » affiche la liste des modèles avec des
+données réelles lorsque `VITE_APP_MODE` est configuré en mode production.
 
 #### Préconditions
 
 - [ ] L'application est en cours d'exécution.
 - [ ] Le serveur backend est opérationnel.
-- [ ] La variable d'environnement `VITE_APP_MODE` est définie à une valeur
-  autre que `"test"`.
+- [ ] La variable d'environnement `VITE_APP_MODE` est définie à une valeur autre
+  que `"test"`.
 
 #### Étapes de test
 
