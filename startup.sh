@@ -13,12 +13,19 @@ export PUBLIC_URL=${PUBLIC_URL:-.}
 # Install dependencies if node_modules doesn't exist
 if [ ! -d "node_modules" ]; then
   echo "Installing dependencies..."
-  npm ci
+  npm ci --include=dev
 fi
 
 # Build the application with the current environment variables
 echo "Building the application..."
-npm run build
+
+# Directly run the build command without the prebuild hook
+npx tsc && npx vite build
+
+echo "Removing all files in node_modules..."
+
+# Remove all files in node_modules
+rm -rf node_modules/*
 
 # Copy favicon if needed
 if [ -f "./src/assets/CFIA_small_logo.ico" ]; then
