@@ -91,7 +91,6 @@ const Body: React.FC<params> = (props) => {
   const [showInference, setShowInference] = useState<boolean>(true);
   const decodedTiff = useDecoderTiff(imageTiff);
   const backendUrl = useBackendUrl();
-  console.log("backendUrl", backendUrl);
 
   const onSignIn = (): void => {
     props.setSignedIn(true);

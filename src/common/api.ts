@@ -275,6 +275,7 @@ export const requestClassList = async (
   if (backendUrl === "" || backendUrl == null) {
     throw new ValueError("Backend URL is null or empty");
   }
+  console.log("backendUrl", backendUrl);
   // if (uuid === "" || uuid == null) {
   //   throw new ValueError("UUID is null or empty");
   // }
