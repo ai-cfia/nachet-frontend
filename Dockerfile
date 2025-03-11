@@ -11,6 +11,7 @@ RUN npm install -g npm@9.8.1
 
 # Copy the rest of the application
 COPY . .
+RUN rm -rf .git
 
 # Make the startup script executable
 RUN chmod +x ./startup.sh
