@@ -1,0 +1,31 @@
+#!/bin/bash
+set -e
+
+# Log the environment variables being used (without exposing sensitive values)
+echo "Building application with runtime environment variables..."
+echo "Using VITE_BACKEND_URL: ${VITE_BACKEND_URL:-/api}"
+echo "Using PUBLIC_URL: ${PUBLIC_URL:-.}"
+
+# Export the environment variables so they're available to the build process
+export VITE_BACKEND_URL=${VITE_BACKEND_URL:-/api}
+export PUBLIC_URL=${PUBLIC_URL:-.}
+
+# Install dependencies if node_modules doesn't exist
+if [ ! -d "node_modules" ]; then
+  echo "Installing dependencies..."
+  npm ci
+fi
+
+# Build the application with the current environment variables
+echo "Building the application..."
+npm run build
+
+# Copy favicon if needed
+if [ -f "./src/assets/CFIA_small_logo.ico" ]; then
+  echo "Copying favicon..."
+  cp ./src/assets/CFIA_small_logo.ico ./dist/favicon.ico
+fi
+
+# Serve the application
+echo "Starting server on port 3000..."
+npx serve -s dist
