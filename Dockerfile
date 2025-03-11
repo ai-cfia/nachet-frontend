@@ -15,6 +15,9 @@ COPY . .
 # Make the startup script executable
 RUN chmod +x ./startup.sh
 
+# make this folder writable
+RUN chmod 777 /nachet-frontend
+
 ARG ARG_PUBLIC_URL
 ARG ARG_VITE_BACKEND_URL
 
