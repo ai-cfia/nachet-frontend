@@ -87,10 +87,10 @@ const Body: React.FC<params> = (props) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isWebcamActive, setIsWebcamActive] = useState(true); // This state determines the visibility of the webcam
   const [isLoading, setIsLoading] = useState(false);
-  const decodedTiff = useDecoderTiff(imageTiff);
-  const backendUrl = useBackendUrl();
   const [metadata, setMetadata] = useState<ModelMetadata[]>([]);
   const [showInference, setShowInference] = useState<boolean>(true);
+  const decodedTiff = useDecoderTiff(imageTiff);
+  const backendUrl = useBackendUrl();
 
   const onSignIn = (): void => {
     props.setSignedIn(true);
