@@ -11,10 +11,8 @@ export VITE_BACKEND_URL=${VITE_BACKEND_URL:-/api}
 export PUBLIC_URL=${PUBLIC_URL:-.}
 
 # Install dependencies if node_modules doesn't exist
-if [ ! -d "node_modules" ]; then
-  echo "Installing dependencies..."
-  npm ci --include=dev
-fi
+echo "Installing dependencies..."
+npm ci --include=dev
 
 # Build the application with the current environment variables
 echo "Building the application..."
